@@ -1,4 +1,4 @@
-Simulated Obervatory Control System
+Simulated Observatory Control System
 ======================================
 
 This repository contains the code and data necessary for the Simulated 

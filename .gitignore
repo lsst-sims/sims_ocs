@@ -41,3 +41,8 @@ output/*/index.html
 
 # Sphinx
 docs/_build
+docs/modules.rst
+docs/lsst*.rst
+
+# Project
+version.py
