@@ -1,8 +1,8 @@
 include HISTORY.rst
 include LICENSE
 include README.rst
-include lsst/sims/ocs/version.py
 
+recursive-include lsst *
 recursive-include tests *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
