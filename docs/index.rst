@@ -1,7 +1,7 @@
 .. sims_ocs documentation master file, created by
 
-Welcome to Simulated OCS's documentation!
-======================================
+Welcome to the Simulated OCS's documentation!
+=============================================
 
 Contents:
 
