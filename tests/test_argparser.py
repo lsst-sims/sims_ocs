@@ -31,3 +31,11 @@ class ArgParserTest(unittest.TestCase):
     def test_no_sched_flag(self):
         args = self.parser.parse_args(["--no-sched"])
         self.assertTrue(args.no_scheduler)
+
+    def test_config_as_file_list(self):
+        args = self.parser.parse_args(["--config", "conf1.py", "conf2.py", "conf3.py"])
+        self.assertEqual(len(args.config), 3)
+
+    def test_config_files_with_other_option(self):
+        args = self.parser.parse_args(["--config", "conf1.py", "conf2.py", "-d"])
+        self.assertEqual(len(args.config), 2)
