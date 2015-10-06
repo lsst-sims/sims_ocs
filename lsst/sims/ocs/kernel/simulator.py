@@ -30,6 +30,7 @@ class Simulator(object):
         self.manager.setDebugLevel(0)
 
     def run(self):
+        self.log.info("Starting simulation")
         SLEW_TIME = 6.0
         VISIT_TIME = 34.0
         SECONDS_IN_HOUR = 60.0 * 60.0
@@ -47,28 +48,31 @@ class Simulator(object):
         observation_topic = schedTopics.scheduler_observationTestC()
         self.manager.salTelemetryPub("scheduler_observationTest")
 
-        counter = 0
+        self.observations = 0
+        self.targets_received = 0
         self.log.debug("Duration = {}".format(self.duration))
         for i in xrange(int(self.duration)):
             self.log.info("Night {}".format(i))
             end_of_night = time_topic.timestamp + SECONDS_IN_NIGHT
             self.log.debug("End of night {} at {}".format(i, end_of_night))
             while time_topic.timestamp <= end_of_night:
+                self.log.debug("Timestamp sent: {}".format(time_topic.timestamp))
                 self.manager.putSample_timeHandler(time_topic)
 
                 # Get target from scheduler
                 while WAIT_FOR_SCHEDULER:
                     rcode = self.manager.getNextSample_targetTest(target_topic)
                     if rcode == 0 and target_topic.num_exposures != 0:
+                        self.targets_received += 1
+                        self.log.debug("Received target {}".format(target_topic.targetId))
                         break
 
                 # Observe target
-                if 1 > 2:
-                    self.log.info("Starting observation {} for target {}.".format(counter,
-                                                                                  target_topic.targetId))
+                self.log.debug("Starting observation {} for target {}.".format(self.observations,
+                                                                               target_topic.targetId))
                 time_topic.timestamp += SLEW_TIME
 
-                observation_topic.observationId = counter
+                observation_topic.observationId = self.observations
                 observation_topic.observationTime = time_topic.timestamp
                 observation_topic.targetId = target_topic.targetId
                 observation_topic.fieldId = target_topic.fieldId
@@ -78,12 +82,12 @@ class Simulator(object):
                 observation_topic.num_exposures = target_topic.num_exposures
 
                 time_topic.timestamp += VISIT_TIME
-                if 1 > 2:
-                    self.log.info("Observation {} completed at {}.".format(counter, time_topic.timestamp))
+                self.log.debug("Observation {} completed at {}.".format(self.observations,
+                                                                        time_topic.timestamp))
 
                 # Pass observation back to scheduler
                 self.manager.putSample_observationTest(observation_topic)
-                counter += 1
+                self.observations += 1
 
             if time_topic.timestamp > end_of_night:
                 time_topic.timestamp = end_of_night
@@ -92,4 +96,6 @@ class Simulator(object):
             time_topic.timestamp += (SECONDS_IN_FULL_DAY - SECONDS_IN_NIGHT)
 
     def finalize(self):
+        self.log.info("Number of targets received: {}".format(self.targets_received))
+        self.log.info("Number of observations made: {}".format(self.observations))
         self.manager.salShutdown()
