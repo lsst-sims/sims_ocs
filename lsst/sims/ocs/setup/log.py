@@ -27,20 +27,19 @@ def configure_logging(log_file_path="log", session_id="1000"):
         log_file_path: A string containing the location to write the log file.
         session_id: A string containing the OpSim session ID tag.
     """
-    logger = logging.getLogger("opsim4")
-    logger.setLevel(logging.DEBUG)
-
     import os
+    if not os.path.exists(log_file_path):
+        log_file_path = ""
     log_file = os.path.join(log_file_path, "lsst.log_{}".format(session_id))
-    log_format = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
-    fh = logging.FileHandler(log_file)
-    fh.setFormatter(log_format)
-    fh.setLevel(logging.DEBUG)
+
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
+                        filename=log_file,
+                        filemode="w")
 
     console_format = logging.Formatter('%(name)s - %(message)s')
     ch = logging.StreamHandler()
     ch.setLevel(logging.INFO)
     ch.setFormatter(console_format)
 
-    logger.addHandler(ch)
-    logger.addHandler(fh)
+    logging.getLogger('').addHandler(ch)
