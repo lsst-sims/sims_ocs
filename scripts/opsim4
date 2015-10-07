@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+def main(args):
+    from lsst.sims.ocs.kernel.simulator import Simulator
+    from lsst.sims.ocs.setup.log import configure_logging
+
+    configure_logging(args.log_path, verbose=args.verbose, debug=args.debug)
+
+    sim = Simulator(args.frac_duration)
+    sim.initialize()
+    try:
+        sim.run()
+    finally:
+        sim.finalize()
+
+if __name__ == "__main__":
+    from lsst.sims.ocs.setup.parser import create_parser
+
+    parser = create_parser()
+    args = parser.parse_args()
+    main(args)

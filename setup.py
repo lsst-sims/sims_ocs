@@ -48,6 +48,7 @@ if __name__ == "__main__":
         author="Michael Reuter",
         author_email='mareuter@lsst.org',
         url='https://github.com/mareuter/sims_ocs',
+        scripts=['scripts/opsim4'],
         packages=[
             'lsst',
         ],
