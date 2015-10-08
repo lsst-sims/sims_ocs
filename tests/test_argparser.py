@@ -1,7 +1,5 @@
 import unittest
 
-from lsst.sims.ocs.setup.log import DebugLevel
-from lsst.sims.ocs.setup.log import VerboseLevel
 from lsst.sims.ocs.setup.parser import create_parser
 
 class ArgParserTest(unittest.TestCase):
@@ -17,8 +15,8 @@ class ArgParserTest(unittest.TestCase):
 
     def test_verbose_flag_count(self):
         args = self.parser.parse_args(["-v", "-v", "-v"])
-        self.assertEqual(args.verbose, VerboseLevel.verbose.value)
+        self.assertEqual(args.verbose, 3)
 
     def test_debug_flag_count(self):
         args = self.parser.parse_args(["-d", "-d"])
-        self.assertEqual(args.debug, DebugLevel.extensive.value)
+        self.assertEqual(args.debug, 2)

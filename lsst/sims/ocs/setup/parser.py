@@ -24,12 +24,13 @@ def create_parser():
                          help="Set the path to write log files for the application. If none, is provided, "
                          "the application will assume a directory named log in the running directory.")
     logging.add_argument("-v", "--verbose", dest="verbose", action='count', default=0,
-                         help="Set the verbosity for the console logging. These messages will also be "
-                         "written to the log file at the same verbosity level. More than four verbose flags "
-                         "are ignored.")
+                         help="Set the verbosity for the console logging. Default is to log nothing to the "
+                         "console. All verbosity messages will also be written to the log file. More than "
+                         "two verbose flags are ignored.")
     logging.add_argument("-d", "--debug", dest="debug", action='count', default=0,
-                         help="Set the debugging level for the log file. CAUTION: Do not use more than two "
-                         "debug flags on simulations over three days. More than three debug flags are "
+                         help="Set the debugging level for the log file. The default level ensures that one "
+                         "debugging level is always written to the log file. CAUTION: Do not use more than "
+                         "one debug flags on simulations over three days. More than two debug flags are "
                          "ignored.")
 
     return parser

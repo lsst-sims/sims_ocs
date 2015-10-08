@@ -1,6 +1,6 @@
 import logging
 
-from lsst.sims.ocs.setup.log import configure_logging
+from lsst.sims.ocs.setup.log import LoggingLevel
 import SALPY_scheduler as schedTopics
 
 class Simulator(object):
@@ -14,7 +14,6 @@ class Simulator(object):
             sim_duration: A float value for the simulation duraction in fractions of a year.
         """
         self.fractional_duration = sim_duration
-        configure_logging()
         self.log = logging.getLogger("kernel.Simulator")
 
     @property
@@ -56,7 +55,7 @@ class Simulator(object):
             end_of_night = time_topic.timestamp + SECONDS_IN_NIGHT
             self.log.debug("End of night {} at {}".format(i, end_of_night))
             while time_topic.timestamp <= end_of_night:
-                self.log.debug("Timestamp sent: {}".format(time_topic.timestamp))
+                self.log.log(LoggingLevel.EXTENSIVE.value, "Timestamp sent: {}".format(time_topic.timestamp))
                 self.manager.putSample_timeHandler(time_topic)
 
                 # Get target from scheduler
