@@ -25,6 +25,7 @@ class Simulator(object):
         return round(self.fractional_duration * 365.0)
 
     def initialize(self):
+	self.log.info("Initializing simulation")
         self.manager = schedTopics.SAL_scheduler()
         self.manager.setDebugLevel(0)
 
@@ -98,3 +99,4 @@ class Simulator(object):
         self.log.info("Number of targets received: {}".format(self.targets_received))
         self.log.info("Number of observations made: {}".format(self.observations))
         self.manager.salShutdown()
+        self.log.info("Ending simulation")
