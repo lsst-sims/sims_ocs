@@ -33,6 +33,8 @@ def configure_logging(log_file_path="log", session_id="1000", verbose=0, debug=0
     Args:
         log_file_path: A string containing the location to write the log file.
         session_id: A string containing the OpSim session ID tag.
+        verbose: An integer that sets the INFO logging level.
+        debug: An integer that sets the DEBUG logging level.
     """
 
     max_verbose = max(VERBOSE_LEVEL.keys())
