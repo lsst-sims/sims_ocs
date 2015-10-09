@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import division
 
 def main(args):
     from lsst.sims.ocs.kernel.simulator import Simulator
@@ -6,12 +7,22 @@ def main(args):
 
     configure_logging(args.log_path, verbose=args.verbose, debug=args.debug)
 
+    import logging
+    logger = logging.getLogger("opsim4")
+    
+    from datetime import datetime
+    start_time = datetime.now()
+
     sim = Simulator(args.frac_duration)
     sim.initialize()
     try:
         sim.run()
     finally:
         sim.finalize()
+
+    end_time = datetime.now()
+    run_time = (end_time - start_time).total_seconds()
+    logger.info("Total running time = {:.2f} seconds".format(run_time))
 
 if __name__ == "__main__":
     from lsst.sims.ocs.setup.parser import create_parser
