@@ -57,10 +57,10 @@ class Simulator(object):
         self.observations = 0
         self.targets_received = 0
         self.log.debug("Duration = {}".format(self.duration))
-        for i in xrange(int(self.duration)):
-            self.log.info("Night {}".format(i))
+        for night in xrange(1, int(self.duration) + 1):
+            self.log.info("Night {}".format(night))
             end_of_night = self.time_handler.current_timestamp + SECONDS_IN_NIGHT
-            self.log.debug("End of night {} at {}".format(i, end_of_night))
+            self.log.debug("End of night {} at {}".format(night, end_of_night))
             while self.time_handler.current_timestamp < end_of_night:
                 time_topic.timestamp = self.time_handler.current_timestamp
                 self.log.log(LoggingLevel.EXTENSIVE.value,
