@@ -97,3 +97,19 @@ class TimeHandler(object):
             A boolean determed if the time elapsed is greater or less than the time span.
         """
         return time_span >= self._time_difference(self.current_dt, self.initial_dt)
+
+    def future_timestring(self, time_increment, time_units):
+        """Give the ISO-8601 string for a future date/time.
+
+           This function adds the requested time increment to the current date/time to get a future date/time
+           and returns the ISO-8601 formatted string for that date/time.
+
+           Args:
+               time_increment: A float value containing the increment to adjust the current time.
+               time_units: A string containing the time unit for the increment value.
+
+           Returns:
+               A string containing the ISO-8601 format for the future date/time.
+        """
+        time_delta_dict = {time_units: time_increment}
+        return (self.current_dt + timedelta(**time_delta_dict)).isoformat()
