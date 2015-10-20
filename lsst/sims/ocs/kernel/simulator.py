@@ -1,5 +1,6 @@
 import logging
 
+from lsst.sims.ocs.kernel.time_handler import DAYS_IN_YEAR
 from lsst.sims.ocs.kernel.time_handler import TimeHandler
 from lsst.sims.ocs.setup.log import LoggingLevel
 import SALPY_scheduler as schedTopics
@@ -24,7 +25,7 @@ class Simulator(object):
 
         This property reports the number of days in the simulation.
         """
-        return round(self.fractional_duration * 365.0)
+        return round(self.fractional_duration * DAYS_IN_YEAR)
 
     def initialize(self):
         self.log.info("Initializing simulation")
