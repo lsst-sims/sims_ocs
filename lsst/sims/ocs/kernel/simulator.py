@@ -1,9 +1,9 @@
 import logging
 
+from lsst.sims.ocs.sal.sal_manager import SalManager
 from lsst.sims.ocs.kernel.time_handler import DAYS_IN_YEAR
 from lsst.sims.ocs.kernel.time_handler import TimeHandler
 from lsst.sims.ocs.setup.log import LoggingLevel
-import SALPY_scheduler as schedTopics
 
 class Simulator(object):
 
@@ -18,6 +18,7 @@ class Simulator(object):
         self.fractional_duration = sim_duration
         self.time_handler = TimeHandler("2020-05-24")
         self.log = logging.getLogger("kernel.Simulator")
+        self.sal = SalManager()
 
     @property
     def duration(self):
@@ -29,8 +30,10 @@ class Simulator(object):
 
     def initialize(self):
         self.log.info("Initializing simulation")
-        self.manager = schedTopics.SAL_scheduler()
-        self.manager.setDebugLevel(0)
+        self.sal.initialize()
+        self.comm_time = self.sal.set_publish_topic("timeHandler")
+        self.target = self.sal.set_subscribe_topic("targetTest")
+        self.observation = self.sal.set_publish_topic("observationTest")
 
     def run(self):
         self.log.info("Starting simulation")
@@ -44,19 +47,11 @@ class Simulator(object):
         WAIT_FOR_SCHEDULER = True
 
         self.time_handler.update_time(19.0, "hours")
+        self.comm_time.timestamp = self.time_handler.current_timestamp
 
-        time_topic = schedTopics.scheduler_timeHandlerC()
-        time_topic.timestamp = self.time_handler.current_timestamp
-        self.manager.salTelemetryPub("scheduler_timeHandler")
-
-        target_topic = schedTopics.scheduler_targetTestC()
-        self.manager.salTelemetrySub("scheduler_targetTest")
-
-        observation_topic = schedTopics.scheduler_observationTestC()
-        self.manager.salTelemetryPub("scheduler_observationTest")
-
-        self.observations = 0
+        self.observations_made = 0
         self.targets_received = 0
+
         self.log.debug("Duration = {}".format(self.duration))
         for night in xrange(1, int(self.duration) + 1):
             self.log.info("Night {}".format(night))
@@ -64,46 +59,46 @@ class Simulator(object):
             end_of_night_str = self.time_handler.future_timestring(SECONDS_IN_NIGHT, "seconds")
             self.log.debug("End of night {} at {}".format(night, end_of_night_str))
             while self.time_handler.current_timestamp < end_of_night:
-                time_topic.timestamp = self.time_handler.current_timestamp
+                self.comm_time.timestamp = self.time_handler.current_timestamp
                 self.log.log(LoggingLevel.EXTENSIVE.value,
                              "Timestamp sent: {}".format(self.time_handler.current_timestring))
-                self.manager.putSample_timeHandler(time_topic)
+                self.sal.put(self.comm_time)
 
                 # Get target from scheduler
                 while WAIT_FOR_SCHEDULER:
-                    rcode = self.manager.getNextSample_targetTest(target_topic)
-                    if rcode == 0 and target_topic.num_exposures != 0:
+                    rcode = self.sal.manager.getNextSample_targetTest(self.target)
+                    if rcode == 0 and self.target.num_exposures != 0:
                         self.targets_received += 1
-                        self.log.debug("Received target {}".format(target_topic.targetId))
+                        self.log.debug("Received target {}".format(self.target.targetId))
                         break
 
                 # Observe target
-                self.log.debug("Starting observation {} for target {}.".format(self.observations,
-                                                                               target_topic.targetId))
+                self.log.debug("Starting observation {} for target {}.".format(self.observations_made,
+                                                                               self.target.targetId))
                 self.time_handler.update_time(SLEW_TIME, "seconds")
 
-                observation_topic.observationId = self.observations
-                observation_topic.observationTime = self.time_handler.current_timestamp
-                observation_topic.targetId = target_topic.targetId
-                observation_topic.fieldId = target_topic.fieldId
-                observation_topic.filter = target_topic.filter
-                observation_topic.ra = target_topic.ra
-                observation_topic.dec = target_topic.dec
-                observation_topic.num_exposures = target_topic.num_exposures
+                self.observation.observationId = self.observations_made
+                self.observation.observationTime = self.time_handler.current_timestamp
+                self.observation.targetId = self.target.targetId
+                self.observation.fieldId = self.target.fieldId
+                self.observation.filter = self.target.filter
+                self.observation.ra = self.target.ra
+                self.observation.dec = self.target.dec
+                self.observation.num_exposures = self.target.num_exposures
 
                 self.time_handler.update_time(VISIT_TIME, "seconds")
-                self.log.debug("Observation {} completed at {}.".format(self.observations,
+                self.log.debug("Observation {} completed at {}.".format(self.observations_made,
                                                                         self.time_handler.current_timestring))
 
                 # Pass observation back to scheduler
-                self.manager.putSample_observationTest(observation_topic)
-                self.observations += 1
+                self.sal.put(self.observation)
+                self.observations_made += 1
 
             # Run time to next night
             self.time_handler.update_time(HOURS_IN_DAYLIGHT, "hours")
 
     def finalize(self):
         self.log.info("Number of targets received: {}".format(self.targets_received))
-        self.log.info("Number of observations made: {}".format(self.observations))
-        self.manager.salShutdown()
+        self.log.info("Number of observations made: {}".format(self.observations_made))
+        self.sal.finalize()
         self.log.info("Ending simulation")
