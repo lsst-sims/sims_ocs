@@ -14,6 +14,13 @@ try:
 except ImportError:
     from distutils.core import setup
 
+from setuptools.command.test import test as _test
+
+class test(_test):
+    def finalize_options(self):
+        _test.finalize_options(self)
+        self.test_args.insert(0, 'discover')
+
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
@@ -48,6 +55,9 @@ if __name__ == "__main__":
         author="Michael Reuter",
         author_email='mareuter@lsst.org',
         url='https://github.com/mareuter/sims_ocs',
+        cmdclass={
+            'test': test,
+        },
         scripts=['scripts/opsim4'],
         packages=[
             'lsst',
