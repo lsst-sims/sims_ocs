@@ -13,7 +13,12 @@ def main(args):
     from datetime import datetime
     start_time = datetime.now()
 
-    sim = Simulator(args)
+    from lsst.sims.ocs.configuration.sim_config import SimulationConfig
+    configuration = SimulationConfig()
+    configuration.load(args.config)
+    configuration.validate()
+
+    sim = Simulator(args, configuration)
     sim.initialize()
     try:
         sim.run()

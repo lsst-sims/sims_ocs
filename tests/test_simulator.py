@@ -11,10 +11,19 @@ class SimulatorTest(unittest.TestCase):
 
     def setUp(self):
         import collections
+
         options = collections.namedtuple("options", ["frac_duration", "no_scheduler"])
         options.frac_duration = 0.5
         options.no_scheduler = False
-        self.sim = Simulator(options)
+
+        lsst_survey = collections.namedtuple("lsst_survey", ["start_date", "duration"])
+        lsst_survey.start_date = "2020-05-24"
+        lsst_survey.duration = 1.0
+
+        configuration = collections.namedtuple("configuration", ["lsst_survey"])
+        configuration.lsst_survey = lsst_survey
+
+        self.sim = Simulator(options, configuration)
 
     def test_initial_creation(self):
         self.assertEqual(self.sim.duration, 183.0)

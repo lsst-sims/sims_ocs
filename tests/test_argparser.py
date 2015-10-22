@@ -15,10 +15,15 @@ class ArgParserTest(unittest.TestCase):
 
     def test_behavior_with_no_args(self):
         args = self.parser.parse_args([])
-        self.assertEqual(args.frac_duration, 1.0 / 365.0)
+        self.assertEqual(args.frac_duration, -1)
         self.assertEqual(args.verbose, 0)
         self.assertEqual(args.debug, 0)
         self.assertFalse(args.no_scheduler)
+        self.assertIsNone(args.config)
+
+    def test_fractional_duration_flag(self):
+        args = self.parser.parse_args(["--frac-duration", "0.0027397260273972603"])
+        self.assertEquals(args.frac_duration, 1.0 / 365.0)
 
     def test_verbose_flag_count(self):
         args = self.parser.parse_args(["-v", "-v", "-v"])

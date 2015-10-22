@@ -30,6 +30,8 @@ class SimulationConfig(pexConfig.Config):
         Args:
             ifiles: A list of files or a directory containing configuration overrides.
         """
+        if ifiles is None:
+            return
         config_files = []
         for ifile in ifiles:
             if os.path.isdir(ifile):

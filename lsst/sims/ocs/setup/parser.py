@@ -13,7 +13,7 @@ def create_parser():
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument("--version", action="version", version=__version__)
-    parser.add_argument("--frac-duration", dest="frac_duration", type=float, default=1.0 / 365.0,
+    parser.add_argument("--frac-duration", dest="frac_duration", type=float, default=-1,
                         help="Temporary flag to set the fractional duration for the survey in units of "
                         "years.")
     parser.add_argument("--no-sched", dest="no_scheduler", action="store_true",

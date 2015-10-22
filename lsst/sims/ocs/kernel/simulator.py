@@ -10,17 +10,22 @@ from lsst.sims.ocs.setup.log import LoggingLevel
 
 class Simulator(object):
 
-    def __init__(self, options):
+    def __init__(self, options, configuration):
         """Constructor for the Simulator class.
 
-        This function is the constructor for the Simluator class.
+        This function is the constructor for the Simulator class.
 
         Args:
             options: An args object returned by ArgParser.
+            configuation: A SimulationConfig object.
         """
         self.opts = options
-        self.fractional_duration = self.opts.frac_duration
-        self.time_handler = TimeHandler("2020-05-24")
+        self.conf = configuration
+        if self.opts.frac_duration == -1:
+            self.fractional_duration = self.conf.lsst_survey.duration
+        else:
+            self.fractional_duration = self.opts.frac_duration
+        self.time_handler = TimeHandler(self.conf.lsst_survey.start_date)
         self.log = logging.getLogger("kernel.Simulator")
         self.sal = SalManager()
         self.seq = Sequencer()

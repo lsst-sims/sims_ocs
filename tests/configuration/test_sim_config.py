@@ -61,6 +61,9 @@ config.duration=10.0
         self.assertIsNotNone(self.sim_config.lsst_survey)
         self.assertIsNotNone(self.sim_config.observing_site)
 
+    def test_load_without_files(self):
+        self.sim_config.load(None)
+
     def test_load_from_single_file(self):
         self.sim_config.load([self.file1])
 
