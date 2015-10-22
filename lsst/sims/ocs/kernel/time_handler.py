@@ -94,7 +94,7 @@ class TimeHandler(object):
         Args:
             time_span: A float containing the requested time span in seconds.
 
-        Return:
+        Returns:
             A boolean determed if the time elapsed is greater or less than the time span.
         """
         return time_span >= self._time_difference(self.current_dt, self.initial_dt)

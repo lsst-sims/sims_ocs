@@ -43,12 +43,14 @@ class Simulator(object):
     @property
     def duration(self):
         """The duration of the simulation in days.
-
-        This property reports the number of days in the simulation.
         """
         return round(self.fractional_duration * DAYS_IN_YEAR)
 
     def initialize(self):
+        """Perform initialization steps.
+
+        This function handles the initialization steps for the class.
+        """
         self.log.info("Initializing simulation")
         self.sal.initialize()
         self.seq.initialize(self.sal)
@@ -57,6 +59,8 @@ class Simulator(object):
         self.observation = self.sal.set_publish_topic("observationTest")
 
     def run(self):
+        """Run the simulation.
+        """
         self.log.info("Starting simulation")
 
         self.time_handler.update_time(*self.night_adjust)
@@ -91,6 +95,10 @@ class Simulator(object):
             self.time_handler.update_time(self.hours_in_daylight, "hours")
 
     def finalize(self):
+        """Perform finalization steps.
+
+        This function handles finalization steps for the class.
+        """
         self.seq.finalize()
         self.sal.finalize()
         self.log.info("Ending simulation")
