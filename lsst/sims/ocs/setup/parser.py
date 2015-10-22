@@ -17,6 +17,8 @@ def create_parser():
     parser.add_argument("--frac-duration", dest="frac_duration", type=float, default=1.0 / 365.0,
                         help="Temporary flag to set the fractional duration for the survey in units of "
                         "years.")
+    parser.add_argument("--no-sched", dest="no_scheduler", action="store_true",
+                        help="Flag to make program not wait for Scheduler.")
 
     log_group_descr = ["This group of arguments controls the logging of the application."]
     logging = parser.add_argument_group("logging", " ".join(log_group_descr))

@@ -27,7 +27,7 @@ class Simulator(object):
         # Variables that will disappear as more functionality is added.
         self.night_adjust = (19.0, "hours")
         self.hours_in_night = 10.0
-        self.wait_for_scheduler = False
+        self.wait_for_scheduler = not self.opts.no_scheduler
 
     @property
     def seconds_in_night(self):

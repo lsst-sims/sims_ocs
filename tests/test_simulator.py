@@ -11,8 +11,9 @@ class SimulatorTest(unittest.TestCase):
 
     def setUp(self):
         import collections
-        options = collections.namedtuple("options", ["frac_duration"])
+        options = collections.namedtuple("options", ["frac_duration", "no_scheduler"])
         options.frac_duration = 0.5
+        options.no_scheduler = False
         self.sim = Simulator(options)
 
     def test_initial_creation(self):
