@@ -1,6 +1,7 @@
 import logging
 
 from lsst.sims.ocs.sal.sal_manager import SalManager
+from lsst.sims.ocs.kernel.sequencer import Sequencer
 from lsst.sims.ocs.kernel.time_handler import DAYS_IN_YEAR
 from lsst.sims.ocs.kernel.time_handler import HOURS_IN_DAY
 from lsst.sims.ocs.kernel.time_handler import SECONDS_IN_HOUR
@@ -21,6 +22,7 @@ class Simulator(object):
         self.time_handler = TimeHandler("2020-05-24")
         self.log = logging.getLogger("kernel.Simulator")
         self.sal = SalManager()
+        self.seq = Sequencer()
         # Variables that will disappear as more functionality is added.
         self.night_adjust = (19.0, "hours")
         self.hours_in_night = 10.0
@@ -49,28 +51,27 @@ class Simulator(object):
     def initialize(self):
         self.log.info("Initializing simulation")
         self.sal.initialize()
+        self.seq.initialize(self.sal)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
         self.target = self.sal.set_subscribe_topic("targetTest")
         self.observation = self.sal.set_publish_topic("observationTest")
 
     def run(self):
         self.log.info("Starting simulation")
-        SLEW_TIME = 6.0
-        VISIT_TIME = 34.0
 
         self.time_handler.update_time(*self.night_adjust)
         self.comm_time.timestamp = self.time_handler.current_timestamp
 
-        self.observations_made = 0
-        self.targets_received = 0
-
         self.log.debug("Duration = {}".format(self.duration))
         for night in xrange(1, int(self.duration) + 1):
             self.log.info("Night {}".format(night))
+
             end_of_night = self.time_handler.current_timestamp + self.seconds_in_night
             end_of_night_str = self.time_handler.future_timestring(self.seconds_in_night, "seconds")
             self.log.debug("End of night {} at {}".format(night, end_of_night_str))
+
             while self.time_handler.current_timestamp < end_of_night:
+
                 self.comm_time.timestamp = self.time_handler.current_timestamp
                 self.log.log(LoggingLevel.EXTENSIVE.value,
                              "Timestamp sent: {}".format(self.time_handler.current_timestring))
@@ -80,37 +81,16 @@ class Simulator(object):
                 while self.wait_for_scheduler:
                     rcode = self.sal.manager.getNextSample_targetTest(self.target)
                     if rcode == 0 and self.target.num_exposures != 0:
-                        self.targets_received += 1
-                        self.log.debug("Received target {}".format(self.target.targetId))
                         break
 
-                # Observe target
-                self.log.debug("Starting observation {} for target {}.".format(self.observations_made,
-                                                                               self.target.targetId))
-                self.time_handler.update_time(SLEW_TIME, "seconds")
-
-                self.observation.observationId = self.observations_made
-                self.observation.observationTime = self.time_handler.current_timestamp
-                self.observation.targetId = self.target.targetId
-                self.observation.fieldId = self.target.fieldId
-                self.observation.filter = self.target.filter
-                self.observation.ra = self.target.ra
-                self.observation.dec = self.target.dec
-                self.observation.num_exposures = self.target.num_exposures
-
-                self.time_handler.update_time(VISIT_TIME, "seconds")
-                self.log.debug("Observation {} completed at {}.".format(self.observations_made,
-                                                                        self.time_handler.current_timestring))
-
+                observation = self.seq.observe_target(self.target)
                 # Pass observation back to scheduler
-                self.sal.put(self.observation)
-                self.observations_made += 1
+                self.sal.put(observation)
 
             # Run time to next night
             self.time_handler.update_time(self.hours_in_daylight, "hours")
 
     def finalize(self):
-        self.log.info("Number of targets received: {}".format(self.targets_received))
-        self.log.info("Number of observations made: {}".format(self.observations_made))
+        self.seq.finalize()
         self.sal.finalize()
         self.log.info("Ending simulation")

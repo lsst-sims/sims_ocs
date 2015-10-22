@@ -20,9 +20,16 @@ class SimulatorTest(unittest.TestCase):
         self.sim.fractional_duration = 1.0 / 365.0
         self.assertEqual(self.sim.duration, 1.0)
 
+    @mock.patch("lsst.sims.ocs.kernel.sequencer.Sequencer.initialize")
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.set_subscribe_topic")
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.set_publish_topic")
-    def test_initialization(self, mock_salmanager_pub_topic, mock_salmanager_sub_topic):
+    def test_initialization(self, mock_salmanager_pub_topic, mock_salmanager_sub_topic, mock_sequencer_init):
         self.sim.initialize()
         self.assertEqual(mock_salmanager_pub_topic.call_count, 2)
         self.assertEqual(mock_salmanager_sub_topic.call_count, 1)
+        self.assertEqual(mock_sequencer_init.call_count, 1)
+
+    @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.finalize")
+    def test_finalization(self, mock_salmanager_final):
+        self.sim.finalize()
+        self.assertEqual(mock_salmanager_final.call_count, 1)
