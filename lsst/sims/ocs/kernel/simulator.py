@@ -87,7 +87,7 @@ class Simulator(object):
                     if rcode == 0 and self.target.num_exposures != 0:
                         break
 
-                observation = self.seq.observe_target(self.target)
+                observation = self.seq.observe_target(self.target, self.time_handler)
                 # Pass observation back to scheduler
                 self.sal.put(observation)
 
