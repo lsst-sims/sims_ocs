@@ -11,7 +11,7 @@ class Sequencer(object):
         self.log = logging.getLogger("kernel.Sequencer")
         # Variables that will disappear as more functionality is added.
         self.slew_time = (6.0, "seconds")
-        self.visit_time = (40.0, "seconds")
+        self.visit_time = (34.0, "seconds")
 
     def initialize(self, sal):
         """Perform initialization steps.
