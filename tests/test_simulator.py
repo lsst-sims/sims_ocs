@@ -10,7 +10,10 @@ from lsst.sims.ocs.kernel.simulator import Simulator
 class SimulatorTest(unittest.TestCase):
 
     def setUp(self):
-        self.sim = Simulator(0.5)
+        import collections
+        options = collections.namedtuple("options", ["frac_duration"])
+        options.frac_duration = 0.5
+        self.sim = Simulator(options)
 
     def test_initial_creation(self):
         self.assertEqual(self.sim.duration, 183.0)

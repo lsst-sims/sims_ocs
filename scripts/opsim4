@@ -13,7 +13,7 @@ def main(args):
     from datetime import datetime
     start_time = datetime.now()
 
-    sim = Simulator(args.frac_duration)
+    sim = Simulator(args)
     sim.initialize()
     try:
         sim.run()
