@@ -21,6 +21,7 @@ class ArgParserTest(unittest.TestCase):
         self.assertEqual(args.debug, 0)
         self.assertFalse(args.no_scheduler)
         self.assertIsNone(args.config)
+        self.assertFalse(args.save_config)
 
     def test_fractional_duration_flag(self):
         args = self.parser.parse_args(["--frac-duration", "0.0027397260273972603"])
@@ -49,3 +50,7 @@ class ArgParserTest(unittest.TestCase):
     def test_config_files_with_other_option(self):
         args = self.parser.parse_args(["--config", "conf1.py", "conf2.py", "-d"])
         self.assertEqual(len(args.config), 2)
+
+    def test_save_config_flag(self):
+        args = self.parser.parse_args(["--save-config"])
+        self.assertTrue(args.save_config)

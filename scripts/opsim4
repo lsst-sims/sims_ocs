@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from __future__ import division
+import os
 
 def main(args):
     from lsst.sims.ocs.kernel.simulator import Simulator
@@ -24,6 +25,13 @@ def main(args):
         sim.run()
     finally:
         sim.finalize()
+
+    if args.save_config:
+        if args.config_save_dir == '':
+            args.config_save_dir = "config_{}".format(args.session_id)
+            if not os.path.exists(args.config_save_dir):
+                os.mkdir(args.config_save_dir)
+        configuration.save(args.config_save_dir)
 
     end_time = datetime.now()
     run_time = (end_time - start_time).total_seconds()

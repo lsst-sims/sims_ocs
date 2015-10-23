@@ -29,6 +29,8 @@ def create_parser():
     conf_grp.add_argument("--config-save-dir", dest="config_save_dir", default='',
                           help="Set a directory to save the configuration files in. The default behavior "
                           "will be to save the files in the execution directory.")
+    conf_grp.add_argument("--save-config", dest="save_config", action="store_true",
+                          help="Flag to save the simulation configuration.")
 
     log_group_descr = ["This group of arguments controls the logging of the application."]
     logging = parser.add_argument_group("logging", " ".join(log_group_descr))
