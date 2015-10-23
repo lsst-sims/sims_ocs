@@ -11,6 +11,13 @@ from lsst.sims.ocs.kernel.simulator import Simulator
 class SimulatorTest(unittest.TestCase):
 
     def setUp(self):
+        patcher1 = mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.set_publish_topic")
+        self.addCleanup(patcher1.stop)
+        self.mock_salmanager_pub_topic = patcher1.start()
+        patcher2 = mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.set_subscribe_topic")
+        self.addCleanup(patcher2.stop)
+        self.mock_salmanager_sub_topic = patcher2.start()
+
         import collections
 
         self.options = collections.namedtuple("options", ["frac_duration", "no_scheduler"])
@@ -42,12 +49,10 @@ class SimulatorTest(unittest.TestCase):
         self.assertEquals(sim.duration, 365.0)
 
     @mock.patch("lsst.sims.ocs.kernel.sequencer.Sequencer.initialize")
-    @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.set_subscribe_topic")
-    @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.set_publish_topic")
-    def test_initialization(self, mock_salmanager_pub_topic, mock_salmanager_sub_topic, mock_sequencer_init):
+    def test_initialization(self, mock_sequencer_init):
         self.sim.initialize()
-        self.assertEqual(mock_salmanager_pub_topic.call_count, 2)
-        self.assertEqual(mock_salmanager_sub_topic.call_count, 1)
+        self.assertEqual(self.mock_salmanager_pub_topic.call_count, 2)
+        self.assertEqual(self.mock_salmanager_sub_topic.call_count, 1)
         self.assertEqual(mock_sequencer_init.call_count, 1)
 
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.finalize")
@@ -67,10 +72,7 @@ class SimulatorTest(unittest.TestCase):
         self.assertEquals(self.sim.seconds_in_night, 360)
 
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.put")
-    @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.set_subscribe_topic")
-    @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.set_publish_topic")
-    def test_run_no_scheduler(self, mock_salmanager_pub_topic, mock_salmanager_sub_topic,
-                              mock_salmanager_put):
+    def test_run_no_scheduler(self, mock_salmanager_put):
         self.short_run(False)
 
         self.sim.initialize()
@@ -82,15 +84,13 @@ class SimulatorTest(unittest.TestCase):
 
     @mock.patch("SALPY_scheduler.SAL_scheduler.getNextSample_targetTest")
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.put")
-    @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.set_subscribe_topic")
-    @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.set_publish_topic")
-    def test_run_with_scheduler(self, mock_salmanager_pub_topic, mock_salmanager_sub_topic,
-                                mock_salmanager_put, mock_salmanager_get):
+    def test_run_with_scheduler(self, mock_salmanager_put, mock_salmanager_get):
         self.short_run(True)
         get_calls = 1 * self.num_visits
-        mock_salmanager_get.return_value = 0
 
         self.sim.initialize()
+        # Need to make Scheduler wait break condition work.
+        mock_salmanager_get.return_value = 0
         self.sim.target.num_exposures = 2
         self.sim.run()
 
