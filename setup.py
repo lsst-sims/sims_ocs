@@ -16,10 +16,10 @@ except ImportError:
 
 from setuptools.command.test import test as _test
 
-class test(_test):
+class quiet_test(_test):
     def finalize_options(self):
+        self.verbose = False
         _test.finalize_options(self)
-        self.test_args.insert(0, 'discover')
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -54,9 +54,9 @@ if __name__ == "__main__":
         long_description=readme + os.linesep*2 + history,
         author="Michael Reuter",
         author_email='mareuter@lsst.org',
-        url='https://github.com/mareuter/sims_ocs',
+        url='https://github.com/lsst-sims/sims_ocs',
         cmdclass={
-            'test': test,
+            'test': quiet_test,
         },
         scripts=['scripts/opsim4'],
         packages=[
