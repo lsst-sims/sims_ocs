@@ -18,6 +18,8 @@ def create_parser():
                         "years.")
     parser.add_argument("--no-sched", dest="no_scheduler", action="store_true",
                         help="Flag to make program not wait for Scheduler.")
+    parser.add_argument("-s", "--session-id", dest="session_id", default="1000",
+                        help="Temporary flag to set a session ID.")
 
     config_group_descr = ["This group of arguments controls the configuration of the simulated survey."]
     conf_grp = parser.add_argument_group("config", " ".join(config_group_descr))

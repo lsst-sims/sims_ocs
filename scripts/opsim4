@@ -5,7 +5,7 @@ def main(args):
     from lsst.sims.ocs.kernel.simulator import Simulator
     from lsst.sims.ocs.setup.log import configure_logging
 
-    configure_logging(args.log_path, verbose=args.verbose, debug=args.debug)
+    configure_logging(args.log_path, args.session_id, verbose=args.verbose, debug=args.debug)
 
     import logging
     logger = logging.getLogger("opsim4")
