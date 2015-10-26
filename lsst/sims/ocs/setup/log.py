@@ -1,5 +1,6 @@
 from enum import Enum
 import logging
+import os
 
 MAX_VERBOSE = 2
 MAX_DEBUG = 2
@@ -46,7 +47,6 @@ def configure_logging(log_file_path="log", session_id="1000", verbose=0, debug=0
     if debug > max_debug:
         debug = max_debug
 
-    import os
     if not os.path.exists(log_file_path):
         log_file_path = ""
     log_file = os.path.join(log_file_path, "lsst.log_{}".format(session_id))

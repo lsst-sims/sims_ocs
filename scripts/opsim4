@@ -1,20 +1,21 @@
 #!/usr/bin/env python
 from __future__ import division
+from datetime import datetime
+import logging
 import os
 
-def main(args):
-    from lsst.sims.ocs.kernel.simulator import Simulator
-    from lsst.sims.ocs.setup.log import configure_logging
+from lsst.sims.ocs.configuration.sim_config import SimulationConfig
+from lsst.sims.ocs.kernel.simulator import Simulator
+from lsst.sims.ocs.setup.log import configure_logging
+from lsst.sims.ocs.setup.parser import create_parser
 
+def main(args):
     configure_logging(args.log_path, args.session_id, verbose=args.verbose, debug=args.debug)
 
-    import logging
     logger = logging.getLogger("opsim4")
 
-    from datetime import datetime
     start_time = datetime.now()
 
-    from lsst.sims.ocs.configuration.sim_config import SimulationConfig
     configuration = SimulationConfig()
     configuration.load(args.config)
     configuration.validate()
@@ -38,8 +39,6 @@ def main(args):
     logger.info("Total running time = {:.2f} seconds".format(run_time))
 
 if __name__ == "__main__":
-    from lsst.sims.ocs.setup.parser import create_parser
-
     parser = create_parser()
     args = parser.parse_args()
     main(args)
