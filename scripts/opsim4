@@ -10,7 +10,7 @@ def main(args):
 
     import logging
     logger = logging.getLogger("opsim4")
-    
+
     from datetime import datetime
     start_time = datetime.now()
 
