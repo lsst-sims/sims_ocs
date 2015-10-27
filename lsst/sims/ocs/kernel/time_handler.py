@@ -8,14 +8,14 @@ DAYS_IN_YEAR = 365.0
 SECONDS_IN_YEAR = DAYS_IN_YEAR * SECONDS_IN_DAY
 
 class TimeHandler(object):
+    """Keep track of simulation time information.
+    """
 
     def __init__(self, initial_date):
-        """Constructor for time handler class.
-
-        This function is the constructor for the time handler class.
+        """Initialize the class.
 
         Args:
-            initial_date: A string in the format of YYYY-MM-DD containing the inital date.
+            initial_date (str): The inital date in the format of YYYY-MM-DD.
         """
         self._unix_start = datetime(1970, 1, 1)
         self.initial_dt = datetime.strptime(initial_date, "%Y-%m-%d")
@@ -24,15 +24,15 @@ class TimeHandler(object):
     def _time_difference(self, datetime1, datetime2=None):
         """Calculate the difference in seconds between two times.
 
-        This function calculates the difference in seconds between to given datetime objects. If
-        datetime2 is None, it is assumed to be _unix_start.
+        This function calculates the difference in seconds between two given :class:`datetime` instances. If
+        datetime2 is None, it is assumed to be UNIX epoch start.
 
         Args:
-            datetime1: The first datetime object.
-            datetime2: The second datetime object.
+            datetime1 (datetime): The first :class:`datetime` instance.
+            datetime2 (datetime): The second :class:`datetime` instance.
 
         Returns:
-            A float containing the difference in seconds between the two datetime objects.
+            float: The difference in seconds between the two datetime instances.
         """
         if datetime2 is None:
             datetime2 = self._unix_start
@@ -42,10 +42,8 @@ class TimeHandler(object):
     def initial_timestamp(self):
         """Return the UNIX timestamp for the initial date/time.
 
-        This function returns the UNIX timestamp for the initial_timestamp date/time.
-
         Returns:
-            An float containing the UNIX timestamp for the initial date/time.
+            float
         """
         return self._time_difference(self.initial_dt)
 
@@ -53,10 +51,8 @@ class TimeHandler(object):
     def current_timestamp(self):
         """Return the UNIX timestamp for the current date/time.
 
-        This function returns the UNIX timestamp for the currently held date/time.
-
         Returns:
-            An float containing the UNIX timestamp for the current date/time.
+            float
         """
         return self._time_difference(self.current_dt)
 
@@ -67,8 +63,8 @@ class TimeHandler(object):
         units.
 
         Args:
-            time_increment: A float value containing the increment to adjust the current time.
-            time_units: A string containing the time unit for the increment value.
+            time_increment (float): The increment to adjust the current time.
+            time_units (str): The time unit for the increment value.
         """
         time_delta_dict = {time_units: time_increment}
         self.current_dt += timedelta(**time_delta_dict)
@@ -77,10 +73,8 @@ class TimeHandler(object):
     def current_timestring(self):
         """Return the ISO-8601 representation of the current date/time.
 
-        This function returns the ISO-8601 formatted string of the currently held date/time.
-
         Returns:
-            A string containing the ISO-8601 format for the current date/time.
+            str
         """
         return self.current_dt.isoformat()
 
@@ -92,25 +86,26 @@ class TimeHandler(object):
         is greater than or equal the elapsed time and false if less than the elapsed time.
 
         Args:
-            time_span: A float containing the requested time span in seconds.
+            time_span (float): The requested time span in seconds.
 
         Returns:
-            A boolean determed if the time elapsed is greater or less than the time span.
+            bool: True if the time elapsed is greater or False if less than the time span.
         """
         return time_span >= self._time_difference(self.current_dt, self.initial_dt)
 
     def future_timestring(self, time_increment, time_units):
-        """Give the ISO-8601 string for a future date/time.
+        """Return the ISO-8601 representation of the future date/time.
 
            This function adds the requested time increment to the current date/time to get a future date/time
-           and returns the ISO-8601 formatted string for that date/time.
+           and returns the ISO-8601 formatted string for that date/time. It does not update the internal
+           timestamp.
 
            Args:
-               time_increment: A float value containing the increment to adjust the current time.
-               time_units: A string containing the time unit for the increment value.
+               time_increment (float): The increment to adjust the current time.
+               time_units (str): The time unit for the increment value.
 
            Returns:
-               A string containing the ISO-8601 format for the future date/time.
+               str: The future date/time in ISO-8601.
         """
         time_delta_dict = {time_units: time_increment}
         return (self.current_dt + timedelta(**time_delta_dict)).isoformat()

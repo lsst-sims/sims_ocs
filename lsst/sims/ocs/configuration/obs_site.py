@@ -17,8 +17,6 @@ class ObservingSite(pexConfig.Config):
 
     def setDefaults(self):
         """Set defaults for the Cerro Pachon observing site.
-
-        This function sets the defaults to the Cerro Pachon observing site.
         """
         self.name = "Cerro Pachon"
         self.latitude = -30.2444  # OSS-REQ-0008 (LSE-30)
@@ -31,11 +29,17 @@ class ObservingSite(pexConfig.Config):
     @property
     def latitude_rads(self):
         """Return the observing site latitude in radians.
+
+        Returns:
+            float
         """
         return math.radians(self.latitude)
 
     @property
     def longitude_rads(self):
         """Return the observing site longitude in radians.
+
+        Returns:
+            float
         """
         return math.radians(self.longitude)

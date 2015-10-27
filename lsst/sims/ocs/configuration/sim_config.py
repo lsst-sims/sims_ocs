@@ -10,13 +10,13 @@ __all__ = ["SimulationConfig"]
 class SimulationConfig(pexConfig.Config):
     """Configuration for the survey simulation.
 
-       This class gathers all of the configuration objects into one place.
+    This class gathers all of the configuration objects into one place.
     """
-    lsst_survey = pexConfig.ConfigField("The configuration for the LSST survey.", LsstSurvey)
+    lsst_survey = pexConfig.ConfigField("The LSST survey configuration.", LsstSurvey)
     observing_site = pexConfig.ConfigField("The observing site configuration.", ObservingSite)
 
     def setDefaults(self):
-        """Set the defaults survey simulation.
+        """Set defaults for the survey simulation.
         """
         pass
 
@@ -28,7 +28,7 @@ class SimulationConfig(pexConfig.Config):
         files.
 
         Args:
-            ifiles: A list of files or a directory containing configuration overrides.
+            ifiles (list): A list of files or directories containing configuration overrides.
         """
         if ifiles is None:
             return
@@ -54,8 +54,8 @@ class SimulationConfig(pexConfig.Config):
         correct one to the given configuration object.
 
         Args:
-            config_obj: The configuration object to apply overrides.
-            ifiles: The list of overriding configuration files.
+            config_obj (pex.config.ConfigField): The configuration object to apply overrides.
+            ifiles (list): The list of overriding configuration files.
         """
         for ifile in ifiles:
             try:
@@ -65,12 +65,10 @@ class SimulationConfig(pexConfig.Config):
                 pass
 
     def save(self, save_dir=''):
-        """Save the configuration objects to files.
-
-        This function saves the configuration objects to separate files.
+        """Save the configuration objects to separate files.
 
         Args:
-            save_dir: A string containing the directory in which to save the configuration files.
+            save_dir (str): The directory in which to save the configuration files.
         """
         self.lsst_survey.save(os.path.join(save_dir, "lsst_survey_config.py"))
         self.observing_site.save(os.path.join(save_dir, "observing_site_config.py"))

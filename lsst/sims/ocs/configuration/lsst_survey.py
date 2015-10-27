@@ -9,9 +9,7 @@ class LsstSurvey(pexConfig.Config):
     duration = pexConfig.Field("The fractional duration in years of the survey.", float)
 
     def setDefaults(self):
-        """Set the defaults for the LSST Survey.
-
-        This function sets the default parameters for the LSST Survey.
+        """Set defaults for the LSST Survey.
         """
         self.start_date = "2020-05-24"
         self.duration = 1.0

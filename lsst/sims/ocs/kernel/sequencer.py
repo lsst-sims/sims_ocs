@@ -1,9 +1,14 @@
 import logging
 
 class Sequencer(object):
+    """Handle the observation of a target.
+
+    This class is responsible for taking a target from the Scheduler and performing the necessary steps to
+    make an astronomical observation. It is then responsible for handing that observation back.
+    """
 
     def __init__(self):
-        """Constructor for the Sequencer class.
+        """Initialize the class.
         """
         self.targets_received = 0
         self.observations_made = 0
@@ -16,17 +21,17 @@ class Sequencer(object):
     def initialize(self, sal):
         """Perform initialization steps.
 
-        This function handles the initialization steps for the class.
+        This function handles gathering the observation telemetry topic from the given :class:`SalManager`.
 
         Args:
-            sal: A SalManager object.
+            sal (SalManager): A :class:`SalManager` instance.
         """
         self.observation = sal.set_publish_topic("observationTest")
 
     def finalize(self):
         """Perform finalization steps.
 
-        This function handles finalization steps for the class.
+        This function logs the number or targets received and observations made.
         """
         self.log.info("Number of targets received: {}".format(self.targets_received))
         self.log.info("Number of observations made: {}".format(self.observations_made))
@@ -34,14 +39,17 @@ class Sequencer(object):
     def observe_target(self, target, th):
         """Observe the given target.
 
-        This function performs the necessary steps to observe the given target.
+        This function performs the necessary steps to observe the given target. The current steps are:
+          * Update the simulation time after "slewing"
+          * Copy target information to observation
+          * Update the simulation time after "visit"
 
         Args:
-            target: A target topic data structure containing the current target information.
-            th: A TimeHandler object.
+            target (struct): A target telemetry topic containing the current target information.
+            th (TimeHandler): An instance of the :class:`TimeHandler`.
 
         Returns:
-            A observation topic data structure containing the observed target parameters.
+            struct: An observation telemetry topic containing the observed target parameters.
         """
         self.log.debug("Received target {}".format(target.targetId))
         self.targets_received += 1

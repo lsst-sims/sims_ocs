@@ -1,14 +1,16 @@
 import SALPY_scheduler
 
 class SalManager(object):
+    """Handle SAL interactions.
+
+    This class is responsible for most of the interactions with the SAL for DDS communications.
+    """
 
     def __init__(self, debug_level=0):
-        """Constructor for the SAL Manager class."
-
-        This function is the constructor for the SAL Manager class.
+        """Initialize the class.
 
         Args:
-            debug_level: An integer for the debugging level of the SALPY sub-system manager.
+            debug_level (int): The debugging level of the SALPY sub-system manager.
         """
         self.debug_level = debug_level
         self.manager = None
@@ -16,7 +18,7 @@ class SalManager(object):
     def initialize(self):
         """Perform initialization steps.
 
-        This function handles initialization steps for the class.
+        This function handles creation of the Scheduler SAL manager and sets the debugging level.
         """
         self.manager = SALPY_scheduler.SAL_scheduler()
         self.manager.setDebugLevel(self.debug_level)
@@ -24,7 +26,7 @@ class SalManager(object):
     def finalize(self):
         """Perform finalization steps.
 
-        This function handles finalization steps for the class.
+        This function shuts down the Scheduler SAL manager.
         """
         self.manager.salShutdown()
 
@@ -34,10 +36,10 @@ class SalManager(object):
         This function handles the topic publishing setup include retrieval of the associated data structure.
 
         Args:
-            topic_short_name: A string containing the part of the topic name minus the scheduler prefix.
+            topic_short_name (str): The part of the topic name minus the scheduler prefix.
 
         Returns:
-            The data structure associated with the published topic.
+            struct: The telemetry data structure associated with the published topic.
         """
         topic_name = "scheduler_{}".format(topic_short_name)
         self.manager.salTelemetryPub(topic_name)
@@ -50,10 +52,10 @@ class SalManager(object):
         This function handles the topic subscribing setup include retrieval of the associated data structure.
 
         Args:
-            topic_short_name: A string containing the part of the topic name minus the scheduler prefix.
+            topic_short_name (str): The part of the topic name minus the scheduler prefix.
 
         Returns:
-            The data structure associated with the subscribed topic.
+            struct: The telemetry data structure associated with the subscribed topic.
         """
         topic_name = "scheduler_{}".format(topic_short_name)
         self.manager.salTelemetrySub(topic_name)
@@ -63,11 +65,11 @@ class SalManager(object):
     def put(self, topic_obj):
         """Publish the topic.
 
-        This function does the actual work of publishing the given topic data structure. The type is inferred
-        from the topic object itself.
+        This function does the actual work of publishing the given telemetry topic data structure. The type
+        is inferred from the topic object itself.
 
         Args:
-            topic_obj: The topic data structure.
+            topic_obj (struct): The telemetry topic data structure.
         """
         name = str(type(topic_obj)).strip("\"\'<>\'").split("_")[-1][:-1]
         func = getattr(self.manager, "putSample_{}".format(name))

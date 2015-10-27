@@ -9,15 +9,19 @@ from lsst.sims.ocs.kernel.time_handler import TimeHandler
 from lsst.sims.ocs.setup.log import LoggingLevel
 
 class Simulator(object):
+    """Main class for the survey simulation.
+
+    This class is responsible for setting up, running and shutting down the LSST survey simulation.
+    """
 
     def __init__(self, options, configuration):
-        """Constructor for the Simulator class.
-
-        This function is the constructor for the Simulator class.
+        """Initialize the class.
 
         Args:
-            options: An args object returned by ArgParser.
-            configuation: A SimulationConfig object.
+            options (argparse.Namespace): The instance returned by ArgumentParser containing the command-line
+                                          options.
+            configuartion (SimulationConfig): The :class:`SimulationConfig` instance containing the
+                                              simulation configuration.
         """
         self.opts = options
         self.conf = configuration
@@ -37,25 +41,35 @@ class Simulator(object):
     @property
     def seconds_in_night(self):
         """The number of seconds in a night.
+
+        Returns:
+            float
         """
         return self.hours_in_night * SECONDS_IN_HOUR
 
     @property
     def hours_in_daylight(self):
         """The number of hours in daylight (day hours - night hours).
+
+        Returns:
+            float
         """
         return HOURS_IN_DAY - self.hours_in_night
 
     @property
     def duration(self):
         """The duration of the simulation in days.
+
+        Returns:
+            int
         """
         return round(self.fractional_duration * DAYS_IN_YEAR)
 
     def initialize(self):
         """Perform initialization steps.
 
-        This function handles the initialization steps for the class.
+        This function handles initialization of the :class:`SalManager` and :class:`Sequencer` instances and
+        gathering the necessary telemetry topics.
         """
         self.log.info("Initializing simulation")
         self.sal.initialize()
@@ -103,7 +117,7 @@ class Simulator(object):
     def finalize(self):
         """Perform finalization steps.
 
-        This function handles finalization steps for the class.
+        This function handles finalization of the :class:`SalManager` and :class:`Sequencer` instances.
         """
         self.seq.finalize()
         self.sal.finalize()
