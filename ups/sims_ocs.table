@@ -1,2 +1,5 @@
 setupRequired(python)
-envPrepend(PYTHONPATH, ${PRODUCT_DIR}/lsst)
+setupRequired(pex_config)
+
+envPrepend(PYTHONPATH, ${PRODUCT_DIR})
+envPrepend(PATH, ${PRODUCT_DIR}/scripts)

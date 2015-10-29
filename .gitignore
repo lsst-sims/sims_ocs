@@ -1,4 +1,5 @@
 *~
+*.log*
 
 *.py[cod]
 
@@ -48,3 +49,4 @@ docs/lsst*.rst
 
 # Project
 version.py
+config_*

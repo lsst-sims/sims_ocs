@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+from __future__ import division
+from datetime import datetime
+import logging
+import os
+
+from lsst.sims.ocs.configuration.sim_config import SimulationConfig
+from lsst.sims.ocs.kernel.simulator import Simulator
+from lsst.sims.ocs.setup.log import configure_logging
+from lsst.sims.ocs.setup.parser import create_parser
+
+def main(args):
+    configure_logging(args.log_path, args.session_id, verbose=args.verbose, debug=args.debug)
+
+    logger = logging.getLogger("opsim4")
+
+    start_time = datetime.now()
+
+    configuration = SimulationConfig()
+    configuration.load(args.config)
+    configuration.validate()
+
+    sim = Simulator(args, configuration)
+    sim.initialize()
+    try:
+        sim.run()
+    finally:
+        sim.finalize()
+
+    if args.save_config:
+        if args.config_save_dir == '':
+            args.config_save_dir = "config_{}".format(args.session_id)
+            if not os.path.exists(args.config_save_dir):
+                os.mkdir(args.config_save_dir)
+        configuration.save(args.config_save_dir)
+
+    end_time = datetime.now()
+    run_time = (end_time - start_time).total_seconds()
+    logger.info("Total running time = {:.2f} seconds".format(run_time))
+
+if __name__ == "__main__":
+    parser = create_parser()
+    args = parser.parse_args()
+    main(args)
