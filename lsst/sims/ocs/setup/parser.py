@@ -13,6 +13,8 @@ def create_parser():
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument("--version", action="version", version=__version__)
+    parser.add_argument("--startup-comment", dest="startup_comment", default="No comment was entered.",
+                        help="Enter a comment for the simulation session.")
     parser.add_argument("--frac-duration", dest="frac_duration", type=float, default=-1,
                         help="Temporary flag to set the fractional duration for the survey in units of "
                         "years.")
@@ -20,6 +22,17 @@ def create_parser():
                         help="Flag to make program not wait for Scheduler.")
     parser.add_argument("-s", "--session-id", dest="session_id", default="1000",
                         help="Temporary flag to set a session ID.")
+
+    tracking_group_descr = ["This group of arguments controls the tracking of the simulation session."]
+    track_grp = parser.add_argument_group("tracking", " ".join(tracking_group_descr))
+    track_grp.add_argument("-t", "--track", dest="track_session", action="store_true",
+                           help="Flag to track the current simulation in the central OpSim tracking "
+                           "database.")
+    track_grp.add_argument("--tracking-db", dest="tracking_db", help="Option to set an alternative URL "
+                           "for the OpSim tracking database.")
+    track_grp.add_argument("--session-code", dest="session_code", choices=["science", "code_dev", "system",
+                           "engineering"], default="science", help="Set the type of simulation session for "
+                           "the OpSim tracking database.")
 
     config_group_descr = ["This group of arguments controls the configuration of the simulated survey."]
     conf_grp = parser.add_argument_group("config", " ".join(config_group_descr))
