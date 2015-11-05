@@ -20,7 +20,7 @@ class Simulator(object):
         Args:
             options (argparse.Namespace): The instance returned by ArgumentParser containing the command-line
                                           options.
-            configuartion (SimulationConfig): The :class:`SimulationConfig` instance containing the
+            configuration (SimulationConfig): The :class:`SimulationConfig` instance containing the
                                               simulation configuration.
         """
         self.opts = options
