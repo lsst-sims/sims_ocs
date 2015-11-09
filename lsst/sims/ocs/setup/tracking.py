@@ -68,8 +68,8 @@ class Tracking(object):
     def get_version(self):
         """Get the version of the software.
 
-        This function returns the version of the software. NOTE: In order to dileneate the new version of
-        the Operations Simulator from version 3, a 4 is preprended to the actual software version number."
+        This function returns the version of the software. NOTE: In order to delineate the new version of
+        the Operations Simulator from version 3, a 4 is prepended to the actual software version number."
 
         Returns:
             (str)
