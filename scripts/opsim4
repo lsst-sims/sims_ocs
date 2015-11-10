@@ -8,9 +8,16 @@ from lsst.sims.ocs.configuration.sim_config import SimulationConfig
 from lsst.sims.ocs.kernel.simulator import Simulator
 from lsst.sims.ocs.setup.log import configure_logging
 from lsst.sims.ocs.setup.parser import create_parser
+from lsst.sims.ocs.setup.tracking import Tracking
 
 def main(args):
     configure_logging(args.log_path, args.session_id, verbose=args.verbose, debug=args.debug)
+
+    tracking = Tracking(args.session_id, args.session_code, args.startup_comment)
+    if args.track_session:
+        if args.tracking_db is not None:
+            tracking.opsim_tracking_url = args.tracking_db
+        tracking.track_session()
 
     logger = logging.getLogger("opsim4")
 
@@ -37,8 +44,13 @@ def main(args):
     end_time = datetime.now()
     run_time = (end_time - start_time).total_seconds()
     logger.info("Total running time = {:.2f} seconds".format(run_time))
+    if args.track_session:
+        tracking.update_session("Simulation finished successfully in {:.2f} seconds".format(run_time))
 
 if __name__ == "__main__":
     parser = create_parser()
     args = parser.parse_args()
+    # Handling weird issue with the startup comment argument.
+    if isinstance(args.startup_comment, list):
+        args.startup_comment = " ".join(args.startup_comment)
     main(args)

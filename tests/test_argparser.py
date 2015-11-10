@@ -22,6 +22,10 @@ class ArgParserTest(unittest.TestCase):
         self.assertFalse(args.no_scheduler)
         self.assertIsNone(args.config)
         self.assertFalse(args.save_config)
+        self.assertFalse(args.track_session)
+        self.assertIsNone(args.tracking_db)
+        self.assertEqual(args.startup_comment, "No comment was entered.")
+        self.assertEqual(args.session_code, "science")
 
     def test_fractional_duration_flag(self):
         args = self.parser.parse_args(["--frac-duration", "0.0027397260273972603"])
@@ -54,3 +58,27 @@ class ArgParserTest(unittest.TestCase):
     def test_save_config_flag(self):
         args = self.parser.parse_args(["--save-config"])
         self.assertTrue(args.save_config)
+
+    def test_track_session(self):
+        args = self.parser.parse_args(["-t"])
+        self.assertTrue(args.track_session)
+
+    def test_tracking_db(self):
+        tracking_url = "http://mytracking.db"
+        args = self.parser.parse_args(["--tracking-db", tracking_url])
+        self.assertEqual(args.tracking_db, tracking_url)
+
+    def test_startup_comment(self):
+        session_comment = "This is a cool run!"
+        args = self.parser.parse_args(["--startup-comment", session_comment])
+        self.assertEqual(args.startup_comment, [session_comment])
+
+    def test_startup_comment_with_other_options(self):
+        session_comment = "This is a cool run!"
+        args = self.parser.parse_args(["--frac-duration", "1.0", "--startup-comment", session_comment, "-d"])
+        self.assertEqual(args.startup_comment, [session_comment])
+
+    def test_session_code(self):
+        session_code = "code_dev"
+        args = self.parser.parse_args(["--session-code", session_code])
+        self.assertEqual(args.session_code, session_code)
