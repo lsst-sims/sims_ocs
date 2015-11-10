@@ -44,8 +44,13 @@ def main(args):
     end_time = datetime.now()
     run_time = (end_time - start_time).total_seconds()
     logger.info("Total running time = {:.2f} seconds".format(run_time))
+    if args.track_session:
+        tracking.update_session("Simulation finished successfully in {:.2f} seconds".format(run_time))
 
 if __name__ == "__main__":
     parser = create_parser()
     args = parser.parse_args()
+    # Handling weird issue with the startup comment argument.
+    if isinstance(args.startup_comment, list):
+        args.startup_comment = " ".join(args.startup_comment)
     main(args)

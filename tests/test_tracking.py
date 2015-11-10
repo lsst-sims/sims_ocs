@@ -71,3 +71,30 @@ class TrackingTest(unittest.TestCase):
 
     def test_bad_tracking_call(self):
         self.run_tracking_call(False, (0, 1))
+
+    @mock.patch("logging.Logger.warning")
+    @mock.patch("logging.Logger.debug")
+    @mock.patch("lsst.sims.ocs.setup.tracking.Tracking.get_hostname")
+    @mock.patch("requests.get")
+    def run_update_call(self, ok_value, log_calls, mock_get, mock_gethostname, mock_logdebug, mock_logwarn):
+        mock_response = mock.MagicMock()
+        mock_response.ok = ok_value
+        mock_get.return_value = mock_response
+
+        mock_gethostname.return_value = self.hostname
+
+        eng_comment = "I think I'm done."
+
+        test_payload = {'sessionID': self.session_id_truth, 'hostname': self.hostname,
+                        'eng_comment': eng_comment}
+
+        self.track.update_session(eng_comment)
+        mock_get.assert_called_once_with(self.track.update_url, params=test_payload, timeout=3.0)
+        self.assertEqual(mock_logdebug.call_count, log_calls[0])
+        self.assertEqual(mock_logwarn.call_count, log_calls[1])
+
+    def test_good_update_call(self):
+        self.run_update_call(True, (1, 0))
+
+    def test_bad_update_call(self):
+        self.run_update_call(False, (0, 1))

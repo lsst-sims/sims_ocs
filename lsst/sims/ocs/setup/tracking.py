@@ -89,3 +89,21 @@ class Tracking(object):
             self.log.debug("Tracking for session was recorded successfully.")
         else:
             self.log.warning("Tracking for session was not recorded successfully!")
+
+    def update_session(self, eng_comment):
+        """Update the simulation session in the tracking database with a comment.
+
+        This function allows the simulation session's entry in the tracking database to be updated with an
+        engineering comment. This is hopefully to record that the simulation has completed successfully, but
+        may be used to indicate a simulation failure.
+
+        Args:
+            eng_comment (str): A comment about the simulation session hopefully for a successful run.
+        """
+        payload = {'sessionID': self.session_id, 'hostname': self.get_hostname(), 'eng_comment': eng_comment}
+
+        result = requests.get(self.update_url, params=payload, timeout=3.0)
+        if result.ok:
+            self.log.debug("Update for session was recorded successfully.")
+        else:
+            self.log.warning("Update for session was not recorded successfully!")
