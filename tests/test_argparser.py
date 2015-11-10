@@ -71,7 +71,12 @@ class ArgParserTest(unittest.TestCase):
     def test_startup_comment(self):
         session_comment = "This is a cool run!"
         args = self.parser.parse_args(["--startup-comment", session_comment])
-        self.assertEqual(args.startup_comment, session_comment)
+        self.assertEqual(args.startup_comment, [session_comment])
+
+    def test_startup_comment_with_other_options(self):
+        session_comment = "This is a cool run!"
+        args = self.parser.parse_args(["--frac-duration", "1.0", "--startup-comment", session_comment, "-d"])
+        self.assertEqual(args.startup_comment, [session_comment])
 
     def test_session_code(self):
         session_code = "code_dev"

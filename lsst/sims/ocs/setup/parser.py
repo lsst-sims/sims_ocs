@@ -13,8 +13,10 @@ def create_parser():
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument("--version", action="version", version=__version__)
-    parser.add_argument("--startup-comment", dest="startup_comment", default="No comment was entered.",
-                        help="Enter a comment for the simulation session.")
+    parser.add_argument("-c", "--startup-comment", dest="startup_comment", nargs='*',
+                        default="No comment was entered.",
+                        help="Enter a comment for the simulation session. NOTE: Do not use an equal sign "
+                             "with the long option!")
     parser.add_argument("--frac-duration", dest="frac_duration", type=float, default=-1,
                         help="Temporary flag to set the fractional duration for the survey in units of "
                         "years.")
