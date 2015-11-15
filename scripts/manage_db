@@ -1,0 +1,48 @@
+#!/usr/bin/env python
+import argparse
+
+from lsst.sims.ocs.database.socs_db import SocsDatabase
+
+def main(args):
+    db = SocsDatabase()
+
+    if args.recreate:
+        db.delete_db()
+        db.create_db()
+    if args.create:
+        db.create_db()
+    if args.delete:
+        db.delete_db()
+
+if __name__ == '__main__':
+    description = ["This script helps manage the simulation database for version 4 of"]
+    description.append("the Operations Simulator. If you are using the MySQL option, the script assumes")
+    description.append("a MySQL database instance is present and running and a .my.cnf file with the")
+    description.append("appropriate connection information is present in your home directory, otherwise you")
+    description.append("need to provide a path for the location of the .my.cnf file. If you are using the")
+    description.append("SQLite option, you need to provide a directory to save the output and auxillary")
+    description.append("database, otherwise the script will save the files in the working directory.")
+
+    parser = argparse.ArgumentParser(usage="manage_db [options]",
+                                     description=" ".join(description),
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    parser.add_argument("-t", "--type", dest="type", choices=["mysql", "sqlite"], default="mysql",
+                        help="Type of database to create. MySQL assumes that a .my.cnf file is available "
+                        "and contains the appropriate connection information.")
+    parser.add_argument("--config-path", dest="config_path", help="For MySQL, the path to a .my.cnf file if "
+                        "one is not present in $HOME.")
+    parser.add_argument("--save-dir", dest="save_dir", help="A directory to save the SQLite session "
+                        "tracking database.")
+    parser.add_argument("-c", "--create", dest="create", action="store_true",
+                        help="Create the simulation database. For MySQL, this will create all the associated "
+                        "tables. For SQLite, this will create the session tracking database.")
+    parser.add_argument("-d", "--delete", dest="delete", action="store_true",
+                        help="Delete the simulation database. For MySQL, this will drop all the associated "
+                        "tables. For SQLite, this is a null operation.")
+    parser.add_argument("-r", "--recreate", dest="recreate", action="store_true",
+                        help="Recreate (delete then create) the simulation database. For SQLite, this "
+                        "is a null operation unless the tracking database is not present.")
+
+    args = parser.parse_args()
+    main(args)
