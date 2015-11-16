@@ -16,7 +16,7 @@ def admin_create(options, database):
         os.system(cmd)
 
 def main(args):
-    db = SocsDatabase(dialect=args.type)
+    db = SocsDatabase(dialect=args.type, mysql_config_path=args.config_path)
 
     if args.type == "mysql" and (args.create or args.recreate):
         admin_create(args, db)
