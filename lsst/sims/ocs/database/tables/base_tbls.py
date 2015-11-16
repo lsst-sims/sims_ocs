@@ -13,7 +13,7 @@ def create_session(metadata):
 
     Index("s_host_user_date_idx", table.c.sessionUser, table.c.sessionHost, table.c.sessionDate, unique=True)
 
-    alter_table = DDL("ALTER TABLE '%(table)s' AUTO_INCREMENT=1000;")
+    alter_table = DDL("ALTER TABLE %(table)s AUTO_INCREMENT=1000;")
     event.listen(table, 'after_create', alter_table.execute_if(dialect='mysql'))
 
     return table
