@@ -1,10 +1,11 @@
+from datetime import datetime
 import os
 
 import MySQLdb as mysql
 from sqlalchemy import create_engine, MetaData
 
 from .tables.base_tbls import create_session
-from ..utilities.session_info import get_hostname
+from ..utilities.session_info import get_hostname, get_user, get_version
 
 class SocsDatabase(object):
     """Main class for simulation database interaction.
@@ -31,8 +32,13 @@ class SocsDatabase(object):
 
         if self.db_dialect == "mysql":
             self._create_tables()
+            self._make_engine()
         if self.db_dialect == "sqlite":
             self.session_tracking = create_session(self.metadata)
+            sqlite_session_tracking_db = "{}_sessions.db".format(get_hostname())
+            if self.sqlite_save_path is not None:
+                sqlite_session_tracking_db = os.path.join(self.sqlite_save_path, sqlite_session_tracking_db)
+            self._make_engine(sqlite_session_tracking_db)
 
     def _create_tables(self, use_autoincrement=True):
         """Create all the relevant tables.
@@ -61,11 +67,10 @@ class SocsDatabase(object):
         Args:
             sqlite_db (str): The name of the database file for SQLite.
         """
-        if self.engine is None:
-            if self.db_dialect == "mysql":
-                self.engine = create_engine("mysql://", creator=self._connect)
-            if self.db_dialect == "sqlite":
-                self.engine = create_engine("sqlite:///{}".format(sqlite_db))
+        if self.db_dialect == "mysql":
+            self.engine = create_engine("mysql://", creator=self._connect)
+        if self.db_dialect == "sqlite":
+            self.engine = create_engine("sqlite:///{}".format(sqlite_db))
 
     def create_db(self):
         """Create the database tables.
@@ -74,13 +79,6 @@ class SocsDatabase(object):
         go into the central database. For SQLite, this creates the session tracking database with the Session
         table.
         """
-        if self.db_dialect == "sqlite":
-            sqlite_session_tracking_db = "{}_sessions.db".format(get_hostname())
-            if self.sqlite_save_path is not None:
-                sqlite_session_tracking_db = os.path.join(self.sqlite_save_path, sqlite_session_tracking_db)
-            self._make_engine(sqlite_session_tracking_db)
-        else:
-            self._make_engine()
         self.metadata.create_all(self.engine)
 
     def delete_db(self):
@@ -88,5 +86,17 @@ class SocsDatabase(object):
 
         This function only works for MySQL. It will have no effect on SQLite.
         """
-        self._make_engine()
         self.metadata.drop_all(self.engine)
+
+    def new_session(self, run_comment):
+        hostname = get_hostname()
+        user = get_user()
+        version = get_version()
+        date = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+
+        insert = self.session.insert()
+        conn = self.engine.connect()
+        result = conn.execute(insert, sessionUser=user, sessionHost=hostname, sessionDate=date,
+                              version=version, runComment=run_comment)
+
+        return result.lastrowid

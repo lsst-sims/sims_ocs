@@ -15,7 +15,7 @@ class SocsDatabaseMySqlTest(unittest.TestCase):
 
     def test_initial_creation(self):
         self.assertEqual(self.db.db_dialect, "mysql")
-        self.assertIsNone(self.db.engine)
+        self.assertIsNotNone(self.db.engine)
         self.assertIsNotNone(self.db.metadata)
         self.assertTrue(hasattr(self.db, "session"))
 
@@ -31,12 +31,35 @@ class SocsDatabaseMySqlTest(unittest.TestCase):
         self.assertIsNotNone(self.db.engine)
         mock_drop_all.called_once_with(self.db.engine)
 
+    @mock.patch("sqlalchemy.engine.Connection", autospec=True)
+    @mock.patch("sqlalchemy.engine.Engine", autospec=True)
+    @mock.patch("lsst.sims.ocs.database.socs_db.create_engine")
+    def test_new_session(self, mock_create_engine, mock_engine, mock_conn):
+        # Need all the mocks to avoid writing to a real DB.
+        session_id_truth = 1000
+        mock_create_engine.return_value = mock_engine
+        mock_engine.connect.return_value = mock_conn
+        mock_result = mock.Mock()
+        mock_result.lastrowid = session_id_truth
+        mock_conn.execute.return_value = mock_result
+
+        # Need a fresh DB object with this one!
+        db = SocsDatabase()
+        startup_comment = "This is my cool test!"
+        session_id = db.new_session(startup_comment)
+
+        self.assertEqual(mock_conn.execute.call_count, 1)
+        self.assertEqual(session_id, session_id_truth)
+
 class SocsDatabaseSqliteTest(unittest.TestCase):
 
-    def setUp(self):
-        self.db = SocsDatabase("sqlite")
+    @mock.patch("lsst.sims.ocs.database.socs_db.get_hostname")
+    def setUp(self, mock_get_hostname):
         self.hostname = "tester"
         self.db_name = "{}_sessions.db".format(self.hostname)
+        mock_get_hostname.return_value = self.hostname
+
+        self.db = SocsDatabase("sqlite")
 
     def tearDown(self):
         if os.path.exists(self.db_name):
@@ -44,13 +67,11 @@ class SocsDatabaseSqliteTest(unittest.TestCase):
 
     def test_initial_creation(self):
         self.assertEqual(self.db.db_dialect, "sqlite")
-        self.assertIsNone(self.db.engine)
+        self.assertIsNotNone(self.db.engine)
         self.assertIsNotNone(self.db.metadata)
         self.assertTrue(hasattr(self.db, "session_tracking"))
 
-    @mock.patch("lsst.sims.ocs.database.socs_db.get_hostname")
-    def test_database_creation(self, mock_get_hostname):
-        mock_get_hostname.return_value = self.hostname
+    def test_database_creation(self):
         self.db.create_db()
         self.assertTrue(os.path.exists(self.db_name))
 
@@ -65,17 +86,18 @@ class SocsDatabaseSqliteWithSavePathTest(unittest.TestCase):
     def tearDownClass(cls):
         shutil.rmtree(cls.save_path)
 
-    def setUp(self):
-        self.db = SocsDatabase("sqlite", sqlite_save_path=self.save_path)
+    @mock.patch("lsst.sims.ocs.database.socs_db.get_hostname")
+    def setUp(self, mock_get_hostname):
         self.hostname = "tester"
         self.db_name = "{}_sessions.db".format(self.hostname)
+        mock_get_hostname.return_value = self.hostname
+
+        self.db = SocsDatabase("sqlite", sqlite_save_path=self.save_path)
 
     def test_initial_creation(self):
         self.assertIsNotNone(self.db.sqlite_save_path)
         self.assertEqual(self.db.sqlite_save_path, self.save_path)
 
-    @mock.patch("lsst.sims.ocs.database.socs_db.get_hostname")
-    def test_database_creation(self, mock_get_hostname):
-        mock_get_hostname.return_value = self.hostname
+    def test_database_creation(self):
         self.db.create_db()
         self.assertTrue(os.path.exists(os.path.join(self.save_path, self.db_name)))
