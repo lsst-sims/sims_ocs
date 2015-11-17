@@ -12,7 +12,6 @@ def admin_create(options, database):
         cmd = "mysql -u root -p -e "
         cmd += "'create database {0}; grant all privileges on {0}.* to {1};'".format(database.db_name,
                                                                                      options.db_user)
-        print(cmd)
         os.system(cmd)
 
 def main(args):
