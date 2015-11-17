@@ -15,6 +15,8 @@ class SocsDatabase(object):
     database and individual database files for each run session of the simulation.
     """
 
+    SQLITE_SESSION_OFFSET = 999
+
     def __init__(self, dialect="mysql", mysql_config_path=None, sqlite_save_path=None):
         """Class constructor.
 
@@ -30,23 +32,27 @@ class SocsDatabase(object):
         self.mysql_config_path = mysql_config_path
         self.sqlite_save_path = sqlite_save_path
 
+        # Parameters for SQLite operations
+        self.session_engine = None
+        self.session_metadata = MetaData()
+
         if self.db_dialect == "mysql":
             self._create_tables()
-            self._make_engine()
+            self.engine = self._make_engine()
         if self.db_dialect == "sqlite":
             self.session_tracking = create_session(self.metadata)
             sqlite_session_tracking_db = "{}_sessions.db".format(get_hostname())
-            if self.sqlite_save_path is not None:
-                sqlite_session_tracking_db = os.path.join(self.sqlite_save_path, sqlite_session_tracking_db)
-            self._make_engine(sqlite_session_tracking_db)
+            self.engine = self._make_engine(sqlite_session_tracking_db)
 
-    def _create_tables(self, use_autoincrement=True):
+    def _create_tables(self, metadata=None, use_autoincrement=True):
         """Create all the relevant tables.
 
         Args:
             use_autoincrement (bool): A flag to set auto increment behavior on the Session table.
         """
-        self.session = create_session(self.metadata, use_autoincrement)
+        if metadata is None:
+            metadata = self.metadata
+        self.session = create_session(metadata, use_autoincrement)
 
     def _connect(self):
         """Create the database connection for MySQL.1
@@ -68,9 +74,11 @@ class SocsDatabase(object):
             sqlite_db (str): The name of the database file for SQLite.
         """
         if self.db_dialect == "mysql":
-            self.engine = create_engine("mysql://", creator=self._connect)
+            return create_engine("mysql://", creator=self._connect)
         if self.db_dialect == "sqlite":
-            self.engine = create_engine("sqlite:///{}".format(sqlite_db))
+            if self.sqlite_save_path is not None:
+                sqlite_db = os.path.join(self.sqlite_save_path, sqlite_db)
+            return create_engine("sqlite:///{}".format(sqlite_db))
 
     def create_db(self):
         """Create the database tables.
@@ -89,14 +97,47 @@ class SocsDatabase(object):
         self.metadata.drop_all(self.engine)
 
     def new_session(self, run_comment):
+        """Log a new session to the database and return the ID.
+
+        This function logs a new session to the database and returns the session ID. For MySQL, this writes
+        to the Session table in the central database. For SQLite, this writes an entry to the session tracking
+        database. Then a session ID specific database is created and the information is replicated in that
+        Session table. Since SQLite auto increment values always start at one, an offset is applied to make
+        the session IDs commensurate with MySQL.
+
+        Args:
+            run_comment (str): The startup comment for the simulation run.
+
+        Returns:
+            int: The session ID for this simulation run.
+        """
         hostname = get_hostname()
         user = get_user()
         version = get_version()
-        date = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+        date = datetime.utcnow()
+        if self.db_dialect == "mysql":
+            date = date.strftime("%Y-%m-%d %H:%M:%S")
 
-        insert = self.session.insert()
+        if self.db_dialect == "mysql":
+            s = self.session
+        if self.db_dialect == "sqlite":
+            s = self.session_tracking
+        insert = s.insert()
         conn = self.engine.connect()
         result = conn.execute(insert, sessionUser=user, sessionHost=hostname, sessionDate=date,
                               version=version, runComment=run_comment)
 
-        return result.lastrowid
+        session_id = result.lastrowid
+
+        if self.db_dialect == "sqlite":
+            session_id += self.SQLITE_SESSION_OFFSET
+            sqlite_session_db = "{}_{}.db".format(get_hostname(), session_id)
+            self.session_engine = self._make_engine(sqlite_session_db)
+            self._create_tables(self.session_metadata, use_autoincrement=False)
+            self.session_metadata.create_all(self.session_engine)
+            insert = self.session.insert()
+            conn = self.session_engine.connect()
+            result = conn.execute(insert, session_ID=session_id, sessionUser=user, sessionHost=hostname,
+                                  sessionDate=date, version=version, runComment=run_comment)
+
+        return session_id

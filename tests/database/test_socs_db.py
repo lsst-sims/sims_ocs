@@ -1,4 +1,5 @@
 import os
+import random
 import shutil
 import unittest
 try:
@@ -55,7 +56,7 @@ class SocsDatabaseSqliteTest(unittest.TestCase):
 
     @mock.patch("lsst.sims.ocs.database.socs_db.get_hostname")
     def setUp(self, mock_get_hostname):
-        self.hostname = "tester"
+        self.hostname = "tester{:02d}".format(random.randrange(0, 19))
         self.db_name = "{}_sessions.db".format(self.hostname)
         mock_get_hostname.return_value = self.hostname
 
@@ -74,6 +75,21 @@ class SocsDatabaseSqliteTest(unittest.TestCase):
     def test_database_creation(self):
         self.db.create_db()
         self.assertTrue(os.path.exists(self.db_name))
+
+    @mock.patch("lsst.sims.ocs.database.socs_db.get_hostname")
+    def test_new_session(self, mock_get_hostname):
+        mock_get_hostname.return_value = self.hostname
+        session_id_truth = 1000
+        startup_comment = "This is my cool test!"
+
+        self.db.create_db()
+        session_id = self.db.new_session(startup_comment)
+
+        self.assertEqual(session_id, session_id_truth)
+        session_db_name = "{}_{}.db".format(self.hostname, session_id_truth)
+        self.assertTrue(os.path.exists(session_db_name))
+        if os.path.exists(session_db_name):
+            os.remove(session_db_name)
 
 class SocsDatabaseSqliteWithSavePathTest(unittest.TestCase):
 
