@@ -13,12 +13,24 @@ class SocsDatabase(object):
     This class is responsible for interacting with the main simulation database. For MySQL, this is a central
     database containing all the relevant tables. For SQLite, this consists of a machine session tracking
     database and individual database files for each run session of the simulation.
+
+    Attributes:
+        db_name (str): The name of the database. Applies to MySQL only.
+        db_dialect (str): The flavor of the database to use. Options: mysql or sqlite.
+        metadata (sqlalchemy.MetaData): The instance for holding the relevant tables.
+        engine (sqlalchemy.engine.Engine): The instance of the database engine.
+        mysql_config_path (str): An alternate path for the .my.cnf configuration file for MySQL.
+        sqlite_save_path (str): A path to save all resulting database files for SQLite.
+        session_engine (sqlalchemy.engine.Engine): The session specific instance of the database engine.
+                                                   SQLite only.
+        session_metadata (sqlalchemy.MetaData): The instance for holding the session specific tables.
+                                                SQLite only.
     """
 
     SQLITE_SESSION_OFFSET = 999
 
     def __init__(self, dialect="mysql", mysql_config_path=None, sqlite_save_path=None):
-        """Class constructor.
+        """Initialize the class.
 
         Args:
             dialect (str): The flavor of the database to use. Options: mysql or sqlite.
@@ -58,7 +70,7 @@ class SocsDatabase(object):
         """Create the database connection for MySQL.1
 
         Returns:
-            (function): The connection function for MySQL.
+            function: The connection function for MySQL.
         """
         if self.mysql_config_path is not None:
             conf_path = self.mysql_config_path
