@@ -2,9 +2,9 @@ from sqlalchemy import Column, Index, Integer, String, Table
 from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event
 
-def create_session(metadata):
+def create_session(metadata, autoincrement=True):
     table = Table("Session", metadata,
-                  Column("sessionID", Integer, primary_key=True, autoincrement=True, nullable=False),
+                  Column("sessionID", Integer, primary_key=True, autoincrement=autoincrement, nullable=False),
                   Column("sessionUser", String(80), nullable=False),
                   Column("sessionHost", String(80), nullable=False),
                   Column("sessionDate", DATETIME, nullable=False),
