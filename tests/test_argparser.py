@@ -26,6 +26,10 @@ class ArgParserTest(unittest.TestCase):
         self.assertIsNone(args.tracking_db)
         self.assertEqual(args.startup_comment, "No comment was entered.")
         self.assertEqual(args.session_code, "science")
+        self.assertEqual(args.db_type, "mysql")
+        self.assertIsNone(args.mysql_config_path)
+        self.assertEqual(args.mysql_db_user, "www")
+        self.assertIsNone(args.sqlite_save_dir)
 
     def test_fractional_duration_flag(self):
         args = self.parser.parse_args(["--frac-duration", "0.0027397260273972603"])
@@ -82,3 +86,23 @@ class ArgParserTest(unittest.TestCase):
         session_code = "code_dev"
         args = self.parser.parse_args(["--session-code", session_code])
         self.assertEqual(args.session_code, session_code)
+
+    def test_db_type_choice(self):
+        db_type = "sqlite"
+        args = self.parser.parse_args(["--db-type", db_type])
+        self.assertEqual(args.db_type, db_type)
+
+    def test_mysql_config_path(self):
+        config_path = "/test/path"
+        args = self.parser.parse_args(["--mysql-config-path", config_path])
+        self.assertEqual(args.mysql_config_path, config_path)
+
+    def test_mysql_db_user(self):
+        db_user = "dbtester"
+        args = self.parser.parse_args(["--mysql-db-user", db_user])
+        self.assertEqual(args.mysql_db_user, db_user)
+
+    def test_sqlite_save_dir(self):
+        save_dir = "/path/to/save"
+        args = self.parser.parse_args(["--sqlite-save-dir", save_dir])
+        self.assertEqual(args.sqlite_save_dir, save_dir)

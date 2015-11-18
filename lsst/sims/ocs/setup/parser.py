@@ -25,6 +25,28 @@ def create_parser():
     parser.add_argument("-s", "--session-id", dest="session_id", default="1000",
                         help="Temporary flag to set a session ID.")
 
+    db_group_descr = ["This group of arguments controls the behavior of the simulation database."]
+    db_group_descr.append("The simulation database is available through MySQL or SQLite.")
+    db_group_descr.append("It is assumed that you have already setup the appropriate database using the")
+    db_group_descr.append("manage_db script that came with this package.")
+    db_group = parser.add_argument_group("database", " ".join(db_group_descr))
+    db_group.add_argument("--db-type", dest="db_type", choices=["mysql", "sqlite"], default="mysql",
+                          help="Type of database to create. MySQL assumes that a .my.cnf file is available "
+                          "and contains the appropriate connection information.")
+
+    mysql_group_descr = ["This group of arguments is for dealing with a MySQL database."]
+    mysql_group = db_group.add_argument_group("mysql", " ".join(mysql_group_descr))
+    mysql_group.add_argument("--mysql-config-path", dest="mysql_config_path", help="For MySQL, the path to a "
+                             ".my.cnf file if one is not present in $HOME.")
+    mysql_group.add_argument("--mysql-db-user", dest="mysql_db_user", default="www", help="This option is "
+                             "for specifying a standard (NOT root) database user that will have access "
+                             "privileges.")
+
+    sqlite_group_descr = ["This group of arguments is for dealing with a SQLite database."]
+    sqlite_group = db_group.add_argument_group("sqlite", " ".join(sqlite_group_descr))
+    sqlite_group.add_argument("--sqlite-save-dir", dest="sqlite_save_dir", help="A directory to save the "
+                              "SQLite session tracking database.")
+
     tracking_group_descr = ["This group of arguments controls the tracking of the simulation session."]
     track_grp = parser.add_argument_group("tracking", " ".join(tracking_group_descr))
     track_grp.add_argument("-t", "--track", dest="track_session", action="store_true",
