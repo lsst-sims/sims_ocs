@@ -35,7 +35,7 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	flake8 lsst tests scripts/opsim4
+	flake8 lsst tests setup.py scripts/opsim4
 
 test:
 	python setup.py test
