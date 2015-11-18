@@ -67,7 +67,7 @@ class SocsDatabase(object):
         self.session = create_session(metadata, use_autoincrement)
 
     def _connect(self):
-        """Create the database connection for MySQL.1
+        """Create the database connection for MySQL.
 
         Returns:
             function: The connection function for MySQL.
@@ -89,6 +89,7 @@ class SocsDatabase(object):
             return create_engine("mysql://", creator=self._connect)
         if self.db_dialect == "sqlite":
             if self.sqlite_save_path is not None:
+                self.sqlite_save_path = os.path.expanduser(os.path.expandvars(self.sqlite_save_path))
                 sqlite_db = os.path.join(self.sqlite_save_path, sqlite_db)
             return create_engine("sqlite:///{}".format(sqlite_db))
 
