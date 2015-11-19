@@ -5,6 +5,7 @@ import MySQLdb as mysql
 from sqlalchemy import create_engine, MetaData
 
 from .tables.base_tbls import create_session
+from ..utilities.file_helpers import expand_path
 from ..utilities.session_info import get_hostname, get_user, get_version
 
 class SocsDatabase(object):
@@ -73,7 +74,7 @@ class SocsDatabase(object):
             function: The connection function for MySQL.
         """
         if self.mysql_config_path is not None:
-            conf_path = self.mysql_config_path
+            conf_path = expand_path(self.mysql_config_path)
         else:
             conf_path = os.getenv("HOME")
         conf_file = os.path.join(conf_path, ".my.cnf")
@@ -89,7 +90,7 @@ class SocsDatabase(object):
             return create_engine("mysql://", creator=self._connect)
         if self.db_dialect == "sqlite":
             if self.sqlite_save_path is not None:
-                self.sqlite_save_path = os.path.expanduser(os.path.expandvars(self.sqlite_save_path))
+                self.sqlite_save_path = expand_path(self.sqlite_save_path)
                 sqlite_db = os.path.join(self.sqlite_save_path, sqlite_db)
             return create_engine("sqlite:///{}".format(sqlite_db))
 

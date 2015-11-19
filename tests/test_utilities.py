@@ -1,3 +1,4 @@
+import os
 import unittest
 
 try:
@@ -5,6 +6,7 @@ try:
 except ImportError:
     import mock
 
+from lsst.sims.ocs.utilities.file_helpers import expand_path
 from lsst.sims.ocs.utilities.session_info import get_hostname, get_user, get_version
 
 class UtilitiesTest(unittest.TestCase):
@@ -34,3 +36,8 @@ class UtilitiesTest(unittest.TestCase):
     @mock.patch("lsst.sims.ocs.utilities.session_info.__version__", "0.9.0")
     def test_get_version(self):
         self.assertEquals(get_version(), self.version)
+
+    def test_expand_path(self):
+        with mock.patch.dict("os.environ", {"HOME": "/home/{}".format(self.user), "TEST": "testing"}):
+            path = "~/$TEST/output"
+            self.assertEqual(expand_path(path), "/home/{}/testing/output".format(self.user))
