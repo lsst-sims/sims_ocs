@@ -38,9 +38,6 @@ def create_parser():
     mysql_group = db_group.add_argument_group("mysql", " ".join(mysql_group_descr))
     mysql_group.add_argument("--mysql-config-path", dest="mysql_config_path", help="For MySQL, the path to a "
                              ".my.cnf file if one is not present in $HOME.")
-    mysql_group.add_argument("--mysql-db-user", dest="mysql_db_user", default="www", help="This option is "
-                             "for specifying a standard (NOT root) database user that will have access "
-                             "privileges.")
 
     sqlite_group_descr = ["This group of arguments is for dealing with a SQLite database."]
     sqlite_group = db_group.add_argument_group("sqlite", " ".join(sqlite_group_descr))
