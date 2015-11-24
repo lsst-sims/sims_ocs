@@ -3,6 +3,7 @@ import os
 import lsst.pex.config as pexConfig
 
 from .lsst_survey import LsstSurvey
+from .observatory import Observatory
 from .obs_site import ObservingSite
 
 __all__ = ["SimulationConfig"]
@@ -14,6 +15,7 @@ class SimulationConfig(pexConfig.Config):
     """
     lsst_survey = pexConfig.ConfigField("The LSST survey configuration.", LsstSurvey)
     observing_site = pexConfig.ConfigField("The observing site configuration.", ObservingSite)
+    observatory = pexConfig.ConfigField("The LSST observatory configuration.", Observatory)
 
     def setDefaults(self):
         """Set defaults for the survey simulation.
