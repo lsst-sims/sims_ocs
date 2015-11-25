@@ -35,12 +35,12 @@ def create_parser():
                           "and contains the appropriate connection information.")
 
     mysql_group_descr = ["This group of arguments is for dealing with a MySQL database."]
-    mysql_group = db_group.add_argument_group("mysql", " ".join(mysql_group_descr))
+    mysql_group = parser.add_argument_group("mysql", " ".join(mysql_group_descr))
     mysql_group.add_argument("--mysql-config-path", dest="mysql_config_path", help="For MySQL, the path to a "
                              ".my.cnf file if one is not present in $HOME.")
 
     sqlite_group_descr = ["This group of arguments is for dealing with a SQLite database."]
-    sqlite_group = db_group.add_argument_group("sqlite", " ".join(sqlite_group_descr))
+    sqlite_group = parser.add_argument_group("sqlite", " ".join(sqlite_group_descr))
     sqlite_group.add_argument("--sqlite-save-dir", dest="sqlite_save_dir", help="A directory to save the "
                               "SQLite session tracking database.")
 
