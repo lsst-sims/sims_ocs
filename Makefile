@@ -35,7 +35,7 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	flake8 lsst tests scripts/*
+	flake8 lsst tests setup.py scripts/*
 
 test:
 	python setup.py test

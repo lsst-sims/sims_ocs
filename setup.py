@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 import os
 
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+
+from setuptools.command.test import test as _test
 PACKAGE = 'sims_ocs'
 MAJOR = 0
 MINOR = 2
@@ -8,13 +14,6 @@ PATCH = 0
 VERSION = "{0}.{1}.{2}".format(MAJOR, MINOR, PATCH)
 
 MODULE = "lsst.sims.ocs"
-
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
-
-from setuptools.command.test import test as _test
 
 class quiet_test(_test):
     def finalize_options(self):
@@ -39,10 +38,10 @@ def write_version(filename="version.py"):
     parts = MODULE.split('.')
     parts.append(filename)
     with open(os.path.join(*parts), 'w') as vfile:
-        vfile.write("__version__ = '{0}'".format(VERSION)+os.linesep)
-        vfile.write("__version_info__ = ({0}, {1}, {2})".format(MAJOR, MINOR, PATCH)+os.linesep)
+        vfile.write("__version__ = '{0}'".format(VERSION) + os.linesep)
+        vfile.write("__version_info__ = ({0}, {1}, {2})".format(MAJOR, MINOR, PATCH) + os.linesep)
         vfile.write(os.linesep)
-        vfile.write("__all__ = ('__version__', '__version_info__')"+os.linesep)
+        vfile.write("__all__ = ('__version__', '__version_info__')" + os.linesep)
 
 if __name__ == "__main__":
     write_version()
@@ -51,7 +50,7 @@ if __name__ == "__main__":
         name=PACKAGE,
         version=VERSION,
         description="Package that simulates the OCS to drive the Scheduler",
-        long_description=readme + os.linesep*2 + history,
+        long_description=readme + os.linesep * 2 + history,
         author="Michael Reuter",
         author_email='mareuter@lsst.org',
         url='https://github.com/lsst-sims/sims_ocs',
