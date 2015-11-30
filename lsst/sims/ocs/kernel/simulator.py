@@ -1,5 +1,6 @@
 import logging
 
+from lsst.sims.ocs.configuration.conf_comm import ConfigurationCommunicator
 from lsst.sims.ocs.sal.sal_manager import SalManager
 from lsst.sims.ocs.kernel.sequencer import Sequencer
 from lsst.sims.ocs.kernel.time_handler import DAYS_IN_YEAR
@@ -36,6 +37,7 @@ class Simulator(object):
         self.log = logging.getLogger("kernel.Simulator")
         self.sal = SalManager()
         self.seq = Sequencer()
+        self.conf_comm = ConfigurationCommunicator()
         # Variables that will disappear as more functionality is added.
         self.night_adjust = (19.0, "hours")
         self.hours_in_night = 10.0
@@ -77,6 +79,7 @@ class Simulator(object):
         self.log.info("Initializing simulation")
         self.sal.initialize()
         self.seq.initialize(self.sal)
+        self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
         self.target = self.sal.set_subscribe_topic("targetTest")
         self.observation = self.sal.set_publish_topic("observationTest")
@@ -85,6 +88,8 @@ class Simulator(object):
         """Run the simulation.
         """
         self.log.info("Starting simulation")
+
+        self.conf_comm.run()
 
         self.time_handler.update_time(*self.night_adjust)
         self.comm_time.timestamp = self.time_handler.current_timestamp
