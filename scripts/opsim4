@@ -5,12 +5,19 @@ import logging
 import os
 
 from lsst.sims.ocs.configuration.sim_config import SimulationConfig
+from lsst.sims.ocs.database.socs_db import SocsDatabase
 from lsst.sims.ocs.kernel.simulator import Simulator
 from lsst.sims.ocs.setup.log import configure_logging
 from lsst.sims.ocs.setup.parser import create_parser
 from lsst.sims.ocs.setup.tracking import Tracking
 
 def main(args):
+    db = SocsDatabase(args.db_type, mysql_config_path=args.mysql_config_path,
+                      sqlite_save_path=args.sqlite_save_dir)
+
+    session_id = db.new_session(args.startup_comment)
+    args.session_id = session_id
+
     configure_logging(args.log_path, args.session_id, verbose=args.verbose, debug=args.debug)
 
     tracking = Tracking(args.session_id, args.session_code, args.startup_comment)
@@ -27,7 +34,7 @@ def main(args):
     configuration.load(args.config)
     configuration.validate()
 
-    sim = Simulator(args, configuration)
+    sim = Simulator(args, configuration, db)
     sim.initialize()
     try:
         sim.run()

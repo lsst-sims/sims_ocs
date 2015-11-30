@@ -26,26 +26,11 @@ class TrackingTest(unittest.TestCase):
         self.assertEquals(self.track.session_type, self.session_type_truth)
         self.assertEquals(self.track.startup_comment, self.startup_comment_truth)
 
-    @mock.patch("os.getenv")
-    def test_get_user(self, mock_getenv):
-        mock_getenv.return_value = self.user
-        self.assertEquals(self.track.get_user(), self.user)
-
-    @mock.patch("os.getenv")
-    def test_get_hostname(self, mock_getenv):
-        mock_getenv.return_value = self.hostname
-        self.assertEquals(self.track.get_hostname(), self.hostname)
-
-    @mock.patch("socket.gethostname")
-    def test_get_hostname_by_socket_gethostname(self, mock_gethostname):
-        mock_gethostname.return_value = self.hostname
-        self.assertEquals(self.track.get_hostname(), self.hostname)
-
     @mock.patch("logging.Logger.warning")
     @mock.patch("logging.Logger.debug")
-    @mock.patch("lsst.sims.ocs.setup.tracking.Tracking.get_version")
-    @mock.patch("lsst.sims.ocs.setup.tracking.Tracking.get_hostname")
-    @mock.patch("lsst.sims.ocs.setup.tracking.Tracking.get_user")
+    @mock.patch("lsst.sims.ocs.setup.tracking.get_version")
+    @mock.patch("lsst.sims.ocs.setup.tracking.get_hostname")
+    @mock.patch("lsst.sims.ocs.setup.tracking.get_user")
     @mock.patch("requests.get")
     def run_tracking_call(self, ok_value, log_calls, mock_get, mock_getuser, mock_gethostname,
                           mock_getversion, mock_logdebug, mock_logwarn):
@@ -74,7 +59,7 @@ class TrackingTest(unittest.TestCase):
 
     @mock.patch("logging.Logger.warning")
     @mock.patch("logging.Logger.debug")
-    @mock.patch("lsst.sims.ocs.setup.tracking.Tracking.get_hostname")
+    @mock.patch("lsst.sims.ocs.setup.tracking.get_hostname")
     @mock.patch("requests.get")
     def run_update_call(self, ok_value, log_calls, mock_get, mock_gethostname, mock_logdebug, mock_logwarn):
         mock_response = mock.MagicMock()

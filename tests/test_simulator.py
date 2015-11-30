@@ -17,6 +17,9 @@ class SimulatorTest(unittest.TestCase):
         patcher2 = mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.set_subscribe_topic")
         self.addCleanup(patcher2.stop)
         self.mock_salmanager_sub_topic = patcher2.start()
+        patcher3 = mock.patch("lsst.sims.ocs.database.socs_db.SocsDatabase", spec=True)
+        self.addCleanup(patcher3.stop)
+        self.mock_socs_db = patcher3.start()
 
         import collections
 
@@ -31,7 +34,7 @@ class SimulatorTest(unittest.TestCase):
         self.configuration = collections.namedtuple("configuration", ["lsst_survey"])
         self.configuration.lsst_survey = lsst_survey
 
-        self.sim = Simulator(self.options, self.configuration)
+        self.sim = Simulator(self.options, self.configuration, self.mock_socs_db)
 
     def test_initial_creation(self):
         self.assertEqual(self.sim.duration, 183.0)
@@ -45,7 +48,7 @@ class SimulatorTest(unittest.TestCase):
 
     def test_no_override_from_options(self):
         self.options.frac_duration = -1
-        sim = Simulator(self.options, self.configuration)
+        sim = Simulator(self.options, self.configuration, self.mock_socs_db)
         self.assertEquals(sim.duration, 365.0)
 
     @mock.patch("lsst.sims.ocs.kernel.sequencer.Sequencer.initialize")

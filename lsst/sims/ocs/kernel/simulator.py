@@ -14,7 +14,7 @@ class Simulator(object):
     This class is responsible for setting up, running and shutting down the LSST survey simulation.
     """
 
-    def __init__(self, options, configuration):
+    def __init__(self, options, configuration, database):
         """Initialize the class.
 
         Args:
@@ -22,9 +22,12 @@ class Simulator(object):
                                           options.
             configuration (SimulationConfig): The :class:`SimulationConfig` instance containing the
                                               simulation configuration.
+            database (SocsDatabase): The :class:`SocsDatabase` instance for interacting with the simulation
+                                     database.
         """
         self.opts = options
         self.conf = configuration
+        self.db = database
         if self.opts.frac_duration == -1:
             self.fractional_duration = self.conf.lsst_survey.duration
         else:
