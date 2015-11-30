@@ -60,6 +60,7 @@ config.duration=10.0
     def test_basic_information_from_creation(self):
         self.assertIsNotNone(self.sim_config.lsst_survey)
         self.assertIsNotNone(self.sim_config.observing_site)
+        self.assertIsNotNone(self.sim_config.observatory)
 
     def test_load_without_files(self):
         self.sim_config.load(None)
