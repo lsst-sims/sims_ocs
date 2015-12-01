@@ -2,3 +2,6 @@ wheel==0.23.0
 enum34
 pytz
 numpy
+mysql-python
+requests
+sqlalchemy

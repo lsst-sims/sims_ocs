@@ -3,5 +3,5 @@ sphinx_rtd_theme
 alabaster
 flake8
 coverage
+mock
 sphinxcontrib-napoleon
-
