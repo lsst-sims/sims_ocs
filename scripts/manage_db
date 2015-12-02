@@ -44,15 +44,17 @@ if __name__ == '__main__':
     parser.add_argument("-t", "--type", dest="type", choices=["mysql", "sqlite"], default="mysql",
                         help="Type of database to create. MySQL assumes that a .my.cnf file is available "
                         "and contains the appropriate connection information.")
-    parser.add_argument("-c", "--create", dest="create", action="store_true",
-                        help="Create the simulation database. For MySQL, this will create all the associated "
-                        "tables. For SQLite, this will create the session tracking database.")
-    parser.add_argument("-d", "--delete", dest="delete", action="store_true",
-                        help="Delete the simulation database. For MySQL, this will drop all the associated "
-                        "tables. For SQLite, this is a null operation.")
-    parser.add_argument("-r", "--recreate", dest="recreate", action="store_true",
-                        help="Recreate (delete then create) the simulation database. For SQLite, this "
-                        "is a null operation unless the tracking database is not present.")
+    action_group = parser.add_mutually_exclusive_group(required=True)
+    action_group.add_argument("-c", "--create", dest="create", action="store_true",
+                              help="Create the simulation database. For MySQL, this will create all the "
+                              "associated tables. For SQLite, this will create the session tracking "
+                              "database.")
+    action_group.add_argument("-d", "--delete", dest="delete", action="store_true",
+                              help="Delete the simulation database. For MySQL, this will drop all the "
+                              "associated tables. For SQLite, this is a null operation.")
+    action_group.add_argument("-r", "--recreate", dest="recreate", action="store_true",
+                              help="Recreate (delete then create) the simulation database. For SQLite, this "
+                              "is a null operation unless the tracking database is not present.")
 
     mysql_group_descr = ["This group of arguments is for dealing with a MySQL database."]
     mysql_grp = parser.add_argument_group("mysql", " ".join(mysql_group_descr))
