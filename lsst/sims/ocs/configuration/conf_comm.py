@@ -53,16 +53,16 @@ class ConfigurationCommunicator(object):
         """
         tel_conf = self.sal.set_publish_topic("telescopeConfig")
 
-        tel_conf.altitude_min = self.config.observatory.telescope.alt_min
-        tel_conf.altitude_max = self.config.observatory.telescope.alt_max
-        tel_conf.altitude_maxspeed = self.config.observatory.telescope.alt_maxspeed
-        tel_conf.altitude_accel = self.config.observatory.telescope.alt_accel
-        tel_conf.altitude_decel = self.config.observatory.telescope.alt_decel
-        tel_conf.azimuth_minpos = self.config.observatory.telescope.az_minpos
-        tel_conf.azimuth_maxpos = self.config.observatory.telescope.az_maxpos
-        tel_conf.azimuth_maxspeed = self.config.observatory.telescope.az_maxspeed
-        tel_conf.azimuth_accel = self.config.observatory.telescope.az_accel
-        tel_conf.azimuth_decel = self.config.observatory.telescope.az_decel
+        tel_conf.altitude_min = self.config.observatory.telescope.altitude_min
+        tel_conf.altitude_max = self.config.observatory.telescope.altitude_max
+        tel_conf.altitude_maxspeed = self.config.observatory.telescope.altitude_maxspeed
+        tel_conf.altitude_accel = self.config.observatory.telescope.altitude_accel
+        tel_conf.altitude_decel = self.config.observatory.telescope.altitude_decel
+        tel_conf.azimuth_minpos = self.config.observatory.telescope.azimuth_minpos
+        tel_conf.azimuth_maxpos = self.config.observatory.telescope.azimuth_maxpos
+        tel_conf.azimuth_maxspeed = self.config.observatory.telescope.azimuth_maxspeed
+        tel_conf.azimuth_accel = self.config.observatory.telescope.azimuth_accel
+        tel_conf.azimuth_decel = self.config.observatory.telescope.azimuth_decel
         tel_conf.settle_time = self.config.observatory.telescope.settle_time
 
         self.sal.put(tel_conf)
@@ -72,12 +72,12 @@ class ConfigurationCommunicator(object):
         """
         dome_conf = self.sal.set_publish_topic("domeConfig")
 
-        dome_conf.altitude_maxspeed = self.config.observatory.dome.alt_maxspeed
-        dome_conf.altitude_accel = self.config.observatory.dome.alt_accel
-        dome_conf.altitude_decel = self.config.observatory.dome.alt_decel
-        dome_conf.azimuth_maxspeed = self.config.observatory.dome.az_maxspeed
-        dome_conf.azimuth_accel = self.config.observatory.dome.az_accel
-        dome_conf.azimuth_decel = self.config.observatory.dome.az_decel
+        dome_conf.altitude_maxspeed = self.config.observatory.dome.altitude_maxspeed
+        dome_conf.altitude_accel = self.config.observatory.dome.altitude_accel
+        dome_conf.altitude_decel = self.config.observatory.dome.altitude_decel
+        dome_conf.azimuth_maxspeed = self.config.observatory.dome.azimuth_maxspeed
+        dome_conf.azimuth_accel = self.config.observatory.dome.azimuth_accel
+        dome_conf.azimuth_decel = self.config.observatory.dome.azimuth_decel
         dome_conf.settle_time = self.config.observatory.dome.settle_time
 
         self.sal.put(dome_conf)
@@ -92,8 +92,8 @@ class ConfigurationCommunicator(object):
         rot_conf.maxspeed = self.config.observatory.rotator.maxspeed
         rot_conf.accel = self.config.observatory.rotator.accel
         rot_conf.decel = self.config.observatory.rotator.decel
-        rot_conf.follow_sky = self.config.observatory.rotator.followsky
-        rot_conf.resume_angle = self.config.observatory.rotator.resume_angle_after_filter_change
+        rot_conf.follow_sky = self.config.observatory.rotator.follow_sky
+        rot_conf.resume_angle = self.config.observatory.rotator.resume_angle
 
         self.sal.put(rot_conf)
 
@@ -104,8 +104,8 @@ class ConfigurationCommunicator(object):
 
         cam_conf.readout_time = self.config.observatory.camera.readout_time
         cam_conf.shutter_time = self.config.observatory.camera.shutter_time
-        cam_conf.filter_mount_time = self.config.observatory.camera.filter_mounttime
-        cam_conf.filter_move_time = self.config.observatory.camera.filter_movetime
+        cam_conf.filter_mount_time = self.config.observatory.camera.filter_mount_time
+        cam_conf.filter_move_time = self.config.observatory.camera.filter_move_time
         cam_conf.filter_mounted = self.config.observatory.camera.filter_mounted_str
         cam_conf.filter_pos = self.config.observatory.camera.filter_pos
         cam_conf.filter_removable = self.config.observatory.camera.filter_removable_str
