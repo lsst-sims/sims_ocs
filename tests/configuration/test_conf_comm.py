@@ -9,6 +9,8 @@ from lsst.sims.ocs.configuration.conf_comm import ConfigurationCommunicator
 from lsst.sims.ocs.configuration.sim_config import SimulationConfig
 from lsst.sims.ocs.sal.sal_manager import SalManager
 
+from ..test_helpers import CONFIG_COMM_PUT_CALLS
+
 class ConfigurationCommunicatorTest(unittest.TestCase):
 
     def setUp(self):
@@ -29,8 +31,7 @@ class ConfigurationCommunicatorTest(unittest.TestCase):
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.put")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
     def test_run(self, mock_sal_telemetry_pub, mock_salmanager_put):
-        expected_calls = 1
         self.conf_comm.initialize(self.sal, self.config)
         self.conf_comm.run()
-        self.assertEqual(mock_sal_telemetry_pub.call_count, expected_calls)
-        self.assertEqual(mock_salmanager_put.call_count, expected_calls)
+        self.assertEqual(mock_sal_telemetry_pub.call_count, CONFIG_COMM_PUT_CALLS)
+        self.assertEqual(mock_salmanager_put.call_count, CONFIG_COMM_PUT_CALLS)

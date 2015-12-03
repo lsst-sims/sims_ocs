@@ -48,8 +48,105 @@ class ConfigurationCommunicator(object):
 
         self.sal.put(sched_conf)
 
+    def _configure_telescope(self):
+        """Configure and send the Telescope configuration topic.
+        """
+        tel_conf = self.sal.set_publish_topic("telescopeConfig")
+
+        tel_conf.altitude_min = self.config.observatory.telescope.alt_min
+        tel_conf.altitude_max = self.config.observatory.telescope.alt_max
+        tel_conf.altitude_maxspeed = self.config.observatory.telescope.alt_maxspeed
+        tel_conf.altitude_accel = self.config.observatory.telescope.alt_accel
+        tel_conf.altitude_decel = self.config.observatory.telescope.alt_decel
+        tel_conf.azimuth_minpos = self.config.observatory.telescope.az_minpos
+        tel_conf.azimuth_maxpos = self.config.observatory.telescope.az_maxpos
+        tel_conf.azimuth_maxspeed = self.config.observatory.telescope.az_maxspeed
+        tel_conf.azimuth_accel = self.config.observatory.telescope.az_accel
+        tel_conf.azimuth_decel = self.config.observatory.telescope.az_decel
+        tel_conf.settle_time = self.config.observatory.telescope.settle_time
+
+        self.sal.put(tel_conf)
+
+    def _configure_dome(self):
+        """Configure and send the dome configuration topic.
+        """
+        dome_conf = self.sal.set_publish_topic("domeConfig")
+
+        dome_conf.altitude_maxspeed = self.config.observatory.dome.alt_maxspeed
+        dome_conf.altitude_accel = self.config.observatory.dome.alt_accel
+        dome_conf.altitude_decel = self.config.observatory.dome.alt_decel
+        dome_conf.azimuth_maxspeed = self.config.observatory.dome.az_maxspeed
+        dome_conf.azimuth_accel = self.config.observatory.dome.az_accel
+        dome_conf.azimuth_decel = self.config.observatory.dome.az_decel
+        dome_conf.settle_time = self.config.observatory.dome.settle_time
+
+        self.sal.put(dome_conf)
+
+    def _configure_rotator(self):
+        """Configure and send the rotator configuration topic.
+        """
+        rot_conf = self.sal.set_publish_topic("rotatorConfig")
+
+        rot_conf.minpos = self.config.observatory.rotator.minpos
+        rot_conf.maxpos = self.config.observatory.rotator.maxpos
+        rot_conf.maxspeed = self.config.observatory.rotator.maxspeed
+        rot_conf.accel = self.config.observatory.rotator.accel
+        rot_conf.decel = self.config.observatory.rotator.decel
+        rot_conf.follow_sky = self.config.observatory.rotator.followsky
+        rot_conf.resume_angle = self.config.observatory.rotator.resume_angle_after_filter_change
+
+        self.sal.put(rot_conf)
+
+    def _configure_camera(self):
+        """Configure and send the camera configuration topic.
+        """
+        cam_conf = self.sal.set_publish_topic("cameraConfig")
+
+        cam_conf.readout_time = self.config.observatory.camera.readout_time
+        cam_conf.shutter_time = self.config.observatory.camera.shutter_time
+        cam_conf.filter_mount_time = self.config.observatory.camera.filter_mounttime
+        cam_conf.filter_move_time = self.config.observatory.camera.filter_movetime
+        cam_conf.filter_mounted = self.config.observatory.camera.filter_mounted_str
+        cam_conf.filter_pos = self.config.observatory.camera.filter_pos
+        cam_conf.filter_removable = self.config.observatory.camera.filter_removable_str
+        cam_conf.filter_unmounted = self.config.observatory.camera.filter_unmounted_str
+
+        self.sal.put(cam_conf)
+
+    def _configure_slew(self):
+        """Configure and send the slew configuration topic.
+        """
+        slew_conf = self.sal.set_publish_topic("slewConfig")
+
+        slew_conf.tel_optics_ol_slope = self.config.observatory.slew.tel_optics_ol_slope
+        self.config.observatory.slew.set_array(slew_conf, "tel_optics_alt_limit")
+        self.config.observatory.slew.set_array(slew_conf, "tel_optics_cl_delay")
+        slew_conf.prereq_dom_alt = self.config.observatory.slew.get_string_rep("prereq_dom_alt")
+        slew_conf.prereq_dom_az = self.config.observatory.slew.get_string_rep("prereq_dom_az")
+        slew_conf.prereq_tel_alt = self.config.observatory.slew.get_string_rep("prereq_tel_alt")
+        slew_conf.prereq_tel_az = self.config.observatory.slew.get_string_rep("prereq_tel_az")
+        slew_conf.prereq_tel_optics_ol = self.config.observatory.slew.get_string_rep("prereq_tel_optics_ol")
+        slew_conf.prereq_tel_optics_cl = self.config.observatory.slew.get_string_rep("prereq_tel_optics_cl")
+        slew_conf.prereq_rotator = self.config.observatory.slew.get_string_rep("prereq_rotator")
+        slew_conf.prereq_filter = self.config.observatory.slew.get_string_rep("prereq_filter")
+        slew_conf.prereq_adc = self.config.observatory.slew.get_string_rep("prereq_adc")
+        slew_conf.prereq_ins_optics = self.config.observatory.slew.get_string_rep("prereq_ins_optics")
+        slew_conf.prereq_guider_pos = self.config.observatory.slew.get_string_rep("prereq_guider_pos")
+        slew_conf.prereq_guider_adq = self.config.observatory.slew.get_string_rep("prereq_guider_adq")
+        slew_conf.prereq_tel_settle = self.config.observatory.slew.get_string_rep("prereq_tel_settle")
+        slew_conf.prereq_dom_settle = self.config.observatory.slew.get_string_rep("prereq_dom_settle")
+        slew_conf.prereq_exposure = self.config.observatory.slew.get_string_rep("prereq_exposure")
+        slew_conf.prereq_readout = self.config.observatory.slew.get_string_rep("prereq_readout")
+
+        self.sal.put(slew_conf)
+
     def run(self):
         """Run the configuration communicator.
         """
         self.log.info("Running configuration communication")
         self._configure_scheduler()
+        self._configure_telescope()
+        self._configure_dome()
+        self._configure_rotator()
+        self._configure_camera()
+        self._configure_slew()

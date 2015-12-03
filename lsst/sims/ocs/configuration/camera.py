@@ -30,3 +30,30 @@ class Camera(pexConfig.Config):
         self.filter_pos = 'r'
         self.filter_removable = ['y', 'z']
         self.filter_unmounted = ['u']
+
+    @property
+    def filter_mounted_str(self):
+        """The list of mounted filters.
+
+        Returns:
+            str
+        """
+        return ",".join(self.filter_mounted)
+
+    @property
+    def filter_removable_str(self):
+        """The list of filters that can be removed.
+
+        Retuns:
+            str
+        """
+        return ",".join(self.filter_removable)
+
+    @property
+    def filter_unmounted_str(self):
+        """The list of unmounted filters.
+
+        Returns:
+            str
+        """
+        return ",".join(self.filter_unmounted)

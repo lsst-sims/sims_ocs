@@ -11,3 +11,8 @@ class CameraTest(unittest.TestCase):
         self.assertEqual(self.camera.filter_mounttime, 8 * 3600.0)
         self.assertEqual(len(self.camera.filter_mounted), 5)
         self.assertEqual(self.camera.filter_mounted[2], 'i')
+
+    def test_properties(self):
+        self.assertEqual(self.camera.filter_mounted_str, "g,r,i,z,y")
+        self.assertEqual(self.camera.filter_removable_str, "y,z")
+        self.assertEqual(self.camera.filter_unmounted_str, "u")
