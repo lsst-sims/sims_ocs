@@ -5,6 +5,7 @@ import lsst.pex.config as pexConfig
 from .camera import Camera
 from .dome import Dome
 from .rotator import Rotator
+from .helpers import load_config
 from .slew import Slew
 from .telescope import Telescope
 
@@ -24,6 +25,18 @@ class Observatory(pexConfig.Config):
         """Set defaults for the observatory configuration.
         """
         pass
+
+    def load(self, config_files):
+        """Load the configuration override files.
+
+        Args:
+            config_files (list): A set of configuration override files.
+        """
+        load_config(self.telescope, config_files)
+        load_config(self.dome, config_files)
+        load_config(self.rotator, config_files)
+        load_config(self.camera, config_files)
+        load_config(self.slew, config_files)
 
     def save_as(self, save_dir=''):
         """Save the configuration objects to separate files.

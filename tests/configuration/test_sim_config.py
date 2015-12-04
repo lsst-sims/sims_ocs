@@ -22,6 +22,13 @@ def save_file(filename, save_dir):
     ifile = open(os.path.join(save_dir, filename), 'w')
     ifile.close()
 
+def create_content(mod_name, cclass, cvars):
+    return """import {}
+assert type(config)=={}.{}, 'config is of type %s.%s instead of {}.{}' % (type(config).__module__,
+ type(config).__name__)
+{}
+                  """.format(mod_name, mod_name, cclass, mod_name, cclass, os.linesep.join(cvars))
+
 class SimulationConfigTest(unittest.TestCase):
 
     @classmethod
@@ -32,15 +39,10 @@ class SimulationConfigTest(unittest.TestCase):
         cls.config_dir = "config_temp"
         os.mkdir(cls.config_dir)
         cls.file4 = create_file(4, cls.config_dir)
-
-        module = "lsst.sims.ocs.configuration.lsst_survey"
-        conf_class = "LsstSurvey"
-        content = """import {}
-assert type(config)=={}.{}, 'config is of type %s.%s instead of {}.{}' % (type(config).__module__,
- type(config).__name__)
-config.duration=10.0
-                  """.format(module, module, conf_class, module, conf_class)
-        cls.file5 = create_file(5, message=content)
+        cls.file5 = create_file(5, message=create_content("lsst.sims.ocs.configuration.lsst_survey",
+                                                          "LsstSurvey", ["config.duration=10.0"]))
+        cls.file6 = create_file(6, message=create_content("lsst.sims.ocs.configuration.slew", "Slew",
+                                                          ["config.tel_optics_cl_delay=[0.0, 18.0]"]))
 
         cls.config_save_dir = "config_save"
         os.mkdir(cls.config_save_dir)
@@ -52,6 +54,7 @@ config.duration=10.0
         os.remove(cls.file3)
         shutil.rmtree(cls.config_dir)
         os.remove(cls.file5)
+        os.remove(cls.file6)
         shutil.rmtree(cls.config_save_dir)
 
     def setUp(self):
@@ -77,6 +80,8 @@ config.duration=10.0
     def test_load_does_override(self):
         self.sim_config.load([self.file5])
         self.assertEqual(self.sim_config.lsst_survey.duration, 10.0)
+        self.sim_config.load([self.file6])
+        self.assertEqual(self.sim_config.observatory.slew.tel_optics_cl_delay[1], 18.0)
 
     @mock.patch("lsst.pex.config.Config.save")
     def test_saving_blank_configurations(self, mock_pexconfig_save):
