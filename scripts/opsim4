@@ -15,6 +15,7 @@ from lsst.sims.ocs.setup.prog_config import read_file_config
 from lsst.sims.ocs.setup.log import configure_logging
 from lsst.sims.ocs.setup.parser import create_parser
 from lsst.sims.ocs.setup.tracking import Tracking
+from lsst.sims.ocs.utilities.file_helpers import expand_path
 
 def main(args):
     db = SocsDatabase(args.db_type, mysql_config_path=args.mysql_config_path,
@@ -47,11 +48,15 @@ def main(args):
         sim.finalize()
 
     if args.save_config:
+        config_dir = "config_{}".format(args.session_id)
         if args.config_save_dir == '':
-            args.config_save_dir = "config_{}".format(args.session_id)
+            args.config_save_dir = config_dir
+        else:
+            args.config_save_dir = expand_path(os.path.join(args.config_save_dir, config_dir))
             if not os.path.exists(args.config_save_dir):
                 os.mkdir(args.config_save_dir)
         configuration.save(args.config_save_dir)
+        logger.info("Finished saving survey configuration")
 
     end_time = datetime.now()
     run_time = (end_time - start_time).total_seconds()

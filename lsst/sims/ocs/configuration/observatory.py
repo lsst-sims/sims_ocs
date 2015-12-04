@@ -1,3 +1,5 @@
+import os
+
 import lsst.pex.config as pexConfig
 
 from .camera import Camera
@@ -17,3 +19,20 @@ class Observatory(pexConfig.Config):
     rotator = pexConfig.ConfigField("The LSST rotator configuration.", Rotator)
     camera = pexConfig.ConfigField("The LSST camera configuration.", Camera)
     slew = pexConfig.ConfigField("The LSST slew configuration.", Slew)
+
+    def setDefaults(self):
+        """Set defaults for the observatory configuration.
+        """
+        pass
+
+    def save_as(self, save_dir=''):
+        """Save the configuration objects to separate files.
+
+        Args:
+            save_dir (str): The directory in which to save the configuration files.
+        """
+        self.telescope.save(os.path.join(save_dir, "telescope.py"))
+        self.dome.save(os.path.join(save_dir, "dome.py"))
+        self.rotator.save(os.path.join(save_dir, "rotator.py"))
+        self.camera.save(os.path.join(save_dir, "camera.py"))
+        self.slew.save(os.path.join(save_dir, "slew.py"))

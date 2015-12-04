@@ -74,3 +74,4 @@ class SimulationConfig(pexConfig.Config):
         """
         self.lsst_survey.save(os.path.join(save_dir, "lsst_survey_config.py"))
         self.observing_site.save(os.path.join(save_dir, "observing_site_config.py"))
+        self.observatory.save_as(save_dir)
