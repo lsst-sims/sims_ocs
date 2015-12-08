@@ -48,6 +48,21 @@ class ConfigurationCommunicator(object):
 
         self.sal.put(sched_conf)
 
+    def _configure_observing_site(self):
+        """Configure and send the Observing Site configuration topic.
+        """
+        obs_site_conf = self.sal.set_publish_topic("obsSiteConfig")
+
+        obs_site_conf.name = self.config.observing_site.name
+        obs_site_conf.latitude = self.config.observing_site.latitude
+        obs_site_conf.longitude = self.config.observing_site.longitude
+        obs_site_conf.height = self.config.observing_site.height
+        obs_site_conf.pressure = self.config.observing_site.pressure
+        obs_site_conf.temperature = self.config.observing_site.temperature
+        obs_site_conf.relativeHumidity = self.config.observing_site.relativeHumidity
+
+        self.sal.put(obs_site_conf)
+
     def _configure_telescope(self):
         """Configure and send the Telescope configuration topic.
         """
@@ -159,6 +174,7 @@ class ConfigurationCommunicator(object):
         """
         self.log.info("Running configuration communication")
         self._configure_scheduler()
+        self._configure_observing_site()
         self._configure_telescope()
         self._configure_dome()
         self._configure_rotator()
