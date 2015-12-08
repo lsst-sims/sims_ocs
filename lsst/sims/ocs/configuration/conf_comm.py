@@ -140,6 +140,20 @@ class ConfigurationCommunicator(object):
 
         self.sal.put(slew_conf)
 
+    def _configure_park(self):
+        """Configure and send the park position configuration.
+        """
+        park_conf = self.sal.set_publish_topic("parkConfig")
+
+        park_conf.telescope_altitude = self.config.observatory.park.telescope_altitude
+        park_conf.telescope_azimuth = self.config.observatory.park.telescope_azimuth
+        park_conf.telescope_rotator = self.config.observatory.park.telescope_rotator
+        park_conf.dome_altitude = self.config.observatory.park.dome_altitude
+        park_conf.dome_azimuth = self.config.observatory.park.dome_azimuth
+        park_conf.filter_position = self.config.observatory.park.filter_position
+
+        self.sal.put(park_conf)
+
     def run(self):
         """Run the configuration communicator.
         """
@@ -150,3 +164,4 @@ class ConfigurationCommunicator(object):
         self._configure_rotator()
         self._configure_camera()
         self._configure_slew()
+        self._configure_park()

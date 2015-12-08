@@ -6,6 +6,7 @@ from .camera import Camera
 from .dome import Dome
 from .rotator import Rotator
 from .helpers import load_config
+from .park import Park
 from .slew import Slew
 from .telescope import Telescope
 
@@ -20,6 +21,7 @@ class Observatory(pexConfig.Config):
     rotator = pexConfig.ConfigField("The LSST rotator configuration.", Rotator)
     camera = pexConfig.ConfigField("The LSST camera configuration.", Camera)
     slew = pexConfig.ConfigField("The LSST slew configuration.", Slew)
+    park = pexConfig.ConfigField("The LSST observatory park position configuration.", Park)
 
     def setDefaults(self):
         """Set defaults for the observatory configuration.
@@ -37,6 +39,7 @@ class Observatory(pexConfig.Config):
         load_config(self.rotator, config_files)
         load_config(self.camera, config_files)
         load_config(self.slew, config_files)
+        load_config(self.park, config_files)
 
     def save_as(self, save_dir=''):
         """Save the configuration objects to separate files.
@@ -49,3 +52,4 @@ class Observatory(pexConfig.Config):
         self.rotator.save(os.path.join(save_dir, "rotator.py"))
         self.camera.save(os.path.join(save_dir, "camera.py"))
         self.slew.save(os.path.join(save_dir, "slew.py"))
+        self.park.save(os.path.join(save_dir, "park.py"))
