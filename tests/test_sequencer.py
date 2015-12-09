@@ -33,10 +33,10 @@ class SequencerTest(unittest.TestCase):
         self.seq.finalize()
         self.assertEqual(mock_logger_info.call_count, 2)
 
-    @mock.patch("logging.Logger.debug")
+    @mock.patch("logging.Logger.log")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetrySub")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
-    def test_observe_target(self, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_debug):
+    def test_observe_target(self, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
         sal = SalManager()
         sal.initialize()
         self.seq.initialize(sal)
@@ -54,7 +54,7 @@ class SequencerTest(unittest.TestCase):
 
         observation = self.seq.observe_target(target, time_handler)
 
-        self.assertEqual(mock_logger_debug.call_count, 3)
+        self.assertEqual(mock_logger_log.call_count, 3)
         self.assertEqual(observation.observationTime, time_handler.initial_timestamp + self.seq.slew_time[0])
         self.assertEqual(observation.targetId, target.targetId)
         self.assertEqual(self.seq.targets_received, 1)

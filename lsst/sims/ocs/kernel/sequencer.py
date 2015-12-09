@@ -1,5 +1,7 @@
 import logging
 
+from ..setup.log import LoggingLevel
+
 class Sequencer(object):
     """Handle the observation of a target.
 
@@ -51,11 +53,12 @@ class Sequencer(object):
         Returns:
             struct: An observation telemetry topic containing the observed target parameters.
         """
-        self.log.debug("Received target {}".format(target.targetId))
+        self.log.log(LoggingLevel.EXTENSIVE.value, "Received target {}".format(target.targetId))
         self.targets_received += 1
 
-        self.log.debug("Starting observation {} for target {}.".format(self.observations_made,
-                                                                       target.targetId))
+        self.log.log(LoggingLevel.EXTENSIVE.value,
+                     "Starting observation {} for target {}.".format(self.observations_made,
+                                                                     target.targetId))
         th.update_time(*self.slew_time)
 
         self.observation.observationId = self.observations_made
@@ -68,8 +71,9 @@ class Sequencer(object):
         self.observation.num_exposures = target.num_exposures
 
         th.update_time(*self.visit_time)
-        self.log.debug("Observation {} completed at {}.".format(self.observations_made,
-                                                                th.current_timestring))
+        self.log.log(LoggingLevel.EXTENSIVE.value,
+                     "Observation {} completed at {}.".format(self.observations_made,
+                                                              th.current_timestring))
         self.observations_made += 1
 
         return self.observation
