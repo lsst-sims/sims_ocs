@@ -3,6 +3,7 @@ import argparse
 import os
 
 from lsst.sims.ocs.database.socs_db import SocsDatabase
+from lsst.sims.ocs.setup.prog_config import write_file_config
 
 def admin_create(options, database):
     chk = "mysql -u root -p -e 'use {}'".format(database.db_name)
@@ -19,6 +20,9 @@ def main(args):
 
     if args.type == "mysql" and (args.create or args.recreate):
         admin_create(args, db)
+
+    if args.recreate or args.create:
+        write_file_config(args)
 
     if args.recreate:
         db.delete_db()
