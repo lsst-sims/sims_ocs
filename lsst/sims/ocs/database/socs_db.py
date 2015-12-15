@@ -4,7 +4,7 @@ import os
 import MySQLdb as mysql
 from sqlalchemy import create_engine, MetaData
 
-from .tables.base_tbls import create_session
+from .tables.base_tbls import create_session, create_target_history
 from ..utilities.file_helpers import expand_path
 from ..utilities.session_info import get_hostname, get_user, get_version
 
@@ -40,6 +40,7 @@ class SocsDatabase(object):
         """
         self.db_name = "SocsDB"
         self.db_dialect = dialect
+        self.session_id = -1
         self.metadata = MetaData()
         self.engine = None
         self.mysql_config_path = mysql_config_path
@@ -66,6 +67,7 @@ class SocsDatabase(object):
         if metadata is None:
             metadata = self.metadata
         self.session = create_session(metadata, use_autoincrement)
+        self.target_history = create_target_history(metadata)
 
     def _connect(self):
         """Create the database connection for MySQL.
@@ -141,17 +143,17 @@ class SocsDatabase(object):
         result = conn.execute(insert, sessionUser=user, sessionHost=hostname, sessionDate=date,
                               version=version, runComment=run_comment)
 
-        session_id = result.lastrowid
+        self.session_id = result.lastrowid
 
         if self.db_dialect == "sqlite":
-            session_id += self.SQLITE_SESSION_OFFSET
-            sqlite_session_db = "{}_{}.db".format(get_hostname(), session_id)
+            self.session_id += self.SQLITE_SESSION_OFFSET
+            sqlite_session_db = "{}_{}.db".format(get_hostname(), self.session_id)
             self.session_engine = self._make_engine(sqlite_session_db)
             self._create_tables(self.session_metadata, use_autoincrement=False)
             self.session_metadata.create_all(self.session_engine)
             insert = self.session.insert()
             conn = self.session_engine.connect()
-            result = conn.execute(insert, session_ID=session_id, sessionUser=user, sessionHost=hostname,
+            result = conn.execute(insert, session_ID=self.session_id, sessionUser=user, sessionHost=hostname,
                                   sessionDate=date, version=version, runComment=run_comment)
 
-        return session_id
+        return self.session_id

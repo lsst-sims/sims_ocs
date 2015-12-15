@@ -18,7 +18,9 @@ class SocsDatabaseMySqlTest(unittest.TestCase):
         self.assertEqual(self.db.db_dialect, "mysql")
         self.assertIsNotNone(self.db.engine)
         self.assertIsNotNone(self.db.metadata)
+        self.assertEqual(self.db.session_id, -1)
         self.assertTrue(hasattr(self.db, "session"))
+        self.assertTrue(hasattr(self.db, "target_history"))
 
     @mock.patch("sqlalchemy.MetaData.create_all")
     def test_database_creation(self, mock_create_all):
@@ -51,6 +53,7 @@ class SocsDatabaseMySqlTest(unittest.TestCase):
 
         self.assertEqual(mock_conn.execute.call_count, 1)
         self.assertEqual(session_id, session_id_truth)
+        self.assertEqual(db.session_id, session_id_truth)
 
 class SocsDatabaseSqliteTest(unittest.TestCase):
 

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Index, Integer, String, Table
+from sqlalchemy import Column, Float, Index, Integer, String, Table
 from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event
 
@@ -29,3 +29,23 @@ def create_session(metadata, autoincrement=True):
     event.listen(table, 'after_create', alter_table.execute_if(dialect='mysql'))
 
     return table
+
+def create_target_history(metadata):
+    table = Table("TargetHistory", metadata,
+                  Column("targetID", Integer, primary_key=True),
+                  Column("Session_sessionID", Integer, primary_key=True),
+                  Column("fieldID", Integer),
+                  Column("filter", String(1)),
+                  Column("ra", Float),
+                  Column("dec", Float),
+                  Column("angle", Float),
+                  Column("num_exposures", Integer))
+
+    Index("s_filter", table.c.filter)
+    Index("fk_TargetHistory_Session1", table.c.Session_sessionID)
+    Index("fk_TargetHistory_Field1", table.c.fieldID)
+
+    return table
+
+def create_observation(metadata):
+    pass
