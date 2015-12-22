@@ -1,9 +1,11 @@
+import collections
 from datetime import datetime
 import os
 
 import MySQLdb as mysql
 from sqlalchemy import create_engine, MetaData
 
+import lsst.sims.ocs.database.tables.write_tbls as write_tbls
 from .tables.base_tbls import create_session, create_target_history
 from ..utilities.file_helpers import expand_path
 from ..utilities.session_info import get_hostname, get_user, get_version
@@ -57,6 +59,9 @@ class SocsDatabase(object):
             self.session_tracking = create_session(self.metadata)
             sqlite_session_tracking_db = "{}_sessions.db".format(get_hostname())
             self.engine = self._make_engine(sqlite_session_tracking_db)
+
+        # Parameter for holding data lists
+        self.data_list = collections.defaultdict(list)
 
     def _create_tables(self, metadata=None, use_autoincrement=True):
         """Create all the relevant tables.
@@ -157,3 +162,32 @@ class SocsDatabase(object):
                                   sessionDate=date, version=version, runComment=run_comment)
 
         return self.session_id
+
+    def append_data(self, table_name, table_data):
+        """Collect information for the provided table.
+
+        Args:
+            table_name (str): The attribute name holding the sqlalchemy.Table object.
+            table_data (topic): The Scheduler topic data instance.
+        """
+        write_func = getattr(write_tbls, "write_{}".format(table_name))
+        result = write_func(table_data, self.session_id)
+        self.data_list[table_name].append(result)
+
+    def clear_data(self):
+        """Clear all stored data lists.
+        """
+        self.data_list.clear()
+
+    def write(self):
+        """Write collected information into the database.
+        """
+        if self.db_dialect == "mysql":
+            e = self.engine
+        if self.db_dialect == "sqlite":
+            e = self.session_engine
+        conn = e.connect()
+
+        for table_name, table_data in self.data_list.items():
+            tbl = getattr(self, table_name)
+            conn.execute(tbl.insert(), table_data)

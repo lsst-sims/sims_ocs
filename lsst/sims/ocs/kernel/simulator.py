@@ -84,6 +84,20 @@ class Simulator(object):
         self.target = self.sal.set_subscribe_topic("targetTest")
         self.observation = self.sal.set_publish_topic("observationTest")
 
+    def _start_night(self, night):
+        self.log.info("Night {}".format(night))
+
+        self.end_of_night = self.time_handler.current_timestamp + self.seconds_in_night
+        end_of_night_str = self.time_handler.future_timestring(self.seconds_in_night, "seconds")
+        self.log.debug("End of night {} at {}".format(night, end_of_night_str))
+
+        self.db.clear_data()
+
+    def _end_night(self):
+        # Run time to next night
+        self.time_handler.update_time(self.hours_in_daylight, "hours")
+        self.db.write()
+
     def run(self):
         """Run the simulation.
         """
@@ -96,13 +110,9 @@ class Simulator(object):
 
         self.log.debug("Duration = {}".format(self.duration))
         for night in xrange(1, int(self.duration) + 1):
-            self.log.info("Night {}".format(night))
+            self._start_night(night)
 
-            end_of_night = self.time_handler.current_timestamp + self.seconds_in_night
-            end_of_night_str = self.time_handler.future_timestring(self.seconds_in_night, "seconds")
-            self.log.debug("End of night {} at {}".format(night, end_of_night_str))
-
-            while self.time_handler.current_timestamp < end_of_night:
+            while self.time_handler.current_timestamp < self.end_of_night:
 
                 self.comm_time.timestamp = self.time_handler.current_timestamp
                 self.log.log(LoggingLevel.EXTENSIVE.value,
@@ -119,8 +129,9 @@ class Simulator(object):
                 # Pass observation back to scheduler
                 self.sal.put(observation)
 
-            # Run time to next night
-            self.time_handler.update_time(self.hours_in_daylight, "hours")
+                self.db.append_data("target_history", self.target)
+
+            self._end_night()
 
     def finalize(self):
         """Perform finalization steps.
