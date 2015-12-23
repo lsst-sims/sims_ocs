@@ -83,7 +83,6 @@ class Simulator(object):
         self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
         self.target = self.sal.set_subscribe_topic("targetTest")
-        self.observation = self.sal.set_publish_topic("observationTest")
         self.field = self.sal.set_subscribe_topic("field")
 
     def _start_night(self, night):
@@ -116,10 +115,14 @@ class Simulator(object):
 
         # Get fields from scheduler
         if self.wait_for_scheduler:
+            self.log.info("Retrieving fields from Scheduler")
             self.field_list = []
             end_fields = False
             while True:
                 rcode = self.sal.manager.getNextSample_field(self.field)
+                if self.field.ID == 0:
+                    continue
+                self.log.log(LoggingLevel.EXTENSIVE.value, self.field.ID)
                 if rcode == 0 and self.field.ID == -1:
                     if end_fields:
                         break
@@ -127,6 +130,7 @@ class Simulator(object):
                         end_fields = True
                         continue
                 self.field_list.append(write_field(self.field))
+            self.log.info("{} fields retrieved".format(len(self.field_list)))
             self.db.write_table("field", self.field_list)
 
         self.time_handler.update_time(*self.night_adjust)
