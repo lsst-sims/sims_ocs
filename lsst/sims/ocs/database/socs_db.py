@@ -201,6 +201,12 @@ class SocsDatabase(object):
             conn.execute(tbl.insert(), table_data)
 
     def write_table(self, table_name, table_data):
+        """Collect information for the provided table.
+
+        Args:
+            table_name (str): The attribute name holding the sqlalchemy.Table object.
+            table_data (topic): The Scheduler topic data instance.
+        """
         conn = self._get_conn()
         tbl = getattr(self, table_name)
         conn.execute(tbl.insert(), table_data)
