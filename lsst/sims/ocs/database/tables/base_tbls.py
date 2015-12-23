@@ -30,7 +30,46 @@ def create_session(metadata, autoincrement=True):
 
     return table
 
+def create_field(metadata):
+    """Create Field table.
+
+    This function creates the Field table from the sky tesellation.
+
+    Args:
+        metadata (sqlalchemy.MetaData): The database object that collects the tables.
+
+    Returns:
+        (sqlalchemy.Table): The Field table object.
+    """
+    table = Table("Field", metadata,
+                  Column("ID", Integer, primary_key=True, nullable=False),
+                  Column("fov", Float, nullable=False),
+                  Column("ra", Float, nullable=False),
+                  Column("dec", Float, nullable=False),
+                  Column("gl", Float, nullable=False),
+                  Column("gb", Float, nullable=False),
+                  Column("el", Float, nullable=False),
+                  Column("eb", Float, nullable=False))
+
+    Index("field_fov", table.c.ID, table.c.fov)
+    Index("fov_gl_gb", table.c.fov, table.c.gl, table.c.gb)
+    Index("fov_el_eb", table.c.fov, table.c.el, table.c.eb)
+    Index("fov_ra_dec", table.c.fov, table.c.ra, table.c.dec)
+
+    return table
+
 def create_target_history(metadata):
+    """Create TargetHistory table.
+
+    This function creates the TargetHistory table for tracking all the requested targets from
+    the Scheduler in the simulation run.
+
+    Args:
+        metadata (sqlalchemy.MetaData): The database object that collects the tables.
+
+    Returns:
+        (sqlalchemy.Table): The TargetHistory table object.
+    """
     table = Table("TargetHistory", metadata,
                   Column("targetID", Integer, primary_key=True),
                   Column("Session_sessionID", Integer, primary_key=True),

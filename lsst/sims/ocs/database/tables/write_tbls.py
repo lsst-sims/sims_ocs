@@ -21,3 +21,24 @@ def write_target_history(data, sid):
         ('num_exposures', data.num_exposures)
     ])
     return values
+
+def write_field(data):
+    """Create a dictionary of data for the Field table.
+
+    Args:
+        data (SALPY_scheduler.fieldC): The SAL target topic instance.
+
+    Returns:
+        collections.OrderedDict: A dictionary of the topic data.
+    """
+    values = collections.OrderedDict([
+        ('ID', data.ID),
+        ('fov', data.fov),
+        ('ra', data.ra),
+        ('dec', data.dec),
+        ('gl', data.gl),
+        ('gb', data.gb),
+        ('el', data.el),
+        ('eb', data.eb)
+    ])
+    return values

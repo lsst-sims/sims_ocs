@@ -6,7 +6,7 @@ import MySQLdb as mysql
 from sqlalchemy import create_engine, MetaData
 
 import lsst.sims.ocs.database.tables.write_tbls as write_tbls
-from .tables.base_tbls import create_session, create_target_history
+from .tables.base_tbls import create_field, create_session, create_target_history
 from ..utilities.file_helpers import expand_path
 from ..utilities.session_info import get_hostname, get_user, get_version
 
@@ -72,6 +72,7 @@ class SocsDatabase(object):
         if metadata is None:
             metadata = self.metadata
         self.session = create_session(metadata, use_autoincrement)
+        self.field = create_field(metadata)
         self.target_history = create_target_history(metadata)
 
     def _connect(self):
@@ -179,6 +180,13 @@ class SocsDatabase(object):
         """
         self.data_list.clear()
 
+    def _get_conn(self):
+        if self.db_dialect == "mysql":
+            e = self.engine
+        if self.db_dialect == "sqlite":
+            e = self.session_engine
+        return e.connect()
+
     def write(self):
         """Write collected information into the database.
         """
@@ -191,3 +199,8 @@ class SocsDatabase(object):
         for table_name, table_data in self.data_list.items():
             tbl = getattr(self, table_name)
             conn.execute(tbl.insert(), table_data)
+
+    def write_table(self, table_name, table_data):
+        conn = self._get_conn()
+        tbl = getattr(self, table_name)
+        conn.execute(tbl.insert(), table_data)

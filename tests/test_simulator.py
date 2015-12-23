@@ -55,7 +55,7 @@ class SimulatorTest(unittest.TestCase):
     def test_initialization(self, mock_sequencer_init):
         self.sim.initialize()
         self.assertEqual(self.mock_salmanager_pub_topic.call_count, 2)
-        self.assertEqual(self.mock_salmanager_sub_topic.call_count, 1)
+        self.assertEqual(self.mock_salmanager_sub_topic.call_count, 2)
         self.assertEqual(mock_sequencer_init.call_count, 1)
 
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.finalize")
@@ -88,20 +88,27 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(self.sim.seq.targets_received, self.num_visits)
         self.assertEqual(self.sim.seq.observations_made, self.num_visits)
 
-    @mock.patch("SALPY_scheduler.SAL_scheduler.getNextSample_targetTest")
+    @mock.patch("SALPY_scheduler.SAL_scheduler")
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.put")
-    def test_run_with_scheduler(self, mock_salmanager_put, mock_salmanager_get):
+    def test_run_with_scheduler(self, mock_salmanager_put, mock_salscheduler):
         self.short_run(True)
         get_calls = 1 * self.num_visits
 
         self.sim.initialize()
-        # Need to make Scheduler wait break condition work.
-        mock_salmanager_get.return_value = 0
+        # Need to make Scheduler wait break conditions work.
+        mock_ss = mock_salscheduler()
+        # Fields
+        mock_ss.getNextSample_field = mock.MagicMock(return_value=0)
+        self.sim.field.ID = -1
+        # Targets
+        mock_ss.getNextSample_targetTest = mock.MagicMock(return_value=0)
         self.sim.target.num_exposures = 2
+
         self.sim.run()
 
         self.assertEqual(mock_salmanager_put.call_count, self.put_calls)
-        self.assertEqual(mock_salmanager_get.call_count, get_calls)
+        self.assertEqual(mock_ss.getNextSample_field.call_count, 2)
+        self.assertEqual(mock_ss.getNextSample_targetTest.call_count, get_calls)
         self.assertEqual(self.sim.seq.targets_received, self.num_visits)
         self.assertEqual(self.sim.seq.observations_made, self.num_visits)
         self.assertEqual(self.mock_socs_db.clear_data.call_count, self.num_nights)

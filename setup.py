@@ -55,7 +55,7 @@ if __name__ == "__main__":
         author_email='mareuter@lsst.org',
         url='https://github.com/lsst-sims/sims_ocs',
         cmdclass={
-            'test': quiet_test,
+            #'test': quiet_test,
         },
         scripts=['scripts/opsim4'],
         packages=[
