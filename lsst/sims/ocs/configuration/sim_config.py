@@ -2,6 +2,7 @@ import os
 
 import lsst.pex.config as pexConfig
 
+from .helpers import load_config
 from .lsst_survey import LsstSurvey
 from .observatory import Observatory
 from .obs_site import ObservingSite
@@ -46,25 +47,9 @@ class SimulationConfig(pexConfig.Config):
                 config_files.append(ifile)
 
         if len(config_files):
-            self._load_config(self.lsst_survey, config_files)
-            self._load_config(self.observing_site, config_files)
-
-    def _load_config(self, config_obj, ifiles):
-        """Apply override file to configuration object.
-
-        This function does the actual work of going through the override files and applying the
-        correct one to the given configuration object.
-
-        Args:
-            config_obj (pex.config.ConfigField): The configuration object to apply overrides.
-            ifiles (list): The list of overriding configuration files.
-        """
-        for ifile in ifiles:
-            try:
-                config_obj.load(ifile)
-            except AssertionError:
-                # Not the right configuration file, so do nothing.
-                pass
+            load_config(self.lsst_survey, config_files)
+            load_config(self.observing_site, config_files)
+            self.observatory.load(config_files)
 
     def save(self, save_dir=''):
         """Save the configuration objects to separate files.
@@ -74,3 +59,4 @@ class SimulationConfig(pexConfig.Config):
         """
         self.lsst_survey.save(os.path.join(save_dir, "lsst_survey_config.py"))
         self.observing_site.save(os.path.join(save_dir, "observing_site_config.py"))
+        self.observatory.save_as(save_dir)

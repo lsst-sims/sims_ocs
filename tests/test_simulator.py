@@ -6,7 +6,10 @@ try:
 except ImportError:
     import mock
 
+from lsst.sims.ocs.configuration.sim_config import SimulationConfig
 from lsst.sims.ocs.kernel.simulator import Simulator
+
+from test_helpers import CONFIG_COMM_PUT_CALLS
 
 class SimulatorTest(unittest.TestCase):
 
@@ -27,12 +30,7 @@ class SimulatorTest(unittest.TestCase):
         self.options.frac_duration = 0.5
         self.options.no_scheduler = True
 
-        lsst_survey = collections.namedtuple("lsst_survey", ["start_date", "duration"])
-        lsst_survey.start_date = "2020-05-24"
-        lsst_survey.duration = 1.0
-
-        self.configuration = collections.namedtuple("configuration", ["lsst_survey"])
-        self.configuration.lsst_survey = lsst_survey
+        self.configuration = SimulationConfig()
 
         self.sim = Simulator(self.options, self.configuration, self.mock_socs_db)
 
@@ -69,7 +67,7 @@ class SimulatorTest(unittest.TestCase):
         # One for timestamp and one for observation
         self.put_calls = 2 * self.num_visits
         self.config_comm_put_calls = 1
-        self.put_calls += self.config_comm_put_calls
+        self.put_calls += CONFIG_COMM_PUT_CALLS
         self.sim.fractional_duration = 1 / 365
         self.sim.wait_for_scheduler = wait_for_sched
         self.sim.hours_in_night = 0.1
