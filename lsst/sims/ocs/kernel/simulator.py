@@ -1,12 +1,13 @@
 import logging
 
 from lsst.sims.ocs.configuration.conf_comm import ConfigurationCommunicator
-from lsst.sims.ocs.sal.sal_manager import SalManager
+from lsst.sims.ocs.database.tables.write_tbls import write_field
 from lsst.sims.ocs.kernel.sequencer import Sequencer
 from lsst.sims.ocs.kernel.time_handler import DAYS_IN_YEAR
 from lsst.sims.ocs.kernel.time_handler import HOURS_IN_DAY
 from lsst.sims.ocs.kernel.time_handler import SECONDS_IN_HOUR
 from lsst.sims.ocs.kernel.time_handler import TimeHandler
+from lsst.sims.ocs.sal.sal_manager import SalManager
 from lsst.sims.ocs.setup.log import LoggingLevel
 
 class Simulator(object):
@@ -82,7 +83,28 @@ class Simulator(object):
         self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
         self.target = self.sal.set_subscribe_topic("targetTest")
-        self.observation = self.sal.set_publish_topic("observationTest")
+        self.field = self.sal.set_subscribe_topic("field")
+
+    def _start_night(self, night):
+        """Perform actions at the start of the night.
+
+        Args:
+            night (int): The current night.
+        """
+        self.log.info("Night {}".format(night))
+
+        self.end_of_night = self.time_handler.current_timestamp + self.seconds_in_night
+        end_of_night_str = self.time_handler.future_timestring(self.seconds_in_night, "seconds")
+        self.log.debug("End of night {} at {}".format(night, end_of_night_str))
+
+        self.db.clear_data()
+
+    def _end_night(self):
+        """Perform actions at the end of the night.
+        """
+        # Run time to next night
+        self.time_handler.update_time(self.hours_in_daylight, "hours")
+        self.db.write()
 
     def run(self):
         """Run the simulation.
@@ -91,18 +113,34 @@ class Simulator(object):
 
         self.conf_comm.run()
 
+        # Get fields from scheduler
+        if self.wait_for_scheduler:
+            self.log.info("Retrieving fields from Scheduler")
+            self.field_list = []
+            end_fields = False
+            while True:
+                rcode = self.sal.manager.getNextSample_field(self.field)
+                if self.field.ID == 0:
+                    continue
+                self.log.log(LoggingLevel.EXTENSIVE.value, self.field.ID)
+                if rcode == 0 and self.field.ID == -1:
+                    if end_fields:
+                        break
+                    else:
+                        end_fields = True
+                        continue
+                self.field_list.append(write_field(self.field))
+            self.log.info("{} fields retrieved".format(len(self.field_list)))
+            self.db.write_table("field", self.field_list)
+
         self.time_handler.update_time(*self.night_adjust)
         self.comm_time.timestamp = self.time_handler.current_timestamp
 
         self.log.debug("Duration = {}".format(self.duration))
         for night in xrange(1, int(self.duration) + 1):
-            self.log.info("Night {}".format(night))
+            self._start_night(night)
 
-            end_of_night = self.time_handler.current_timestamp + self.seconds_in_night
-            end_of_night_str = self.time_handler.future_timestring(self.seconds_in_night, "seconds")
-            self.log.debug("End of night {} at {}".format(night, end_of_night_str))
-
-            while self.time_handler.current_timestamp < end_of_night:
+            while self.time_handler.current_timestamp < self.end_of_night:
 
                 self.comm_time.timestamp = self.time_handler.current_timestamp
                 self.log.log(LoggingLevel.EXTENSIVE.value,
@@ -119,8 +157,10 @@ class Simulator(object):
                 # Pass observation back to scheduler
                 self.sal.put(observation)
 
-            # Run time to next night
-            self.time_handler.update_time(self.hours_in_daylight, "hours")
+                self.db.append_data("target_history", self.target)
+                self.db.append_data("observation_history", observation)
+
+            self._end_night()
 
     def finalize(self):
         """Perform finalization steps.

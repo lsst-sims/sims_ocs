@@ -1,10 +1,11 @@
+import collections
 from datetime import datetime
 import os
 
 import MySQLdb as mysql
 from sqlalchemy import create_engine, MetaData
 
-from .tables.base_tbls import create_session
+import tables
 from ..utilities.file_helpers import expand_path
 from ..utilities.session_info import get_hostname, get_user, get_version
 
@@ -40,6 +41,7 @@ class SocsDatabase(object):
         """
         self.db_name = "SocsDB"
         self.db_dialect = dialect
+        self.session_id = -1
         self.metadata = MetaData()
         self.engine = None
         self.mysql_config_path = mysql_config_path
@@ -53,9 +55,12 @@ class SocsDatabase(object):
             self._create_tables()
             self.engine = self._make_engine()
         if self.db_dialect == "sqlite":
-            self.session_tracking = create_session(self.metadata)
+            self.session_tracking = tables.create_session(self.metadata)
             sqlite_session_tracking_db = "{}_sessions.db".format(get_hostname())
             self.engine = self._make_engine(sqlite_session_tracking_db)
+
+        # Parameter for holding data lists
+        self.data_list = collections.defaultdict(list)
 
     def _create_tables(self, metadata=None, use_autoincrement=True):
         """Create all the relevant tables.
@@ -65,7 +70,10 @@ class SocsDatabase(object):
         """
         if metadata is None:
             metadata = self.metadata
-        self.session = create_session(metadata, use_autoincrement)
+        self.session = tables.create_session(metadata, use_autoincrement)
+        self.field = tables.create_field(metadata)
+        self.target_history = tables.create_target_history(metadata)
+        self.observation_history = tables.create_observation_history(metadata)
 
     def _connect(self):
         """Create the database connection for MySQL.
@@ -141,17 +149,69 @@ class SocsDatabase(object):
         result = conn.execute(insert, sessionUser=user, sessionHost=hostname, sessionDate=date,
                               version=version, runComment=run_comment)
 
-        session_id = result.lastrowid
+        self.session_id = result.lastrowid
 
         if self.db_dialect == "sqlite":
-            session_id += self.SQLITE_SESSION_OFFSET
-            sqlite_session_db = "{}_{}.db".format(get_hostname(), session_id)
+            self.session_id += self.SQLITE_SESSION_OFFSET
+            sqlite_session_db = "{}_{}.db".format(get_hostname(), self.session_id)
             self.session_engine = self._make_engine(sqlite_session_db)
             self._create_tables(self.session_metadata, use_autoincrement=False)
             self.session_metadata.create_all(self.session_engine)
             insert = self.session.insert()
             conn = self.session_engine.connect()
-            result = conn.execute(insert, session_ID=session_id, sessionUser=user, sessionHost=hostname,
+            result = conn.execute(insert, session_ID=self.session_id, sessionUser=user, sessionHost=hostname,
                                   sessionDate=date, version=version, runComment=run_comment)
 
-        return session_id
+        return self.session_id
+
+    def append_data(self, table_name, table_data):
+        """Collect information for the provided table.
+
+        Args:
+            table_name (str): The attribute name holding the sqlalchemy.Table object.
+            table_data (topic): The Scheduler topic data instance.
+        """
+        write_func = getattr(tables, "write_{}".format(table_name))
+        result = write_func(table_data, self.session_id)
+        self.data_list[table_name].append(result)
+
+    def clear_data(self):
+        """Clear all stored data lists.
+        """
+        self.data_list.clear()
+
+    def _get_conn(self):
+        """Get the DB connection.
+
+        Returns:
+            sqlalchemy.engine.Connection: The DB connection for the associated type.
+        """
+        if self.db_dialect == "mysql":
+            e = self.engine
+        if self.db_dialect == "sqlite":
+            e = self.session_engine
+        return e.connect()
+
+    def write(self):
+        """Write collected information into the database.
+        """
+        if self.db_dialect == "mysql":
+            e = self.engine
+        if self.db_dialect == "sqlite":
+            e = self.session_engine
+        conn = e.connect()
+
+        for table_name, table_data in self.data_list.items():
+            tbl = getattr(self, table_name)
+            conn.execute(tbl.insert(), table_data)
+
+    def write_table(self, table_name, table_data):
+        """Collect information for the provided table.
+
+        Args:
+            table_name (str): The attribute name holding the sqlalchemy.Table object.
+            table_data (topic): The Scheduler topic data instance.
+        """
+        conn = self._get_conn()
+        tbl = getattr(self, table_name)
+        conn.execute(tbl.insert(), table_data)

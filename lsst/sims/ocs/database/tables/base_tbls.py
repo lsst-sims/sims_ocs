@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Index, Integer, String, Table
+from sqlalchemy import Column, Float, Index, Integer, String, Table
 from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event
 
@@ -27,5 +27,92 @@ def create_session(metadata, autoincrement=True):
 
     alter_table = DDL("ALTER TABLE %(table)s AUTO_INCREMENT=1000;")
     event.listen(table, 'after_create', alter_table.execute_if(dialect='mysql'))
+
+    return table
+
+def create_field(metadata):
+    """Create Field table.
+
+    This function creates the Field table from the sky tesellation.
+
+    Args:
+        metadata (sqlalchemy.MetaData): The database object that collects the tables.
+
+    Returns:
+        (sqlalchemy.Table): The Field table object.
+    """
+    table = Table("Field", metadata,
+                  Column("ID", Integer, primary_key=True, nullable=False),
+                  Column("fov", Float, nullable=False),
+                  Column("ra", Float, nullable=False),
+                  Column("dec", Float, nullable=False),
+                  Column("gl", Float, nullable=False),
+                  Column("gb", Float, nullable=False),
+                  Column("el", Float, nullable=False),
+                  Column("eb", Float, nullable=False))
+
+    Index("field_fov", table.c.ID, table.c.fov)
+    Index("fov_gl_gb", table.c.fov, table.c.gl, table.c.gb)
+    Index("fov_el_eb", table.c.fov, table.c.el, table.c.eb)
+    Index("fov_ra_dec", table.c.fov, table.c.ra, table.c.dec)
+
+    return table
+
+def create_target_history(metadata):
+    """Create TargetHistory table.
+
+    This function creates the TargetHistory table for tracking all the requested targets from
+    the Scheduler in the simulation run.
+
+    Args:
+        metadata (sqlalchemy.MetaData): The database object that collects the tables.
+
+    Returns:
+        (sqlalchemy.Table): The TargetHistory table object.
+    """
+    table = Table("TargetHistory", metadata,
+                  Column("targetID", Integer, primary_key=True),
+                  Column("Session_sessionID", Integer, primary_key=True),
+                  Column("fieldID", Integer),
+                  Column("filter", String(1)),
+                  Column("ra", Float),
+                  Column("dec", Float),
+                  Column("angle", Float),
+                  Column("num_exposures", Integer))
+
+    Index("t_filter", table.c.filter)
+    Index("fk_TargetHistory_Session1", table.c.Session_sessionID)
+    Index("fk_TargetHistory_Field1", table.c.fieldID)
+
+    return table
+
+def create_observation_history(metadata):
+    """Create ObsHistory table.
+
+    This function creates the ObsHistory table for tracking all the observations performed
+    by the Sequencer in the simulation run.
+
+    Args:
+        metadata (sqlalchemy.MetaData): The database object that collects the tables.
+
+    Returns:
+        (sqlalchemy.Table): The ObsHistory table object.
+    """
+    table = Table("ObsHistory", metadata,
+                  Column("observationID", Integer, primary_key=True),
+                  Column("Session_sessionID", Integer, primary_key=True),
+                  Column('observationTime', Float),
+                  Column('targetID', Integer),
+                  Column("fieldID", Integer),
+                  Column("filter", String(1)),
+                  Column("ra", Float),
+                  Column("dec", Float),
+                  Column("angle", Float),
+                  Column("num_exposures", Integer))
+
+    Index("o_filter", table.c.filter)
+    Index("fk_ObsHistory_Session1", table.c.Session_sessionID)
+    Index("fk_ObsHistory_Field1", table.c.fieldID)
+    Index("fk_ObsHistory_Target1", table.c.targetID)
 
     return table
