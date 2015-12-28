@@ -42,3 +42,27 @@ def write_field(data):
         ('eb', data.eb)
     ])
     return values
+
+def write_observation_history(data, sid):
+    """Create a dictionary of data for the ObsHistory table.
+
+    Args:
+        data (SALPY_scheduler.observationTestC): The SAL observation topic instance.
+        sid (int): The current session ID.
+
+    Returns:
+        collections.OrderedDict: A dictionary of the topic data.
+    """
+    values = collections.OrderedDict([
+        ('observationID', data.observationId),
+        ('Session_sessionID', sid),
+        ('observationTime', data.observationTime),
+        ('targetID', data.targetId),
+        ('fieldID', data.fieldId),
+        ('ra', data.ra),
+        ('dec', data.dec),
+        ('filter', data.filter),
+        ('angle', data.angle),
+        ('num_exposures', data.num_exposures)
+    ])
+    return values

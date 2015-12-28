@@ -20,3 +20,14 @@ field_topic.gl = -45.0
 field_topic.gb = 45.0
 field_topic.el = 60.0
 field_topic.eb = -60.0
+
+observation_topic = SALPY_scheduler.scheduler_observationTestC()
+observation_topic.observationID = 5
+observation_topic.targetID = 10
+observation_topic.observationTime = 1640995200.0
+observation_topic.fieldId = 300
+observation_topic.filter = "r"
+observation_topic.ra = 1.000
+observation_topic.dec = -3.00
+observation_topic.angle = 0.5
+observation_topic.num_exposures = 2

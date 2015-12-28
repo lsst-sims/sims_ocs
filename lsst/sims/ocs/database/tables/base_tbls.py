@@ -80,11 +80,39 @@ def create_target_history(metadata):
                   Column("angle", Float),
                   Column("num_exposures", Integer))
 
-    Index("s_filter", table.c.filter)
+    Index("t_filter", table.c.filter)
     Index("fk_TargetHistory_Session1", table.c.Session_sessionID)
     Index("fk_TargetHistory_Field1", table.c.fieldID)
 
     return table
 
-def create_observation(metadata):
-    pass
+def create_observation_history(metadata):
+    """Create ObsHistory table.
+
+    This function creates the ObsHistory table for tracking all the observations performed
+    by the Sequencer in the simulation run.
+
+    Args:
+        metadata (sqlalchemy.MetaData): The database object that collects the tables.
+
+    Returns:
+        (sqlalchemy.Table): The ObsHistory table object.
+    """
+    table = Table("ObsHistory", metadata,
+                  Column("observationID", Integer, primary_key=True),
+                  Column("Session_sessionID", Integer, primary_key=True),
+                  Column('observationTime', Float),
+                  Column('targetID', Integer),
+                  Column("fieldID", Integer),
+                  Column("filter", String(1)),
+                  Column("ra", Float),
+                  Column("dec", Float),
+                  Column("angle", Float),
+                  Column("num_exposures", Integer))
+
+    Index("o_filter", table.c.filter)
+    Index("fk_ObsHistory_Session1", table.c.Session_sessionID)
+    Index("fk_ObsHistory_Field1", table.c.fieldID)
+    Index("fk_ObsHistory_Target1", table.c.targetID)
+
+    return table

@@ -5,8 +5,7 @@ import os
 import MySQLdb as mysql
 from sqlalchemy import create_engine, MetaData
 
-import lsst.sims.ocs.database.tables.write_tbls as write_tbls
-from .tables.base_tbls import create_field, create_session, create_target_history
+import tables
 from ..utilities.file_helpers import expand_path
 from ..utilities.session_info import get_hostname, get_user, get_version
 
@@ -56,7 +55,7 @@ class SocsDatabase(object):
             self._create_tables()
             self.engine = self._make_engine()
         if self.db_dialect == "sqlite":
-            self.session_tracking = create_session(self.metadata)
+            self.session_tracking = tables.create_session(self.metadata)
             sqlite_session_tracking_db = "{}_sessions.db".format(get_hostname())
             self.engine = self._make_engine(sqlite_session_tracking_db)
 
@@ -71,9 +70,10 @@ class SocsDatabase(object):
         """
         if metadata is None:
             metadata = self.metadata
-        self.session = create_session(metadata, use_autoincrement)
-        self.field = create_field(metadata)
-        self.target_history = create_target_history(metadata)
+        self.session = tables.create_session(metadata, use_autoincrement)
+        self.field = tables.create_field(metadata)
+        self.target_history = tables.create_target_history(metadata)
+        self.observation_history = tables.create_observation_history(metadata)
 
     def _connect(self):
         """Create the database connection for MySQL.
@@ -171,7 +171,7 @@ class SocsDatabase(object):
             table_name (str): The attribute name holding the sqlalchemy.Table object.
             table_data (topic): The Scheduler topic data instance.
         """
-        write_func = getattr(write_tbls, "write_{}".format(table_name))
+        write_func = getattr(tables, "write_{}".format(table_name))
         result = write_func(table_data, self.session_id)
         self.data_list[table_name].append(result)
 
@@ -181,6 +181,11 @@ class SocsDatabase(object):
         self.data_list.clear()
 
     def _get_conn(self):
+        """Get the DB connection.
+
+        Returns:
+            sqlalchemy.engine.Connection: The DB connection for the associated type.
+        """
         if self.db_dialect == "mysql":
             e = self.engine
         if self.db_dialect == "sqlite":
