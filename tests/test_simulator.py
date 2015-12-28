@@ -54,7 +54,7 @@ class SimulatorTest(unittest.TestCase):
     @mock.patch("lsst.sims.ocs.kernel.sequencer.Sequencer.initialize")
     def test_initialization(self, mock_sequencer_init):
         self.sim.initialize()
-        self.assertEqual(self.mock_salmanager_pub_topic.call_count, 2)
+        self.assertEqual(self.mock_salmanager_pub_topic.call_count, 1)
         self.assertEqual(self.mock_salmanager_sub_topic.call_count, 2)
         self.assertEqual(mock_sequencer_init.call_count, 1)
 
