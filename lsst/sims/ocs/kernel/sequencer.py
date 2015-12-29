@@ -1,5 +1,6 @@
 import logging
 
+from ..observatory.lsst_observatory import LsstObservatory
 from ..setup.log import LoggingLevel
 
 class Sequencer(object):
@@ -15,6 +16,7 @@ class Sequencer(object):
         self.targets_received = 0
         self.observations_made = 0
         self.observation = None
+        self.observatory_model = LsstObservatory()
         self.log = logging.getLogger("kernel.Sequencer")
         # Variables that will disappear as more functionality is added.
         self.slew_time = (6.0, "seconds")
@@ -29,6 +31,7 @@ class Sequencer(object):
             sal (SalManager): A :class:`SalManager` instance.
         """
         self.observation = sal.set_publish_topic("observationTest")
+        self.observatory_model.configure()
 
     def finalize(self):
         """Perform finalization steps.
