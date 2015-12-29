@@ -7,10 +7,10 @@ class Telescope(pexConfig.Config):
     """
 
     # Altitude limits
-    altitude_min = pexConfig.Field('The minimum altitude of the telescope from horizon (units=degrees)',
-                                   float)
-    altitude_max = pexConfig.Field('The maximum altitude of the telescope for zenith avoidance '
-                                   '(units=degrees)', float)
+    altitude_minpos = pexConfig.Field('The minimum altitude of the telescope from horizon (units=degrees)',
+                                      float)
+    altitude_maxpos = pexConfig.Field('The maximum altitude of the telescope for zenith avoidance '
+                                      '(units=degrees)', float)
 
     # Absolute position limits due to cable wrap the range [0 360] must be included
     azimuth_minpos = pexConfig.Field('Minimum absolute azimuth limit (units=degrees) of telescope.', float)
@@ -37,8 +37,8 @@ class Telescope(pexConfig.Config):
     def setDefaults(self):
         """Set defaults for the LSST Telescope.
         """
-        self.altitude_min = 20.0
-        self.altitude_max = 86.5
+        self.altitude_minpos = 20.0
+        self.altitude_maxpos = 86.5
         self.azimuth_minpos = -270.0
         self.azimuth_maxpos = 270.0
         self.altitude_maxspeed = 3.5

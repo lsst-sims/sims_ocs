@@ -11,7 +11,7 @@ class Camera(pexConfig.Config):
 
     # Filter parameters
     filter_mount_time = pexConfig.Field('Time (units=seconds) to mount a filter.', float)
-    filter_move_time = pexConfig.Field('Time (units=seconds) to move a filter.', float)
+    filter_change_time = pexConfig.Field('Time (units=seconds) to change a filter.', float)
 
     filter_mounted = pexConfig.ListField('Initial state for the mounted filters. Empty positions must be '
                                          'filled with id="" no (filter).', str)
@@ -25,7 +25,7 @@ class Camera(pexConfig.Config):
         self.readout_time = 2.0
         self.shutter_time = 1.0
         self.filter_mount_time = 8 * 3600.0
-        self.filter_move_time = 120.0
+        self.filter_change_time = 120.0
         self.filter_mounted = ['g', 'r', 'i', 'z', 'y']
         self.filter_pos = 'r'
         self.filter_removable = ['y', 'z']
