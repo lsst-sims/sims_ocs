@@ -68,8 +68,8 @@ class ConfigurationCommunicator(object):
         """
         tel_conf = self.sal.set_publish_topic("telescopeConfig")
 
-        tel_conf.altitude_min = self.config.observatory.telescope.altitude_min
-        tel_conf.altitude_max = self.config.observatory.telescope.altitude_max
+        tel_conf.altitude_minpos = self.config.observatory.telescope.altitude_minpos
+        tel_conf.altitude_maxpos = self.config.observatory.telescope.altitude_maxpos
         tel_conf.altitude_maxspeed = self.config.observatory.telescope.altitude_maxspeed
         tel_conf.altitude_accel = self.config.observatory.telescope.altitude_accel
         tel_conf.altitude_decel = self.config.observatory.telescope.altitude_decel
@@ -120,7 +120,7 @@ class ConfigurationCommunicator(object):
         cam_conf.readout_time = self.config.observatory.camera.readout_time
         cam_conf.shutter_time = self.config.observatory.camera.shutter_time
         cam_conf.filter_mount_time = self.config.observatory.camera.filter_mount_time
-        cam_conf.filter_move_time = self.config.observatory.camera.filter_move_time
+        cam_conf.filter_change_time = self.config.observatory.camera.filter_change_time
         cam_conf.filter_mounted = self.config.observatory.camera.filter_mounted_str
         cam_conf.filter_pos = self.config.observatory.camera.filter_pos
         cam_conf.filter_removable = self.config.observatory.camera.filter_removable_str
@@ -134,7 +134,7 @@ class ConfigurationCommunicator(object):
         slew_conf = self.sal.set_publish_topic("slewConfig")
 
         slew_conf.tel_optics_ol_slope = self.config.observatory.slew.tel_optics_ol_slope
-        self.config.observatory.slew.set_array(slew_conf, "tel_optics_alt_limit")
+        self.config.observatory.slew.set_array(slew_conf, "tel_optics_cl_alt_limit")
         self.config.observatory.slew.set_array(slew_conf, "tel_optics_cl_delay")
         slew_conf.prereq_dom_alt = self.config.observatory.slew.get_string_rep("prereq_dom_alt")
         slew_conf.prereq_dom_az = self.config.observatory.slew.get_string_rep("prereq_dom_az")
@@ -142,14 +142,14 @@ class ConfigurationCommunicator(object):
         slew_conf.prereq_tel_az = self.config.observatory.slew.get_string_rep("prereq_tel_az")
         slew_conf.prereq_tel_optics_ol = self.config.observatory.slew.get_string_rep("prereq_tel_optics_ol")
         slew_conf.prereq_tel_optics_cl = self.config.observatory.slew.get_string_rep("prereq_tel_optics_cl")
-        slew_conf.prereq_rotator = self.config.observatory.slew.get_string_rep("prereq_rotator")
+        slew_conf.prereq_tel_rot = self.config.observatory.slew.get_string_rep("prereq_tel_rot")
         slew_conf.prereq_filter = self.config.observatory.slew.get_string_rep("prereq_filter")
         slew_conf.prereq_adc = self.config.observatory.slew.get_string_rep("prereq_adc")
         slew_conf.prereq_ins_optics = self.config.observatory.slew.get_string_rep("prereq_ins_optics")
         slew_conf.prereq_guider_pos = self.config.observatory.slew.get_string_rep("prereq_guider_pos")
         slew_conf.prereq_guider_adq = self.config.observatory.slew.get_string_rep("prereq_guider_adq")
         slew_conf.prereq_tel_settle = self.config.observatory.slew.get_string_rep("prereq_tel_settle")
-        slew_conf.prereq_dom_settle = self.config.observatory.slew.get_string_rep("prereq_dom_settle")
+        slew_conf.prereq_dom_az_settle = self.config.observatory.slew.get_string_rep("prereq_dom_az_settle")
         slew_conf.prereq_exposure = self.config.observatory.slew.get_string_rep("prereq_exposure")
         slew_conf.prereq_readout = self.config.observatory.slew.get_string_rep("prereq_readout")
 

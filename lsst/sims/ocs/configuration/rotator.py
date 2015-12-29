@@ -9,6 +9,7 @@ class Rotator(pexConfig.Config):
     # Parameters
     minpos = pexConfig.Field('Minimum position (units=degrees) of rotator.', float)
     maxpos = pexConfig.Field('Maximum position (units=degrees) of rotator.', float)
+    filter_pos = pexConfig.Field('Filter position (units=degrees) of rotator.', float)
 
     follow_sky = pexConfig.Field('Flag that if True enables the movement of the rotator during slews to put '
                                  'North-Up. If range is insufficient, then the alignment is North-Down. If '
@@ -29,6 +30,7 @@ class Rotator(pexConfig.Config):
         """
         self.minpos = -90.0
         self.maxpos = 90.0
+        self.filter_pos = 0.0
         self.follow_sky = False
         self.resume_angle = False
         self.maxspeed = 3.5
