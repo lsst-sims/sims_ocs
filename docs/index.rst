@@ -3,7 +3,8 @@
 Welcome to the Simulated OCS's documentation!
 =============================================
 
-Contents:
+Table of Contents
+-----------------
 
 .. toctree::
    :maxdepth: 2
@@ -12,6 +13,14 @@ Contents:
    installation
    usage
    history
+
+Class Documentation
+-------------------
+
+.. autosummary::
+	:toctree: api
+
+	lsst.sims.ocs
 
 Indices and tables
 ==================

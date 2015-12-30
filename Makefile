@@ -50,9 +50,9 @@ coverage:
 	open htmlcov/index.html
 
 docs:
-	rm -f docs/lsst*.rst
-	rm -f docs/modules.rst
-	sphinx-apidoc -H sims_ocs -o docs/ lsst
+	rm -f docs/api/lsst*.rst
+	rm -f docs/api/modules.rst
+	sphinx-apidoc -H sims_ocs -e -o docs/api lsst
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	open docs/_build/html/index.html
