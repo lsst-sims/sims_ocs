@@ -1,7 +1,6 @@
-.. sims_ocs documentation master file, created by
+.. sims_ocs documentation master file, created by Michael Reuter.
 
-Welcome to the Simulated OCS's documentation!
-=============================================
+.. include:: ../README.rst
 
 Table of Contents
 -----------------
@@ -9,7 +8,6 @@ Table of Contents
 .. toctree::
    :maxdepth: 2
 
-   readme
    installation
    usage
    history
