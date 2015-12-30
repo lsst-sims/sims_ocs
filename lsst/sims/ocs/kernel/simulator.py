@@ -14,18 +14,40 @@ class Simulator(object):
     """Main class for the survey simulation.
 
     This class is responsible for setting up, running and shutting down the LSST survey simulation.
+
+    Attributes
+    ----------
+    opts : argparse.Namespace
+        The options returned by the ArgumentParser instance.
+    conf : :class:`.SimulationConfig`
+        The simulation configuration instance.
+    db : :class:`.SocsDatabase`
+        The simulation database instance.
+    fractional_duration : float
+        The length in years for the simulated survey.
+    time_handler : :class:`.TimeHandler`
+        The simulation time handling instance.
+    log : logging.Logger
+        The logging instance.
+    sal : :class:`.SalManager`
+        The instance that manages interactions with the SAL.
+    seq : :class:`.Sequencer`
+        The sequencer instance.
+    conf_comm : :class:`.ConfigurationCommunicator`
+        The configuration communicator instance.
     """
 
     def __init__(self, options, configuration, database):
         """Initialize the class.
 
-        Args:
-            options (argparse.Namespace): The instance returned by ArgumentParser containing the command-line
-                                          options.
-            configuration (SimulationConfig): The :class:`SimulationConfig` instance containing the
-                                              simulation configuration.
-            database (SocsDatabase): The :class:`SocsDatabase` instance for interacting with the simulation
-                                     database.
+        Parameters
+        ----------
+        options : argparse.Namespace
+            The instance returned by ArgumentParser containing the command-line options.
+        configuration : :class:`.SimulationConfig`
+            The simulation configuration instance.
+        database : :class:`.SocsDatabase`
+            The simulation database instance.
         """
         self.opts = options
         self.conf = configuration
@@ -46,35 +68,26 @@ class Simulator(object):
 
     @property
     def seconds_in_night(self):
-        """The number of seconds in a night.
-
-        Returns:
-            float
+        """float: The number of seconds in a night.
         """
         return self.hours_in_night * SECONDS_IN_HOUR
 
     @property
     def hours_in_daylight(self):
-        """The number of hours in daylight (day hours - night hours).
-
-        Returns:
-            float
+        """float: The number of hours in daylight (day hours - night hours).
         """
         return HOURS_IN_DAY - self.hours_in_night
 
     @property
     def duration(self):
-        """The duration of the simulation in days.
-
-        Returns:
-            int
+        """int: The duration of the simulation in days.
         """
         return round(self.fractional_duration * DAYS_IN_YEAR)
 
     def initialize(self):
         """Perform initialization steps.
 
-        This function handles initialization of the :class:`SalManager` and :class:`Sequencer` instances and
+        This function handles initialization of the :class:`.SalManager` and :class:`.Sequencer` instances and
         gathering the necessary telemetry topics.
         """
         self.log.info("Initializing simulation")
@@ -88,8 +101,10 @@ class Simulator(object):
     def _start_night(self, night):
         """Perform actions at the start of the night.
 
-        Args:
-            night (int): The current night.
+        Parameters
+        ----------
+        night : int
+            The current night.
         """
         self.log.info("Night {}".format(night))
 
@@ -165,7 +180,7 @@ class Simulator(object):
     def finalize(self):
         """Perform finalization steps.
 
-        This function handles finalization of the :class:`SalManager` and :class:`Sequencer` instances.
+        This function handles finalization of the :class:`.SalManager` and :class:`.Sequencer` instances.
         """
         self.seq.finalize()
         self.sal.finalize()

@@ -16,28 +16,40 @@ class SocsDatabase(object):
     database containing all the relevant tables. For SQLite, this consists of a machine session tracking
     database and individual database files for each run session of the simulation.
 
-    Attributes:
-        db_name (str): The name of the database. Applies to MySQL only.
-        db_dialect (str): The flavor of the database to use. Options: mysql or sqlite.
-        metadata (sqlalchemy.MetaData): The instance for holding the relevant tables.
-        engine (sqlalchemy.engine.Engine): The instance of the database engine.
-        mysql_config_path (str): An alternate path for the .my.cnf configuration file for MySQL.
-        sqlite_save_path (str): A path to save all resulting database files for SQLite.
-        session_engine (sqlalchemy.engine.Engine): The session specific instance of the database engine.
-                                                   SQLite only.
-        session_metadata (sqlalchemy.MetaData): The instance for holding the session specific tables.
-                                                SQLite only.
+    Attributes
+    ----------
+    db_name : str
+        The name of the database. Applies to MySQL only.
+    db_dialect : str
+        The flavor of the database to use. Options: mysql or sqlite.
+    metadata : sqlalchemy.MetaData
+        The instance for holding the relevant tables.
+    engine : sqlalchemy.engine.Engine
+        The instance of the database engine.
+    mysql_config_path : str
+        An alternate path for the .my.cnf configuration file for MySQL.
+    sqlite_save_path : str
+        A path to save all resulting database files for SQLite.
+    session_engine : sqlalchemy.engine.Engine
+        The session specific instance of the database engine. SQLite only.
+    session_metadata : sqlalchemy.MetaData
+        The instance for holding the session specific tables. SQLite only.
     """
 
     SQLITE_SESSION_OFFSET = 999
+    """int: Adjustment so starting session ID is 1000 like MySQL."""
 
     def __init__(self, dialect="mysql", mysql_config_path=None, sqlite_save_path=None):
         """Initialize the class.
 
-        Args:
-            dialect (str): The flavor of the database to use. Options: mysql or sqlite.
-            mysql_config_path (str): An alternate path for the .my.cnf configuration file for MySQL.
-            sqlite_save_path (str): A path to save all resulting database files for SQLite.
+        Parameters
+        ----------
+        dialect : str
+            The flavor of the database to use. Options: mysql or sqlite.
+        mysql_config_path : str
+            An alternate path for the .my.cnf configuration file for MySQL.
+        sqlite_save_path : str
+            A path to save all resulting database files for SQLite.
         """
         self.db_name = "SocsDB"
         self.db_dialect = dialect
@@ -65,8 +77,10 @@ class SocsDatabase(object):
     def _create_tables(self, metadata=None, use_autoincrement=True):
         """Create all the relevant tables.
 
-        Args:
-            use_autoincrement (bool): A flag to set auto increment behavior on the Session table.
+        Parameters
+        ----------
+        use_autoincrement: bool
+            A flag to set auto increment behavior on the Session table.
         """
         if metadata is None:
             metadata = self.metadata
@@ -78,8 +92,10 @@ class SocsDatabase(object):
     def _connect(self):
         """Create the database connection for MySQL.
 
-        Returns:
-            function: The connection function for MySQL.
+        Returns
+        -------
+        function
+            The connection function for MySQL.
         """
         if self.mysql_config_path is not None:
             conf_path = expand_path(self.mysql_config_path)
@@ -91,8 +107,10 @@ class SocsDatabase(object):
     def _make_engine(self, sqlite_db=None):
         """Create the engine for database interactions.
 
-        Args:
-            sqlite_db (str): The name of the database file for SQLite.
+        Parameters
+        ----------
+        sqlite_db : str
+            The name of the database file for SQLite.
         """
         if self.db_dialect == "mysql":
             return create_engine("mysql://", creator=self._connect)
@@ -114,6 +132,8 @@ class SocsDatabase(object):
     def delete_db(self):
         """Delete all database tables.
 
+        Note
+        ----
         This function only works for MySQL. It will have no effect on SQLite.
         """
         self.metadata.drop_all(self.engine)
@@ -127,11 +147,15 @@ class SocsDatabase(object):
         Session table. Since SQLite auto increment values always start at one, an offset is applied to make
         the session IDs commensurate with MySQL.
 
-        Args:
-            run_comment (str): The startup comment for the simulation run.
+        Parameters
+        ----------
+        run_comment: str
+            The startup comment for the simulation run.
 
-        Returns:
-            int: The session ID for this simulation run.
+        Returns
+        -------
+        int
+            The session ID for this simulation run.
         """
         hostname = get_hostname()
         user = get_user()
@@ -167,9 +191,12 @@ class SocsDatabase(object):
     def append_data(self, table_name, table_data):
         """Collect information for the provided table.
 
-        Args:
-            table_name (str): The attribute name holding the sqlalchemy.Table object.
-            table_data (topic): The Scheduler topic data instance.
+        Parameters
+        ----------
+        table_name: str
+            The attribute name holding the sqlalchemy.Table instance.
+        table_data: topic
+            The Scheduler topic data instance.
         """
         write_func = getattr(tables, "write_{}".format(table_name))
         result = write_func(table_data, self.session_id)
@@ -183,8 +210,10 @@ class SocsDatabase(object):
     def _get_conn(self):
         """Get the DB connection.
 
-        Returns:
-            sqlalchemy.engine.Connection: The DB connection for the associated type.
+        Returns
+        -------
+        sqlalchemy.engine.Connection
+            The DB connection for the associated type.
         """
         if self.db_dialect == "mysql":
             e = self.engine
@@ -208,9 +237,12 @@ class SocsDatabase(object):
     def write_table(self, table_name, table_data):
         """Collect information for the provided table.
 
-        Args:
-            table_name (str): The attribute name holding the sqlalchemy.Table object.
-            table_data (topic): The Scheduler topic data instance.
+        Parameters
+        ----------
+        table_name : str
+            The attribute name holding the sqlalchemy.Table instance.
+        table_data : topic
+            The Scheduler topic data instance.
         """
         conn = self._get_conn()
         tbl = getattr(self, table_name)

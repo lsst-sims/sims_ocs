@@ -8,6 +8,15 @@ import os
 from ..utilities.file_helpers import expand_path
 
 def write_file_config(options, conf_dir=None):
+    """Write a configuration file from the given options.
+
+    Parameters
+    ----------
+    options : argparse.Namespace
+        The options from ArgumentParser
+    conf_dir : Optional[str]
+        A directory for saving the configuration file in. Default is $HOME/.config/opsim4.
+    """
     parser = configparser.SafeConfigParser()
 
     parser.add_section("Database")
@@ -24,6 +33,15 @@ def write_file_config(options, conf_dir=None):
         parser.write(cfile)
 
 def read_file_config(conf_file=None, conf_dir=None):
+    """Read in a configuration file.
+
+    Parameters
+    ----------
+    conf_file : Optional[str]
+        The name of the configuration file. Default is opsim4.
+    conf_dir : Optional[str]
+        The directory location of the configuration file. Default is $HOME/.config
+    """
     if conf_file is None:
         conf_file = "opsim4"
     if conf_dir is None:

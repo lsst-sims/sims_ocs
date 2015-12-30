@@ -11,6 +11,15 @@ class LsstObservatory(object):
     This class is designed to look like the real LSST Observatory. It uses the Observatory
     model from the Scheduler as its base information. There is an option to add variations
     onto the parameters and values that the model calculcates to simulate real world behaviors.
+
+    Attributes
+    ----------
+    log : logging.Logger
+        The logging instance.
+    model : ts_scheduler.observatoryModel
+        The instance of the Observatory model from the LSST Scheduler.
+    param_dict : dict
+        The configuration parameters for the Observatory model.
     """
 
     def __init__(self):

@@ -8,15 +8,34 @@ class Tracking(object):
 
     This class is responsible for interacting with the OpSim tracking database. It collects the necessary
     information to record the simulation session to the tracking database.
+
+    Attributes
+    ----------
+    session_id : int
+        The simulation session ID tag.
+    session_type : str
+        The simulation session type code.
+    startup_comment : str
+        The startup comment with the associated simulation session.
+    log : logging.Logger
+        The logging instance.
+    opsim_tracking_url : str
+        The URL for the Operations Simulator tracking database.
+    session_type_codes : dict[str, int]
+        The mapping of session type codes to integer values.
     """
 
     def __init__(self, session_id, session_type, startup_comment):
-        """
+        """Initialize the class.
 
-        Args:
-            session_id (int): The current value of the simulation session ID.
-            session_type (str): The simulation session type code.
-            startup_comment (str): The startup comment with the associated simulation session.
+        Parameters
+        ----------
+        session_id : int
+            The current value of the simulation session ID.
+        session_type : str
+            The simulation session type code.
+        startup_comment : str
+            The startup comment with the associated simulation session.
         """
         self.session_id = session_id
         self.session_type = session_type
@@ -27,19 +46,13 @@ class Tracking(object):
 
     @property
     def tracking_url(self):
-        """The URL for the tracking call.
-
-        Returns:
-            str
+        """str: The URL for the tracking call.
         """
         return self.opsim_tracking_url + "/tracking.php"
 
     @property
     def update_url(self):
-        """The URL for the update call."
-
-        Returns:
-            str
+        """str: The URL for the update call.
         """
         return self.opsim_tracking_url + "/status.php"
 
@@ -64,8 +77,10 @@ class Tracking(object):
         engineering comment. This is hopefully to record that the simulation has completed successfully, but
         may be used to indicate a simulation failure.
 
-        Args:
-            eng_comment (str): A comment about the simulation session hopefully for a successful run.
+        Parameters
+        ----------
+        eng_comment : str
+            A comment about the simulation session hopefully for a successful run.
         """
         payload = {'sessionID': self.session_id, 'hostname': get_hostname(), 'eng_comment': eng_comment}
 

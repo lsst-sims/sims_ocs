@@ -8,6 +8,17 @@ class Sequencer(object):
 
     This class is responsible for taking a target from the Scheduler and performing the necessary steps to
     make an astronomical observation. It is then responsible for handing that observation back.
+
+    Attributes
+    ----------
+    targets_received : int
+        Counter for the number of targets received by the sequencer.
+    observations_made : int
+        Counter for the number of observations made by the sequencer.
+    observation : SALPY_scheduler.observationTestC
+        DDS topic instance for the observation information.
+    log : logging.Logger
+        The logging instance.
     """
 
     def __init__(self):
@@ -25,10 +36,12 @@ class Sequencer(object):
     def initialize(self, sal):
         """Perform initialization steps.
 
-        This function handles gathering the observation telemetry topic from the given :class:`SalManager`.
+        This function handles gathering the observation telemetry topic from the given SalManager instance.
 
-        Args:
-            sal (SalManager): A :class:`SalManager` instance.
+        Parameters
+        ----------
+        sal : :class:`.SalManager`
+            A SalManager instance.
         """
         self.observation = sal.set_publish_topic("observationTest")
         self.observatory_model.configure()
@@ -45,16 +58,22 @@ class Sequencer(object):
         """Observe the given target.
 
         This function performs the necessary steps to observe the given target. The current steps are:
+
           * Update the simulation time after "slewing"
           * Copy target information to observation
           * Update the simulation time after "visit"
 
-        Args:
-            target (struct): A target telemetry topic containing the current target information.
-            th (TimeHandler): An instance of the :class:`TimeHandler`.
+        Parameters
+        ----------
+        target : SALPY_scheduler.targetTestC
+            A target telemetry topic containing the current target information.
+        th : :class:`.TimeHandler`
+            An instance of the simluation's TimeHanlder.
 
-        Returns:
-            struct: An observation telemetry topic containing the observed target parameters.
+        Returns
+        -------
+        SALPY_scheduler.observationTestC
+            An observation telemetry topic containing the observed target parameters.
         """
         self.log.log(LoggingLevel.EXTENSIVE.value, "Received target {}".format(target.targetId))
         self.targets_received += 1

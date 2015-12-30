@@ -31,11 +31,16 @@ def configure_logging(log_file_path="log", session_id="1000", verbose=0, debug=0
 
     Configuration for both the console and file logging for the application.
 
-    Args:
-        log_file_path (str): The location to write the log file.
-        session_id (str): The OpSim session ID tag.
-        verbose (int): The INFO logging level.
-        debug (int): The DEBUG logging level.
+    Parameters
+    ----------
+    log_file_path : Optional[str]
+        The location to write the log file.
+    session_id : Optional[str]
+        The OpSim session ID tag.
+    verbose : Optional[int]
+        The INFO logging level.
+    debug : Optional[int]
+        The DEBUG logging level.
     """
 
     max_verbose = max(VERBOSE_LEVEL.keys())

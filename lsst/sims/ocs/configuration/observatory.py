@@ -31,8 +31,10 @@ class Observatory(pexConfig.Config):
     def load(self, config_files):
         """Load the configuration override files.
 
-        Args:
-            config_files (list): A set of configuration override files.
+        Parameters
+        ----------
+        config_files : list[str]
+            A set of configuration override files.
         """
         load_config(self.telescope, config_files)
         load_config(self.dome, config_files)
@@ -44,8 +46,10 @@ class Observatory(pexConfig.Config):
     def save_as(self, save_dir=''):
         """Save the configuration objects to separate files.
 
-        Args:
-            save_dir (str): The directory in which to save the configuration files.
+        Parameters
+        ----------
+        save_dir : str
+            The directory in which to save the configuration files.
         """
         self.telescope.save(os.path.join(save_dir, "telescope.py"))
         self.dome.save(os.path.join(save_dir, "dome.py"))
