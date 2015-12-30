@@ -30,8 +30,10 @@ class SimulationConfig(pexConfig.Config):
         objects. If input is a directory, it is assumed that all files in that directory are override
         files.
 
-        Args:
-            ifiles (list): A list of files or directories containing configuration overrides.
+        Parameters
+        ----------
+        ifiles : list[str]
+            A list of files or directories containing configuration overrides.
         """
         if ifiles is None:
             return
@@ -54,8 +56,10 @@ class SimulationConfig(pexConfig.Config):
     def save(self, save_dir=''):
         """Save the configuration objects to separate files.
 
-        Args:
-            save_dir (str): The directory in which to save the configuration files.
+        Parameters
+        ----------
+        save_dir : str
+            The directory in which to save the configuration files.
         """
         self.lsst_survey.save(os.path.join(save_dir, "lsst_survey_config.py"))
         self.observing_site.save(os.path.join(save_dir, "observing_site_config.py"))

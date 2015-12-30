@@ -3,12 +3,17 @@ import collections
 def write_target_history(data, sid):
     """Create a dictionary of data for the TargetHistory table.
 
-    Args:
-        data (SALPY_scheduler.targetTestC): The SAL target topic instance.
-        sid (int): The current session ID.
+    Parameters
+    ----------
+    data : SALPY_scheduler.targetTestC
+        The SAL target topic instance.
+    sid : int
+        The current session ID.
 
-    Returns:
-        collections.OrderedDict: A dictionary of the topic data.
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the topic data.
     """
     values = collections.OrderedDict([
         ('targetID', data.targetId),
@@ -25,11 +30,15 @@ def write_target_history(data, sid):
 def write_field(data):
     """Create a dictionary of data for the Field table.
 
-    Args:
-        data (SALPY_scheduler.fieldC): The SAL target topic instance.
+    Parameters
+    ----------
+    data : SALPY_scheduler.fieldC
+        The SAL target topic instance.
 
-    Returns:
-        collections.OrderedDict: A dictionary of the topic data.
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the topic data.
     """
     values = collections.OrderedDict([
         ('ID', data.ID),
@@ -46,12 +55,17 @@ def write_field(data):
 def write_observation_history(data, sid):
     """Create a dictionary of data for the ObsHistory table.
 
-    Args:
-        data (SALPY_scheduler.observationTestC): The SAL observation topic instance.
-        sid (int): The current session ID.
+    Parameters
+    ----------
+    data : SALPY_scheduler.observationTestC
+        The SAL observation topic instance.
+    sid : int
+        The current session ID.
 
-    Returns:
-        collections.OrderedDict: A dictionary of the topic data.
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the topic data.
     """
     values = collections.OrderedDict([
         ('observationID', data.observationId),

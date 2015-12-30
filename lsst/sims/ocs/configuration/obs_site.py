@@ -28,18 +28,12 @@ class ObservingSite(pexConfig.Config):
 
     @property
     def latitude_rads(self):
-        """Return the observing site latitude in radians.
-
-        Returns:
-            float
+        """float: The observing site latitude in radians.
         """
         return math.radians(self.latitude)
 
     @property
     def longitude_rads(self):
-        """Return the observing site longitude in radians.
-
-        Returns:
-            float
+        """float: The observing site longitude in radians.
         """
         return math.radians(self.longitude)

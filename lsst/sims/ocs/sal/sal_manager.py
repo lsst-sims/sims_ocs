@@ -9,8 +9,10 @@ class SalManager(object):
     def __init__(self, debug_level=0):
         """Initialize the class.
 
-        Args:
-            debug_level (int): The debugging level of the SALPY sub-system manager.
+        Parameters
+        ----------
+        debug_level : int
+            The debugging level of the SALPY sub-system manager.
         """
         self.debug_level = debug_level
         self.manager = None
@@ -35,11 +37,15 @@ class SalManager(object):
 
         This function handles the topic publishing setup include retrieval of the associated data structure.
 
-        Args:
-            topic_short_name (str): The part of the topic name minus the scheduler prefix.
+        Parameters
+        ----------
+        topic_short_name : str
+            The part of the topic name minus the scheduler prefix.
 
-        Returns:
-            struct: The telemetry data structure associated with the published topic.
+        Returns
+        -------
+        SALPY_scheduler.<topic_short_name>C
+            The telemetry data structure associated with the published topic.
         """
         topic_name = "scheduler_{}".format(topic_short_name)
         self.manager.salTelemetryPub(topic_name)
@@ -51,11 +57,15 @@ class SalManager(object):
 
         This function handles the topic subscribing setup include retrieval of the associated data structure.
 
-        Args:
-            topic_short_name (str): The part of the topic name minus the scheduler prefix.
+        Parameters
+        ----------
+        topic_short_name: str
+            The part of the topic name minus the scheduler prefix.
 
-        Returns:
-            struct: The telemetry data structure associated with the subscribed topic.
+        Returns
+        -------
+        SALPY_scheduler.<topic_short_name>C
+            The telemetry data structure associated with the subscribed topic.
         """
         topic_name = "scheduler_{}".format(topic_short_name)
         self.manager.salTelemetrySub(topic_name)
@@ -68,8 +78,10 @@ class SalManager(object):
         This function does the actual work of publishing the given telemetry topic data structure. The type
         is inferred from the topic object itself.
 
-        Args:
-            topic_obj (struct): The telemetry topic data structure.
+        Parameters
+        ----------
+        topic_obj : SALPY_scheduler.<topic_obj>
+            The telemetry topic data structure.
         """
         name = str(type(topic_obj)).strip("\"\'<>\'").split("_")[-1][:-1]
         func = getattr(self.manager, "putSample_{}".format(name))

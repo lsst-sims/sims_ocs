@@ -33,27 +33,18 @@ class Camera(pexConfig.Config):
 
     @property
     def filter_mounted_str(self):
-        """The list of mounted filters.
-
-        Returns:
-            str
+        """str: The list of mounted filters.
         """
         return ",".join(self.filter_mounted)
 
     @property
     def filter_removable_str(self):
-        """The list of filters that can be removed.
-
-        Retuns:
-            str
+        """str: The list of filters that can be removed.
         """
         return ",".join(self.filter_removable)
 
     @property
     def filter_unmounted_str(self):
-        """The list of unmounted filters.
-
-        Returns:
-            str
+        """str: The list of unmounted filters.
         """
         return ",".join(self.filter_unmounted)

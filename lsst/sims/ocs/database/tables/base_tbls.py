@@ -8,12 +8,17 @@ def create_session(metadata, autoincrement=True):
     This function creates the Session table for tracking the various simulations run. For MySQL, it adds
     a post-create command to set the lower limit of the auto increment value.
 
-    Args:
-        metadata (sqlalchemy.MetaData): The database object that collects the tables.
-        autoincrement (bool): A flag to set auto incrementing on the sessionID column.
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+    autoincrement : bool
+        A flag to set auto incrementing on the sessionID column.
 
-    Returns:
-        (sqlalchemy.Table): The Session table object.
+    Returns
+    -------
+    sqlalchemy.Table
+        The Session table object.
     """
     table = Table("Session", metadata,
                   Column("sessionID", Integer, primary_key=True, autoincrement=autoincrement, nullable=False),
@@ -35,11 +40,15 @@ def create_field(metadata):
 
     This function creates the Field table from the sky tesellation.
 
-    Args:
-        metadata (sqlalchemy.MetaData): The database object that collects the tables.
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
 
-    Returns:
-        (sqlalchemy.Table): The Field table object.
+    Returns
+    -------
+    sqlalchemy.Table
+        The Field table object.
     """
     table = Table("Field", metadata,
                   Column("ID", Integer, primary_key=True, nullable=False),
@@ -64,11 +73,15 @@ def create_target_history(metadata):
     This function creates the TargetHistory table for tracking all the requested targets from
     the Scheduler in the simulation run.
 
-    Args:
-        metadata (sqlalchemy.MetaData): The database object that collects the tables.
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
 
-    Returns:
-        (sqlalchemy.Table): The TargetHistory table object.
+    Returns
+    -------
+    sqlalchemy.Table
+        The TargetHistory table object.
     """
     table = Table("TargetHistory", metadata,
                   Column("targetID", Integer, primary_key=True),
@@ -92,11 +105,15 @@ def create_observation_history(metadata):
     This function creates the ObsHistory table for tracking all the observations performed
     by the Sequencer in the simulation run.
 
-    Args:
-        metadata (sqlalchemy.MetaData): The database object that collects the tables.
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
 
-    Returns:
-        (sqlalchemy.Table): The ObsHistory table object.
+    Returns
+    -------
+    sqlalchemy.Table
+        The ObsHistory table object.
     """
     table = Table("ObsHistory", metadata,
                   Column("observationID", Integer, primary_key=True),

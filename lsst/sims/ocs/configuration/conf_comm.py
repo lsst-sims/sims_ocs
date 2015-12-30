@@ -6,10 +6,14 @@ class ConfigurationCommunicator(object):
     This class handles setting up the configuration DDS topics and publishing them so they can be picked up
     by the Scheduler.
 
-    Attributes:
-        sal (sal.SalManager): The object responsible for SAL interaction.
-        config (configuration.SimulationConfig): The top-level simulation configuration object.
-        log (logging.Logger): The logging object.
+    Attributes
+    ----------
+    sal : :class:`.SalManager`
+        The object responsible for SAL interaction.
+    config: :class:`.SimulationConfig`
+        The top-level simulation configuration object.
+    log : logging.Logger
+        The logging instance.
     """
 
     def __init__(self):
@@ -22,9 +26,12 @@ class ConfigurationCommunicator(object):
     def initialize(self, sal, config):
         """Perform initialization steps.
 
-        Args:
-            sal (sal.SalManager): The instance responsible for SAL interaction.
-            config (configuration.SimulationConfig): The top-level simulation configuration instance.
+        Parameters
+        ----------
+        sal : :class:`.SalManager`
+            The instance responsible for SAL interaction.
+        config : :class:`.SimulationConfig`
+            The top-level simulation configuration instance.
         """
         self.log.info("Initializing configuration communication")
         self.sal = sal

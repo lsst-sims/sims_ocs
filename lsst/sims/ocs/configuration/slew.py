@@ -67,9 +67,12 @@ class Slew(pexConfig.Config):
     def set_array(self, conf, param):
         """Set a DDS topic array parameter.
 
-        Args:
-            conf (SALPY_scheduler.scheduler_slewConfigC): The slew configuration instance.
-            param (str): The name of the topic parameter to fill.
+        Parameters
+        ----------
+        conf : SALPY_scheduler.scheduler_slewConfigC
+            The slew configuration instance.
+        param : str
+            The name of the topic parameter to fill.
         """
         array = getattr(conf, param)
         local_param = getattr(self, param)
@@ -79,11 +82,14 @@ class Slew(pexConfig.Config):
     def get_string_rep(self, param):
         """A string representation of a string list parameter.
 
-        Args:
-            param (str): The string list parameter name.
+        Parameters
+        ----------
+        param : str
+            The string list parameter name.
 
-        Returns:
-            str
+        Returns
+        -------
+        str
         """
         local_param = getattr(self, param)
         return ",".join(local_param)
