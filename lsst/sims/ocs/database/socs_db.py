@@ -224,11 +224,7 @@ class SocsDatabase(object):
     def write(self):
         """Write collected information into the database.
         """
-        if self.db_dialect == "mysql":
-            e = self.engine
-        if self.db_dialect == "sqlite":
-            e = self.session_engine
-        conn = e.connect()
+        conn = self._get_conn()
 
         for table_name, table_data in self.data_list.items():
             tbl = getattr(self, table_name)
@@ -241,9 +237,10 @@ class SocsDatabase(object):
         ----------
         table_name : str
             The attribute name holding the sqlalchemy.Table instance.
-        table_data : topic
-            The Scheduler topic data instance.
+        table_data : list[topic]
+            A set of Scheduler topic data instances.
         """
         conn = self._get_conn()
         tbl = getattr(self, table_name)
-        conn.execute(tbl.insert(), table_data)
+        for tbl_data in table_data:
+            conn.execute(tbl.insert(), tbl_data)

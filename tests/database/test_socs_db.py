@@ -9,6 +9,7 @@ except ImportError:
     import mock
 
 from lsst.sims.ocs.database.socs_db import SocsDatabase
+from lsst.sims.ocs.database.tables import write_target_history
 import topic_helpers
 
 class SocsDatabaseMySqlTest(unittest.TestCase):
@@ -85,6 +86,18 @@ class SocsDatabaseSqliteTest(unittest.TestCase):
         target = topic_helpers.target
         self.db.append_data("target_history", target)
 
+    def check_db_file_for_target_info(self):
+        session_db_name = "{}_{}.db".format(self.hostname, self.session_id)
+        engine = create_engine("sqlite:///{}".format(session_db_name))
+        conn = engine.connect()
+        th = getattr(self.db, "target_history")
+        s = select([th])
+        result = conn.execute(s)
+        row = result.fetchone()
+        self.assertEqual(len(row), len(th.c))
+        target = topic_helpers.target
+        self.assertEqual(row['fieldID'], target.fieldId)
+
     def test_initial_creation(self):
         self.assertEqual(self.db.db_dialect, "sqlite")
         self.assertIsNotNone(self.db.engine)
@@ -137,17 +150,16 @@ class SocsDatabaseSqliteTest(unittest.TestCase):
         self.create_append_data()
 
         self.db.write()
+        self.check_db_file_for_target_info()
 
-        session_db_name = "{}_{}.db".format(self.hostname, self.session_id)
-        engine = create_engine("sqlite:///{}".format(session_db_name))
-        conn = engine.connect()
-        th = getattr(self.db, "target_history")
-        s = select([th])
-        result = conn.execute(s)
-        row = result.fetchone()
-        self.assertEqual(len(row), len(th.c))
+    @mock.patch("lsst.sims.ocs.database.socs_db.get_hostname")
+    def test_write_table_data(self, mock_get_hostname):
+        mock_get_hostname.return_value = self.hostname
+        self.setup_db("This is my cool test!")
+
         target = topic_helpers.target
-        self.assertEqual(row['fieldID'], target.fieldId)
+        self.db.write_table("target_history", [write_target_history(target, self.session_id)])
+        self.check_db_file_for_target_info()
 
 class SocsDatabaseSqliteWithSavePathTest(unittest.TestCase):
 
