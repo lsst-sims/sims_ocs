@@ -8,7 +8,7 @@ except ImportError:
 
 PACKAGE = 'sims_ocs'
 MAJOR = 0
-MINOR = 2
+MINOR = 3
 PATCH = 0
 VERSION = "{0}.{1}.{2}".format(MAJOR, MINOR, PATCH)
 
