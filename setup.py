@@ -6,7 +6,6 @@ try:
 except ImportError:
     from distutils.core import setup
 
-from setuptools.command.test import test as _test
 PACKAGE = 'sims_ocs'
 MAJOR = 0
 MINOR = 2
@@ -14,11 +13,6 @@ PATCH = 0
 VERSION = "{0}.{1}.{2}".format(MAJOR, MINOR, PATCH)
 
 MODULE = "lsst.sims.ocs"
-
-class quiet_test(_test):
-    def finalize_options(self):
-        self.verbose = False
-        _test.finalize_options(self)
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -55,7 +49,6 @@ if __name__ == "__main__":
         author_email='mareuter@lsst.org',
         url='https://github.com/lsst-sims/sims_ocs',
         cmdclass={
-            #'test': quiet_test,
         },
         scripts=['scripts/opsim4'],
         packages=[
