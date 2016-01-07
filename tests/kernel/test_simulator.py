@@ -9,7 +9,7 @@ except ImportError:
 from lsst.sims.ocs.configuration.sim_config import SimulationConfig
 from lsst.sims.ocs.kernel.simulator import Simulator
 
-from test_helpers import CONFIG_COMM_PUT_CALLS
+from ..helpers import CONFIG_COMM_PUT_CALLS
 
 class SimulatorTest(unittest.TestCase):
 
