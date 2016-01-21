@@ -26,7 +26,7 @@ class LsstObservatory(object):
         """Initialize the class.
         """
         self.log = logging.getLogger("observatory.LsstObservatory")
-        self.model = ObservatoryModel(self.log)
+        self.model = ObservatoryModel()
         self.param_dict = {}
 
     def configure(self):
