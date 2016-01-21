@@ -242,5 +242,4 @@ class SocsDatabase(object):
         """
         conn = self._get_conn()
         tbl = getattr(self, table_name)
-        for tbl_data in table_data:
-            conn.execute(tbl.insert(), tbl_data)
+        conn.execute(tbl.insert(), table_data)
