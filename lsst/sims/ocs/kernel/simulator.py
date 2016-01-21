@@ -1,3 +1,4 @@
+import time
 import logging
 
 from lsst.sims.ocs.configuration.conf_comm import ConfigurationCommunicator
@@ -145,6 +146,7 @@ class Simulator(object):
                         end_fields = True
                         continue
                 self.field_list.append(write_field(self.field))
+                time.sleep(0.0005)
             self.log.info("{} fields retrieved".format(len(self.field_list)))
             self.db.write_table("field", self.field_list)
 
