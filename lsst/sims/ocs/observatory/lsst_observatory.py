@@ -1,6 +1,6 @@
 import logging
 
-from ts_scheduler.observatoryModel import ObservatoryModel
+from ts_scheduler.observatoryModel.observatoryModel import ObservatoryModel
 
 from ..configuration.observatory import Observatory
 from ..configuration.obs_site import ObservingSite
