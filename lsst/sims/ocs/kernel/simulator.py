@@ -1,15 +1,17 @@
 import time
 import logging
 
-from lsst.sims.ocs.configuration.conf_comm import ConfigurationCommunicator
-from lsst.sims.ocs.database.tables.write_tbls import write_field
-from lsst.sims.ocs.kernel.sequencer import Sequencer
-from lsst.sims.ocs.kernel.time_handler import DAYS_IN_YEAR
-from lsst.sims.ocs.kernel.time_handler import HOURS_IN_DAY
-from lsst.sims.ocs.kernel.time_handler import SECONDS_IN_HOUR
-from lsst.sims.ocs.kernel.time_handler import TimeHandler
-from lsst.sims.ocs.sal.sal_manager import SalManager
-from lsst.sims.ocs.setup.log import LoggingLevel
+from ..configuration.conf_comm import ConfigurationCommunicator
+from ..database.tables.write_tbls import write_field
+from ..kernel.sequencer import Sequencer
+from ..kernel.time_handler import DAYS_IN_YEAR
+from ..kernel.time_handler import HOURS_IN_DAY
+from ..kernel.time_handler import SECONDS_IN_HOUR
+from ..kernel.time_handler import TimeHandler
+from ..sal.sal_manager import SalManager
+from ..setup.log import LoggingLevel
+
+__all__ = ["Simulator"]
 
 class Simulator(object):
     """Main class for the survey simulation.

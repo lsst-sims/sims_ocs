@@ -5,6 +5,8 @@ from ts_scheduler.observatoryModel.observatoryModel import ObservatoryModel
 from ..configuration.observatory import Observatory
 from ..configuration.obs_site import ObservingSite
 
+__all__ = ["LsstObservatory"]
+
 class LsstObservatory(object):
     """Main class for the LSST Observatory.
 

@@ -1,5 +1,7 @@
 import logging
 
+__all__ = ["ConfigurationCommunicator"]
+
 class ConfigurationCommunicator(object):
     """Main class for configuration communication.
 

@@ -2,6 +2,8 @@ import argparse
 
 from lsst.sims.ocs.version import __version__
 
+__all__ = ["create_parser"]
+
 def create_parser():
     """Create the argument parser for the main driver script.
     """

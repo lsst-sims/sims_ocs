@@ -2,6 +2,8 @@ from enum import Enum
 import logging
 import os
 
+__all__ = ["LoggingLevel", "configure_logging"]
+
 MAX_VERBOSE = 2
 MAX_DEBUG = 2
 

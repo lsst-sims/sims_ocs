@@ -7,6 +7,8 @@ import os
 
 from ..utilities.file_helpers import expand_path
 
+__all__ = ["read_file_config", "write_file_config"]
+
 def write_file_config(options, conf_dir=None):
     """Write a configuration file from the given options.
 

@@ -1,5 +1,7 @@
 import math
 
+__all__ = ["Field"]
+
 class Field(object):
     """Class for handling field information.
 

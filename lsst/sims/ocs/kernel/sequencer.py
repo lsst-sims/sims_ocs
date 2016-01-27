@@ -3,6 +3,8 @@ import logging
 from ..observatory.lsst_observatory import LsstObservatory
 from ..setup.log import LoggingLevel
 
+__all__ = ["Sequencer"]
+
 class Sequencer(object):
     """Handle the observation of a target.
 

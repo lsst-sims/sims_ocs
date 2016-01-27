@@ -9,6 +9,8 @@ import tables
 from ..utilities.file_helpers import expand_path
 from ..utilities.session_info import get_hostname, get_user, get_version
 
+__all__ = ["SocsDatabase"]
+
 class SocsDatabase(object):
     """Main class for simulation database interaction.
 

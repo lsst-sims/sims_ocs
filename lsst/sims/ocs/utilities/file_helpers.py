@@ -1,5 +1,7 @@
 import os.path
 
+__all__ = ["expand_path"]
+
 def expand_path(input_path):
     """Replace ~/ and environmental variables in path.
 

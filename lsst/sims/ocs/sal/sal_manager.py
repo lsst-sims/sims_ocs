@@ -1,5 +1,7 @@
 import SALPY_scheduler
 
+__all__ = ["SalManager"]
+
 class SalManager(object):
     """Handle SAL interactions.
 

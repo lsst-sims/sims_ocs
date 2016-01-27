@@ -2,6 +2,8 @@ from sqlalchemy import Column, Float, Index, Integer, String, Table
 from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event
 
+__all__ = ["create_field", "create_observation_history", "create_session", "create_target_history"]
+
 def create_session(metadata, autoincrement=True):
     """Create Session table.
 

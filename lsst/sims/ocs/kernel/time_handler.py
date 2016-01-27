@@ -7,6 +7,8 @@ SECONDS_IN_DAY = HOURS_IN_DAY * SECONDS_IN_HOUR
 DAYS_IN_YEAR = 365.0
 SECONDS_IN_YEAR = DAYS_IN_YEAR * SECONDS_IN_DAY
 
+__all__ = ["TimeHandler"]
+
 class TimeHandler(object):
     """Keep track of simulation time information.
 

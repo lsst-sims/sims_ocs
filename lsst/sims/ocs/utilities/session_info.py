@@ -2,6 +2,8 @@ import os
 
 from ..version import __version__
 
+__all__ = ["get_hostname", "get_user", "get_version"]
+
 def get_user():
     """Get the username from the environment.
 

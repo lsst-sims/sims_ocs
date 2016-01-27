@@ -3,6 +3,8 @@ import requests
 
 from ..utilities.session_info import get_hostname, get_user, get_version
 
+__all__ = ["Tracking"]
+
 class Tracking(object):
     """Main class for OpSim tracking database.
 
