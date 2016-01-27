@@ -64,6 +64,21 @@ class Field(object):
         self.el = el
         self.eb = eb
 
+    def __str__(self):
+        """str
+        """
+        return "Field ID: {0}, FOV: {1:.3f} deg, RA: {2:.3f} deg, DEC: {3:.3f} deg, GalL: {4:.3f} deg, "\
+               "GalB: {5:.3f} deg, EclL: {6:.3f} deg, EclB: {7:.3f} deg".format(self.fid, self.fov, self.ra,
+                                                                                self.dec, self.gl, self.gb,
+                                                                                self.el, self.eb)
+
+    def __repr__(self):
+        """str
+        """
+        return "Field({!r}, {!r}, {!r}, {!r}, {!r}, {!r}, {!r}, {!r})".format(self.fid, self.fov, self.ra,
+                                                                              self.dec, self.gl, self.gb,
+                                                                              self.el, self.eb)
+
     @classmethod
     def from_topic(cls, topic):
         """Alternate initializer.

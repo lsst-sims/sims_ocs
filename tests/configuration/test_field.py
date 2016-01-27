@@ -30,3 +30,16 @@ class FieldTest(unittest.TestCase):
         self.assertEqual(ft.gb_rads, math.radians(45.0))
         self.assertEqual(ft.el_rads, math.radians(60.0))
         self.assertEqual(ft.eb, -60.0)
+
+    def test_string_representation(self):
+        truth_message = "Field ID: 1, FOV: 0.500 deg, RA: 30.000 deg, DEC: -30.000 deg, GalL: -45.000 deg, "\
+                        "GalB: 45.000 deg, EclL: 60.000 deg, EclB: -60.000 deg"
+
+        field_str = str(self.field).strip()
+        self.assertEqual(len(field_str), len(truth_message))
+        self.assertEqual(field_str, truth_message)
+
+    def test_repr_representation(self):
+        truth_repr = "Field(1, 0.5, 30.0, -30.0, -45.0, 45.0, 60.0, -60.0)"
+        repr_str = repr(self.field)
+        self.assertEqual(repr_str, truth_repr)
