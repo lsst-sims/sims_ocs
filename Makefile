@@ -47,7 +47,7 @@ coverage:
 	coverage run --source lsst setup.py test
 	coverage report -m
 	coverage html
-	open htmlcov/index.html
+	#open htmlcov/index.html
 
 docs:
 	rm -f docs/api/lsst*.rst
@@ -55,7 +55,7 @@ docs:
 	sphinx-apidoc -H sims_ocs -e -o docs/api lsst
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
-	open docs/_build/html/index.html
+	#open docs/_build/html/index.html
 
 release: clean
 	python setup.py sdist upload
