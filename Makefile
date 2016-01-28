@@ -1,3 +1,5 @@
+GH_PAGES_SOURCES = Makefile docs setup.py lsst README.rst HISTORY.rst scripts
+
 .PHONY: clean-pyc clean-build docs clean
 
 help:
@@ -56,6 +58,15 @@ docs:
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	#open docs/_build/html/index.html
+
+gh-pages:
+	git checkout gh-pages
+	git checkout master $(GH_PAGES_SOURCES)
+	git reset HEAD
+	python setup.py develop
+	$(MAKE) docs
+	mv -fv docs/_build/html/* ./
+	rm -rf $(GH_PAGES_SOURCES)
 
 release: clean
 	python setup.py sdist upload
