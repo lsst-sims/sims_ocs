@@ -1,0 +1,445 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.sims.ocs.database.socs_db &mdash; Simulated OCS 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../../index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../../../../../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../history.html">History</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/lsst.sims.ocs.html">lsst.sims.ocs package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.database.socs_db</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lsst.sims.ocs.database.socs_db</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">MySQLdb</span> <span class="kn">as</span> <span class="nn">mysql</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">MetaData</span>
+
+<span class="kn">import</span> <span class="nn">tables</span>
+<span class="kn">from</span> <span class="nn">..utilities.file_helpers</span> <span class="kn">import</span> <span class="n">expand_path</span>
+<span class="kn">from</span> <span class="nn">..utilities.session_info</span> <span class="kn">import</span> <span class="n">get_hostname</span><span class="p">,</span> <span class="n">get_user</span><span class="p">,</span> <span class="n">get_version</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SocsDatabase&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SocsDatabase"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase">[docs]</a><span class="k">class</span> <span class="nc">SocsDatabase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Main class for simulation database interaction.</span>
+
+<span class="sd">    This class is responsible for interacting with the main simulation database. For MySQL, this is a central</span>
+<span class="sd">    database containing all the relevant tables. For SQLite, this consists of a machine session tracking</span>
+<span class="sd">    database and individual database files for each run session of the simulation.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    db_name : str</span>
+<span class="sd">        The name of the database. Applies to MySQL only.</span>
+<span class="sd">    db_dialect : str</span>
+<span class="sd">        The flavor of the database to use. Options: mysql or sqlite.</span>
+<span class="sd">    metadata : sqlalchemy.MetaData</span>
+<span class="sd">        The instance for holding the relevant tables.</span>
+<span class="sd">    engine : sqlalchemy.engine.Engine</span>
+<span class="sd">        The instance of the database engine.</span>
+<span class="sd">    mysql_config_path : str</span>
+<span class="sd">        An alternate path for the .my.cnf configuration file for MySQL.</span>
+<span class="sd">    sqlite_save_path : str</span>
+<span class="sd">        A path to save all resulting database files for SQLite.</span>
+<span class="sd">    session_engine : sqlalchemy.engine.Engine</span>
+<span class="sd">        The session specific instance of the database engine. SQLite only.</span>
+<span class="sd">    session_metadata : sqlalchemy.MetaData</span>
+<span class="sd">        The instance for holding the session specific tables. SQLite only.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">SQLITE_SESSION_OFFSET</span> <span class="o">=</span> <span class="mi">999</span>
+    <span class="sd">&quot;&quot;&quot;int: Adjustment so starting session ID is 1000 like MySQL.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dialect</span><span class="o">=</span><span class="s2">&quot;mysql&quot;</span><span class="p">,</span> <span class="n">mysql_config_path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">sqlite_save_path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dialect : str</span>
+<span class="sd">            The flavor of the database to use. Options: mysql or sqlite.</span>
+<span class="sd">        mysql_config_path : str</span>
+<span class="sd">            An alternate path for the .my.cnf configuration file for MySQL.</span>
+<span class="sd">        sqlite_save_path : str</span>
+<span class="sd">            A path to save all resulting database files for SQLite.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_name</span> <span class="o">=</span> <span class="s2">&quot;SocsDB&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_dialect</span> <span class="o">=</span> <span class="n">dialect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mysql_config_path</span> <span class="o">=</span> <span class="n">mysql_config_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sqlite_save_path</span> <span class="o">=</span> <span class="n">sqlite_save_path</span>
+
+        <span class="c1"># Parameters for SQLite operations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_engine</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_metadata</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_dialect</span> <span class="o">==</span> <span class="s2">&quot;mysql&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_create_tables</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_engine</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_dialect</span> <span class="o">==</span> <span class="s2">&quot;sqlite&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_tracking</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+            <span class="n">sqlite_session_tracking_db</span> <span class="o">=</span> <span class="s2">&quot;{}_sessions.db&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_hostname</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_engine</span><span class="p">(</span><span class="n">sqlite_session_tracking_db</span><span class="p">)</span>
+
+        <span class="c1"># Parameter for holding data lists</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_list</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_create_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">use_autoincrement</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create all the relevant tables.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        use_autoincrement: bool</span>
+<span class="sd">            A flag to set auto increment behavior on the Session table.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_session</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">use_autoincrement</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_field</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_history</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_target_history</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation_history</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_observation_history</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create the database connection for MySQL.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        function</span>
+<span class="sd">            The connection function for MySQL.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mysql_config_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">conf_path</span> <span class="o">=</span> <span class="n">expand_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mysql_config_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">conf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;HOME&quot;</span><span class="p">)</span>
+        <span class="n">conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">conf_path</span><span class="p">,</span> <span class="s2">&quot;.my.cnf&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">read_default_file</span><span class="o">=</span><span class="n">conf_file</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">db_name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sqlite_db</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create the engine for database interactions.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sqlite_db : str</span>
+<span class="sd">            The name of the database file for SQLite.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_dialect</span> <span class="o">==</span> <span class="s2">&quot;mysql&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">&quot;mysql://&quot;</span><span class="p">,</span> <span class="n">creator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connect</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_dialect</span> <span class="o">==</span> <span class="s2">&quot;sqlite&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sqlite_save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sqlite_save_path</span> <span class="o">=</span> <span class="n">expand_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sqlite_save_path</span><span class="p">)</span>
+                <span class="n">sqlite_db</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sqlite_save_path</span><span class="p">,</span> <span class="n">sqlite_db</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">&quot;sqlite:///{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sqlite_db</span><span class="p">))</span>
+
+<div class="viewcode-block" id="SocsDatabase.create_db"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase.create_db">[docs]</a>    <span class="k">def</span> <span class="nf">create_db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create the database tables.</span>
+
+<span class="sd">        This function does the actual work of creating all the relevant database tables. For MySQL, these</span>
+<span class="sd">        go into the central database. For SQLite, this creates the session tracking database with the Session</span>
+<span class="sd">        table.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SocsDatabase.delete_db"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase.delete_db">[docs]</a>    <span class="k">def</span> <span class="nf">delete_db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete all database tables.</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        This function only works for MySQL. It will have no effect on SQLite.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">drop_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SocsDatabase.new_session"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase.new_session">[docs]</a>    <span class="k">def</span> <span class="nf">new_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_comment</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Log a new session to the database and return the ID.</span>
+
+<span class="sd">        This function logs a new session to the database and returns the session ID. For MySQL, this writes</span>
+<span class="sd">        to the Session table in the central database. For SQLite, this writes an entry to the session tracking</span>
+<span class="sd">        database. Then a session ID specific database is created and the information is replicated in that</span>
+<span class="sd">        Session table. Since SQLite auto increment values always start at one, an offset is applied to make</span>
+<span class="sd">        the session IDs commensurate with MySQL.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        run_comment: str</span>
+<span class="sd">            The startup comment for the simulation run.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The session ID for this simulation run.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hostname</span> <span class="o">=</span> <span class="n">get_hostname</span><span class="p">()</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">get_user</span><span class="p">()</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="n">get_version</span><span class="p">()</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_dialect</span> <span class="o">==</span> <span class="s2">&quot;mysql&quot;</span><span class="p">:</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_dialect</span> <span class="o">==</span> <span class="s2">&quot;mysql&quot;</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_dialect</span> <span class="o">==</span> <span class="s2">&quot;sqlite&quot;</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_tracking</span>
+        <span class="n">insert</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">insert</span><span class="p">,</span> <span class="n">sessionUser</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">sessionHost</span><span class="o">=</span><span class="n">hostname</span><span class="p">,</span> <span class="n">sessionDate</span><span class="o">=</span><span class="n">date</span><span class="p">,</span>
+                              <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">runComment</span><span class="o">=</span><span class="n">run_comment</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">lastrowid</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_dialect</span> <span class="o">==</span> <span class="s2">&quot;sqlite&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SQLITE_SESSION_OFFSET</span>
+            <span class="n">sqlite_session_db</span> <span class="o">=</span> <span class="s2">&quot;{}_{}.db&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_hostname</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_engine</span><span class="p">(</span><span class="n">sqlite_session_db</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_create_tables</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session_metadata</span><span class="p">,</span> <span class="n">use_autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session_engine</span><span class="p">)</span>
+            <span class="n">insert</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span>
+            <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">insert</span><span class="p">,</span> <span class="n">session_ID</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span> <span class="n">sessionUser</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">sessionHost</span><span class="o">=</span><span class="n">hostname</span><span class="p">,</span>
+                                  <span class="n">sessionDate</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">runComment</span><span class="o">=</span><span class="n">run_comment</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span></div>
+
+<div class="viewcode-block" id="SocsDatabase.append_data"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase.append_data">[docs]</a>    <span class="k">def</span> <span class="nf">append_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">table_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Collect information for the provided table.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        table_name: str</span>
+<span class="sd">            The attribute name holding the sqlalchemy.Table instance.</span>
+<span class="sd">        table_data: topic</span>
+<span class="sd">            The Scheduler topic data instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">write_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="s2">&quot;write_{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">write_func</span><span class="p">(</span><span class="n">table_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_list</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SocsDatabase.clear_data"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase.clear_data">[docs]</a>    <span class="k">def</span> <span class="nf">clear_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clear all stored data lists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_list</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_conn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the DB connection.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sqlalchemy.engine.Connection</span>
+<span class="sd">            The DB connection for the associated type.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_dialect</span> <span class="o">==</span> <span class="s2">&quot;mysql&quot;</span><span class="p">:</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_dialect</span> <span class="o">==</span> <span class="s2">&quot;sqlite&quot;</span><span class="p">:</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_engine</span>
+        <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SocsDatabase.write"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write collected information into the database.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_conn</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">table_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">tbl</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">)</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">tbl</span><span class="o">.</span><span class="n">insert</span><span class="p">(),</span> <span class="n">table_data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SocsDatabase.write_table"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase.write_table">[docs]</a>    <span class="k">def</span> <span class="nf">write_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">table_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Collect information for the provided table.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        table_name : str</span>
+<span class="sd">            The attribute name holding the sqlalchemy.Table instance.</span>
+<span class="sd">        table_data : list[topic]</span>
+<span class="sd">            A set of Scheduler topic data instances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_conn</span><span class="p">()</span>
+        <span class="n">tbl</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">tbl</span><span class="o">.</span><span class="n">insert</span><span class="p">(),</span> <span class="n">table_data</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

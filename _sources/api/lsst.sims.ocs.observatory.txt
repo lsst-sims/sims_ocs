@@ -1,0 +1,17 @@
+lsst.sims.ocs.observatory package
+=================================
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.observatory.lsst_observatory
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs.observatory
+    :members:
+    :undoc-members:
+    :show-inheritance:

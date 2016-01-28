@@ -1,0 +1,357 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.sims.ocs.kernel.simulator module &mdash; Simulated OCS 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../index.html"/>
+        <link rel="up" title="lsst.sims.ocs.kernel package" href="lsst.sims.ocs.kernel.html"/>
+        <link rel="next" title="lsst.sims.ocs.kernel.time_handler module" href="lsst.sims.ocs.kernel.time_handler.html"/>
+        <link rel="prev" title="lsst.sims.ocs.kernel.sequencer module" href="lsst.sims.ocs.kernel.sequencer.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="lsst.sims.ocs.html">lsst.sims.ocs package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="lsst.sims.ocs.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="lsst.sims.ocs.kernel.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.kernel.html#module-lsst.sims.ocs.kernel">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.setup.html">lsst.sims.ocs.setup package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.utilities.html">lsst.sims.ocs.utilities package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lsst.sims.ocs.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lsst.sims.ocs.html#module-lsst.sims.ocs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="lsst.sims.ocs.html">lsst.sims.ocs package</a> &raquo;</li>
+      
+          <li><a href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.kernel.simulator module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/api/lsst.sims.ocs.kernel.simulator.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-lsst.sims.ocs.kernel.simulator">
+<span id="lsst-sims-ocs-kernel-simulator-module"></span><h1>lsst.sims.ocs.kernel.simulator module<a class="headerlink" href="#module-lsst.sims.ocs.kernel.simulator" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator">
+<em class="property">class </em><code class="descclassname">lsst.sims.ocs.kernel.simulator.</code><code class="descname">Simulator</code><span class="sig-paren">(</span><em>options</em>, <em>configuration</em>, <em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Main class for the survey simulation.</p>
+<p>This class is responsible for setting up, running and shutting down the LSST survey simulation.</p>
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.opts">
+<code class="descname">opts</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.opts" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>argparse.Namespace</em></p>
+<p>The options returned by the ArgumentParser instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.conf">
+<code class="descname">conf</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.conf" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig" title="lsst.sims.ocs.configuration.sim_config.SimulationConfig"><code class="xref py py-class docutils literal"><span class="pre">SimulationConfig</span></code></a></p>
+<p>The simulation configuration instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.db">
+<code class="descname">db</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.db" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase" title="lsst.sims.ocs.database.socs_db.SocsDatabase"><code class="xref py py-class docutils literal"><span class="pre">SocsDatabase</span></code></a></p>
+<p>The simulation database instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.fractional_duration">
+<code class="descname">fractional_duration</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.fractional_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>float</em></p>
+<p>The length in years for the simulated survey.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.time_handler">
+<code class="descname">time_handler</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.time_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler" title="lsst.sims.ocs.kernel.time_handler.TimeHandler"><code class="xref py py-class docutils literal"><span class="pre">TimeHandler</span></code></a></p>
+<p>The simulation time handling instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.log">
+<code class="descname">log</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.log" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>logging.Logger</em></p>
+<p>The logging instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.sal">
+<code class="descname">sal</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.sal" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.sal.sal_manager.html#lsst.sims.ocs.sal.sal_manager.SalManager" title="lsst.sims.ocs.sal.sal_manager.SalManager"><code class="xref py py-class docutils literal"><span class="pre">SalManager</span></code></a></p>
+<p>The instance that manages interactions with the SAL.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.seq">
+<code class="descname">seq</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.seq" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer" title="lsst.sims.ocs.kernel.sequencer.Sequencer"><code class="xref py py-class docutils literal"><span class="pre">Sequencer</span></code></a></p>
+<p>The sequencer instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.conf_comm">
+<code class="descname">conf_comm</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.conf_comm" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.configuration.conf_comm.html#lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator" title="lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator"><code class="xref py py-class docutils literal"><span class="pre">ConfigurationCommunicator</span></code></a></p>
+<p>The configuration communicator instance.</p>
+</dd></dl>
+
+<p>Initialize the class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> (<em>argparse.Namespace</em>) &#8211; The instance returned by ArgumentParser containing the command-line options.</li>
+<li><strong>configuration</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig" title="lsst.sims.ocs.configuration.sim_config.SimulationConfig"><code class="xref py py-class docutils literal"><span class="pre">SimulationConfig</span></code></a>) &#8211; The simulation configuration instance.</li>
+<li><strong>database</strong> (<a class="reference internal" href="lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase" title="lsst.sims.ocs.database.socs_db.SocsDatabase"><code class="xref py py-class docutils literal"><span class="pre">SocsDatabase</span></code></a>) &#8211; The simulation database instance.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.finalize">
+<code class="descname">finalize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.finalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.finalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform finalization steps.</p>
+<p>This function handles finalization of the <a class="reference internal" href="lsst.sims.ocs.sal.sal_manager.html#lsst.sims.ocs.sal.sal_manager.SalManager" title="lsst.sims.ocs.sal.sal_manager.SalManager"><code class="xref py py-class docutils literal"><span class="pre">SalManager</span></code></a> and <a class="reference internal" href="lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer" title="lsst.sims.ocs.kernel.sequencer.Sequencer"><code class="xref py py-class docutils literal"><span class="pre">Sequencer</span></code></a> instances.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform initialization steps.</p>
+<p>This function handles initialization of the <a class="reference internal" href="lsst.sims.ocs.sal.sal_manager.html#lsst.sims.ocs.sal.sal_manager.SalManager" title="lsst.sims.ocs.sal.sal_manager.SalManager"><code class="xref py py-class docutils literal"><span class="pre">SalManager</span></code></a> and <a class="reference internal" href="lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer" title="lsst.sims.ocs.kernel.sequencer.Sequencer"><code class="xref py py-class docutils literal"><span class="pre">Sequencer</span></code></a> instances and
+gathering the necessary telemetry topics.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the simulation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.duration">
+<code class="descname">duration</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>int: The duration of the simulation in days.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.hours_in_daylight">
+<code class="descname">hours_in_daylight</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.hours_in_daylight" title="Permalink to this definition">¶</a></dt>
+<dd><p>float: The number of hours in daylight (day hours - night hours).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.seconds_in_night">
+<code class="descname">seconds_in_night</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.seconds_in_night" title="Permalink to this definition">¶</a></dt>
+<dd><p>float: The number of seconds in a night.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="lsst.sims.ocs.kernel.time_handler.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.kernel.time_handler module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="lsst.sims.ocs.kernel.sequencer.html" class="btn btn-neutral" title="lsst.sims.ocs.kernel.sequencer module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

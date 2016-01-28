@@ -1,0 +1,18 @@
+lsst.sims.ocs.utilities package
+===============================
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.utilities.file_helpers
+   lsst.sims.ocs.utilities.session_info
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs.utilities
+    :members:
+    :undoc-members:
+    :show-inheritance:

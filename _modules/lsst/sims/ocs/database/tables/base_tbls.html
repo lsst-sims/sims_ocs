@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.sims.ocs.database.tables.base_tbls &mdash; Simulated OCS 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../../../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../../../index.html"/> 
+
+  
+  <script src="../../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../../../../../../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../history.html">History</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../api/lsst.sims.ocs.html">lsst.sims.ocs package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.database.tables.base_tbls</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lsst.sims.ocs.database.tables.base_tbls</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Index</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.types</span> <span class="kn">import</span> <span class="n">DATETIME</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">DDL</span><span class="p">,</span> <span class="n">event</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;create_field&quot;</span><span class="p">,</span> <span class="s2">&quot;create_observation_history&quot;</span><span class="p">,</span> <span class="s2">&quot;create_session&quot;</span><span class="p">,</span> <span class="s2">&quot;create_target_history&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="create_session"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_session">[docs]</a><span class="k">def</span> <span class="nf">create_session</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create Session table.</span>
+
+<span class="sd">    This function creates the Session table for tracking the various simulations run. For MySQL, it adds</span>
+<span class="sd">    a post-create command to set the lower limit of the auto increment value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    metadata : sqlalchemy.MetaData</span>
+<span class="sd">        The database object that collects the tables.</span>
+<span class="sd">    autoincrement : bool</span>
+<span class="sd">        A flag to set auto incrementing on the sessionID column.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sqlalchemy.Table</span>
+<span class="sd">        The Session table object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;Session&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sessionID&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="n">autoincrement</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sessionUser&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">80</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sessionHost&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">80</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sessionDate&quot;</span><span class="p">,</span> <span class="n">DATETIME</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;runComment&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;s_host_user_date_idx&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">sessionUser</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">sessionHost</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">sessionDate</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">alter_table</span> <span class="o">=</span> <span class="n">DDL</span><span class="p">(</span><span class="s2">&quot;ALTER TABLE </span><span class="si">%(table)s</span><span class="s2"> AUTO_INCREMENT=1000;&quot;</span><span class="p">)</span>
+    <span class="n">event</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="s1">&#39;after_create&#39;</span><span class="p">,</span> <span class="n">alter_table</span><span class="o">.</span><span class="n">execute_if</span><span class="p">(</span><span class="n">dialect</span><span class="o">=</span><span class="s1">&#39;mysql&#39;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">table</span></div>
+
+<div class="viewcode-block" id="create_field"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_field">[docs]</a><span class="k">def</span> <span class="nf">create_field</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create Field table.</span>
+
+<span class="sd">    This function creates the Field table from the sky tesellation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    metadata : sqlalchemy.MetaData</span>
+<span class="sd">        The database object that collects the tables.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sqlalchemy.Table</span>
+<span class="sd">        The Field table object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;Field&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;fov&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;gl&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;gb&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;el&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;eb&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;field_fov&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">fov</span><span class="p">)</span>
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fov_gl_gb&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">fov</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">gl</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">gb</span><span class="p">)</span>
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fov_el_eb&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">fov</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">el</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">eb</span><span class="p">)</span>
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fov_ra_dec&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">fov</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">ra</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">dec</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">table</span></div>
+
+<div class="viewcode-block" id="create_target_history"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_target_history">[docs]</a><span class="k">def</span> <span class="nf">create_target_history</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create TargetHistory table.</span>
+
+<span class="sd">    This function creates the TargetHistory table for tracking all the requested targets from</span>
+<span class="sd">    the Scheduler in the simulation run.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    metadata : sqlalchemy.MetaData</span>
+<span class="sd">        The database object that collects the tables.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sqlalchemy.Table</span>
+<span class="sd">        The TargetHistory table object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;TargetHistory&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;targetID&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionID&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;fieldID&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;angle&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;num_exposures&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">))</span>
+
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;t_filter&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">filter</span><span class="p">)</span>
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_TargetHistory_Session1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">Session_sessionID</span><span class="p">)</span>
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_TargetHistory_Field1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">fieldID</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">table</span></div>
+
+<div class="viewcode-block" id="create_observation_history"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_observation_history">[docs]</a><span class="k">def</span> <span class="nf">create_observation_history</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create ObsHistory table.</span>
+
+<span class="sd">    This function creates the ObsHistory table for tracking all the observations performed</span>
+<span class="sd">    by the Sequencer in the simulation run.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    metadata : sqlalchemy.MetaData</span>
+<span class="sd">        The database object that collects the tables.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sqlalchemy.Table</span>
+<span class="sd">        The ObsHistory table object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;ObsHistory&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;observationID&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionID&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;observationTime&#39;</span><span class="p">,</span> <span class="n">Float</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;targetID&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;fieldID&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;angle&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;num_exposures&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">))</span>
+
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;o_filter&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">filter</span><span class="p">)</span>
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_ObsHistory_Session1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">Session_sessionID</span><span class="p">)</span>
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_ObsHistory_Field1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">fieldID</span><span class="p">)</span>
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_ObsHistory_Target1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">targetID</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">table</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

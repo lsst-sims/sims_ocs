@@ -1,0 +1,949 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.pex.config.config &mdash; Simulated OCS 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../../../../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../history.html">History</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/lsst.sims.ocs.html">lsst.sims.ocs package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>lsst.pex.config.config</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lsst.pex.config.config</h1><div class="highlight"><pre>
+<span class="c1"># </span>
+<span class="c1"># LSST Data Management System</span>
+<span class="c1"># Copyright 2008-2015 AURA/LSST.</span>
+<span class="c1"># </span>
+<span class="c1"># This product includes software developed by the</span>
+<span class="c1"># LSST Project (http://www.lsst.org/).</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1"># </span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1"># </span>
+<span class="c1"># You should have received a copy of the LSST License Statement and </span>
+<span class="c1"># the GNU General Public License along with this program.  If not, </span>
+<span class="c1"># see &lt;https://www.lsstcorp.org/LegalNotices/&gt;.</span>
+<span class="c1">#</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+<span class="kn">from</span> <span class="nn">.comparison</span> <span class="kn">import</span> <span class="n">getComparisonName</span><span class="p">,</span> <span class="n">compareScalars</span><span class="p">,</span> <span class="n">compareConfigs</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Config&quot;</span><span class="p">,</span> <span class="s2">&quot;Field&quot;</span><span class="p">,</span> <span class="s2">&quot;FieldValidationError&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_joinNamePath</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Utility function for generating nested configuration names</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">prefix</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid name: cannot be None&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">prefix</span>
+    <span class="k">elif</span> <span class="n">prefix</span> <span class="ow">and</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">name</span>
+
+    <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">[</span><span class="si">%r</span><span class="s2">]&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">name</span>
+
+<span class="k">def</span> <span class="nf">_autocast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If appropriate perform type casting of value x to type dtype,</span>
+<span class="sd">    otherwise return the original value x</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">dtype</span><span class="o">==</span><span class="nb">float</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">==</span><span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dtype</span><span class="o">==</span><span class="nb">int</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">==</span><span class="nb">long</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="k">def</span> <span class="nf">_typeStr</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Utility function to generate a fully qualified type name.</span>
+
+<span class="sd">    This is used primarily in writing config files to be</span>
+<span class="sd">    executed later upon &#39;load&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;__module__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;__name__&#39;</span><span class="p">):</span>
+        <span class="n">xtype</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">xtype</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">xtype</span><span class="o">.</span><span class="n">__module__</span> <span class="o">==</span> <span class="s1">&#39;__builtin__&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">xtype</span><span class="o">.</span><span class="n">__name__</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">xtype</span><span class="o">.</span><span class="n">__module__</span><span class="p">,</span> <span class="n">xtype</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">ConfigMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A metaclass for Config</span>
+
+<span class="sd">    Adds a dictionary containing all Field class attributes</span>
+<span class="sd">    as a class attribute called &#39;_fields&#39;, and adds the name of each field as</span>
+<span class="sd">    an instance variable of the field itself (so you don&#39;t have to pass the</span>
+<span class="sd">    name of the field to the field constructor).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dict_</span><span class="p">):</span>
+        <span class="nb">type</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dict_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_source</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">def</span> <span class="nf">getFields</span><span class="p">(</span><span class="n">classtype</span><span class="p">):</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">bases</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">classtype</span><span class="o">.</span><span class="n">__bases__</span><span class="p">)</span>
+            <span class="n">bases</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bases</span><span class="p">:</span>
+                <span class="n">fields</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">getFields</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">classtype</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">Field</span><span class="p">):</span>
+                    <span class="n">fields</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="k">return</span> <span class="n">fields</span>
+
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">getFields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">fields</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Field</span><span class="p">):</span>
+            <span class="n">value</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="nb">type</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">FieldValidationError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom exception class which holds additional information useful to</span>
+<span class="sd">    debuggin Config errors:</span>
+<span class="sd">    - fieldType: type of the Field which incurred the error</span>
+<span class="sd">    - fieldName: name of the Field which incurred the error</span>
+<span class="sd">    - fullname: fully qualified name of the Field instance</span>
+<span class="sd">    - history: full history of all changes to the Field instance</span>
+<span class="sd">    - fieldSource: file and line number of the Field definition</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldType</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldName</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fullname</span>  <span class="o">=</span> <span class="n">_joinNamePath</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldSource</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configSource</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">_source</span>
+        <span class="n">error</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> &#39;</span><span class="si">%s</span><span class="s2">&#39; failed validation: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span>\
+                <span class="s2">&quot;For more information read the Field definition at:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span>\
+                <span class="s2">&quot;And the Config definition at:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span>\
+              <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldType</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span>
+                      <span class="n">traceback</span><span class="o">.</span><span class="n">format_list</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldSource</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span>
+                      <span class="n">traceback</span><span class="o">.</span><span class="n">format_list</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">configSource</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="ne">ValueError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Field</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A field in a a Config.</span>
+
+<span class="sd">    Instances of Field should be class attributes of Config subclasses:</span>
+<span class="sd">    Field only supports basic data types (int, float, complex, bool, str)</span>
+
+<span class="sd">    class Example(Config):</span>
+<span class="sd">        myInt = Field(int, &quot;an integer field!&quot;, default=0)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">supportedTypes</span><span class="o">=</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a Field.</span>
+
+<span class="sd">        dtype ------ Data type for the field.</span>
+<span class="sd">        doc -------- Documentation for the field.</span>
+<span class="sd">        default ---- A default value for the field.</span>
+<span class="sd">        check ------ A callable to be called with the field value that returns</span>
+<span class="sd">                     False if the value is invalid.  More complex inter-field</span>
+<span class="sd">                     validation can be written as part of Config validate()</span>
+<span class="sd">                     method; this will be ignored if set to None.</span>
+<span class="sd">        optional --- When False, Config validate() will fail if value is None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">supportedTypes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported Field dtype </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">_typeStr</span><span class="p">(</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="n">check</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="n">optional</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">check</span><span class="p">,</span> <span class="n">optional</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convenience function provided to simplify initialization of derived</span>
+<span class="sd">        Field types</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">doc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="n">doc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check</span> <span class="o">=</span> <span class="n">check</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optional</span> <span class="o">=</span> <span class="n">optional</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span>
+
+    <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Rename an instance of this field, not the field itself.</span>
+<span class="sd">        This is invoked by the owning config object and should not be called</span>
+<span class="sd">        directly</span>
+
+<span class="sd">        Only useful for fields which hold sub-configs.</span>
+<span class="sd">        Fields which hold subconfigs should rename each sub-config with</span>
+<span class="sd">        the full field name as generated by _joinNamePath</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Base validation for any field.</span>
+<span class="sd">        Ensures that non-optional fields are not None.</span>
+<span class="sd">        Ensures type correctness</span>
+<span class="sd">        Ensures that user-provided check function is valid</span>
+<span class="sd">        Most derived Field types should call Field.validate if they choose</span>
+<span class="sd">        to re-implement validate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">optional</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="s2">&quot;Required value cannot be None&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">freeze</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make this field read-only.</span>
+<span class="sd">        Only important for fields which hold sub-configs.</span>
+<span class="sd">        Fields which hold subconfigs should freeze each sub-config.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_validateValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate a value that is not None</span>
+
+<span class="sd">        This is called from __set__</span>
+<span class="sd">        This is not part of the Field API. However, simple derived field types</span>
+<span class="sd">            may benifit from implementing _validateValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Value </span><span class="si">%s</span><span class="s2"> is of incorrect type </span><span class="si">%s</span><span class="s2">. Expected type </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span>\
+                    <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_typeStr</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">_typeStr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Value </span><span class="si">%s</span><span class="s2"> is not a valid value&quot;</span><span class="o">%</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves an instance of this field to file.</span>
+<span class="sd">        This is invoked by the owning config object, and should not be called</span>
+<span class="sd">        directly</span>
+
+<span class="sd">        outfile ---- an open output stream.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+        <span class="n">fullname</span> <span class="o">=</span> <span class="n">_joinNamePath</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># write full documentation string as comment lines (i.e. first character is #)</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="s2">&quot;# &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"># &quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">or</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value</span><span class="p">)):</span>
+            <span class="c1"># non-finite numbers need special care</span>
+            <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">outfile</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="s2">=float(&#39;</span><span class="si">%r</span><span class="s2">&#39;)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">fullname</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">outfile</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">fullname</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">toDict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the field value so that it can be set as the value of an item</span>
+<span class="sd">        in a dict.</span>
+<span class="sd">        This is invoked by the owning config object and should not be called</span>
+<span class="sd">        directly</span>
+
+<span class="sd">        Simple values are passed through. Complex data structures must be</span>
+<span class="sd">        manipulated. For example, a field holding a sub-config should, instead</span>
+<span class="sd">        of the subconfig object, return a dict where the keys are the field</span>
+<span class="sd">        names in the subconfig, and the values are the field values in the</span>
+<span class="sd">        subconfig.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define how attribute access should occur on the Config instance</span>
+<span class="sd">        This is invoked by the owning config object and should not be called</span>
+<span class="sd">        directly</span>
+
+<span class="sd">        When the field attribute is accessed on a Config class object, it</span>
+<span class="sd">        returns the field object itself in order to allow inspection of</span>
+<span class="sd">        Config classes.</span>
+
+<span class="sd">        When the field attribute is access on a config instance, the actual</span>
+<span class="sd">        value described by the field (and held by the Config instance) is</span>
+<span class="sd">        returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">Config</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">instance</span><span class="o">.</span><span class="n">_storage</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;assignment&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Describe how attribute setting should occur on the config instance.</span>
+<span class="sd">        This is invoked by the owning config object and should not be called</span>
+<span class="sd">        directly</span>
+
+<span class="sd">        Derived Field classes may need to override the behavior. When overriding</span>
+<span class="sd">        __set__, Field authors should follow the following rules:</span>
+<span class="sd">        * Do not allow modification of frozen configs</span>
+<span class="sd">        * Validate the new value *BEFORE* modifying the field. Except if the</span>
+<span class="sd">            new value is None. None is special and no attempt should be made to</span>
+<span class="sd">            validate it until Config.validate is called.</span>
+<span class="sd">        * Do not modify the Config instance to contain invalid values.</span>
+<span class="sd">        * If the field is modified, update the history of the field to reflect the</span>
+<span class="sd">            changes</span>
+
+<span class="sd">        In order to decrease the need to implement this method in derived Field</span>
+<span class="sd">        types, value validation is performed in the method _validateValue. If</span>
+<span class="sd">        only the validation step differs in the derived Field, it is simpler to</span>
+<span class="sd">        implement _validateValue than to re-implement __set__. More complicated</span>
+<span class="sd">        behavior, however, may require a reimplementation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">_frozen</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="s2">&quot;Cannot modify a frozen Config&quot;</span><span class="p">)</span>
+
+        <span class="n">history</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">_autocast</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_validateValue</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">BaseException</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="n">instance</span><span class="o">.</span><span class="n">_storage</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">at</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">at</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">value</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__delete__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;deletion&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Describe how attribute deletion should occur on the Config instance.</span>
+<span class="sd">        This is invoked by the owning config object and should not be called</span>
+<span class="sd">        directly</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">at</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">at</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__set__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance1</span><span class="p">,</span> <span class="n">instance2</span><span class="p">,</span> <span class="n">shortcut</span><span class="p">,</span> <span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper function for Config.compare; used to compare two fields for equality.</span>
+
+<span class="sd">        Must be overridden by more complex field types.</span>
+
+<span class="sd">        @param[in] instance1  LHS Config instance to compare.</span>
+<span class="sd">        @param[in] instance2  RHS Config instance to compare.</span>
+<span class="sd">        @param[in] shortcut   If True, return as soon as an inequality is found.</span>
+<span class="sd">        @param[in] rtol       Relative tolerance for floating point comparisons.</span>
+<span class="sd">        @param[in] atol       Absolute tolerance for floating point comparisons.</span>
+<span class="sd">        @param[in] output     If not None, a callable that takes a string, used (possibly repeatedly)</span>
+<span class="sd">                              to report inequalities.</span>
+
+<span class="sd">        Floating point comparisons are performed by numpy.allclose; refer to that for details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">v1</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">instance1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">instance2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">getComparisonName</span><span class="p">(</span>
+            <span class="n">_joinNamePath</span><span class="p">(</span><span class="n">instance1</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+            <span class="n">_joinNamePath</span><span class="p">(</span><span class="n">instance2</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">compareScalars</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">RecordingImporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An Importer (for sys.meta_path) that records which modules are being imported.</span>
+
+<span class="sd">    Objects also act as Context Managers, so you can:</span>
+<span class="sd">        with RecordingImporter() as importer:</span>
+<span class="sd">            import stuff</span>
+<span class="sd">        print &quot;Imported: &quot; + importer.getModules()</span>
+<span class="sd">    This ensures it is properly uninstalled when done.</span>
+
+<span class="sd">    This class makes no effort to do any importing itself.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create and install the Importer&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_modules</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">origMetaPath</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">meta_path</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">meta_path</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="p">]</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">meta_path</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uninstall</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">False</span> <span class="c1"># Don&#39;t suppress exceptions</span>
+
+    <span class="k">def</span> <span class="nf">uninstall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Uninstall the Importer&quot;&quot;&quot;</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">meta_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origMetaPath</span>
+
+    <span class="k">def</span> <span class="nf">find_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fullname</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Called as part of the &#39;import&#39; chain of events.</span>
+
+<span class="sd">        We return None because we don&#39;t do any importing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_modules</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">fullname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">getModules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the set of modules that were imported.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modules</span>
+
+<span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for control objects.</span>
+
+<span class="sd">    A Config object will usually have several Field instances as class</span>
+<span class="sd">    attributes; these are used to define most of the base class behavior.</span>
+<span class="sd">    Simple derived class should be able to be defined simply by setting those</span>
+<span class="sd">    attributes.</span>
+
+<span class="sd">    Config also emulates a dict of field name: field value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ConfigMeta</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Iterate over fields</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">__iter__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Return the list of field names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Return the list of field values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Return the list of (field name, field value) pairs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Iterate over (field name, field value) pairs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">itervalues</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Iterate over field values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">itervalues</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Iterate over field names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Return True if the specified field exists in this config</span>
+
+<span class="sd">        @param[in] name  field name to test for</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">__contains__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Allocate a new Config object.</span>
+
+<span class="sd">        In order to ensure that all Config object are always in a proper</span>
+<span class="sd">        state when handed to users or to derived Config classes, some</span>
+<span class="sd">        attributes are handled at allocation time rather than at initialization</span>
+
+<span class="sd">        This ensures that even if a derived Config class implements __init__,</span>
+<span class="sd">        the author does not need to be concerned about when or even if he</span>
+<span class="sd">        should call the base Config.__init__</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__name&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">at</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__at&quot;</span><span class="p">,</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="c1"># remove __label and ignore it</span>
+        <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__label&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">)</span>
+
+        <span class="n">instance</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">_frozen</span><span class="o">=</span><span class="bp">False</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">_name</span><span class="o">=</span><span class="n">name</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">_storage</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">_history</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">_imports</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="c1"># load up defaults</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">_history</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">=</span><span class="p">[]</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">__set__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">default</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="n">at</span><span class="o">+</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">source</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+        <span class="c1"># set custom default-overides</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">setDefaults</span><span class="p">()</span>
+        <span class="c1"># set constructor overides</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">__at</span><span class="o">=</span><span class="n">at</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instance</span>
+
+    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reduction for pickling (function with arguments to reproduce).</span>
+
+<span class="sd">        We need to condense and reconstitute the Config, since it may contain lambdas</span>
+<span class="sd">        (as the &#39;check&#39; elements) that cannot be pickled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveToStream</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">unreduceConfig</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">,</span> <span class="n">stream</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()))</span>
+
+    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Derived config classes that must compute defaults rather than using the</span>
+<span class="sd">        Field defaults should do so here.</span>
+<span class="sd">        To correctly use inherited defaults, implementations of setDefaults()</span>
+<span class="sd">        must call their base class&#39; setDefaults()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Update values specified by the keyword arguments</span>
+
+<span class="sd">        @warning The &#39;__at&#39; and &#39;__label&#39; keyword arguments are special internal</span>
+<span class="sd">        keywords. They are used to strip out any internal steps from the</span>
+<span class="sd">        history tracebacks of the config. Modifying these keywords allows users</span>
+<span class="sd">        to lie about a Config&#39;s history. Please do not do so!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">at</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__at&quot;</span><span class="p">,</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__label&quot;</span><span class="p">,</span> <span class="s2">&quot;update&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kw</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="n">field</span><span class="o">.</span><span class="n">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;No field of name </span><span class="si">%s</span><span class="s2"> exists in config type </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_typeStr</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="s2">&quot;config&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Modify this config in place by executing the Python code in the named file.</span>
+
+<span class="sd">        @param[in] filename  name of file containing config override code</span>
+<span class="sd">        @param[in] root  name of variable in file that refers to the config being overridden</span>
+
+<span class="sd">        For example: if the value of root is &quot;config&quot; and the file contains this text:</span>
+<span class="sd">        &quot;config.myField = 5&quot; then this config&#39;s field &quot;myField&quot; is set to 5.</span>
+
+<span class="sd">        @deprecated For purposes of backwards compatibility, older config files that use</span>
+<span class="sd">        root=&quot;root&quot; instead of root=&quot;config&quot; will be loaded with a warning printed to sys.stderr.</span>
+<span class="sd">        This feature will be removed at some point.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;exec&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loadFromStream</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">code</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">loadFromStream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Modify this config in place by executing the python code in the provided stream.</span>
+
+<span class="sd">        @param[in] stream  open file object, string or compiled string containing config override code</span>
+<span class="sd">        @param[in] root  name of variable in stream that refers to the config being overridden</span>
+<span class="sd">        @param[in] filename  name of config override file, or None if unknown or contained</span>
+<span class="sd">            in the stream; used for error reporting</span>
+
+<span class="sd">        For example: if the value of root is &quot;config&quot; and the stream contains this text:</span>
+<span class="sd">        &quot;config.myField = 5&quot; then this config&#39;s field &quot;myField&quot; is set to 5.</span>
+
+<span class="sd">        @deprecated For purposes of backwards compatibility, older config files that use</span>
+<span class="sd">        root=&quot;root&quot; instead of root=&quot;config&quot; will be loaded with a warning printed to sys.stderr.</span>
+<span class="sd">        This feature will be removed at some point.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">RecordingImporter</span><span class="p">()</span> <span class="k">as</span> <span class="n">importer</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">local</span> <span class="o">=</span> <span class="p">{</span><span class="n">root</span><span class="p">:</span> <span class="bp">self</span><span class="p">}</span>
+                <span class="k">exec</span> <span class="n">stream</span> <span class="ow">in</span> <span class="p">{},</span> <span class="n">local</span>
+            <span class="k">except</span> <span class="ne">NameError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">root</span> <span class="o">==</span> <span class="s2">&quot;config&quot;</span> <span class="ow">and</span> <span class="s2">&quot;root&quot;</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="c1"># try to determine the file name; a compiled string has attribute &quot;co_filename&quot;,</span>
+                        <span class="c1"># an open file has attribute &quot;name&quot;, else give up</span>
+                        <span class="n">filename</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s2">&quot;co_filename&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                            <span class="n">filename</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">)</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Config override file </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filename</span><span class="p">,)</span> <span class="o">+</span> \
+                        <span class="s2">&quot; appears to use &#39;root&#39; instead of &#39;config&#39;; trying with &#39;root&#39;&quot;</span><span class="p">)</span>
+                    <span class="n">local</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;root&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="p">}</span>
+                    <span class="k">exec</span> <span class="n">stream</span> <span class="ow">in</span> <span class="p">{},</span> <span class="n">local</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_imports</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">importer</span><span class="o">.</span><span class="n">getModules</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="s2">&quot;config&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Save a python script to the named file, which, when loaded, reproduces this Config</span>
+
+<span class="sd">        @param[in] filename  name of file to which to write the config</span>
+<span class="sd">        @param[in] root  name to use for the root config variable; the same value must be used when loading</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="n">d</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">saveToStream</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">outfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">saveToStream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="s2">&quot;config&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Save a python script to a stream, which, when loaded, reproduces this Config</span>
+
+<span class="sd">        @param outfile [inout] open file object to which to write the config</span>
+<span class="sd">        @param root [in] name to use for the root config variable; the same value must be used when loading</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rename</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">configType</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">typeString</span> <span class="o">=</span> <span class="n">_typeStr</span><span class="p">(</span><span class="n">configType</span><span class="p">)</span>
+            <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">outfile</span><span class="p">,</span> <span class="s2">&quot;import </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">configType</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
+            <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">outfile</span><span class="p">,</span> <span class="s2">&quot;assert type(</span><span class="si">%s</span><span class="s2">)==</span><span class="si">%s</span><span class="s2">, &#39;config is of type </span><span class="si">%%</span><span class="s2">s.</span><span class="si">%%</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">typeString</span><span class="p">),</span> \
+                <span class="s2">&quot;instead of </span><span class="si">%s</span><span class="s2">&#39; </span><span class="si">%%</span><span class="s2"> (type(</span><span class="si">%s</span><span class="s2">).__module__, type(</span><span class="si">%s</span><span class="s2">).__name__)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">typeString</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rename</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">freeze</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Make this Config and all sub-configs read-only</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frozen</span><span class="o">=</span><span class="bp">True</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">freeze</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Save this Config to an open stream object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">imp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imports</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">imp</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">imp</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">outfile</span><span class="p">,</span> <span class="s2">&quot;import </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">imp</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">toDict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Return a dict of field name: value</span>
+
+<span class="sd">        Correct behavior is dependent on proper implementation of  Field.toDict. If implementing a new</span>
+<span class="sd">        Field type, you may need to implement your own toDict method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dict_</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">dict_</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">toDict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dict_</span>
+
+    <span class="k">def</span> <span class="nf">_rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Rename this Config object in its parent config</span>
+
+<span class="sd">        @param[in] name  new name for this config in its parent config</span>
+
+<span class="sd">        Correct behavior is dependent on proper implementation of Field.rename. If implementing a new</span>
+<span class="sd">        Field type, you may need to implement your own rename method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Validate the Config; raise an exception if invalid</span>
+
+<span class="sd">        The base class implementation performs type checks on all fields by</span>
+<span class="sd">        calling Field.validate().</span>
+
+<span class="sd">        Complex single-field validation can be defined by deriving new Field</span>
+<span class="sd">        types. As syntactic sugar, some derived Field types are defined in</span>
+<span class="sd">        this module which handle recursing into sub-configs</span>
+<span class="sd">        (ConfigField, ConfigChoiceField)</span>
+
+<span class="sd">        Inter-field relationships should only be checked in derived Config</span>
+<span class="sd">        classes after calling this method, and base validation is complete</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">formatHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Format the specified config field&#39;s history to a more human-readable format</span>
+
+<span class="sd">        @param[in] name  name of field whose history is wanted</span>
+<span class="sd">        @param[in] kwargs  keyword arguments for lsst.pex.config.history.format</span>
+<span class="sd">        @return a string containing the formatted history</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">lsst.pex.config.history</span> <span class="kn">as</span> <span class="nn">pexHist</span>
+        <span class="k">return</span> <span class="n">pexHist</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read-only history property</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">_history</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;assignment&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Regulate which attributes can be set</span>
+
+<span class="sd">        Unlike normal python objects, Config objects are locked such</span>
+<span class="sd">        that no additional attributes nor properties may be added to them</span>
+<span class="sd">        dynamically.</span>
+
+<span class="sd">        Although this is not the standard Python behavior, it helps to</span>
+<span class="sd">        protect users from accidentally mispelling a field name, or</span>
+<span class="sd">        trying to set a non-existent field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">at</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">at</span><span class="o">=</span><span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># This allows Field descriptors to work.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span><span class="o">.</span><span class="n">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span> <span class="s1">&#39;__set__&#39;</span><span class="p">):</span>
+            <span class="c1"># This allows properties and other non-Field descriptors to work.</span>
+            <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span> <span class="ow">or</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;_name&quot;</span><span class="p">,</span> <span class="s2">&quot;_history&quot;</span><span class="p">,</span> <span class="s2">&quot;_storage&quot;</span><span class="p">,</span> <span class="s2">&quot;_frozen&quot;</span><span class="p">,</span> <span class="s2">&quot;_imports&quot;</span><span class="p">):</span>
+            <span class="c1"># This allows specific private attributes to work.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># We throw everything else.</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> has no attribute </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">_typeStr</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">attr</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;deletion&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">at</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">at</span><span class="o">=</span><span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span><span class="o">.</span><span class="n">__delete__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">object</span><span class="o">.</span><span class="n">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span>
+                <span class="n">thisValue</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                <span class="n">otherValue</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">thisValue</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">thisValue</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">otherValue</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="bp">False</span>
+                <span class="k">elif</span> <span class="n">thisValue</span> <span class="o">!=</span> <span class="n">otherValue</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toDict</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">_typeStr</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
+            <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">toDict</span><span class="p">()</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">shortcut</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1E-8</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1E-8</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;!Compare two Configs for equality; return True if equal</span>
+
+<span class="sd">        If the Configs contain RegistryFields or ConfigChoiceFields, unselected Configs</span>
+<span class="sd">        will not be compared.</span>
+
+<span class="sd">        @param[in] other      Config object to compare with self.</span>
+<span class="sd">        @param[in] shortcut   If True, return as soon as an inequality is found.</span>
+<span class="sd">        @param[in] rtol       Relative tolerance for floating point comparisons.</span>
+<span class="sd">        @param[in] atol       Absolute tolerance for floating point comparisons.</span>
+<span class="sd">        @param[in] output     If not None, a callable that takes a string, used (possibly repeatedly)</span>
+<span class="sd">                              to report inequalities.</span>
+
+<span class="sd">        Floating point comparisons are performed by numpy.allclose; refer to that for details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="s2">&quot;config&quot;</span>
+        <span class="n">name2</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_name</span> <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="s2">&quot;config&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">getComparisonName</span><span class="p">(</span><span class="n">name1</span><span class="p">,</span> <span class="n">name2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">compareConfigs</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">shortcut</span><span class="o">=</span><span class="n">shortcut</span><span class="p">,</span>
+                              <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">unreduceConfig</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">stream</span><span class="p">):</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">loadFromStream</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">config</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

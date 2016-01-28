@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.dome module
+=======================================
+
+.. automodule:: lsst.sims.ocs.configuration.dome
+    :members:
+    :undoc-members:
+    :show-inheritance:

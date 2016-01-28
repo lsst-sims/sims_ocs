@@ -1,0 +1,7 @@
+sims_ocs
+========
+
+.. toctree::
+   :maxdepth: 4
+
+   lsst

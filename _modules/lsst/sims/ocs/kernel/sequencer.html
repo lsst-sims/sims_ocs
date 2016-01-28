@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.sims.ocs.kernel.sequencer &mdash; Simulated OCS 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../../index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../../../../../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../history.html">History</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/lsst.sims.ocs.html">lsst.sims.ocs package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.kernel.sequencer</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lsst.sims.ocs.kernel.sequencer</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">..observatory.lsst_observatory</span> <span class="kn">import</span> <span class="n">LsstObservatory</span>
+<span class="kn">from</span> <span class="nn">..setup.log</span> <span class="kn">import</span> <span class="n">LoggingLevel</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Sequencer&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Sequencer"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer">[docs]</a><span class="k">class</span> <span class="nc">Sequencer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Handle the observation of a target.</span>
+
+<span class="sd">    This class is responsible for taking a target from the Scheduler and performing the necessary steps to</span>
+<span class="sd">    make an astronomical observation. It is then responsible for handing that observation back.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    targets_received : int</span>
+<span class="sd">        Counter for the number of targets received by the sequencer.</span>
+<span class="sd">    observations_made : int</span>
+<span class="sd">        Counter for the number of observations made by the sequencer.</span>
+<span class="sd">    observation : SALPY_scheduler.observationTestC</span>
+<span class="sd">        DDS topic instance for the observation information.</span>
+<span class="sd">    log : logging.Logger</span>
+<span class="sd">        The logging instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targets_received</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observatory_model</span> <span class="o">=</span> <span class="n">LsstObservatory</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;kernel.Sequencer&quot;</span><span class="p">)</span>
+        <span class="c1"># Variables that will disappear as more functionality is added.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_time</span> <span class="o">=</span> <span class="p">(</span><span class="mf">6.0</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visit_time</span> <span class="o">=</span> <span class="p">(</span><span class="mf">34.0</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Sequencer.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform initialization steps.</span>
+
+<span class="sd">        This function handles gathering the observation telemetry topic from the given SalManager instance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sal : :class:`.SalManager`</span>
+<span class="sd">            A SalManager instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation</span> <span class="o">=</span> <span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;observationTest&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observatory_model</span><span class="o">.</span><span class="n">configure</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Sequencer.finalize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.finalize">[docs]</a>    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform finalization steps.</span>
+
+<span class="sd">        This function logs the number or targets received and observations made.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of targets received: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets_received</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of observations made: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Sequencer.observe_target"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.observe_target">[docs]</a>    <span class="k">def</span> <span class="nf">observe_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">th</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Observe the given target.</span>
+
+<span class="sd">        This function performs the necessary steps to observe the given target. The current steps are:</span>
+
+<span class="sd">          * Update the simulation time after &quot;slewing&quot;</span>
+<span class="sd">          * Copy target information to observation</span>
+<span class="sd">          * Update the simulation time after &quot;visit&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        target : SALPY_scheduler.targetTestC</span>
+<span class="sd">            A target telemetry topic containing the current target information.</span>
+<span class="sd">        th : :class:`.TimeHandler`</span>
+<span class="sd">            An instance of the simluation&#39;s TimeHanlder.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        SALPY_scheduler.observationTestC</span>
+<span class="sd">            An observation telemetry topic containing the observed target parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Received target {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">targetId</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targets_received</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                     <span class="s2">&quot;Starting observation {} for target {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span><span class="p">,</span>
+                                                                     <span class="n">target</span><span class="o">.</span><span class="n">targetId</span><span class="p">))</span>
+        <span class="n">th</span><span class="o">.</span><span class="n">update_time</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">slew_time</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">observationId</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">observationTime</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">current_timestamp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">targetId</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">targetId</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">fieldId</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">fieldId</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">filter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">ra</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">ra</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">dec</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">dec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">num_exposures</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">num_exposures</span>
+
+        <span class="n">th</span><span class="o">.</span><span class="n">update_time</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">visit_time</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                     <span class="s2">&quot;Observation {} completed at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span><span class="p">,</span>
+                                                              <span class="n">th</span><span class="o">.</span><span class="n">current_timestring</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

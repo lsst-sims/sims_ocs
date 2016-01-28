@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.sims.ocs.kernel.time_handler &mdash; Simulated OCS 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../../index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../../../../../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../history.html">History</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/lsst.sims.ocs.html">lsst.sims.ocs package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.kernel.time_handler</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lsst.sims.ocs.kernel.time_handler</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+
+<span class="n">SECONDS_IN_HOUR</span> <span class="o">=</span> <span class="mf">60.0</span> <span class="o">*</span> <span class="mf">60.0</span>
+<span class="n">HOURS_IN_DAY</span> <span class="o">=</span> <span class="mf">24.0</span>
+<span class="n">SECONDS_IN_DAY</span> <span class="o">=</span> <span class="n">HOURS_IN_DAY</span> <span class="o">*</span> <span class="n">SECONDS_IN_HOUR</span>
+<span class="n">DAYS_IN_YEAR</span> <span class="o">=</span> <span class="mf">365.0</span>
+<span class="n">SECONDS_IN_YEAR</span> <span class="o">=</span> <span class="n">DAYS_IN_YEAR</span> <span class="o">*</span> <span class="n">SECONDS_IN_DAY</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TimeHandler&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="TimeHandler"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler">[docs]</a><span class="k">class</span> <span class="nc">TimeHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Keep track of simulation time information.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _unix_start : datetime.datetime</span>
+<span class="sd">        Holder for the start of the UNIX epoch</span>
+<span class="sd">    initial_dt : datetime.datetime</span>
+<span class="sd">        The date/time of the simulation start.</span>
+<span class="sd">    current_dt : datetime.datetime</span>
+<span class="sd">        The current simulation date/time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_date</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            initial_date : str</span>
+<span class="sd">                The inital date in the format of YYYY-MM-DD.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unix_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1970</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">initial_date</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_dt</span>
+
+    <span class="k">def</span> <span class="nf">_time_difference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datetime1</span><span class="p">,</span> <span class="n">datetime2</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the difference in seconds between two times.</span>
+
+<span class="sd">        This function calculates the difference in seconds between two given :class:`datetime` instances. If</span>
+<span class="sd">        datetime2 is None, it is assumed to be UNIX epoch start.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        datetime1 : datetime.datetime</span>
+<span class="sd">            The first datetime instance.</span>
+<span class="sd">        datetime2 : datetime.datetime</span>
+<span class="sd">            The second datetime instance.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The difference in seconds between the two datetime instances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">datetime2</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">datetime2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unix_start</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">datetime1</span> <span class="o">-</span> <span class="n">datetime2</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">initial_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;float: Return the UNIX timestamp for the initial date/time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_dt</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;float: Return the UNIX timestamp for the current date/time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TimeHandler.update_time"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.update_time">[docs]</a>    <span class="k">def</span> <span class="nf">update_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the currently held timestamp.</span>
+
+<span class="sd">        This function updates the currently held time with the given increment and corresponding</span>
+<span class="sd">        units.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        time_increment : float</span>
+<span class="sd">            The increment to adjust the current time.</span>
+<span class="sd">        time_units : str</span>
+<span class="sd">            The time unit for the increment value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">time_delta_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">time_units</span><span class="p">:</span> <span class="n">time_increment</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span> <span class="o">+=</span> <span class="n">timedelta</span><span class="p">(</span><span class="o">**</span><span class="n">time_delta_dict</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_timestring</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;str: Return the ISO-8601 representation of the current date/time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+<div class="viewcode-block" id="TimeHandler.has_time_elapsed"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.has_time_elapsed">[docs]</a>    <span class="k">def</span> <span class="nf">has_time_elapsed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_span</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a boolean determining if the time span has elapsed.</span>
+
+<span class="sd">        This function looks to see if the time elapsed (current_time - initial_time) in units of</span>
+<span class="sd">        seconds is greater or less than the requested time span. It will return true if the time span</span>
+<span class="sd">        is greater than or equal the elapsed time and false if less than the elapsed time.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        time_span : float</span>
+<span class="sd">            The requested time span in seconds.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the time elapsed is greater or False if less than the time span.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">time_span</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_dt</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimeHandler.future_timestring"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_timestring">[docs]</a>    <span class="k">def</span> <span class="nf">future_timestring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the ISO-8601 representation of the future date/time.</span>
+
+<span class="sd">        This function adds the requested time increment to the current date/time to get a future date/time</span>
+<span class="sd">        and returns the ISO-8601 formatted string for that date/time. It does not update the internal</span>
+<span class="sd">        timestamp.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        time_increment : float</span>
+<span class="sd">            The increment to adjust the current time.</span>
+<span class="sd">        time_units : str</span>
+<span class="sd">            The time unit for the increment value.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The future date/time in ISO-8601.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">time_delta_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">time_units</span><span class="p">:</span> <span class="n">time_increment</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="o">**</span><span class="n">time_delta_dict</span><span class="p">))</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

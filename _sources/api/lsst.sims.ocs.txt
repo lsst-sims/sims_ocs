@@ -1,0 +1,30 @@
+lsst.sims.ocs package
+=====================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    lsst.sims.ocs.configuration
+    lsst.sims.ocs.database
+    lsst.sims.ocs.kernel
+    lsst.sims.ocs.observatory
+    lsst.sims.ocs.sal
+    lsst.sims.ocs.setup
+    lsst.sims.ocs.utilities
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.version
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs
+    :members:
+    :undoc-members:
+    :show-inheritance:

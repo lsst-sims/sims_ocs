@@ -1,0 +1,29 @@
+lsst.sims.ocs.configuration package
+===================================
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.configuration.camera
+   lsst.sims.ocs.configuration.conf_comm
+   lsst.sims.ocs.configuration.dome
+   lsst.sims.ocs.configuration.field
+   lsst.sims.ocs.configuration.helpers
+   lsst.sims.ocs.configuration.lsst_survey
+   lsst.sims.ocs.configuration.obs_site
+   lsst.sims.ocs.configuration.observatory
+   lsst.sims.ocs.configuration.park
+   lsst.sims.ocs.configuration.rotator
+   lsst.sims.ocs.configuration.sim_config
+   lsst.sims.ocs.configuration.slew
+   lsst.sims.ocs.configuration.telescope
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs.configuration
+    :members:
+    :undoc-members:
+    :show-inheritance:

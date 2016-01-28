@@ -1,0 +1,20 @@
+lsst.sims.ocs.setup package
+===========================
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.setup.log
+   lsst.sims.ocs.setup.parser
+   lsst.sims.ocs.setup.prog_config
+   lsst.sims.ocs.setup.tracking
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs.setup
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Simulated Observatory Control System &mdash; Simulated OCS 0.3.0 documentation</title>
+  <title>Usage &mdash; Simulated OCS 0.3.0 documentation</title>
   
 
   
@@ -30,8 +30,9 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="#"/>
-        <link rel="next" title="Installation" href="installation.html"/> 
+    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="index.html"/>
+        <link rel="next" title="History" href="history.html"/>
+        <link rel="prev" title="Installation" href="installation.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -49,7 +50,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> Simulated OCS
+            <a href="index.html" class="icon icon-home"> Simulated OCS
           
 
           
@@ -83,9 +84,9 @@
           
             
             
-                <ul>
+                <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
 </ul>
 <ul>
@@ -103,7 +104,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="#">Simulated OCS</a>
+        <a href="index.html">Simulated OCS</a>
       </nav>
 
 
@@ -118,13 +119,13 @@
 
 <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="#">Docs</a> &raquo;</li>
+    <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Simulated Observatory Control System</li>
+    <li>Usage</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/usage.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -134,55 +135,38 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="simulated-observatory-control-system">
-<h1>Simulated Observatory Control System<a class="headerlink" href="#simulated-observatory-control-system" title="Permalink to this headline">¶</a></h1>
-<p>This repository contains the code and data necessary for the Simulated
-Observatory Control System (SOCS) software. It is designed to simulate enough
-of the LSST Observatory Control System (OCS) to run the LSST Scheduler.
-Collectively, the SOCS and Scheduler are called version 4 of the Operations Simulator
-(OpSim).</p>
-<div class="section" id="table-of-contents">
-<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#general-installation-notes">General Installation Notes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#sal-installation">SAL Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#scheduler-installation">Scheduler Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#socs-installation">SOCS Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#database-setup">Database Setup</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="history.html">History</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id1">0.2 (2015-12-30)</a></li>
-</ul>
-</li>
-</ul>
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<p>The Operations Simulator consists of running the SOCS and Scheduler. Currently, they are separate scripts that must be started separately. Due to the nature of the setup, a wrapper script is recommended when launching both processes. If you have followed the installation recommendations, a highly recommended example is below.</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>#!/bin/bash
+export LSST_DDS_DOMAIN=SOCS
+
+export OPENSPLICE_LOC=${HOME}/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
+export OSPL_URI=file://${OPENSPLICE_LOC}/etc/config/ospl.xml
+
+export SCHED_TOPIC_LIB=${HOME}/dds/lib
+export SCHED_CODE=${HOME}/git/ts/ts_scheduler
+
+export LD_LIBRARY_PATH=${OPENSPLICE_LOC}/lib:${SCHED_TOPIC_LIB}:${LD_LIBRARY_PATH}
+export PYTHONPATH=${SCHED_TOPIC_LIB}:${SCHED_CODE}:${PYTHONPATH}
+
+$@
+</pre></div>
 </div>
+<p>The LSST_DDS_DOMAIN is important so that messages from other instances using DDS do not pollute the currently running process. It needs to be a unique name within the user&#8217;s network environment.</p>
+<p>The following instructions will refer to this wrapper script as <code class="docutils literal"><span class="pre">drun</span></code>.</p>
+<p>To run the Scheduler, go to the <code class="docutils literal"><span class="pre">gitdir/ts/ts_scheduler/ts_scheduler</span></code> directory and run the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>drun python scheduler.py
+</pre></div>
 </div>
-<div class="section" id="class-documentation">
-<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="api/lsst.sims.ocs.html#module-lsst.sims.ocs" title="lsst.sims.ocs"><code class="xref py py-obj docutils literal"><span class="pre">lsst.sims.ocs</span></code></a></td>
-<td>Package containing code for simulating the Observatory Control System (SOCS).</td>
-</tr>
-</tbody>
-</table>
+<p>The SOCS driver can be run from anywhere if the setup from the installation instructions were followed. We&#8217;ll assume that you are running from <code class="docutils literal"><span class="pre">$HOME/run_local</span></code>. To invoke a basic instance of SOCS, do the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>drun opsim4 -l $PWD/log -c &quot;Running a one year sim.&quot; -v
+</pre></div>
 </div>
+<p>This will run a one year simulation while passing messages between SOCS and the Scheduler via SAL/DDS. Further options are available to the driver script and can be acertained by the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>drun opsim -h
+</pre></div>
 </div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span>Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span>Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span>Search Page</span></a></li>
-</ul>
 </div>
 
 
@@ -192,8 +176,10 @@ Collectively, the SOCS and Scheduler are called version 4 of the Operations Simu
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="history.html" class="btn btn-neutral float-right" title="History" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

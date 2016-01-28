@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.sims.ocs.kernel.simulator &mdash; Simulated OCS 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../../index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../../../../../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../history.html">History</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/lsst.sims.ocs.html">lsst.sims.ocs package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.kernel.simulator</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lsst.sims.ocs.kernel.simulator</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">..configuration.conf_comm</span> <span class="kn">import</span> <span class="n">ConfigurationCommunicator</span>
+<span class="kn">from</span> <span class="nn">..database.tables.write_tbls</span> <span class="kn">import</span> <span class="n">write_field</span>
+<span class="kn">from</span> <span class="nn">..kernel.sequencer</span> <span class="kn">import</span> <span class="n">Sequencer</span>
+<span class="kn">from</span> <span class="nn">..kernel.time_handler</span> <span class="kn">import</span> <span class="n">DAYS_IN_YEAR</span>
+<span class="kn">from</span> <span class="nn">..kernel.time_handler</span> <span class="kn">import</span> <span class="n">HOURS_IN_DAY</span>
+<span class="kn">from</span> <span class="nn">..kernel.time_handler</span> <span class="kn">import</span> <span class="n">SECONDS_IN_HOUR</span>
+<span class="kn">from</span> <span class="nn">..kernel.time_handler</span> <span class="kn">import</span> <span class="n">TimeHandler</span>
+<span class="kn">from</span> <span class="nn">..sal.sal_manager</span> <span class="kn">import</span> <span class="n">SalManager</span>
+<span class="kn">from</span> <span class="nn">..setup.log</span> <span class="kn">import</span> <span class="n">LoggingLevel</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Simulator&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Simulator"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator">[docs]</a><span class="k">class</span> <span class="nc">Simulator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Main class for the survey simulation.</span>
+
+<span class="sd">    This class is responsible for setting up, running and shutting down the LSST survey simulation.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    opts : argparse.Namespace</span>
+<span class="sd">        The options returned by the ArgumentParser instance.</span>
+<span class="sd">    conf : :class:`.SimulationConfig`</span>
+<span class="sd">        The simulation configuration instance.</span>
+<span class="sd">    db : :class:`.SocsDatabase`</span>
+<span class="sd">        The simulation database instance.</span>
+<span class="sd">    fractional_duration : float</span>
+<span class="sd">        The length in years for the simulated survey.</span>
+<span class="sd">    time_handler : :class:`.TimeHandler`</span>
+<span class="sd">        The simulation time handling instance.</span>
+<span class="sd">    log : logging.Logger</span>
+<span class="sd">        The logging instance.</span>
+<span class="sd">    sal : :class:`.SalManager`</span>
+<span class="sd">        The instance that manages interactions with the SAL.</span>
+<span class="sd">    seq : :class:`.Sequencer`</span>
+<span class="sd">        The sequencer instance.</span>
+<span class="sd">    conf_comm : :class:`.ConfigurationCommunicator`</span>
+<span class="sd">        The configuration communicator instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">configuration</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        options : argparse.Namespace</span>
+<span class="sd">            The instance returned by ArgumentParser containing the command-line options.</span>
+<span class="sd">        configuration : :class:`.SimulationConfig`</span>
+<span class="sd">            The simulation configuration instance.</span>
+<span class="sd">        database : :class:`.SocsDatabase`</span>
+<span class="sd">            The simulation database instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opts</span> <span class="o">=</span> <span class="n">options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">configuration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">database</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">frac_duration</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fractional_duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">lsst_survey</span><span class="o">.</span><span class="n">duration</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fractional_duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">frac_duration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span> <span class="o">=</span> <span class="n">TimeHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">lsst_survey</span><span class="o">.</span><span class="n">start_date</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;kernel.Simulator&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span> <span class="o">=</span> <span class="n">SalManager</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seq</span> <span class="o">=</span> <span class="n">Sequencer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf_comm</span> <span class="o">=</span> <span class="n">ConfigurationCommunicator</span><span class="p">()</span>
+        <span class="c1"># Variables that will disappear as more functionality is added.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">night_adjust</span> <span class="o">=</span> <span class="p">(</span><span class="mf">19.0</span><span class="p">,</span> <span class="s2">&quot;hours&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hours_in_night</span> <span class="o">=</span> <span class="mf">10.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_scheduler</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">no_scheduler</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">seconds_in_night</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;float: The number of seconds in a night.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hours_in_night</span> <span class="o">*</span> <span class="n">SECONDS_IN_HOUR</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">hours_in_daylight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;float: The number of hours in daylight (day hours - night hours).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">HOURS_IN_DAY</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">hours_in_night</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">duration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;int: The duration of the simulation in days.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fractional_duration</span> <span class="o">*</span> <span class="n">DAYS_IN_YEAR</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Simulator.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform initialization steps.</span>
+
+<span class="sd">        This function handles initialization of the :class:`.SalManager` and :class:`.Sequencer` instances and</span>
+<span class="sd">        gathering the necessary telemetry topics.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initializing simulation&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf_comm</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comm_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;timeHandler&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_subscribe_topic</span><span class="p">(</span><span class="s2">&quot;targetTest&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_subscribe_topic</span><span class="p">(</span><span class="s2">&quot;field&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_start_night</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">night</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform actions at the start of the night.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        night : int</span>
+<span class="sd">            The current night.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Night {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">night</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_of_night</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestamp</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">seconds_in_night</span>
+        <span class="n">end_of_night_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">future_timestring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seconds_in_night</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;End of night {} at {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">night</span><span class="p">,</span> <span class="n">end_of_night_str</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">clear_data</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_end_night</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform actions at the end of the night.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Run time to next night</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">update_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hours_in_daylight</span><span class="p">,</span> <span class="s2">&quot;hours&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Simulator.run"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run the simulation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting simulation&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf_comm</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+        <span class="c1"># Get fields from scheduler</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_scheduler</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Retrieving fields from Scheduler&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">field_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">end_fields</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="n">rcode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">getNextSample_field</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">ID</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">ID</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">rcode</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">ID</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">end_fields</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">end_fields</span> <span class="o">=</span> <span class="bp">True</span>
+                        <span class="k">continue</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">field_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">write_field</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">))</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.0005</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;{} fields retrieved&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_list</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="s2">&quot;field&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_list</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">update_time</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">night_adjust</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comm_time</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestamp</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Duration = {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">night</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_start_night</span><span class="p">(</span><span class="n">night</span><span class="p">)</span>
+
+            <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestamp</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_of_night</span><span class="p">:</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">comm_time</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestamp</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                             <span class="s2">&quot;Timestamp sent: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestring</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comm_time</span><span class="p">)</span>
+
+                <span class="c1"># Get target from scheduler</span>
+                <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_scheduler</span><span class="p">:</span>
+                    <span class="n">rcode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">getNextSample_targetTest</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">rcode</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">num_exposures</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">break</span>
+
+                <span class="n">observation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">observe_target</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="p">)</span>
+                <span class="c1"># Pass observation back to scheduler</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="s2">&quot;target_history&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="s2">&quot;observation_history&quot;</span><span class="p">,</span> <span class="n">observation</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_end_night</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Simulator.finalize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.finalize">[docs]</a>    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform finalization steps.</span>
+
+<span class="sd">        This function handles finalization of the :class:`.SalManager` and :class:`.Sequencer` instances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Ending simulation&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

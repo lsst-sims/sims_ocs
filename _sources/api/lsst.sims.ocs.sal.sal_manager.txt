@@ -1,0 +1,7 @@
+lsst.sims.ocs.sal.sal_manager module
+====================================
+
+.. automodule:: lsst.sims.ocs.sal.sal_manager
+    :members:
+    :undoc-members:
+    :show-inheritance:

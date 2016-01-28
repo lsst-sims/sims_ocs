@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.camera module
+=========================================
+
+.. automodule:: lsst.sims.ocs.configuration.camera
+    :members:
+    :undoc-members:
+    :show-inheritance:

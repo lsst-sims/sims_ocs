@@ -1,0 +1,462 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.pex.config.listField &mdash; Simulated OCS 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../../../../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../history.html">History</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/lsst.sims.ocs.html">lsst.sims.ocs package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>lsst.pex.config.listField</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lsst.pex.config.listField</h1><div class="highlight"><pre>
+<span class="c1"># </span>
+<span class="c1"># LSST Data Management System</span>
+<span class="c1"># Copyright 2008, 2009, 2010 LSST Corporation.</span>
+<span class="c1"># </span>
+<span class="c1"># This product includes software developed by the</span>
+<span class="c1"># LSST Project (http://www.lsst.org/).</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1"># </span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1"># </span>
+<span class="c1"># You should have received a copy of the LSST License Statement and </span>
+<span class="c1"># the GNU General Public License along with this program.  If not, </span>
+<span class="c1"># see &lt;http://www.lsstcorp.org/LegalNotices/&gt;.</span>
+<span class="c1">#</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="kn">from</span> <span class="nn">.config</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">FieldValidationError</span><span class="p">,</span> <span class="n">_typeStr</span><span class="p">,</span> <span class="n">_autocast</span><span class="p">,</span> <span class="n">_joinNamePath</span>
+<span class="kn">from</span> <span class="nn">.comparison</span> <span class="kn">import</span> <span class="n">compareScalars</span><span class="p">,</span> <span class="n">getComparisonName</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ListField&quot;</span><span class="p">]</span>
+
+<span class="k">class</span> <span class="nc">List</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">MutableSequence</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">setHistory</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_field</span> <span class="o">=</span> <span class="n">field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_history</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">doc</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">setHistory</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Value </span><span class="si">%s</span><span class="s2"> is of incorrect type </span><span class="si">%s</span><span class="s2">. Sequence type expected&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_typeStr</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">setHistory</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">),</span> <span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">validateItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="o">.</span><span class="n">itemtype</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;Item at position </span><span class="si">%d</span><span class="s2"> with value </span><span class="si">%s</span><span class="s2"> is of incorrect type </span><span class="si">%s</span><span class="s2">. Expected </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span>\
+                    <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">_typeStr</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">_typeStr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="o">.</span><span class="n">itemtype</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+                
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="o">.</span><span class="n">itemCheck</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="o">.</span><span class="n">itemCheck</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;Item at position </span><span class="si">%d</span><span class="s2"> is not a valid value: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read-only history</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">_history</span><span class="p">)</span>   
+
+    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;setitem&quot;</span><span class="p">,</span> <span class="n">setHistory</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">_frozen</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> \
+                    <span class="s2">&quot;Cannot modify a frozen Config&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+            <span class="n">k</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">xj</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="n">xj</span><span class="o">=</span><span class="n">_autocast</span><span class="p">(</span><span class="n">xj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="o">.</span><span class="n">itemtype</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">validateItem</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">xj</span><span class="p">)</span>
+                <span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">xj</span>
+                <span class="n">k</span> <span class="o">+=</span> <span class="n">step</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">_autocast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="o">.</span><span class="n">itemtype</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validateItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">x</span>
+        <span class="k">if</span> <span class="n">setHistory</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">at</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">at</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">),</span> <span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>
+
+        
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;delitem&quot;</span><span class="p">,</span> <span class="n">setHistory</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">_frozen</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> \
+                    <span class="s2">&quot;Cannot modify a frozen Config&quot;</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">setHistory</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">at</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">at</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">),</span> <span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;insert&quot;</span><span class="p">,</span> <span class="n">setHistory</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span> 
+        <span class="k">if</span> <span class="n">at</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">at</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__setitem__</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">),</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">at</span><span class="o">=</span><span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">setHistory</span><span class="o">=</span><span class="n">setHistory</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">False</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span> <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="c1">#other is not a sequence type</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;assignment&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span> <span class="s1">&#39;__set__&#39;</span><span class="p">):</span>
+            <span class="c1"># This allows properties to work.</span>
+            <span class="nb">object</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span> <span class="ow">or</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;_field&quot;</span><span class="p">,</span> <span class="s2">&quot;_config&quot;</span><span class="p">,</span> <span class="s2">&quot;_history&quot;</span><span class="p">,</span> <span class="s2">&quot;_list&quot;</span><span class="p">,</span> <span class="s2">&quot;__doc__&quot;</span><span class="p">]:</span>
+            <span class="c1"># This allows specific private attributes to work.</span>
+            <span class="nb">object</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># We throw everything else.</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> has no attribute </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">_typeStr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">),</span> <span class="n">attr</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+    
+
+<span class="k">class</span> <span class="nc">ListField</span><span class="p">(</span><span class="n">Field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines a field which is a container of values of type dtype</span>
+
+<span class="sd">    If length is not None, then instances of this field must match this length </span>
+<span class="sd">    exactly.</span>
+<span class="sd">    If minLength is not None, then instances of the field must be no shorter </span>
+<span class="sd">    then minLength</span>
+<span class="sd">    If maxLength is not None, then instances of the field must be no longer </span>
+<span class="sd">    than maxLength</span>
+<span class="sd">    </span>
+<span class="sd">    Additionally users can provide two check functions:</span>
+<span class="sd">    listCheck - used to validate the list as a whole, and</span>
+<span class="sd">    itemCheck - used to validate each item individually    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+            <span class="n">listCheck</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">itemCheck</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+            <span class="n">length</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">minLength</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">maxLength</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Field</span><span class="o">.</span><span class="n">supportedTypes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported dtype </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">_typeStr</span><span class="p">(</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">length</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;length&#39; (</span><span class="si">%d</span><span class="s2">) must be positive&quot;</span><span class="o">%</span><span class="n">length</span><span class="p">)</span>
+            <span class="n">minLength</span><span class="o">=</span><span class="bp">None</span>
+            <span class="n">maxLength</span><span class="o">=</span><span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">maxLength</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">maxLength</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;maxLength&#39; (</span><span class="si">%d</span><span class="s2">) must be positive&quot;</span><span class="o">%</span><span class="n">maxLength</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">minLength</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">maxLength</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> \
+                    <span class="ow">and</span> <span class="n">minLength</span> <span class="o">&gt;</span> <span class="n">maxLength</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;maxLength&#39; (</span><span class="si">%d</span><span class="s2">) must be at least as large as &#39;minLength&#39; (</span><span class="si">%d</span><span class="s2">)&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">maxLength</span><span class="p">,</span> <span class="n">minLength</span><span class="p">))</span>
+        
+        <span class="k">if</span> <span class="n">listCheck</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">listCheck</span><span class="p">,</span> <span class="s2">&quot;__call__&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;listCheck&#39; must be callable&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">itemCheck</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">itemCheck</span><span class="p">,</span> <span class="s2">&quot;__call__&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;itemCheck&#39; must be callable&quot;</span><span class="p">)</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">(</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">List</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="n">optional</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">listCheck</span> <span class="o">=</span> <span class="n">listCheck</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">itemCheck</span> <span class="o">=</span> <span class="n">itemCheck</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">itemtype</span> <span class="o">=</span> <span class="n">dtype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="o">=</span><span class="n">length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minLength</span><span class="o">=</span><span class="n">minLength</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxLength</span><span class="o">=</span><span class="n">maxLength</span>
+   
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ListField validation ensures that non-optional fields are not None,</span>
+<span class="sd">            and that non-None values comply with length requirements and</span>
+<span class="sd">            that the list passes listCheck if supplied by the user.</span>
+<span class="sd">        Individual Item checks are applied at set time and are not re-checked.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Field</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">lenValue</span> <span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">lenValue</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Required list length=</span><span class="si">%d</span><span class="s2">, got length=</span><span class="si">%d</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">lenValue</span><span class="p">)</span>                
+                <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">minLength</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">lenValue</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">minLength</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Minimum allowed list length=</span><span class="si">%d</span><span class="s2">, got length=</span><span class="si">%d</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minLength</span><span class="p">,</span> <span class="n">lenValue</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxLength</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">lenValue</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxLength</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Maximum allowed list length=</span><span class="si">%d</span><span class="s2">, got length=</span><span class="si">%d</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxLength</span><span class="p">,</span> <span class="n">lenValue</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">listCheck</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">listCheck</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is not a valid value&quot;</span><span class="o">%</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;assignment&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">_frozen</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="s2">&quot;Cannot modify a frozen Config&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">at</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">at</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">history</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">value</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>
+
+        <span class="n">instance</span><span class="o">.</span><span class="n">_storage</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    
+    <span class="k">def</span> <span class="nf">toDict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>        
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>        
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">_compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance1</span><span class="p">,</span> <span class="n">instance2</span><span class="p">,</span> <span class="n">shortcut</span><span class="p">,</span> <span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper function for Config.compare; used to compare two fields for equality.</span>
+
+<span class="sd">        @param[in] instance1  LHS Config instance to compare.</span>
+<span class="sd">        @param[in] instance2  RHS Config instance to compare.</span>
+<span class="sd">        @param[in] shortcut   If True, return as soon as an inequality is found.</span>
+<span class="sd">        @param[in] rtol       Relative tolerance for floating point comparisons.</span>
+<span class="sd">        @param[in] atol       Absolute tolerance for floating point comparisons.</span>
+<span class="sd">        @param[in] output     If not None, a callable that takes a string, used (possibly repeatedly)</span>
+<span class="sd">                              to report inequalities.</span>
+
+<span class="sd">        Floating point comparisons are performed by numpy.allclose; refer to that for details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">l1</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">instance1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">l2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">instance2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">getComparisonName</span><span class="p">(</span>
+            <span class="n">_joinNamePath</span><span class="p">(</span><span class="n">instance1</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+            <span class="n">_joinNamePath</span><span class="p">(</span><span class="n">instance2</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">compareScalars</span><span class="p">(</span><span class="s2">&quot;isnone for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">,</span> <span class="n">l1</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">,</span> <span class="n">l2</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">l1</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">l2</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">compareScalars</span><span class="p">(</span><span class="s2">&quot;size for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">l1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">l2</span><span class="p">),</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="n">equal</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l1</span><span class="p">)),</span> <span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">compareScalars</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">[</span><span class="si">%d</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                                    <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span> <span class="ow">and</span> <span class="n">shortcut</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="n">equal</span> <span class="o">=</span> <span class="n">equal</span> <span class="ow">and</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="n">equal</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

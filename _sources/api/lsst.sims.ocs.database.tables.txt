@@ -1,0 +1,18 @@
+lsst.sims.ocs.database.tables package
+=====================================
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.database.tables.base_tbls
+   lsst.sims.ocs.database.tables.write_tbls
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs.database.tables
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,338 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.pex.config.configField &mdash; Simulated OCS 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../../../../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../history.html">History</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/lsst.sims.ocs.html">lsst.sims.ocs package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>lsst.pex.config.configField</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lsst.pex.config.configField</h1><div class="highlight"><pre>
+<span class="c1"># </span>
+<span class="c1"># LSST Data Management System</span>
+<span class="c1"># Copyright 2008-2013 LSST Corporation.</span>
+<span class="c1"># </span>
+<span class="c1"># This product includes software developed by the</span>
+<span class="c1"># LSST Project (http://www.lsst.org/).</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1"># </span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1"># </span>
+<span class="c1"># You should have received a copy of the LSST License Statement and </span>
+<span class="c1"># the GNU General Public License along with this program.  If not, </span>
+<span class="c1"># see &lt;http://www.lsstcorp.org/LegalNotices/&gt;.</span>
+<span class="c1">#</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="kn">from</span> <span class="nn">.config</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">FieldValidationError</span><span class="p">,</span> <span class="n">_joinNamePath</span><span class="p">,</span> <span class="n">_typeStr</span>
+<span class="kn">from</span> <span class="nn">.comparison</span> <span class="kn">import</span> <span class="n">compareConfigs</span><span class="p">,</span> <span class="n">getComparisonName</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ConfigField&quot;</span><span class="p">]</span>
+
+<span class="k">class</span> <span class="nc">ConfigField</span><span class="p">(</span><span class="n">Field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines a field which is itself a Config.</span>
+
+<span class="sd">    The behavior of this type of field is much like that of the base Field type.</span>
+
+<span class="sd">    Note that dtype must be a subclass of Config.</span>
+
+<span class="sd">    If default=None, the field will default to a default-constructed </span>
+<span class="sd">    instance of dtype.</span>
+
+<span class="sd">    Additionally, to allow for fewer deep-copies, assigning an instance of </span>
+<span class="sd">    ConfigField to dtype itself, is considered equivalent to assigning a </span>
+<span class="sd">    default-constructed sub-config. This means that the argument default can be </span>
+<span class="sd">    dtype, as well as an instance of dtype.</span>
+
+<span class="sd">    Assigning to ConfigField will update all of the fields in the config.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">Config</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dtype=</span><span class="si">%s</span><span class="s2"> is not a subclass of Config&quot;</span> <span class="o">%</span> \
+                    <span class="n">_typeStr</span><span class="p">(</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">default</span> <span class="o">=</span> <span class="n">dtype</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">(</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="n">check</span><span class="p">,</span> 
+                <span class="n">optional</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+  
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">Config</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">at</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__set__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;assignment&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">_frozen</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> \
+                    <span class="s2">&quot;Cannot modify a frozen Config&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">_joinNamePath</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Value </span><span class="si">%s</span><span class="s2"> is of incorrect type </span><span class="si">%s</span><span class="s2">. Expected </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>\
+                    <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_typeStr</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">_typeStr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">at</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">at</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">oldValue</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">oldValue</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+                <span class="n">instance</span><span class="o">.</span><span class="n">_storage</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span>
+                        <span class="n">__name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">__at</span><span class="o">=</span><span class="n">at</span><span class="p">,</span> <span class="n">__label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">instance</span><span class="o">.</span><span class="n">_storage</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span>
+                        <span class="n">__name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">__at</span><span class="o">=</span><span class="n">at</span><span class="p">,</span> <span class="n">__label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="o">**</span><span class="n">value</span><span class="o">.</span><span class="n">_storage</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">()</span>
+            <span class="n">oldValue</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">__at</span><span class="o">=</span><span class="n">at</span><span class="p">,</span> <span class="n">__label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="o">**</span><span class="n">value</span><span class="o">.</span><span class="n">_storage</span><span class="p">)</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;config value set&quot;</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+        <span class="n">value</span><span class="o">.</span><span class="n">_rename</span><span class="p">(</span><span class="n">_joinNamePath</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+        <span class="n">value</span><span class="o">.</span><span class="n">_save</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">freeze</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+        <span class="n">value</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">toDict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">toDict</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+        <span class="n">value</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is not a valid value&quot;</span><span class="o">%</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance1</span><span class="p">,</span> <span class="n">instance2</span><span class="p">,</span> <span class="n">shortcut</span><span class="p">,</span> <span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper function for Config.compare; used to compare two fields for equality.</span>
+
+<span class="sd">        @param[in] instance1  LHS Config instance to compare.</span>
+<span class="sd">        @param[in] instance2  RHS Config instance to compare.</span>
+<span class="sd">        @param[in] shortcut   If True, return as soon as an inequality is found.</span>
+<span class="sd">        @param[in] rtol       Relative tolerance for floating point comparisons.</span>
+<span class="sd">        @param[in] atol       Absolute tolerance for floating point comparisons.</span>
+<span class="sd">        @param[in] output     If not None, a callable that takes a string, used (possibly repeatedly)</span>
+<span class="sd">                              to report inequalities.</span>
+
+<span class="sd">        Floating point comparisons are performed by numpy.allclose; refer to that for details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">c1</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">instance1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">c2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">instance2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">getComparisonName</span><span class="p">(</span>
+            <span class="n">_joinNamePath</span><span class="p">(</span><span class="n">instance1</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+            <span class="n">_joinNamePath</span><span class="p">(</span><span class="n">instance2</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">compareConfigs</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">shortcut</span><span class="o">=</span><span class="n">shortcut</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

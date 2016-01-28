@@ -1,0 +1,19 @@
+lsst.sims.ocs.kernel package
+============================
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.kernel.sequencer
+   lsst.sims.ocs.kernel.simulator
+   lsst.sims.ocs.kernel.time_handler
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs.kernel
+    :members:
+    :undoc-members:
+    :show-inheritance:
