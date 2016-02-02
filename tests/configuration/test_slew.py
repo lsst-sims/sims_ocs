@@ -13,7 +13,7 @@ class SlewTest(unittest.TestCase):
         self.assertEqual(self.slew.tel_optics_ol_slope, 1.0 / 3.5)
         self.assertEqual(len(self.slew.tel_optics_cl_delay), 2)
         self.assertEqual(self.slew.tel_optics_cl_delay[1], 20.0)
-        self.assertEqual(len(self.slew.prereq_tel_optics_cl), 7)
+        self.assertEqual(len(self.slew.prereq_telopticsclosedloop), 7)
         self.assertEqual(len(self.slew.prereq_readout), 0)
 
     def test_array_setting(self):
@@ -22,5 +22,5 @@ class SlewTest(unittest.TestCase):
         self.assertEqual(self.slew_conf.tel_optics_cl_alt_limit[2], 90.0)
 
     def test_string_setting(self):
-        self.slew_conf.prereq_tel_settle = self.slew.get_string_rep("prereq_tel_settle")
-        self.assertEqual(self.slew_conf.prereq_tel_settle, "TelAlt,TelAz")
+        self.slew_conf.prereq_tel_settle = self.slew.get_string_rep("prereq_telsettle")
+        self.assertEqual(self.slew_conf.prereq_tel_settle, "telalt,telaz")

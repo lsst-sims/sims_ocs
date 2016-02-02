@@ -22,4 +22,4 @@ class LsstObservatoryTest(unittest.TestCase):
         self.assertEqual(self.observatory.model.TelAz_MaxSpeed_rad, math.radians(7.0))
         self.assertEqual(self.observatory.model.parkState.alt_rad, math.radians(86.5))
         self.assertFalse(self.observatory.model.Rotator_FollowSky)
-        self.assertEqual(len(self.observatory.model.prerequisites["TelSettle"]), 2)
+        self.assertEqual(len(self.observatory.model.prerequisites["telsettle"]), 2)
