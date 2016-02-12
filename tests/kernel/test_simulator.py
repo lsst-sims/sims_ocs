@@ -36,7 +36,7 @@ class SimulatorTest(unittest.TestCase):
 
     def test_initial_creation(self):
         self.assertEqual(self.sim.duration, 183.0)
-        self.assertEqual(self.sim.time_handler.initial_timestamp, 1590278400.0)
+        self.assertEqual(self.sim.time_handler.initial_timestamp, 1640995200.0)
         self.assertEqual(self.sim.seconds_in_night, 10 * 3600)
         self.assertEqual(self.sim.hours_in_daylight, 14)
 

@@ -11,5 +11,5 @@ class LsstSurvey(pexConfig.Config):
     def setDefaults(self):
         """Set defaults for the LSST Survey.
         """
-        self.start_date = "2020-05-24"
+        self.start_date = "2022-01-01"
         self.duration = 1.0
