@@ -37,8 +37,7 @@ class SimulatorTest(unittest.TestCase):
     def test_initial_creation(self):
         self.assertEqual(self.sim.duration, 183.0)
         self.assertEqual(self.sim.time_handler.initial_timestamp, 1640995200.0)
-        self.assertEqual(self.sim.seconds_in_night, 10 * 3600)
-        self.assertEqual(self.sim.hours_in_daylight, 14)
+        self.assertIsNotNone(self.sim.obs_site_info)
 
     def test_fraction_overwrite(self):
         self.sim.fractional_duration = 1 / 365
@@ -71,9 +70,8 @@ class SimulatorTest(unittest.TestCase):
         self.put_calls += CONFIG_COMM_PUT_CALLS
         self.sim.fractional_duration = 1 / 365
         self.sim.wait_for_scheduler = wait_for_sched
-        self.sim.hours_in_night = 0.1
+        self.sim.get_seconds_in_night = mock.MagicMock(return_value=360.0)
         self.assertEqual(self.sim.duration, 1.0)
-        self.assertEqual(self.sim.seconds_in_night, 360)
 
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.put")
     def test_run_no_scheduler(self, mock_salmanager_put):
@@ -112,3 +110,15 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(self.mock_socs_db.clear_data.call_count, self.num_nights)
         self.assertEqual(self.mock_socs_db.append_data.call_count, self.num_visits * 2)
         self.assertEqual(self.mock_socs_db.write.call_count, self.num_nights)
+
+    def test_move_to_first_dusk(self):
+        self.sim.move_to_first_dusk()
+        self.assertEqual(self.sim.time_handler.current_timestamp, 1641084532.843324)
+
+    def test_get_seconds_in_night(self):
+        self.assertAlmostEqual(self.sim.get_seconds_in_night(), 28532.980568, delta=1e-6)
+
+    def test_get_seconds_in_day(self):
+        self.sim.move_to_first_dusk()
+        self.sim.time_handler.update_time(self.sim.get_seconds_in_night(), "seconds")
+        self.assertAlmostEqual(self.sim.get_seconds_in_day(), 57784.012589, delta=1e-6)

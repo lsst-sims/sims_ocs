@@ -1,5 +1,8 @@
-import time
 import logging
+import math
+import time
+
+from ts_scheduler.sky_model import Sun
 
 from ..configuration.conf_comm import ConfigurationCommunicator
 from ..database.tables.write_tbls import write_field
@@ -64,22 +67,9 @@ class Simulator(object):
         self.sal = SalManager()
         self.seq = Sequencer()
         self.conf_comm = ConfigurationCommunicator()
-        # Variables that will disappear as more functionality is added.
-        self.night_adjust = (19.0, "hours")
-        self.hours_in_night = 10.0
+        self.sun = Sun()
+        self.obs_site_info = (self.conf.observing_site.longitude, self.conf.observing_site.latitude)
         self.wait_for_scheduler = not self.opts.no_scheduler
-
-    @property
-    def seconds_in_night(self):
-        """float: The number of seconds in a night.
-        """
-        return self.hours_in_night * SECONDS_IN_HOUR
-
-    @property
-    def hours_in_daylight(self):
-        """float: The number of hours in daylight (day hours - night hours).
-        """
-        return HOURS_IN_DAY - self.hours_in_night
 
     @property
     def duration(self):
@@ -110,9 +100,12 @@ class Simulator(object):
             The current night.
         """
         self.log.info("Night {}".format(night))
+        self.log.debug("Start of night {} at {}".format(night, self.time_handler.current_timestring))
 
-        self.end_of_night = self.time_handler.current_timestamp + self.seconds_in_night
-        end_of_night_str = self.time_handler.future_timestring(self.seconds_in_night, "seconds")
+        seconds_in_night = self.get_seconds_in_night()
+        self.end_of_night = self.time_handler.current_timestamp + seconds_in_night
+        end_of_night_str = self.time_handler.future_timestring(seconds_in_night, "seconds")
+
         self.log.debug("End of night {} at {}".format(night, end_of_night_str))
 
         self.db.clear_data()
@@ -120,9 +113,39 @@ class Simulator(object):
     def _end_night(self):
         """Perform actions at the end of the night.
         """
-        # Run time to next night
-        self.time_handler.update_time(self.hours_in_daylight, "hours")
         self.db.write()
+        # Run time to next night
+        self.time_handler.update_time(self.get_seconds_in_day(), "seconds")
+
+    def move_to_first_dusk(self):
+        """Move simulation to first dusk."
+        """
+        (_, set_naut_twi) = self.sun.nautical_twilight(self.time_handler.current_timestamp,
+                                                       *self.obs_site_info)
+        self.time_handler.update_time(set_naut_twi, "hours")
+
+    def get_seconds_in_night(self):
+        """float: The number of seconds in the current night.
+        """
+        (rise_naut_twi,
+         set_naut_twi) = self.sun.nautical_twilight(self.time_handler.current_midnight_timestamp,
+                                                    *self.obs_site_info)
+        if set_naut_twi > HOURS_IN_DAY:
+            set_naut_twi -= HOURS_IN_DAY
+
+        hours_in_night = math.fabs(rise_naut_twi - set_naut_twi)
+        return hours_in_night * SECONDS_IN_HOUR
+
+    def get_seconds_in_day(self):
+        """float: The number of seconds in the current day.
+        """
+        (rise_naut_twi, set_naut_twi) = self.sun.nautical_twilight(self.time_handler.next_midnight_timestamp,
+                                                                   *self.obs_site_info)
+        if set_naut_twi > HOURS_IN_DAY:
+            set_naut_twi -= HOURS_IN_DAY
+
+        hours_in_day = HOURS_IN_DAY - math.fabs(rise_naut_twi - set_naut_twi)
+        return hours_in_day * SECONDS_IN_HOUR
 
     def run(self):
         """Run the simulation.
@@ -152,7 +175,7 @@ class Simulator(object):
             self.log.info("{} fields retrieved".format(len(self.field_list)))
             self.db.write_table("field", self.field_list)
 
-        self.time_handler.update_time(*self.night_adjust)
+        self.move_to_first_dusk()
         self.comm_time.timestamp = self.time_handler.current_timestamp
 
         self.log.debug("Duration = {}".format(self.duration))
