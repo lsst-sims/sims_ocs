@@ -79,7 +79,8 @@ class TimeHandler(object):
     def next_midnight_timestamp(self):
         """float: Return the UNIX timestamp of midnight for the next day after current date.
         """
-        midnight_dt = datetime(self.current_dt.year, self.current_dt.month, self.current_dt.day + 1)
+        midnight_dt = datetime(self.current_dt.year, self.current_dt.month, self.current_dt.day)
+        midnight_dt += timedelta(**{"days": 1})
         return self._time_difference(midnight_dt)
 
     def update_time(self, time_increment, time_units):
