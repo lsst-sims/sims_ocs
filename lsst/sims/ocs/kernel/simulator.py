@@ -199,8 +199,9 @@ class Simulator(object):
                 # Pass observation back to scheduler
                 self.sal.put(observation)
 
-                self.db.append_data("target_history", self.target)
-                self.db.append_data("observation_history", observation)
+                if self.wait_for_scheduler:
+                    self.db.append_data("target_history", self.target)
+                    self.db.append_data("observation_history", observation)
 
             self._end_night()
 
