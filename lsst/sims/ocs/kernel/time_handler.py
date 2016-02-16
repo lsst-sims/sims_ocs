@@ -124,7 +124,35 @@ class TimeHandler(object):
         """
         return time_span >= self._time_difference(self.current_dt, self.initial_dt)
 
-    def future_timestamp(self, time_increment, time_units):
+    def future_datetime(self, time_increment, time_units, timestamp=None):
+        """Return a future datetime object.
+
+        This function adds the requested time increment to the current date/time to get a future date/time
+        and returns a datetime object. An alternative timestamp can be supplied and the time increment will
+        be applied to that instead. This function does not update the internal timestamp.
+
+        Parameters
+        ----------
+        time_increment : float
+            The increment to adjust the current time.
+        time_units : str
+            The time unit for the increment value.
+        timestamp : float (Optional)
+            An alternative timestamp to apply the time increment to.
+
+        Returns
+        -------
+        datetime.datetime
+            The datetime object for the future date/time.
+        """
+        if timestamp is not None:
+            dt = datetime.utcfromtimestamp(timestamp)
+        else:
+            dt = self.current_dt
+        time_delta_dict = {time_units: time_increment}
+        return dt + timedelta(**time_delta_dict)
+
+    def future_timestamp(self, time_increment, time_units, timestamp=None):
         """Return the UNIX timestamp for the future date/time.
 
         This function adds the requested time increment to the current date/time to get a future date/time
@@ -136,15 +164,17 @@ class TimeHandler(object):
             The increment to adjust the current time.
         time_units : str
             The time unit for the increment value.
+        timestamp : float (Optional)
+            An alternative timestamp to apply the time increment to.
 
         Returns
         -------
-        str
-            The future date/time in ISO-8601.
+        float
+            The future UNIX timestamp.
         """
-        pass
+        return self._time_difference(self.future_datetime(time_increment, time_units, timestamp=timestamp))
 
-    def future_timestring(self, time_increment, time_units):
+    def future_timestring(self, time_increment, time_units, timestamp=None):
         """Return the ISO-8601 representation of the future date/time.
 
         This function adds the requested time increment to the current date/time to get a future date/time
@@ -157,11 +187,12 @@ class TimeHandler(object):
             The increment to adjust the current time.
         time_units : str
             The time unit for the increment value.
+        timestamp : float (Optional)
+            An alternative timestamp to apply the time increment to.
 
         Returns
         -------
         str
             The future date/time in ISO-8601.
         """
-        time_delta_dict = {time_units: time_increment}
-        return (self.current_dt + timedelta(**time_delta_dict)).isoformat()
+        return self.future_datetime(time_increment, time_units, timestamp=timestamp).isoformat()
