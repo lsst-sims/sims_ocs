@@ -100,12 +100,17 @@ class Simulator(object):
             The current night.
         """
         self.log.info("Night {}".format(night))
+
+        (set_timestamp, rise_timestamp) = self.get_night_boundaries()
+
+        delta = math.fabs(self.time_handler.current_timestamp - set_timestamp)
+        self.time_handler.update_time(delta, "seconds")
+
         self.log.debug("Start of night {} at {}".format(night, self.time_handler.current_timestring))
 
-        seconds_in_night = self.get_seconds_in_night()
-        self.end_of_night = self.time_handler.current_timestamp + seconds_in_night
-        end_of_night_str = self.time_handler.future_timestring(seconds_in_night, "seconds")
+        self.end_of_night = rise_timestamp
 
+        end_of_night_str = self.time_handler.future_timestring(0, "seconds", timestamp=self.end_of_night)
         self.log.debug("End of night {} at {}".format(night, end_of_night_str))
 
         self.db.clear_data()
@@ -114,38 +119,23 @@ class Simulator(object):
         """Perform actions at the end of the night.
         """
         self.db.write()
-        # Run time to next night
-        self.time_handler.update_time(self.get_seconds_in_day(), "seconds")
 
-    def move_to_first_dusk(self):
-        """Move simulation to first dusk."
+    def get_night_boundaries(self):
+        """Calculate the set and rise times for night."
+
+        Return
+        ------
+        tuple (float, float)
+            A tuple of the set and rise timestamp respectively.
         """
-        (_, set_naut_twi) = self.sun.nautical_twilight(self.time_handler.current_timestamp,
-                                                       *self.obs_site_info)
-        self.time_handler.update_time(set_naut_twi, "hours")
+        current_midnight_timestamp = self.time_handler.current_midnight_timestamp
+        (_, set_naut_twi) = self.sun.nautical_twilight(current_midnight_timestamp, *self.obs_site_info)
+        set_timestamp = current_midnight_timestamp + (set_naut_twi * SECONDS_IN_HOUR)
+        next_midnight_timestamp = self.time_handler.next_midnight_timestamp
+        (rise_naut_twi_next, _) = self.sun.nautical_twilight(next_midnight_timestamp, *self.obs_site_info)
+        rise_timestamp = next_midnight_timestamp + (rise_naut_twi_next * SECONDS_IN_HOUR)
 
-    def get_seconds_in_night(self):
-        """float: The number of seconds in the current night.
-        """
-        (rise_naut_twi,
-         set_naut_twi) = self.sun.nautical_twilight(self.time_handler.current_midnight_timestamp,
-                                                    *self.obs_site_info)
-        if set_naut_twi > HOURS_IN_DAY:
-            set_naut_twi -= HOURS_IN_DAY
-
-        hours_in_night = math.fabs(rise_naut_twi - set_naut_twi)
-        return hours_in_night * SECONDS_IN_HOUR
-
-    def get_seconds_in_day(self):
-        """float: The number of seconds in the current day.
-        """
-        (rise_naut_twi, set_naut_twi) = self.sun.nautical_twilight(self.time_handler.next_midnight_timestamp,
-                                                                   *self.obs_site_info)
-        if set_naut_twi > HOURS_IN_DAY:
-            set_naut_twi -= HOURS_IN_DAY
-
-        hours_in_day = HOURS_IN_DAY - math.fabs(rise_naut_twi - set_naut_twi)
-        return hours_in_day * SECONDS_IN_HOUR
+        return (set_timestamp, rise_timestamp)
 
     def run(self):
         """Run the simulation.
@@ -174,9 +164,6 @@ class Simulator(object):
                 time.sleep(0.00075)
             self.log.info("{} fields retrieved".format(len(self.field_list)))
             self.db.write_table("field", self.field_list)
-
-        self.move_to_first_dusk()
-        self.comm_time.timestamp = self.time_handler.current_timestamp
 
         self.log.debug("Duration = {}".format(self.duration))
         for night in xrange(1, int(self.duration) + 1):
