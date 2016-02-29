@@ -57,3 +57,27 @@ class TimeHandlerTest(unittest.TestCase):
 
     def test_future_timestring(self):
         self.assertEqual(self.th.future_timestring(19.0, "hours"), "2020-05-24T19:00:00")
+
+    def test_midnight_timestamp(self):
+        self.th.update_time(15, "hours")
+        truth_timestamp = (datetime(2020, 5, 24) - datetime(1970, 1, 1)).total_seconds()
+        self.assertEqual(self.th.current_midnight_timestamp, truth_timestamp)
+
+    def test_next_midnight_timestamp(self):
+        self.th.update_time(15, "hours")
+        truth_timestamp = (datetime(2020, 5, 25) - datetime(1970, 1, 1)).total_seconds()
+        self.assertEqual(self.th.next_midnight_timestamp, truth_timestamp)
+
+    def test_future_timestamp(self):
+        truth_timestamp = 1590418800.0
+        self.assertEqual(self.th.future_timestamp(39, "hours"), truth_timestamp)
+
+    def test_future_datetime(self):
+        truth_datetime = datetime(2020, 5, 25, 15)
+        self.assertEqual(self.th.future_datetime(39, "hours"), truth_datetime)
+
+    def test_future_datetime_alternate_timestamp(self):
+        alternate_timestamp = 1590537600.0
+        truth_datetime = datetime(2020, 5, 28, 15)
+        self.assertEqual(self.th.future_datetime(39, "hours", timestamp=alternate_timestamp),
+                         truth_datetime)

@@ -1,4 +1,5 @@
 from __future__ import division
+from datetime import datetime
 import unittest
 
 try:
@@ -14,6 +15,9 @@ from ..helpers import CONFIG_COMM_PUT_CALLS
 class SimulatorTest(unittest.TestCase):
 
     def setUp(self):
+        self.time_tolerance = 1e-6
+        self.starting_timestamp = 1640995200.0
+
         patcher1 = mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.set_publish_topic")
         self.addCleanup(patcher1.stop)
         self.mock_salmanager_pub_topic = patcher1.start()
@@ -34,11 +38,18 @@ class SimulatorTest(unittest.TestCase):
 
         self.sim = Simulator(self.options, self.configuration, self.mock_socs_db)
 
+    def update_timestamp(self, timestamp):
+        self.sim.time_handler.current_dt = datetime.utcfromtimestamp(timestamp)
+
+    def check_night_boundary_tuple(self, truth_set_timestamp, truth_rise_timestamp):
+        (set_timestamp, rise_timestamp) = self.sim.get_night_boundaries()
+        self.assertAlmostEqual(set_timestamp, truth_set_timestamp, delta=self.time_tolerance)
+        self.assertAlmostEqual(rise_timestamp, truth_rise_timestamp, delta=self.time_tolerance)
+
     def test_initial_creation(self):
         self.assertEqual(self.sim.duration, 183.0)
-        self.assertEqual(self.sim.time_handler.initial_timestamp, 1590278400.0)
-        self.assertEqual(self.sim.seconds_in_night, 10 * 3600)
-        self.assertEqual(self.sim.hours_in_daylight, 14)
+        self.assertEqual(self.sim.time_handler.initial_timestamp, self.starting_timestamp)
+        self.assertIsNotNone(self.sim.obs_site_info)
 
     def test_fraction_overwrite(self):
         self.sim.fractional_duration = 1 / 365
@@ -71,9 +82,9 @@ class SimulatorTest(unittest.TestCase):
         self.put_calls += CONFIG_COMM_PUT_CALLS
         self.sim.fractional_duration = 1 / 365
         self.sim.wait_for_scheduler = wait_for_sched
-        self.sim.hours_in_night = 0.1
+        self.sim.get_night_boundaries = mock.MagicMock(return_value=(self.starting_timestamp,
+                                                                     self.starting_timestamp + 360.0))
         self.assertEqual(self.sim.duration, 1.0)
-        self.assertEqual(self.sim.seconds_in_night, 360)
 
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.put")
     def test_run_no_scheduler(self, mock_salmanager_put):
@@ -112,3 +123,27 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(self.mock_socs_db.clear_data.call_count, self.num_nights)
         self.assertEqual(self.mock_socs_db.append_data.call_count, self.num_visits * 2)
         self.assertEqual(self.mock_socs_db.write.call_count, self.num_nights)
+
+    def test_get_night_boundaries(self):
+        self.check_night_boundary_tuple(1641084532.843324, 1641113113.755558)
+        # 2022/02/01
+        self.update_timestamp(1643673600)
+        self.check_night_boundary_tuple(1643762299.348505, 1643793352.557206)
+        # 2022/03/08
+        self.update_timestamp(1646697600)
+        self.check_night_boundary_tuple(1646784061.294245, 1646819228.784648)
+        # 2022/07/02
+        self.update_timestamp(1656720000)
+        self.check_night_boundary_tuple(1656802219.515093, 1656845034.696892)
+        # 2022/10/17
+        self.update_timestamp(1665964800)
+        self.check_night_boundary_tuple(1666050479.261601, 1666084046.869362)
+        # 2025/04/01
+        self.update_timestamp(1743465600)
+        self.check_night_boundary_tuple(1743550264.401366, 1743588178.165652)
+        # 2027/06/21
+        self.update_timestamp(1813536000)
+        self.check_night_boundary_tuple(1813618020.702736, 1813660969.989451)
+        # 2031/09/20
+        self.update_timestamp(1947628800)
+        self.check_night_boundary_tuple(1947713387.331446, 1947750106.804758)

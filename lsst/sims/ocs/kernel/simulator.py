@@ -1,11 +1,13 @@
-import time
 import logging
+import math
+import time
+
+from ts_scheduler.sky_model import Sun
 
 from ..configuration.conf_comm import ConfigurationCommunicator
 from ..database.tables.write_tbls import write_field
 from ..kernel.sequencer import Sequencer
 from ..kernel.time_handler import DAYS_IN_YEAR
-from ..kernel.time_handler import HOURS_IN_DAY
 from ..kernel.time_handler import SECONDS_IN_HOUR
 from ..kernel.time_handler import TimeHandler
 from ..sal.sal_manager import SalManager
@@ -64,22 +66,9 @@ class Simulator(object):
         self.sal = SalManager()
         self.seq = Sequencer()
         self.conf_comm = ConfigurationCommunicator()
-        # Variables that will disappear as more functionality is added.
-        self.night_adjust = (19.0, "hours")
-        self.hours_in_night = 10.0
+        self.sun = Sun()
+        self.obs_site_info = (self.conf.observing_site.longitude, self.conf.observing_site.latitude)
         self.wait_for_scheduler = not self.opts.no_scheduler
-
-    @property
-    def seconds_in_night(self):
-        """float: The number of seconds in a night.
-        """
-        return self.hours_in_night * SECONDS_IN_HOUR
-
-    @property
-    def hours_in_daylight(self):
-        """float: The number of hours in daylight (day hours - night hours).
-        """
-        return HOURS_IN_DAY - self.hours_in_night
 
     @property
     def duration(self):
@@ -111,8 +100,16 @@ class Simulator(object):
         """
         self.log.info("Night {}".format(night))
 
-        self.end_of_night = self.time_handler.current_timestamp + self.seconds_in_night
-        end_of_night_str = self.time_handler.future_timestring(self.seconds_in_night, "seconds")
+        (set_timestamp, rise_timestamp) = self.get_night_boundaries()
+
+        delta = math.fabs(self.time_handler.current_timestamp - set_timestamp)
+        self.time_handler.update_time(delta, "seconds")
+
+        self.log.debug("Start of night {} at {}".format(night, self.time_handler.current_timestring))
+
+        self.end_of_night = rise_timestamp
+
+        end_of_night_str = self.time_handler.future_timestring(0, "seconds", timestamp=self.end_of_night)
         self.log.debug("End of night {} at {}".format(night, end_of_night_str))
 
         self.db.clear_data()
@@ -120,9 +117,24 @@ class Simulator(object):
     def _end_night(self):
         """Perform actions at the end of the night.
         """
-        # Run time to next night
-        self.time_handler.update_time(self.hours_in_daylight, "hours")
         self.db.write()
+
+    def get_night_boundaries(self):
+        """Calculate the set and rise times for night."
+
+        Return
+        ------
+        tuple (float, float)
+            A tuple of the set and rise timestamp respectively.
+        """
+        current_midnight_timestamp = self.time_handler.current_midnight_timestamp
+        (_, set_naut_twi) = self.sun.nautical_twilight(current_midnight_timestamp, *self.obs_site_info)
+        set_timestamp = current_midnight_timestamp + (set_naut_twi * SECONDS_IN_HOUR)
+        next_midnight_timestamp = self.time_handler.next_midnight_timestamp
+        (rise_naut_twi_next, _) = self.sun.nautical_twilight(next_midnight_timestamp, *self.obs_site_info)
+        rise_timestamp = next_midnight_timestamp + (rise_naut_twi_next * SECONDS_IN_HOUR)
+
+        return (set_timestamp, rise_timestamp)
 
     def run(self):
         """Run the simulation.
@@ -152,9 +164,6 @@ class Simulator(object):
             self.log.info("{} fields retrieved".format(len(self.field_list)))
             self.db.write_table("field", self.field_list)
 
-        self.time_handler.update_time(*self.night_adjust)
-        self.comm_time.timestamp = self.time_handler.current_timestamp
-
         self.log.debug("Duration = {}".format(self.duration))
         for night in xrange(1, int(self.duration) + 1):
             self._start_night(night)
@@ -176,8 +185,9 @@ class Simulator(object):
                 # Pass observation back to scheduler
                 self.sal.put(observation)
 
-                self.db.append_data("target_history", self.target)
-                self.db.append_data("observation_history", observation)
+                if self.wait_for_scheduler:
+                    self.db.append_data("target_history", self.target)
+                    self.db.append_data("observation_history", observation)
 
             self._end_night()
 
