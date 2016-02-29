@@ -8,7 +8,6 @@ from ..configuration.conf_comm import ConfigurationCommunicator
 from ..database.tables.write_tbls import write_field
 from ..kernel.sequencer import Sequencer
 from ..kernel.time_handler import DAYS_IN_YEAR
-from ..kernel.time_handler import HOURS_IN_DAY
 from ..kernel.time_handler import SECONDS_IN_HOUR
 from ..kernel.time_handler import TimeHandler
 from ..sal.sal_manager import SalManager
