@@ -7,6 +7,8 @@ import pickle
 import SocketServer
 import struct
 
+from lsst.sims.ocs.setup.log import DETAIL_LEVEL, MIN_FILE
+
 class LogRecordStreamHandler(SocketServer.StreamRequestHandler):
     """Handler for a streaming logging request.
 
@@ -76,18 +78,17 @@ class LogRecordSocketReceiver(SocketServer.ThreadingTCPServer):
             abort = self.abort
 
 def main(options):
-    logging.basicConfig(level=options.log_level,
+    logging.basicConfig(level=DETAIL_LEVEL[options.level_detail],
                         format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
                         filename=options.log_filename,
                         filemode="w")
     tcpserver = LogRecordSocketReceiver()
-    print('About to start TCP server...')
     tcpserver.serve_until_stopped()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-l', '--log-level', dest='log_level', default=logging.DEBUG,
-                        help='Set the logging level of the system.')
+    parser.add_argument('-l', '--level-detail', dest='level_detail', type=int, default=MIN_FILE,
+                        help='Set the detail level of the system.')
     parser.add_argument('-f', '--filename', dest='log_filename',
                         help='Set the logging file name.')
 

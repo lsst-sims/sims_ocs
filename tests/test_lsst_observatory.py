@@ -1,3 +1,4 @@
+import logging
 import math
 import unittest
 
@@ -6,6 +7,7 @@ from lsst.sims.ocs.observatory.lsst_observatory import LsstObservatory
 class LsstObservatoryTest(unittest.TestCase):
 
     def setUp(self):
+        logging.getLogger().setLevel(logging.WARN)
         self.observatory = LsstObservatory()
 
     def test_basic_information_after_creation(self):
