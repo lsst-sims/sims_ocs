@@ -2,7 +2,7 @@ import logging
 import os
 import unittest
 
-from lsst.sims.ocs.setup import LoggingLevel, configure_logging, generate_logfile_path, set_log_levels
+from lsst.sims.ocs.setup import configure_logging, generate_logfile_path, set_log_levels
 
 class LogTest(unittest.TestCase):
 
@@ -52,6 +52,6 @@ class LogTest(unittest.TestCase):
         self.assertEqual(file_detail, 5)
 
     def test_configure_logging(self):
-        configure_logging(2)
+        configure_logging(2, 3)
         self.assertEqual(len(logging.getLogger().handlers), 2)
-        self.assertEqual(logging.getLogger().getEffectiveLevel(), LoggingLevel.WORDY.value)
+        self.assertEqual(logging.getLogger().getEffectiveLevel(), logging.DEBUG)

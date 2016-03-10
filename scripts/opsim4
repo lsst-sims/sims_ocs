@@ -31,7 +31,7 @@ def main(args):
 
     log_file = generate_logfile_path(args.log_path, args.session_id)
     console_detail, file_detail = set_log_levels(args.verbose)
-    configure_logging(console_detail)
+    configure_logging(console_detail, file_detail)
     log_pid = sp.Popen(["central_logger", "--filename={}".format(log_file),
                         "--level={}".format(file_detail)]).pid
 
@@ -50,7 +50,8 @@ def main(args):
     configuration.validate()
 
     sch_exe = os.path.join(os.path.dirname(ts_scheduler.schedulerMain.__file__), "scheduler.py")
-    sched_pid = sp.Popen([sch_exe, "-s", "--console-format=%(message)s"]).pid
+    sched_pid = sp.Popen([sch_exe, "-s", "--console-format=Scheduler: %(message)s",
+                          ("-v " * args.verbose).strip()]).pid
 
     sim = Simulator(args, configuration, db)
     sim.initialize()

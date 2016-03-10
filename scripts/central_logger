@@ -30,14 +30,14 @@ class LogRecordStreamHandler(SocketServer.StreamRequestHandler):
             chunk = self.connection.recv(slen)
             while len(chunk) < slen:
                 chunk = chunk + self.connection.recv(slen - len(chunk))
-            obj = self.unPickle(chunk)
+            obj = self.un_pickle(chunk)
             record = logging.makeLogRecord(obj)
-            self.handleLogRecord(record)
+            self.handle_log_record(record)
 
-    def unPickle(self, data):
+    def un_pickle(self, data):
         return pickle.loads(data)
 
-    def handleLogRecord(self, record):
+    def handle_log_record(self, record):
         # if a name is specified, we use the named logger rather than the one
         # implied by the record.
         if self.server.logname is not None:

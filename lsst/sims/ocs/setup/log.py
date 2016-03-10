@@ -29,7 +29,7 @@ DETAIL_LEVEL = {
     5: LoggingLevel.TRACE.value
 }
 
-def configure_logging(console_detail):
+def configure_logging(console_detail, file_detail):
     """Configure logging for the application.
 
     Configuration for both the console and file (via socket) logging for the application.
@@ -39,10 +39,18 @@ def configure_logging(console_detail):
     console_detail : int
         The requested detail level for the console logger.
     """
-    logging.basicConfig(level=DETAIL_LEVEL[console_detail], format=CONSOLE_FORMAT)
+    main_level = max(console_detail, file_detail)
+    logging.basicConfig(level=DETAIL_LEVEL[main_level], format=CONSOLE_FORMAT)
+    # Remove old console logger as it will double up messages when levels match.
+    logging.getLogger().removeHandler(logging.getLogger().handlers[0])
 
     for level in LoggingLevel:
         logging.addLevelName(level.value, level.name)
+
+    ch = logging.StreamHandler()
+    ch.setLevel(DETAIL_LEVEL[console_detail])
+    ch.setFormatter(logging.Formatter(CONSOLE_FORMAT))
+    logging.getLogger().addHandler(ch)
 
     sh = logging.handlers.SocketHandler('localhost', logging.handlers.DEFAULT_TCP_LOGGING_PORT)
     logging.getLogger().addHandler(sh)
