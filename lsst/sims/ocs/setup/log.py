@@ -59,9 +59,7 @@ def configure_logging(log_file_path="log", session_id="1000", verbose=0, debug=0
     log_file = os.path.join(log_file_path, "lsst.log_{}".format(session_id))
 
     logging.basicConfig(level=DEBUG_LEVEL[debug],
-                        format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
-                        filename=log_file,
-                        filemode="w")
+                        format='%(asctime)s - %(levelname)s - %(name)s - %(message)s')
 
     for level in LoggingLevel:
         logging.addLevelName(level.value, level.name)
@@ -70,5 +68,9 @@ def configure_logging(log_file_path="log", session_id="1000", verbose=0, debug=0
     ch = logging.StreamHandler()
     ch.setLevel(VERBOSE_LEVEL[verbose])
     ch.setFormatter(console_format)
+    logging.getLogger().addHandler(ch)
 
-    logging.getLogger('').addHandler(ch)
+    sh = logging.handlers.SocketHandler('localhost', logging.handlers.DEFAULT_TCP_LOGGING_PORT)
+    logging.getLogger().addHandler(sh)
+
+    return log_file

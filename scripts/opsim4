@@ -6,7 +6,12 @@ except ImportError:
     from configparser import NoOptionError
 from datetime import datetime
 import logging
+import logging.handlers
 import os
+import signal
+import subprocess as sp
+
+import ts_scheduler.schedulerMain
 
 from lsst.sims.ocs.configuration.sim_config import SimulationConfig
 from lsst.sims.ocs.database.socs_db import SocsDatabase
@@ -24,7 +29,8 @@ def main(args):
     session_id = db.new_session(args.startup_comment)
     args.session_id = session_id
 
-    configure_logging(args.log_path, args.session_id, verbose=args.verbose, debug=args.debug)
+    log_file = configure_logging(args.log_path, args.session_id, verbose=args.verbose, debug=args.debug)
+    log_pid = sp.Popen(["central_logger", "--filename={}".format(log_file)]).pid
 
     tracking = Tracking(args.session_id, args.session_code, args.startup_comment)
     if args.track_session:
@@ -39,6 +45,9 @@ def main(args):
     configuration = SimulationConfig()
     configuration.load(args.config)
     configuration.validate()
+
+    sch_exe = os.path.join(os.path.dirname(ts_scheduler.schedulerMain.__file__), "scheduler.py")
+    sched_pid = sp.Popen([sch_exe, log_file]).pid
 
     sim = Simulator(args, configuration, db)
     sim.initialize()
@@ -63,6 +72,10 @@ def main(args):
     logger.info("Total running time = {:.2f} seconds".format(run_time))
     if args.track_session:
         tracking.update_session("Simulation finished successfully in {:.2f} seconds".format(run_time))
+
+    logger.info("Waiting for Scheduler to finish.")
+    os.waitpid(sched_pid, 0)
+    os.kill(log_pid, signal.SIGKILL)
 
 if __name__ == "__main__":
     parser = create_parser()
