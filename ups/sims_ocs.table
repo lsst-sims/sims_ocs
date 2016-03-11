@@ -1,5 +1,6 @@
 setupRequired(python)
 setupRequired(pex_config)
+setupRequired(sims_skybrightness)
 
 envPrepend(PYTHONPATH, ${PRODUCT_DIR})
 envPrepend(PATH, ${PRODUCT_DIR}/scripts)
