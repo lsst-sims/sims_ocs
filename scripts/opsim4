@@ -6,13 +6,18 @@ except ImportError:
     from configparser import NoOptionError
 from datetime import datetime
 import logging
+import logging.handlers
 import os
+import signal
+import subprocess as sp
+
+import ts_scheduler.schedulerMain
 
 from lsst.sims.ocs.configuration.sim_config import SimulationConfig
 from lsst.sims.ocs.database.socs_db import SocsDatabase
 from lsst.sims.ocs.kernel.simulator import Simulator
 from lsst.sims.ocs.setup.prog_config import read_file_config
-from lsst.sims.ocs.setup.log import configure_logging
+from lsst.sims.ocs.setup.log import configure_logging, generate_logfile_path, set_log_levels
 from lsst.sims.ocs.setup.parser import create_parser
 from lsst.sims.ocs.setup.tracking import Tracking
 from lsst.sims.ocs.utilities.file_helpers import expand_path
@@ -24,7 +29,11 @@ def main(args):
     session_id = db.new_session(args.startup_comment)
     args.session_id = session_id
 
-    configure_logging(args.log_path, args.session_id, verbose=args.verbose, debug=args.debug)
+    log_file = generate_logfile_path(args.log_path, args.session_id)
+    console_detail, file_detail = set_log_levels(args.verbose)
+    configure_logging(console_detail, file_detail)
+    log_pid = sp.Popen(["central_logger", "--filename={}".format(log_file),
+                        "--level={}".format(file_detail)]).pid
 
     tracking = Tracking(args.session_id, args.session_code, args.startup_comment)
     if args.track_session:
@@ -39,6 +48,10 @@ def main(args):
     configuration = SimulationConfig()
     configuration.load(args.config)
     configuration.validate()
+
+    sch_exe = os.path.join(os.path.dirname(ts_scheduler.schedulerMain.__file__), "scheduler.py")
+    sched_pid = sp.Popen([sch_exe, "-s", "--console-format=Scheduler: %(message)s",
+                          ("-v " * args.verbose).strip()]).pid
 
     sim = Simulator(args, configuration, db)
     sim.initialize()
@@ -63,6 +76,10 @@ def main(args):
     logger.info("Total running time = {:.2f} seconds".format(run_time))
     if args.track_session:
         tracking.update_session("Simulation finished successfully in {:.2f} seconds".format(run_time))
+
+    logger.info("Waiting for Scheduler to finish.")
+    os.waitpid(sched_pid, 0)
+    os.kill(log_pid, signal.SIGKILL)
 
 if __name__ == "__main__":
     parser = create_parser()
