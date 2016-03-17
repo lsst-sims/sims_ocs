@@ -50,8 +50,12 @@ def main(args):
     configuration.validate()
 
     sch_exe = os.path.join(os.path.dirname(ts_scheduler.schedulerMain.__file__), "scheduler.py")
-    sched_pid = sp.Popen([sch_exe, "-s", "--console-format=Scheduler: %(message)s",
-                          ("-v " * args.verbose).strip()]).pid
+    sch_cmd = [sch_exe, "-s", "--console-format=Scheduler: %(message)s"]
+    verbosity_str = ("-v " * args.verbose).strip()
+    if verbosity_str != '':
+        sch_cmd.append(verbosity_str)
+
+    sched_pid = sp.Popen(sch_cmd).pid
 
     sim = Simulator(args, configuration, db)
     sim.initialize()
