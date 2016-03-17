@@ -5,14 +5,15 @@ from ts_scheduler.observatoryModel.observatoryModel import ObservatoryModel
 from ..configuration.observatory import Observatory
 from ..configuration.obs_site import ObservingSite
 
-__all__ = ["LsstObservatory"]
+__all__ = ["MainObservatory"]
 
-class LsstObservatory(object):
-    """Main class for the LSST Observatory.
+class MainObservatory(object):
+    """Class for the Main Observatory.
 
-    This class is designed to look like the real LSST Observatory. It uses the Observatory
-    model from the Scheduler as its base information. There is an option to add variations
-    onto the parameters and values that the model calculcates to simulate real world behaviors.
+    This class is designed to look like the real bbservatory. In the default case, the bbservatory
+    configuration is the main LSST obesrvatory. It uses the observatory model from the LSST Scheduler
+    as its base information. There is an option to add variations onto the parameters and values that
+    the model calculcates to simulate real world behaviors.
 
     Attributes
     ----------
@@ -27,7 +28,7 @@ class LsstObservatory(object):
     def __init__(self):
         """Initialize the class.
         """
-        self.log = logging.getLogger("observatory.LsstObservatory")
+        self.log = logging.getLogger("observatory.MainObservatory")
         self.model = ObservatoryModel()
         self.param_dict = {}
 

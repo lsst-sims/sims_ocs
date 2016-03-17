@@ -1,6 +1,6 @@
 import logging
 
-from ..observatory.lsst_observatory import LsstObservatory
+from ..observatory import MainObservatory
 from ..setup.log import LoggingLevel
 
 __all__ = ["Sequencer"]
@@ -29,7 +29,7 @@ class Sequencer(object):
         self.targets_received = 0
         self.observations_made = 0
         self.observation = None
-        self.observatory_model = LsstObservatory()
+        self.observatory_model = MainObservatory()
         self.log = logging.getLogger("kernel.Sequencer")
         # Variables that will disappear as more functionality is added.
         self.slew_time = (6.0, "seconds")

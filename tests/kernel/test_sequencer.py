@@ -20,16 +20,16 @@ class SequencerTest(unittest.TestCase):
         self.assertIsNone(self.seq.observation)
         self.assertIsNotNone(self.seq.observatory_model)
 
-    @mock.patch("lsst.sims.ocs.observatory.lsst_observatory.LsstObservatory.configure")
+    @mock.patch("lsst.sims.ocs.observatory.main_observatory.MainObservatory.configure")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
-    def test_initialization(self, mock_sal_telemetry_pub, mock_lsst_observatory_configure):
+    def test_initialization(self, mock_sal_telemetry_pub, mock_main_observatory_configure):
         sal = SalManager()
         sal.initialize()
         self.seq.initialize(sal)
         self.assertIsNotNone(self.seq.observation)
         self.assertEqual(self.seq.observation.observationId, 0)
         self.assertTrue(mock_sal_telemetry_pub.called)
-        self.assertTrue(mock_lsst_observatory_configure.called)
+        self.assertTrue(mock_main_observatory_configure.called)
 
     @mock.patch("logging.Logger.info")
     def test_finalization(self, mock_logger_info):

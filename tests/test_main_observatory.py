@@ -2,13 +2,13 @@ import logging
 import math
 import unittest
 
-from lsst.sims.ocs.observatory.lsst_observatory import LsstObservatory
+from lsst.sims.ocs.observatory import MainObservatory
 
-class LsstObservatoryTest(unittest.TestCase):
+class MainObservatoryTest(unittest.TestCase):
 
     def setUp(self):
         logging.getLogger().setLevel(logging.WARN)
-        self.observatory = LsstObservatory()
+        self.observatory = MainObservatory()
 
     def test_basic_information_after_creation(self):
         self.assertIsNotNone(self.observatory.log)
