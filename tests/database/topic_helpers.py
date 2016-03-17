@@ -1,6 +1,7 @@
 #import collections
 
 import SALPY_scheduler
+import lsst.sims.ocs.observatory
 
 target = SALPY_scheduler.scheduler_targetTestC()
 target.targetId = 10
@@ -31,3 +32,7 @@ observation_topic.ra = 1.000
 observation_topic.dec = -3.00
 observation_topic.angle = 0.5
 observation_topic.num_exposures = 2
+
+slew_history_coll = lsst.sims.ocs.observatory.SlewHistory(slewCount=1, startDate=2922, endDate=2925,
+                                                          slewTime=6.0, slewDistance=1.0,
+                                                          ObsHistory_observationID=1)

@@ -3,3 +3,4 @@ Module for classes that implement the necessary behavior for the SOCS additions 
 Scheduler Observatory Model.
 """
 from .main_observatory import *
+from .slew_information import *

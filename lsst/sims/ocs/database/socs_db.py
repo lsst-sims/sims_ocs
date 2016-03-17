@@ -90,6 +90,7 @@ class SocsDatabase(object):
         self.field = tables.create_field(metadata)
         self.target_history = tables.create_target_history(metadata)
         self.observation_history = tables.create_observation_history(metadata)
+        self.slew_history = tables.create_slew_history(metadata)
 
     def _connect(self):
         """Create the database connection for MySQL.

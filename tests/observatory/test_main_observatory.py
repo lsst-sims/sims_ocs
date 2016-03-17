@@ -4,7 +4,7 @@ import unittest
 
 from lsst.sims.ocs.kernel import TimeHandler
 from lsst.sims.ocs.observatory import MainObservatory
-import database.topic_helpers as topic_helpers
+from ..database import topic_helpers
 
 class MainObservatoryTest(unittest.TestCase):
 

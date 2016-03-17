@@ -2,7 +2,8 @@ from sqlalchemy import Column, Float, Index, Integer, String, Table
 from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event
 
-__all__ = ["create_field", "create_observation_history", "create_session", "create_target_history"]
+__all__ = ["create_field", "create_observation_history", "create_session",
+           "create_slew_history", "create_target_history"]
 
 def create_session(metadata, autoincrement=True):
     """Create Session table.
@@ -133,5 +134,33 @@ def create_observation_history(metadata):
     Index("fk_ObsHistory_Session1", table.c.Session_sessionID)
     Index("fk_ObsHistory_Field1", table.c.fieldID)
     Index("fk_ObsHistory_Target1", table.c.targetID)
+
+    return table
+
+def create_slew_history(metadata):
+    """Create SlewHistory table.
+
+    This function creates the SlewHistory table for tracking all the general slew information
+    performed by the observatory.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The SlewHistory table object.
+    """
+    table = Table("SlewHistory", metadata,
+                  Column("slewCount", Integer, primary_key=True, nullable=False),
+                  Column("startDate", Float, nullable=False),
+                  Column("endDate", Float, nullable=False),
+                  Column("slewTime", Float, nullable=False),
+                  Column("slewDist", Float, nullable=False),
+                  Column("ObsHistory_observationID", Integer))
+
+    Index("fk_SlewHistory_ObsHistory1", table.c.ObsHistory_observationID)
 
     return table

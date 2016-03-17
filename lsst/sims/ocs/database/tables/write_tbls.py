@@ -1,6 +1,6 @@
 import collections
 
-__all__ = ["write_field", "write_observation_history", "write_target_history"]
+__all__ = ["write_field", "write_observation_history", "write_slew_history", "write_target_history"]
 
 def write_target_history(data, sid):
     """Create a dictionary of data for the TargetHistory table.
@@ -81,4 +81,20 @@ def write_observation_history(data, sid):
         ('angle', data.angle),
         ('num_exposures', data.num_exposures)
     ])
+    return values
+
+def write_slew_history(data):
+    """Create a dictionary of data for the SlewHistory table.
+
+    Parameters
+    ----------
+    data : class:`.SlewHistory`
+        The instance containing the slew history information
+
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the topic data.
+    """
+    values = data._asdict()
     return values
