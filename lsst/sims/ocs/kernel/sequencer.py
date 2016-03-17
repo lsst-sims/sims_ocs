@@ -27,13 +27,9 @@ class Sequencer(object):
         """Initialize the class.
         """
         self.targets_received = 0
-        self.observations_made = 0
         self.observation = None
         self.observatory_model = MainObservatory()
         self.log = logging.getLogger("kernel.Sequencer")
-        # Variables that will disappear as more functionality is added.
-        self.slew_time = (6.0, "seconds")
-        self.visit_time = (34.0, "seconds")
 
     def initialize(self, sal):
         """Perform initialization steps.
@@ -47,6 +43,16 @@ class Sequencer(object):
         """
         self.observation = sal.set_publish_topic("observationTest")
         self.observatory_model.configure()
+
+    @property
+    def observations_made(self):
+        """Get the number of observations made.
+
+        Returns
+        -------
+        int
+        """
+        return self.observatory_model.observations_made
 
     def finalize(self):
         """Perform finalization steps.
@@ -70,7 +76,7 @@ class Sequencer(object):
         target : SALPY_scheduler.targetTestC
             A target telemetry topic containing the current target information.
         th : :class:`.TimeHandler`
-            An instance of the simluation's TimeHanlder.
+            An instance of the simulation's TimeHandler.
 
         Returns
         -------
@@ -80,24 +86,6 @@ class Sequencer(object):
         self.log.log(LoggingLevel.EXTENSIVE.value, "Received target {}".format(target.targetId))
         self.targets_received += 1
 
-        self.log.log(LoggingLevel.EXTENSIVE.value,
-                     "Starting observation {} for target {}.".format(self.observations_made,
-                                                                     target.targetId))
-        th.update_time(*self.slew_time)
-
-        self.observation.observationId = self.observations_made
-        self.observation.observationTime = th.current_timestamp
-        self.observation.targetId = target.targetId
-        self.observation.fieldId = target.fieldId
-        self.observation.filter = target.filter
-        self.observation.ra = target.ra
-        self.observation.dec = target.dec
-        self.observation.num_exposures = target.num_exposures
-
-        th.update_time(*self.visit_time)
-        self.log.log(LoggingLevel.EXTENSIVE.value,
-                     "Observation {} completed at {}.".format(self.observations_made,
-                                                              th.current_timestring))
-        self.observations_made += 1
+        self.observatory_model.observe(th, target, self.observation)
 
         return self.observation

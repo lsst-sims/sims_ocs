@@ -57,7 +57,7 @@ class SequencerTest(unittest.TestCase):
 
         observation = self.seq.observe_target(target, time_handler)
 
-        self.assertEqual(observation.observationTime, time_handler.initial_timestamp + self.seq.slew_time[0])
+        self.assertEqual(observation.observationTime, time_handler.initial_timestamp + 6.0)
         self.assertEqual(observation.targetId, target.targetId)
         self.assertEqual(self.seq.targets_received, 1)
         self.assertEqual(self.seq.observations_made, 1)
