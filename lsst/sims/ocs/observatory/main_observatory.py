@@ -1,5 +1,6 @@
 import logging
 
+from ts_scheduler.observatoryModel import ObservatoryLocation
 from ts_scheduler.observatoryModel.observatoryModel import ObservatoryModel
 
 from ..configuration.observatory import Observatory
@@ -30,7 +31,9 @@ class MainObservatory(object):
         """Initialize the class.
         """
         self.log = logging.getLogger("observatory.MainObservatory")
-        self.model = ObservatoryModel()
+        observatory_location = ObservatoryLocation()
+        observatory_location.configure({"obs_site": ObservingSite().toDict()})
+        self.model = ObservatoryModel(observatory_location)
         self.param_dict = {}
         self.slew_count = 0
         self.observations_made = 0
@@ -42,7 +45,7 @@ class MainObservatory(object):
         """Configure the ObservatoryModel parameters.
         """
         self.param_dict.update(Observatory().toDict())
-        self.param_dict["obs_site"] = ObservingSite().toDict()
+        #self.param_dict["obs_site"] = ObservingSite().toDict()
         self.model.configure(self.param_dict)
 
     def slew(self, target):
