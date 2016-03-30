@@ -46,6 +46,18 @@ class MainObservatory(object):
         # Variables that will disappear as more functionality is added.
         self.visit_time = (34.0, "seconds")
 
+    def __getattr__(self, name):
+        """Find attributes in ts_scheduler.observatorModel.ObservatorModel as well as MainObservatory.
+        """
+        try:
+            return getattr(self.model, name)
+        except AttributeError:
+            cclass_name = self.__class__.__name__
+            aclass_name = self.f.__class__.__name__
+            raise AttributeError("'{}' and '{}' objects have no attribute '{}'".format(cclass_name,
+                                                                                       aclass_name,
+                                                                                       name))
+
     def configure(self):
         """Configure the ObservatoryModel parameters.
         """

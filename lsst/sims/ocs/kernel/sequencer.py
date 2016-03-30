@@ -54,6 +54,12 @@ class Sequencer(object):
         """
         return self.observatory_model.observations_made
 
+    def end_of_night(self):
+        """Perform end of night functions.
+        """
+        # Park the telescope for the day.
+        self.observatory_model.reset()
+
     def finalize(self):
         """Perform finalization steps.
 

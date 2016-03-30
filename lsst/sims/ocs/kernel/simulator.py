@@ -118,6 +118,7 @@ class Simulator(object):
         """Perform actions at the end of the night.
         """
         self.db.write()
+        self.seq.end_of_night()
 
     def get_night_boundaries(self):
         """Calculate the set and rise times for night."
