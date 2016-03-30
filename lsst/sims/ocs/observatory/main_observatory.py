@@ -1,11 +1,17 @@
+import copy
 import logging
+import math
+
+import palpy
 
 from ts_scheduler.observatoryModel import ObservatoryLocation
 from ts_scheduler.observatoryModel.observatoryModel import ObservatoryModel
+from ts_scheduler.schedulerTarget import Target
 
 from ..configuration.observatory import Observatory
 from ..configuration.obs_site import ObservingSite
 from ..setup import LoggingLevel
+from .slew_information import SlewHistory
 
 __all__ = ["MainObservatory"]
 
@@ -38,14 +44,12 @@ class MainObservatory(object):
         self.slew_count = 0
         self.observations_made = 0
         # Variables that will disappear as more functionality is added.
-        self.slew_time = (6.0, "seconds")
         self.visit_time = (34.0, "seconds")
 
     def configure(self):
         """Configure the ObservatoryModel parameters.
         """
         self.param_dict.update(Observatory().toDict())
-        #self.param_dict["obs_site"] = ObservingSite().toDict()
         self.model.configure(self.param_dict)
 
     def slew(self, target):
@@ -55,9 +59,29 @@ class MainObservatory(object):
         ----------
         target : SALPY_scheduler.targetTestC
             The Scheduler topic instance holding the target information.
+
+        Returns
+        -------
+        float
+            The time to slew the telescope from its current position to the target position.
+        :class:`.SlewHistory`
+            The slew history information from the current slew.
         """
         self.slew_count += 1
-        return self.slew_time[0]
+        initial_slew_state = copy.deepcopy(self.model.currentState)
+        sched_target = Target.from_topic(target)
+        self.model.slew(sched_target)
+        final_slew_state = copy.deepcopy(self.model.currentState)
+
+        slew_time = (final_slew_state.time - initial_slew_state.time, "seconds")
+
+        slew_distance = palpy.dsep(final_slew_state.ra_rad, final_slew_state.dec_rad,
+                                   initial_slew_state.ra_rad, initial_slew_state.dec_rad)
+
+        slew_history = SlewHistory(self.slew_count, initial_slew_state.time, final_slew_state.time, slew_time,
+                                   math.degrees(slew_distance), self.observations_made)
+
+        return slew_time, slew_history
 
     def observe(self, time_handler, target, observation):
         """Perform the observation of the given target.
@@ -70,6 +94,11 @@ class MainObservatory(object):
             The Scheduler topic instance holding the target information.
         observation : SALPY_scheduler.observationTestC
             The Scheduler topic instance for recording the observation information.
+
+        Returns
+        -------
+        :class:`.SlewHistory`
+            The slew history information from the current slew.
         """
         self.observations_made += 1
 
@@ -77,7 +106,8 @@ class MainObservatory(object):
                      "Starting observation {} for target {}.".format(self.observations_made,
                                                                      target.targetId))
 
-        time_handler.update_time(*self.slew_time)
+        slew_time, slew_history = self.slew(target)
+        time_handler.update_time(*slew_time)
 
         observation.observationId = self.observations_made
         observation.observationTime = time_handler.current_timestamp
@@ -93,3 +123,5 @@ class MainObservatory(object):
         self.log.log(LoggingLevel.EXTENSIVE.value,
                      "Observation {} completed at {}.".format(self.observations_made,
                                                               time_handler.current_timestring))
+
+        return slew_history

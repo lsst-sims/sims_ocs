@@ -9,6 +9,7 @@ from ..database import topic_helpers
 class MainObservatoryTest(unittest.TestCase):
 
     def setUp(self):
+        self.truth_slew_time = 56.347699999734026
         logging.getLogger().setLevel(logging.WARN)
         self.observatory = MainObservatory()
 
@@ -30,9 +31,13 @@ class MainObservatoryTest(unittest.TestCase):
     def test_slew(self):
         self.observatory.configure()
         target = topic_helpers.target
-        slew_time = self.observatory.slew(target)
-        self.assertEqual(slew_time, 6.0)
+        self.assertEqual(self.observatory.slew_count, 0)
+        slew_time, slew_history = self.observatory.slew(target)
+        self.assertEqual(slew_time[0], self.truth_slew_time)
         self.assertEqual(self.observatory.slew_count, 1)
+        self.assertEqual(slew_history.slewCount, 1)
+        self.assertEqual(slew_history.ObsHistory_observationID, 0)
+        self.assertEqual(slew_history.slewDistance, 3.1621331347877555)
 
     def test_observe(self):
         self.observatory.configure()
@@ -40,6 +45,7 @@ class MainObservatoryTest(unittest.TestCase):
         observation = topic_helpers.observation_topic
         # Make it so initial timestamp is 0
         time_handler = TimeHandler("1970-01-01")
-        self.observatory.observe(time_handler, target, observation)
+        slew_history = self.observatory.observe(time_handler, target, observation)
         self.assertEqual(observation.observationId, 1)
-        self.assertEqual(observation.observationTime, 6.0)
+        self.assertAlmostEqual(observation.observationTime, self.truth_slew_time, delta=1e-4)
+        self.assertIsNotNone(slew_history)

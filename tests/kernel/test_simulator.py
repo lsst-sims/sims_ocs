@@ -10,6 +10,7 @@ except ImportError:
 from lsst.sims.ocs.configuration.sim_config import SimulationConfig
 from lsst.sims.ocs.kernel.simulator import Simulator
 
+from ..database.topic_helpers import slew_history_coll
 from ..helpers import CONFIG_COMM_PUT_CALLS
 
 class SimulatorTest(unittest.TestCase):
@@ -37,6 +38,7 @@ class SimulatorTest(unittest.TestCase):
         self.configuration = SimulationConfig()
 
         self.sim = Simulator(self.options, self.configuration, self.mock_socs_db)
+        self.sim.seq.observatory_model.slew = mock.Mock(return_value=((6.0, "seconds"), slew_history_coll))
 
     def update_timestamp(self, timestamp):
         self.sim.time_handler.current_dt = datetime.utcfromtimestamp(timestamp)
@@ -121,7 +123,7 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(self.sim.seq.targets_received, self.num_visits)
         self.assertEqual(self.sim.seq.observations_made, self.num_visits)
         self.assertEqual(self.mock_socs_db.clear_data.call_count, self.num_nights)
-        self.assertEqual(self.mock_socs_db.append_data.call_count, self.num_visits * 2)
+        self.assertEqual(self.mock_socs_db.append_data.call_count, self.num_visits * 3)
         self.assertEqual(self.mock_socs_db.write.call_count, self.num_nights)
 
     def test_get_night_boundaries(self):

@@ -55,9 +55,10 @@ class SequencerTest(unittest.TestCase):
         # Make it so initial timestamp is 0
         time_handler = TimeHandler("1970-01-01")
 
-        observation = self.seq.observe_target(target, time_handler)
+        observation, slew_history = self.seq.observe_target(target, time_handler)
 
-        self.assertEqual(observation.observationTime, time_handler.initial_timestamp + 6.0)
+        self.assertEqual(observation.observationTime, time_handler.initial_timestamp + 140.0)
         self.assertEqual(observation.targetId, target.targetId)
         self.assertEqual(self.seq.targets_received, 1)
         self.assertEqual(self.seq.observations_made, 1)
+        self.assertIsNotNone(slew_history)

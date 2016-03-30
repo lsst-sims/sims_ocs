@@ -82,10 +82,12 @@ class Sequencer(object):
         -------
         SALPY_scheduler.observationTestC
             An observation telemetry topic containing the observed target parameters.
+        :class:`.SlewHistory`
+            The slew history information from the current slew.
         """
         self.log.log(LoggingLevel.EXTENSIVE.value, "Received target {}".format(target.targetId))
         self.targets_received += 1
 
-        self.observatory_model.observe(th, target, self.observation)
+        slew_history = self.observatory_model.observe(th, target, self.observation)
 
-        return self.observation
+        return self.observation, slew_history
