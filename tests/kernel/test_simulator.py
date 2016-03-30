@@ -38,7 +38,6 @@ class SimulatorTest(unittest.TestCase):
         self.configuration = SimulationConfig()
 
         self.sim = Simulator(self.options, self.configuration, self.mock_socs_db)
-        self.sim.seq.observatory_model.slew = mock.Mock(return_value=((6.0, "seconds"), slew_history_coll))
 
     def update_timestamp(self, timestamp):
         self.sim.time_handler.current_dt = datetime.utcfromtimestamp(timestamp)
@@ -86,6 +85,8 @@ class SimulatorTest(unittest.TestCase):
         self.sim.wait_for_scheduler = wait_for_sched
         self.sim.get_night_boundaries = mock.MagicMock(return_value=(self.starting_timestamp,
                                                                      self.starting_timestamp + 360.0))
+        self.sim.seq.observatory_model.slew = mock.Mock(return_value=((6.0, "seconds"), slew_history_coll))
+
         self.assertEqual(self.sim.duration, 1.0)
 
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.put")

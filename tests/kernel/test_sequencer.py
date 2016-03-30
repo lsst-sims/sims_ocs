@@ -43,9 +43,7 @@ class SequencerTest(unittest.TestCase):
     @mock.patch("lsst.sims.ocs.observatory.main_observatory.MainObservatory.configure")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
     def test_initialization(self, mock_sal_telemetry_pub, mock_main_observatory_configure):
-        sal = SalManager()
-        sal.initialize()
-        self.seq.initialize(sal)
+        self.initialize_sequencer()
         self.assertIsNotNone(self.seq.observation)
         self.assertEqual(self.seq.observation.observationId, 0)
         self.assertTrue(mock_sal_telemetry_pub.called)
@@ -60,20 +58,8 @@ class SequencerTest(unittest.TestCase):
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetrySub")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
     def test_observe_target(self, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
-        sal = SalManager()
-        sal.initialize()
-        self.seq.initialize(sal)
-        target = sal.set_subscribe_topic("targetTest")
-        # Set some meaningful information
-        target.targetId = 10
-        target.fieldId = 300
-        target.filter = "i"
-        target.ra = 0.4244
-        target.dec = -0.5314
-        target.num_exposures = 2
-
-        # Make it so initial timestamp is 0
-        time_handler = TimeHandler("1970-01-01")
+        self.initialize_sequencer()
+        target, time_handler = self.create_objects()
 
         observation, slew_history = self.seq.observe_target(target, time_handler)
 
