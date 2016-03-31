@@ -22,6 +22,10 @@ from lsst.sims.ocs.setup.parser import create_parser
 from lsst.sims.ocs.setup.tracking import Tracking
 from lsst.sims.ocs.utilities.file_helpers import expand_path
 
+def stop_programs(lpid, spid):
+    os.waitpid(spid, 0)
+    os.kill(lpid, signal.SIGKILL)
+
 def main(args):
     db = SocsDatabase(args.db_type, mysql_config_path=args.mysql_config_path,
                       sqlite_save_path=args.sqlite_save_dir)
@@ -51,16 +55,20 @@ def main(args):
 
     sch_exe = os.path.join(os.path.dirname(ts_scheduler.schedulerMain.__file__), "scheduler.py")
     sch_cmd = [sch_exe, "-s", "--console-format=Scheduler: %(message)s"]
-    verbosity_str = ("-v " * args.verbose).strip()
-    if verbosity_str != '':
-        sch_cmd.append(verbosity_str)
+    sch_cmd.extend(["-v" for i in xrange(args.verbose)])
 
+    logger.debug("Scheduler Command: {}".format(sch_cmd))
     sched_pid = sp.Popen(sch_cmd).pid
 
     sim = Simulator(args, configuration, db)
     sim.initialize()
     try:
         sim.run()
+    except:
+        logger.error("An exception was thrown, stopping programs first.")
+        stop_programs(log_pid, sched_pid)
+        logger.error("Simulation was not completed correctly.")
+        raise
     finally:
         sim.finalize()
 
@@ -82,8 +90,7 @@ def main(args):
         tracking.update_session("Simulation finished successfully in {:.2f} seconds".format(run_time))
 
     logger.info("Waiting for Scheduler to finish.")
-    os.waitpid(sched_pid, 0)
-    os.kill(log_pid, signal.SIGKILL)
+    stop_programs(log_pid, sched_pid)
 
 if __name__ == "__main__":
     parser = create_parser()

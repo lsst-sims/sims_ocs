@@ -69,3 +69,18 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['fieldID'], obs_topic.fieldId)
         self.assertEqual(result['filter'], obs_topic.filter)
         self.assertEqual(result['dec'], obs_topic.dec)
+
+    def test_create_slew_history_table(self):
+        slew_hist = tbls.create_slew_history(self.metadata)
+        self.assertEqual(len(slew_hist.c), 6)
+        self.assertEqual(len(slew_hist.indexes), 1)
+
+    def test_write_slew_history_table(self):
+        sh = topic_helpers.slew_history_coll
+        result = tbls.write_slew_history(sh, 1000)
+        self.assertEqual(result['slewCount'], sh.slewCount)
+        self.assertEqual(result['startDate'], sh.startDate)
+        self.assertEqual(result['endDate'], sh.endDate)
+        self.assertEqual(result['slewTime'], sh.slewTime)
+        self.assertEqual(result['slewDistance'], sh.slewDistance)
+        self.assertEqual(result['ObsHistory_observationID'], sh.ObsHistory_observationID)

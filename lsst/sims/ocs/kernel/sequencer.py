@@ -1,6 +1,6 @@
 import logging
 
-from ..observatory.lsst_observatory import LsstObservatory
+from ..observatory import MainObservatory
 from ..setup.log import LoggingLevel
 
 __all__ = ["Sequencer"]
@@ -27,13 +27,25 @@ class Sequencer(object):
         """Initialize the class.
         """
         self.targets_received = 0
-        self.observations_made = 0
         self.observation = None
-        self.observatory_model = LsstObservatory()
+        self.observatory_model = MainObservatory()
         self.log = logging.getLogger("kernel.Sequencer")
-        # Variables that will disappear as more functionality is added.
-        self.slew_time = (6.0, "seconds")
-        self.visit_time = (34.0, "seconds")
+
+    @property
+    def observations_made(self):
+        """Get the number of observations made.
+
+        Returns
+        -------
+        int
+        """
+        return self.observatory_model.observations_made
+
+    def end_of_night(self):
+        """Perform end of night functions.
+        """
+        # Park the telescope for the day.
+        self.observatory_model.reset()
 
     def initialize(self, sal):
         """Perform initialization steps.
@@ -70,34 +82,18 @@ class Sequencer(object):
         target : SALPY_scheduler.targetTestC
             A target telemetry topic containing the current target information.
         th : :class:`.TimeHandler`
-            An instance of the simluation's TimeHanlder.
+            An instance of the simulation's TimeHandler.
 
         Returns
         -------
         SALPY_scheduler.observationTestC
             An observation telemetry topic containing the observed target parameters.
+        :class:`.SlewHistory`
+            The slew history information from the current slew.
         """
         self.log.log(LoggingLevel.EXTENSIVE.value, "Received target {}".format(target.targetId))
         self.targets_received += 1
 
-        self.log.log(LoggingLevel.EXTENSIVE.value,
-                     "Starting observation {} for target {}.".format(self.observations_made,
-                                                                     target.targetId))
-        th.update_time(*self.slew_time)
+        slew_history = self.observatory_model.observe(th, target, self.observation)
 
-        self.observation.observationId = self.observations_made
-        self.observation.observationTime = th.current_timestamp
-        self.observation.targetId = target.targetId
-        self.observation.fieldId = target.fieldId
-        self.observation.filter = target.filter
-        self.observation.ra = target.ra
-        self.observation.dec = target.dec
-        self.observation.num_exposures = target.num_exposures
-
-        th.update_time(*self.visit_time)
-        self.log.log(LoggingLevel.EXTENSIVE.value,
-                     "Observation {} completed at {}.".format(self.observations_made,
-                                                              th.current_timestring))
-        self.observations_made += 1
-
-        return self.observation
+        return self.observation, slew_history

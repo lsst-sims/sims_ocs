@@ -76,19 +76,11 @@ class Simulator(object):
         """
         return round(self.fractional_duration * DAYS_IN_YEAR)
 
-    def initialize(self):
-        """Perform initialization steps.
-
-        This function handles initialization of the :class:`.SalManager` and :class:`.Sequencer` instances and
-        gathering the necessary telemetry topics.
+    def _end_night(self):
+        """Perform actions at the end of the night.
         """
-        self.log.info("Initializing simulation")
-        self.sal.initialize()
-        self.seq.initialize(self.sal)
-        self.conf_comm.initialize(self.sal, self.conf)
-        self.comm_time = self.sal.set_publish_topic("timeHandler")
-        self.target = self.sal.set_subscribe_topic("targetTest")
-        self.field = self.sal.set_subscribe_topic("field")
+        self.db.write()
+        self.seq.end_of_night()
 
     def _start_night(self, night):
         """Perform actions at the start of the night.
@@ -114,10 +106,14 @@ class Simulator(object):
 
         self.db.clear_data()
 
-    def _end_night(self):
-        """Perform actions at the end of the night.
+    def finalize(self):
+        """Perform finalization steps.
+
+        This function handles finalization of the :class:`.SalManager` and :class:`.Sequencer` instances.
         """
-        self.db.write()
+        self.seq.finalize()
+        self.sal.finalize()
+        self.log.info("Ending simulation")
 
     def get_night_boundaries(self):
         """Calculate the set and rise times for night."
@@ -135,6 +131,20 @@ class Simulator(object):
         rise_timestamp = next_midnight_timestamp + (rise_naut_twi_next * SECONDS_IN_HOUR)
 
         return (set_timestamp, rise_timestamp)
+
+    def initialize(self):
+        """Perform initialization steps.
+
+        This function handles initialization of the :class:`.SalManager` and :class:`.Sequencer` instances and
+        gathering the necessary telemetry topics.
+        """
+        self.log.info("Initializing simulation")
+        self.sal.initialize()
+        self.seq.initialize(self.sal)
+        self.conf_comm.initialize(self.sal, self.conf)
+        self.comm_time = self.sal.set_publish_topic("timeHandler")
+        self.target = self.sal.set_subscribe_topic("targetTest")
+        self.field = self.sal.set_subscribe_topic("field")
 
     def run(self):
         """Run the simulation.
@@ -181,21 +191,13 @@ class Simulator(object):
                     if rcode == 0 and self.target.num_exposures != 0:
                         break
 
-                observation = self.seq.observe_target(self.target, self.time_handler)
+                observation, slew_history = self.seq.observe_target(self.target, self.time_handler)
                 # Pass observation back to scheduler
                 self.sal.put(observation)
 
                 if self.wait_for_scheduler:
                     self.db.append_data("target_history", self.target)
                     self.db.append_data("observation_history", observation)
+                    self.db.append_data("slew_history", slew_history)
 
             self._end_night()
-
-    def finalize(self):
-        """Perform finalization steps.
-
-        This function handles finalization of the :class:`.SalManager` and :class:`.Sequencer` instances.
-        """
-        self.seq.finalize()
-        self.sal.finalize()
-        self.log.info("Ending simulation")

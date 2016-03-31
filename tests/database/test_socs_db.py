@@ -24,6 +24,8 @@ class SocsDatabaseMySqlTest(unittest.TestCase):
         self.assertEqual(self.db.session_id, -1)
         self.assertTrue(hasattr(self.db, "session"))
         self.assertTrue(hasattr(self.db, "target_history"))
+        self.assertTrue(hasattr(self.db, "observation_history"))
+        self.assertTrue(hasattr(self.db, "slew_history"))
 
     @mock.patch("sqlalchemy.MetaData.create_all")
     def test_database_creation(self, mock_create_all):

@@ -10,6 +10,7 @@ except ImportError:
 from lsst.sims.ocs.configuration.sim_config import SimulationConfig
 from lsst.sims.ocs.kernel.simulator import Simulator
 
+from ..database.topic_helpers import slew_history_coll
 from ..helpers import CONFIG_COMM_PUT_CALLS
 
 class SimulatorTest(unittest.TestCase):
@@ -84,6 +85,9 @@ class SimulatorTest(unittest.TestCase):
         self.sim.wait_for_scheduler = wait_for_sched
         self.sim.get_night_boundaries = mock.MagicMock(return_value=(self.starting_timestamp,
                                                                      self.starting_timestamp + 360.0))
+        self.sim.seq.observatory_model.slew = mock.Mock(return_value=((6.0, "seconds"), slew_history_coll))
+        self.sim.seq.observatory_model.calculate_visit_time = mock.Mock(return_value=(34.0, "seconds"))
+
         self.assertEqual(self.sim.duration, 1.0)
 
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.put")
@@ -121,7 +125,7 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(self.sim.seq.targets_received, self.num_visits)
         self.assertEqual(self.sim.seq.observations_made, self.num_visits)
         self.assertEqual(self.mock_socs_db.clear_data.call_count, self.num_nights)
-        self.assertEqual(self.mock_socs_db.append_data.call_count, self.num_visits * 2)
+        self.assertEqual(self.mock_socs_db.append_data.call_count, self.num_visits * 3)
         self.assertEqual(self.mock_socs_db.write.call_count, self.num_nights)
 
     def test_get_night_boundaries(self):
