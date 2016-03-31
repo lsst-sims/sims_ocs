@@ -31,19 +31,6 @@ class Sequencer(object):
         self.observatory_model = MainObservatory()
         self.log = logging.getLogger("kernel.Sequencer")
 
-    def initialize(self, sal):
-        """Perform initialization steps.
-
-        This function handles gathering the observation telemetry topic from the given SalManager instance.
-
-        Parameters
-        ----------
-        sal : :class:`.SalManager`
-            A SalManager instance.
-        """
-        self.observation = sal.set_publish_topic("observationTest")
-        self.observatory_model.configure()
-
     @property
     def observations_made(self):
         """Get the number of observations made.
@@ -59,6 +46,19 @@ class Sequencer(object):
         """
         # Park the telescope for the day.
         self.observatory_model.reset()
+
+    def initialize(self, sal):
+        """Perform initialization steps.
+
+        This function handles gathering the observation telemetry topic from the given SalManager instance.
+
+        Parameters
+        ----------
+        sal : :class:`.SalManager`
+            A SalManager instance.
+        """
+        self.observation = sal.set_publish_topic("observationTest")
+        self.observatory_model.configure()
 
     def finalize(self):
         """Perform finalization steps.
