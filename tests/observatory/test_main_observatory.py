@@ -49,3 +49,9 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(observation.observationId, 1)
         self.assertAlmostEqual(observation.observationTime, self.truth_slew_time, delta=1e-4)
         self.assertIsNotNone(slew_history)
+
+    def test_visit_time(self):
+        self.observatory.configure()
+        target = topic_helpers.target
+        visit_time = self.observatory.calculate_visit_time(target)
+        self.assertEqual(visit_time[0], 34.0)

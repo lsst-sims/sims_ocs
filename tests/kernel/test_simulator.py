@@ -86,6 +86,7 @@ class SimulatorTest(unittest.TestCase):
         self.sim.get_night_boundaries = mock.MagicMock(return_value=(self.starting_timestamp,
                                                                      self.starting_timestamp + 360.0))
         self.sim.seq.observatory_model.slew = mock.Mock(return_value=((6.0, "seconds"), slew_history_coll))
+        self.sim.seq.observatory_model.calculate_visit_time = mock.Mock(return_value=(34.0, "seconds"))
 
         self.assertEqual(self.sim.duration, 1.0)
 

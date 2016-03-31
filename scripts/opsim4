@@ -55,10 +55,9 @@ def main(args):
 
     sch_exe = os.path.join(os.path.dirname(ts_scheduler.schedulerMain.__file__), "scheduler.py")
     sch_cmd = [sch_exe, "-s", "--console-format=Scheduler: %(message)s"]
-    verbosity_str = ("-v " * args.verbose).strip()
-    if verbosity_str != '':
-        sch_cmd.append(verbosity_str)
+    sch_cmd.extend(["-v" for i in xrange(args.verbose)])
 
+    logger.debug("Scheduler Command: {}".format(sch_cmd))
     sched_pid = sp.Popen(sch_cmd).pid
 
     sim = Simulator(args, configuration, db)
