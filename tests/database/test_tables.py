@@ -77,7 +77,7 @@ class TablesTest(unittest.TestCase):
 
     def test_write_slew_history_table(self):
         sh = topic_helpers.slew_history_coll
-        result = tbls.write_slew_history(sh)
+        result = tbls.write_slew_history(sh, 1000)
         self.assertEqual(result['slewCount'], sh.slewCount)
         self.assertEqual(result['startDate'], sh.startDate)
         self.assertEqual(result['endDate'], sh.endDate)

@@ -158,7 +158,7 @@ def create_slew_history(metadata):
                   Column("startDate", Float, nullable=False),
                   Column("endDate", Float, nullable=False),
                   Column("slewTime", Float, nullable=False),
-                  Column("slewDist", Float, nullable=False),
+                  Column("slewDistance", Float, nullable=False),
                   Column("ObsHistory_observationID", Integer))
 
     Index("fk_SlewHistory_ObsHistory1", table.c.ObsHistory_observationID)

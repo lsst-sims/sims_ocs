@@ -83,13 +83,15 @@ def write_observation_history(data, sid):
     ])
     return values
 
-def write_slew_history(data):
+def write_slew_history(data, sid):
     """Create a dictionary of data for the SlewHistory table.
 
     Parameters
     ----------
     data : class:`.SlewHistory`
         The instance containing the slew history information
+    sid : int
+        The current session ID. CURRENTLY UNUSED.
 
     Returns
     -------

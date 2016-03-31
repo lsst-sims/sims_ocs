@@ -90,8 +90,8 @@ class MainObservatory(object):
         slew_distance = palpy.dsep(final_slew_state.ra_rad, final_slew_state.dec_rad,
                                    initial_slew_state.ra_rad, initial_slew_state.dec_rad)
 
-        slew_history = SlewHistory(self.slew_count, initial_slew_state.time, final_slew_state.time, slew_time,
-                                   math.degrees(slew_distance), self.observations_made)
+        slew_history = SlewHistory(self.slew_count, initial_slew_state.time, final_slew_state.time,
+                                   slew_time[0], math.degrees(slew_distance), self.observations_made)
 
         return slew_time, slew_history
 
