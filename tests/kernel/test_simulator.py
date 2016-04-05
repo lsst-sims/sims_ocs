@@ -77,8 +77,8 @@ class SimulatorTest(unittest.TestCase):
         # Setup for 1 night and 9 visits
         self.num_nights = 1
         self.num_visits = 9
-        # One for timestamp and one for observation
-        self.put_calls = 2 * self.num_visits
+        # Timestamp, observatory state and observation
+        self.put_calls = 3 * self.num_visits
         self.config_comm_put_calls = 1
         self.put_calls += CONFIG_COMM_PUT_CALLS
         self.sim.fractional_duration = 1 / 365

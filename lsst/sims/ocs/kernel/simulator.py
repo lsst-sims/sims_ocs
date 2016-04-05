@@ -185,6 +185,10 @@ class Simulator(object):
                              "Timestamp sent: {}".format(self.time_handler.current_timestring))
                 self.sal.put(self.comm_time)
 
+                observatory_state = self.seq.get_observatory_state()
+                observatory_state.timestamp = self.time_handler.current_timestamp
+                self.sal.put(observatory_state)
+
                 # Get target from scheduler
                 while self.wait_for_scheduler:
                     rcode = self.sal.manager.getNextSample_targetTest(self.target)
