@@ -1,6 +1,7 @@
 setupRequired(python)
 setupRequired(pex_config)
 setupRequired(sims_skybrightness)
+setupRequired(sims_utils)
 setupRequired(ts_scheduler)
 
 envPrepend(PYTHONPATH, ${PRODUCT_DIR})
