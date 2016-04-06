@@ -11,6 +11,7 @@ from ..kernel.time_handler import DAYS_IN_YEAR
 from ..kernel.time_handler import SECONDS_IN_HOUR
 from ..kernel.time_handler import TimeHandler
 from ..sal.sal_manager import SalManager
+from ..sal.topic_utilities import topic_strdict
 from ..setup.log import LoggingLevel
 
 __all__ = ["Simulator"]
@@ -187,6 +188,8 @@ class Simulator(object):
 
                 observatory_state = self.seq.get_observatory_state()
                 observatory_state.timestamp = self.time_handler.current_timestamp
+                self.log.log(LoggingLevel.EXTENSIVE.value,
+                             "Observatory State: {}".format(topic_strdict(observatory_state)))
                 self.sal.put(observatory_state)
 
                 # Get target from scheduler
