@@ -29,6 +29,7 @@ class Sequencer(object):
         self.targets_received = 0
         self.observation = None
         self.observatory_model = MainObservatory()
+        self.observatory_state = None
         self.log = logging.getLogger("kernel.Sequencer")
 
     @property
@@ -47,6 +48,34 @@ class Sequencer(object):
         # Park the telescope for the day.
         self.observatory_model.reset()
 
+    def get_observatory_state(self):
+        """Return the observatory state in a DDS topic instance.
+
+        Return
+        ------
+        SALPY_scheduler.observatoryStateC
+        """
+        obs_current_state = self.observatory_model.currentState
+
+        self.observatory_state.pointing_ra = obs_current_state.ra
+        self.observatory_state.pointing_dec = obs_current_state.dec
+        self.observatory_state.pointing_angle = obs_current_state.ang
+        self.observatory_state.pointing_altitude = obs_current_state.alt
+        self.observatory_state.pointing_azimuth = obs_current_state.az
+        self.observatory_state.pointing_pa = obs_current_state.pa
+        self.observatory_state.pointing_rot = obs_current_state.rot
+        self.observatory_state.tracking = obs_current_state.tracking
+        self.observatory_state.telescope_altitude = obs_current_state.telalt
+        self.observatory_state.telescope_azimuth = obs_current_state.telaz
+        self.observatory_state.telescope_rot = obs_current_state.telrot
+        self.observatory_state.dome_altitude = obs_current_state.domalt
+        self.observatory_state.dome_azimuth = obs_current_state.domaz
+        self.observatory_state.filter_position = obs_current_state.filter
+        self.observatory_state.filter_mounted = ",".join(obs_current_state.mountedfilters)
+        self.observatory_state.filter_unmounted = ','.join(obs_current_state.unmountedfilters)
+
+        return self.observatory_state
+
     def initialize(self, sal):
         """Perform initialization steps.
 
@@ -58,6 +87,7 @@ class Sequencer(object):
             A SalManager instance.
         """
         self.observation = sal.set_publish_topic("observationTest")
+        self.observatory_state = sal.set_publish_topic("observatoryState")
         self.observatory_model.configure()
 
     def finalize(self):

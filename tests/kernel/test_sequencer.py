@@ -39,6 +39,7 @@ class SequencerTest(unittest.TestCase):
         self.assertEqual(self.seq.targets_received, 0)
         self.assertIsNone(self.seq.observation)
         self.assertIsNotNone(self.seq.observatory_model)
+        self.assertIsNone(self.seq.observatory_state)
 
     @mock.patch("lsst.sims.ocs.observatory.main_observatory.MainObservatory.configure")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
@@ -46,8 +47,9 @@ class SequencerTest(unittest.TestCase):
         self.initialize_sequencer()
         self.assertIsNotNone(self.seq.observation)
         self.assertEqual(self.seq.observation.observationId, 0)
-        self.assertTrue(mock_sal_telemetry_pub.called)
+        self.assertEquals(mock_sal_telemetry_pub.call_count, 2)
         self.assertTrue(mock_main_observatory_configure.called)
+        self.assertIsNotNone(self.seq.observatory_state)
 
     @mock.patch("logging.Logger.info")
     def test_finalization(self, mock_logger_info):
@@ -87,3 +89,28 @@ class SequencerTest(unittest.TestCase):
         self.assertEqual(obs_current_state.domalt, 90.0)
         self.assertEqual(obs_current_state.domaz, 0.0)
         self.assertEqual(obs_current_state.filter, 'r')
+
+    @mock.patch("logging.Logger.log")
+    @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetrySub")
+    @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
+    def test_get_observatory_state_after_initialization(self, mock_sal_telemetry_pub,
+                                                        mock_sal_telemetry_sub, mock_logger_log):
+        self.initialize_sequencer()
+        observatory_state = self.seq.get_observatory_state()
+
+        # Observatory state should be in the park position
+        self.assertEqual(observatory_state.timestamp, 0.0)
+        self.assertEqual(observatory_state.pointing_ra, 0.0)
+        self.assertEqual(observatory_state.pointing_dec, 0.0)
+        self.assertEqual(observatory_state.pointing_altitude, 86.5)
+        self.assertEqual(observatory_state.pointing_azimuth, 0.0)
+        self.assertEqual(observatory_state.pointing_pa, 0.0)
+        self.assertEqual(observatory_state.pointing_rot, 0.0)
+        self.assertFalse(observatory_state.tracking)
+        self.assertEqual(observatory_state.telescope_altitude, 86.5)
+        self.assertEqual(observatory_state.telescope_azimuth, 0.0)
+        self.assertEqual(observatory_state.dome_altitude, 90.0)
+        self.assertEqual(observatory_state.dome_azimuth, 0.0)
+        self.assertEqual(observatory_state.filter_position, 'r')
+        self.assertEqual(observatory_state.filter_mounted, 'g,r,i,z,y')
+        self.assertEqual(observatory_state.filter_unmounted, 'u')
