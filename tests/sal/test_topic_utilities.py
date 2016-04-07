@@ -1,7 +1,8 @@
 import unittest
 
 from lsst.sims.ocs.sal import topic_strdict
-from ..database.topic_helpers import target
+
+from tests.database.topic_helpers import target
 
 class TopicUtilitiesTest(unittest.TestCase):
 

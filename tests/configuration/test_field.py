@@ -3,7 +3,7 @@ import unittest
 
 from lsst.sims.ocs.configuration.field import Field
 
-from ..database.topic_helpers import field_topic
+from tests.database.topic_helpers import field_topic
 
 class FieldTest(unittest.TestCase):
 

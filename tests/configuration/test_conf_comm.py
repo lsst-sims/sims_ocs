@@ -9,7 +9,7 @@ from lsst.sims.ocs.configuration.conf_comm import ConfigurationCommunicator
 from lsst.sims.ocs.configuration.sim_config import SimulationConfig
 from lsst.sims.ocs.sal.sal_manager import SalManager
 
-from ..helpers import CONFIG_COMM_PUT_CALLS
+from tests.helpers import CONFIG_COMM_PUT_CALLS
 
 class ConfigurationCommunicatorTest(unittest.TestCase):
 
