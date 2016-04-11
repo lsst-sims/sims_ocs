@@ -2,13 +2,7 @@ import os
 
 import lsst.pex.config as pexConfig
 
-from .camera import Camera
-from .dome import Dome
-from .rotator import Rotator
-from .helpers import load_config
-from .park import Park
-from .slew import Slew
-from .telescope import Telescope
+from lsst.sims.ocs.configuration import Camera, Dome, load_config, Park, Rotator, Slew, Telescope
 
 __all__ = ["Observatory"]
 

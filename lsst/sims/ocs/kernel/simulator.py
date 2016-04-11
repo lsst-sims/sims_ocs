@@ -4,15 +4,12 @@ import time
 
 from ts_scheduler.sky_model import Sun
 
-from ..configuration.conf_comm import ConfigurationCommunicator
-from ..database.tables.write_tbls import write_field
-from ..kernel.sequencer import Sequencer
-from ..kernel.time_handler import DAYS_IN_YEAR
-from ..kernel.time_handler import SECONDS_IN_HOUR
-from ..kernel.time_handler import TimeHandler
-from ..sal.sal_manager import SalManager
-from ..sal.topic_utilities import topic_strdict
-from ..setup.log import LoggingLevel
+from lsst.sims.ocs.configuration import ConfigurationCommunicator
+from lsst.sims.ocs.database.tables import write_field
+from lsst.sims.ocs.kernel import Sequencer, TimeHandler
+from lsst.sims.ocs.kernel.time_handler import DAYS_IN_YEAR, SECONDS_IN_HOUR
+from lsst.sims.ocs.sal import SalManager, topic_strdict
+from lsst.sims.ocs.setup import LoggingLevel
 
 __all__ = ["Simulator"]
 

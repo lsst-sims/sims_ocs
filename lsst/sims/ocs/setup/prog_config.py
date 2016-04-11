@@ -5,7 +5,7 @@ except ImportError:
 
 import os
 
-from ..utilities.file_helpers import expand_path
+from lsst.sims.ocs.utilities import expand_path
 
 __all__ = ["read_file_config", "write_file_config"]
 

@@ -1,7 +1,7 @@
 import logging
 import requests
 
-from ..utilities.session_info import get_hostname, get_user, get_version
+from lsst.sims.ocs.utilities import get_hostname, get_user, get_version
 
 __all__ = ["Tracking"]
 

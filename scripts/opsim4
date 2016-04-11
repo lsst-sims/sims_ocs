@@ -13,14 +13,12 @@ import subprocess as sp
 
 import ts_scheduler.schedulerMain
 
-from lsst.sims.ocs.configuration.sim_config import SimulationConfig
-from lsst.sims.ocs.database.socs_db import SocsDatabase
-from lsst.sims.ocs.kernel.simulator import Simulator
-from lsst.sims.ocs.setup.prog_config import read_file_config
-from lsst.sims.ocs.setup.log import configure_logging, generate_logfile_path, set_log_levels
-from lsst.sims.ocs.setup.parser import create_parser
-from lsst.sims.ocs.setup.tracking import Tracking
-from lsst.sims.ocs.utilities.file_helpers import expand_path
+from lsst.sims.ocs.configuration import SimulationConfig
+from lsst.sims.ocs.database import SocsDatabase
+from lsst.sims.ocs.kernel import Simulator
+from lsst.sims.ocs.setup import create_parser, configure_logging, generate_logfile_path
+from lsst.sims.ocs.setup import read_file_config, set_log_levels, Tracking
+from lsst.sims.ocs.utilities import expand_path
 
 def stop_programs(lpid, spid):
     os.waitpid(spid, 0)

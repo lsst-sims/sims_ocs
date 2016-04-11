@@ -1,7 +1,7 @@
 import logging
 
-from ..observatory import MainObservatory
-from ..setup.log import LoggingLevel
+from lsst.sims.ocs.observatory import MainObservatory
+from lsst.sims.ocs.setup import LoggingLevel
 
 __all__ = ["Sequencer"]
 

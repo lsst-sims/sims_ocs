@@ -2,8 +2,8 @@
 import argparse
 import os
 
-from lsst.sims.ocs.database.socs_db import SocsDatabase
-from lsst.sims.ocs.setup.prog_config import write_file_config
+from lsst.sims.ocs.database import SocsDatabase
+from lsst.sims.ocs.setup import write_file_config
 
 def admin_create(options, database):
     chk = "mysql -u root -p -e 'use {}'".format(database.db_name)

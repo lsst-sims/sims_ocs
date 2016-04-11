@@ -1,6 +1,6 @@
 import os
 
-from ..version import __version__
+from lsst.sims.ocs import __version__
 
 __all__ = ["get_hostname", "get_user", "get_version"]
 

@@ -2,10 +2,7 @@ import os
 
 import lsst.pex.config as pexConfig
 
-from .helpers import load_config
-from .lsst_survey import LsstSurvey
-from .observatory import Observatory
-from .obs_site import ObservingSite
+from lsst.sims.ocs.configuration import load_config, LsstSurvey, Observatory, ObservingSite
 
 __all__ = ["SimulationConfig"]
 

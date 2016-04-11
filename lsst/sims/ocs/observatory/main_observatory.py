@@ -4,15 +4,12 @@ import math
 
 import palpy
 
-from ts_scheduler.observatoryModel import ObservatoryLocation
-from ts_scheduler.observatoryModel.observatoryModel import ObservatoryModel
+from ts_scheduler.observatoryModel import ObservatoryLocation, ObservatoryModel
 from ts_scheduler.schedulerTarget import Target
 
-from ..configuration.camera import Camera
-from ..configuration.observatory import Observatory
-from ..configuration.obs_site import ObservingSite
-from ..setup import LoggingLevel
-from .slew_information import SlewHistory
+from lsst.sims.ocs.configuration import Camera, Observatory, ObservingSite
+from lsst.sims.ocs.setup import LoggingLevel
+from lsst.sims.ocs.observatory import SlewHistory
 
 __all__ = ["MainObservatory"]
 

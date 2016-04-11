@@ -1,6 +1,6 @@
 import argparse
 
-from lsst.sims.ocs.version import __version__
+from lsst.sims.ocs import __version__
 
 __all__ = ["create_parser"]
 

@@ -6,8 +6,7 @@ import MySQLdb as mysql
 from sqlalchemy import create_engine, MetaData
 
 import tables
-from ..utilities.file_helpers import expand_path
-from ..utilities.session_info import get_hostname, get_user, get_version
+from lsst.sims.ocs.utilities import expand_path, get_hostname, get_user, get_version
 
 __all__ = ["SocsDatabase"]
 
