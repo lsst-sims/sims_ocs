@@ -20,6 +20,8 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(self.observatory.model.location.latitude_rad, math.radians(-30.2444))
         self.assertFalse(self.observatory.model.parkState.tracking)
         self.assertEqual(len(self.observatory.model.currentState.mountedfilters), 5)
+        self.assertEqual(self.observatory.exposures_made, 0)
+        self.assertIsNone(self.observatory.exposure_list)
 
     def test_information_after_configuration(self):
         self.observatory.configure()
@@ -46,10 +48,12 @@ class MainObservatoryTest(unittest.TestCase):
         observation = topic_helpers.observation_topic
         # Make it so initial timestamp is 0
         time_handler = TimeHandler("1970-01-01")
-        slew_history = self.observatory.observe(time_handler, target, observation)
+        slew_history, exposures = self.observatory.observe(time_handler, target, observation)
         self.assertEqual(observation.observationId, 1)
         self.assertAlmostEqual(observation.observationTime, self.truth_slew_time, delta=1e-4)
         self.assertIsNotNone(slew_history)
+        self.assertEqual(self.observatory.exposures_made, 2)
+        self.assertEqual(len(exposures), self.observatory.exposures_made)
 
     def test_visit_time(self):
         self.observatory.configure()

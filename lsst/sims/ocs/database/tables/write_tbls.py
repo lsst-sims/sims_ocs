@@ -1,6 +1,29 @@
 import collections
 
-__all__ = ["write_field", "write_observation_history", "write_slew_history", "write_target_history"]
+__all__ = ["write_exposures", "write_field", "write_observation_history", "write_slew_history",
+           "write_target_history"]
+
+def ordered_dict_from_namedtuple(data):
+    """Convert an OrderedDict.
+    """
+    return data._asdict()
+
+def write_exposures(data, sid):
+    """Create a dictionary of data for the ExposureInformation table.
+
+    Parameters
+    ----------
+    data : class:`.ExposureInformation`
+        The instance containing the exposure information
+    sid : int
+        The current session ID. CURRENTLY UNUSED.
+
+    Returns
+    -------
+    list[collections.OrderedDict]
+        A list of dictionaries of the topic data.
+    """
+    return ordered_dict_from_namedtuple(data)
 
 def write_field(data):
     """Create a dictionary of data for the Field table.

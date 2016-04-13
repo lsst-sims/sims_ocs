@@ -40,3 +40,9 @@ observation_topic.exposure_times[1] = 15
 slew_history_coll = lsst.sims.ocs.observatory.SlewHistory(slewCount=1, startDate=2922, endDate=2925,
                                                           slewTime=6.0, slewDistance=1.0,
                                                           ObsHistory_observationID=1)
+
+exposure_coll1 = lsst.sims.ocs.observatory.ExposureInformation(exposureID=1, exposureNum=0, exposureTime=15.0,
+                                                               ObsHistory_observationID=3)
+
+exposure_coll2 = lsst.sims.ocs.observatory.ExposureInformation(exposureID=2, exposureNum=1, exposureTime=15.0,
+                                                               ObsHistory_observationID=3)

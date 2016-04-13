@@ -84,3 +84,16 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['slewTime'], sh.slewTime)
         self.assertEqual(result['slewDistance'], sh.slewDistance)
         self.assertEqual(result['ObsHistory_observationID'], sh.ObsHistory_observationID)
+
+    def test_create_exposures_table(self):
+        exposure = tbls.create_exposures_table(self.metadata)
+        self.assertEqual(len(exposure.c), 4)
+        self.assertEqual(len(exposure.indexes), 2)
+
+    def test_write_exposures_table(self):
+        exposure = topic_helpers.exposure_coll1
+        result = tbls.write_exposures(exposure, 1000)
+        self.assertEqual(result['exposureID'], exposure.exposureID)
+        self.assertEqual(result['exposureNum'], exposure.exposureNum)
+        self.assertEqual(result['exposureTime'], exposure.exposureTime)
+        self.assertEqual(result['ObsHistory_observationID'], exposure.ObsHistory_observationID)

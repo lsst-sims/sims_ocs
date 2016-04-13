@@ -2,8 +2,34 @@ from sqlalchemy import Column, Float, Index, Integer, String, Table
 from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event
 
-__all__ = ["create_field", "create_observation_history", "create_session",
+__all__ = ["create_exposures_table", "create_field", "create_observation_history", "create_session",
            "create_slew_history", "create_target_history"]
+
+def create_exposures_table(metadata):
+    """Create Exposures table.
+
+    This function creates the Exposure table from the visit exposures.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+      The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+      The Field table object.
+    """
+    table = Table("Exposures", metadata,
+                  Column("exposureID", Integer, primary_key=True, nullable=False),
+                  Column("exposureNum", Integer, nullable=False),
+                  Column("exposureTime", Float, nullable=False),
+                  Column("ObsHistory_observationID", Integer))
+
+    Index("expID_expNum", table.c.exposureID, table.c.exposureNum)
+    Index("fk_ObsHistory_observationID", table.c.ObsHistory_observationID)
+
+    return table
 
 def create_field(metadata):
     """Create Field table.

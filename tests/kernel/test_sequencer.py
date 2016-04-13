@@ -63,7 +63,7 @@ class SequencerTest(unittest.TestCase):
         self.initialize_sequencer()
         target, time_handler = self.create_objects()
 
-        observation, slew_history = self.seq.observe_target(target, time_handler)
+        observation, slew_history, exposures = self.seq.observe_target(target, time_handler)
 
         self.assertEqual(observation.observationTime, time_handler.initial_timestamp + 140.0)
         self.assertEqual(observation.targetId, target.targetId)
