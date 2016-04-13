@@ -11,6 +11,10 @@ class TablesTest(unittest.TestCase):
     def setUp(self):
         self.metadata = MetaData()
 
+    def check_ordered_dict_to_table(self, ordered_dict, table):
+        for column in table.c:
+            self.assertTrue(column.name in ordered_dict, "{} not a key in ordered_dict".format(column.name))
+
     def test_create_session_table(self):
         session = tbls.create_session(self.metadata)
         self.assertEqual(len(session.c), 6)
@@ -25,7 +29,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_target_history_table(self):
         targets = tbls.create_target_history(self.metadata)
-        self.assertEqual(len(targets.c), 8)
+        self.assertEqual(len(targets.c), 9)
         self.assertEqual(len(targets.indexes), 3)
 
     def test_write_target_history_table(self):
@@ -33,10 +37,13 @@ class TablesTest(unittest.TestCase):
         session_id = 1001
 
         result = tbls.write_target_history(target_topic, session_id)
+        targets = tbls.create_target_history(self.metadata)
+        self.check_ordered_dict_to_table(result, targets)
         self.assertEqual(result['Session_sessionID'], session_id)
         self.assertEqual(result['fieldID'], target_topic.fieldId)
         self.assertEqual(result['filter'], target_topic.filter)
         self.assertEqual(result['dec'], target_topic.dec)
+        self.assertEqual(result['requested_exp_time'], sum(target_topic.exposure_times))
 
     def test_create_field_table(self):
         fields = tbls.create_field(self.metadata)
@@ -47,6 +54,8 @@ class TablesTest(unittest.TestCase):
         field_topic = topic_helpers.field_topic
 
         result = tbls.write_field(field_topic)
+        fields = tbls.create_field(self.metadata)
+        self.check_ordered_dict_to_table(result, fields)
         self.assertEqual(result['ID'], field_topic.ID)
         self.assertEqual(result['ra'], field_topic.ra)
         self.assertEqual(result['gb'], field_topic.gb)
@@ -54,7 +63,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_observation_history_table(self):
         obs_hist = tbls.create_observation_history(self.metadata)
-        self.assertEqual(len(obs_hist.c), 10)
+        self.assertEqual(len(obs_hist.c), 12)
         self.assertEqual(len(obs_hist.indexes), 4)
 
     def test_write_observation_history_table(self):
@@ -62,6 +71,8 @@ class TablesTest(unittest.TestCase):
         session_id = 1001
 
         result = tbls.write_observation_history(obs_topic, session_id)
+        obs_hist = tbls.create_observation_history(self.metadata)
+        self.check_ordered_dict_to_table(result, obs_hist)
         self.assertEqual(result['Session_sessionID'], session_id)
         self.assertEqual(result['observationID'], obs_topic.observationId)
         self.assertEqual(result['observationTime'], obs_topic.observationTime)
@@ -69,6 +80,8 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['fieldID'], obs_topic.fieldId)
         self.assertEqual(result['filter'], obs_topic.filter)
         self.assertEqual(result['dec'], obs_topic.dec)
+        self.assertEqual(result['visit_time'], 34.0)
+        self.assertEqual(result['visit_exposure_time'], sum(obs_topic.exposure_times))
 
     def test_create_slew_history_table(self):
         slew_hist = tbls.create_slew_history(self.metadata)
@@ -78,6 +91,8 @@ class TablesTest(unittest.TestCase):
     def test_write_slew_history_table(self):
         sh = topic_helpers.slew_history_coll
         result = tbls.write_slew_history(sh, 1000)
+        slew_hist = tbls.create_slew_history(self.metadata)
+        self.check_ordered_dict_to_table(result, slew_hist)
         self.assertEqual(result['slewCount'], sh.slewCount)
         self.assertEqual(result['startDate'], sh.startDate)
         self.assertEqual(result['endDate'], sh.endDate)
@@ -93,6 +108,8 @@ class TablesTest(unittest.TestCase):
     def test_write_exposures_table(self):
         exposure = topic_helpers.exposure_coll1
         result = tbls.write_exposures(exposure, 1000)
+        exposure_table = tbls.create_exposures_table(self.metadata)
+        self.check_ordered_dict_to_table(result, exposure_table)
         self.assertEqual(result['exposureID'], exposure.exposureID)
         self.assertEqual(result['exposureNum'], exposure.exposureNum)
         self.assertEqual(result['exposureTime'], exposure.exposureTime)

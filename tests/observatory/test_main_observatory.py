@@ -2,6 +2,8 @@ import logging
 import math
 import unittest
 
+from SALPY_scheduler import scheduler_observationTestC
+
 from lsst.sims.ocs.kernel import TimeHandler
 from lsst.sims.ocs.observatory import MainObservatory
 
@@ -45,11 +47,12 @@ class MainObservatoryTest(unittest.TestCase):
     def test_observe(self):
         self.observatory.configure()
         target = topic_helpers.target
-        observation = topic_helpers.observation_topic
+        observation = scheduler_observationTestC()
         # Make it so initial timestamp is 0
         time_handler = TimeHandler("1970-01-01")
         slew_history, exposures = self.observatory.observe(time_handler, target, observation)
         self.assertEqual(observation.observationId, 1)
+        self.assertEqual(observation.exposure_times[1], 15.0)
         self.assertAlmostEqual(observation.observationTime, self.truth_slew_time, delta=1e-4)
         self.assertIsNotNone(slew_history)
         self.assertEqual(self.observatory.exposures_made, 2)

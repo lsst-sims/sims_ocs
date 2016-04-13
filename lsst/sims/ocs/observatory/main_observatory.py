@@ -141,6 +141,10 @@ class MainObservatory(object):
         self.log.log(LoggingLevel.EXTENSIVE.value,
                      "Visit Time for Target {}: {}".format(target.targetId, visit_time[0]))
 
+        observation.visit_time = visit_time[0]
+        for i, exposure in enumerate(self.exposure_list):
+            observation.exposure_times[i] = exposure.exposureTime
+
         time_handler.update_time(*visit_time)
 
         self.log.log(LoggingLevel.EXTENSIVE.value,

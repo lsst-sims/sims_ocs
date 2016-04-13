@@ -36,6 +36,7 @@ observation_topic.angle = 0.5
 observation_topic.num_exposures = 2
 observation_topic.exposure_times[0] = 15
 observation_topic.exposure_times[1] = 15
+observation_topic.visit_time = 34.0
 
 slew_history_coll = lsst.sims.ocs.observatory.SlewHistory(slewCount=1, startDate=2922, endDate=2925,
                                                           slewTime=6.0, slewDistance=1.0,

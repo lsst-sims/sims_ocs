@@ -89,7 +89,9 @@ def create_observation_history(metadata):
                   Column("ra", Float),
                   Column("dec", Float),
                   Column("angle", Float),
-                  Column("num_exposures", Integer))
+                  Column("num_exposures", Integer),
+                  Column("visit_time", Float),
+                  Column("visit_exposure_time", Float))
 
     Index("o_filter", table.c.filter)
     Index("fk_ObsHistory_Session1", table.c.Session_sessionID)
@@ -183,7 +185,8 @@ def create_target_history(metadata):
                   Column("ra", Float),
                   Column("dec", Float),
                   Column("angle", Float),
-                  Column("num_exposures", Integer))
+                  Column("num_exposures", Integer),
+                  Column("requested_exp_time", Float))
 
     Index("t_filter", table.c.filter)
     Index("fk_TargetHistory_Session1", table.c.Session_sessionID)

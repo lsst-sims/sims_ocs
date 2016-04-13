@@ -75,7 +75,9 @@ def write_observation_history(data, sid):
         ('dec', data.dec),
         ('filter', data.filter),
         ('angle', data.angle),
-        ('num_exposures', data.num_exposures)
+        ('num_exposures', data.num_exposures),
+        ('visit_time', data.visit_time),
+        ('visit_exposure_time', sum([data.exposure_times[i] for i in range(data.num_exposures)]))
     ])
     return values
 
@@ -120,6 +122,7 @@ def write_target_history(data, sid):
         ('dec', data.dec),
         ('filter', data.filter),
         ('angle', data.angle),
-        ('num_exposures', data.num_exposures)
+        ('num_exposures', data.num_exposures),
+        ('requested_exp_time', sum([data.exposure_times[i] for i in range(data.num_exposures)]))
     ])
     return values
