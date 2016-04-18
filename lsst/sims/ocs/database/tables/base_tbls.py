@@ -3,7 +3,7 @@ from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event, ForeignKeyConstraint
 
 __all__ = ["create_field", "create_observation_exposures", "create_observation_history",
-           "create_session", "create_slew_history", "create_target_exposures", "create_target_history"]
+           "create_session", "create_slew_history", "create_slew_state", "create_target_exposures", "create_target_history"]
 
 def create_field(metadata):
     """Create Field table.
@@ -37,6 +37,7 @@ def create_field(metadata):
     Index("fov_ra_dec", table.c.fov, table.c.ra, table.c.dec)
 
     return table
+
 def create_observation_exposures(metadata):
     """Create ObsExposures table.
 
@@ -166,6 +167,45 @@ def create_slew_history(metadata):
                   Column("ObsHistory_observationId", Integer))
 
     Index("fk_SlewHistory_ObsHistory1", table.c.ObsHistory_observationId)
+
+    return table
+
+def create_slew_state(metadata):
+    """Create SlewState table.
+
+    This function creates the SlewState table for tracking the state of the observatory before
+    and after slewing.
+
+        Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The SlewState table object.
+    """
+    table = Table("SlewState", metadata,
+                  Column("slewStateId", Integer, primary_key=True, nullable=False),
+                  Column("slewStateDate", Float, nullable=False),
+                  Column("targetRA", Float, nullable=False),
+                  Column("targetDec", Float, nullable=False),
+                  Column("tracking", String, nullable=False),
+                  Column("altitude", Float, nullable=False),
+                  Column("azimuth", Float, nullable=False),
+                  Column("posAngle", Float, nullable=False),
+                  Column("domeAlt", Float, nullable=False),
+                  Column("domeAz", Float, nullable=False),
+                  Column("telAlt", Float, nullable=False),
+                  Column("telAz", Float, nullable=False),
+                  Column("rotTelPos", Float, nullable=False),
+                  Column("rotSkyPos", Float, nullable=False),
+                  Column("filter", Float, nullable=False),
+                  Column("state", Integer, nullable=False),
+                  Column("SlewHistory_slewCount", Integer, nullable=False))
+
+    Index("fk_SlewState_SlewHistory1", table.c.SlewHistory_slewCount)
 
     return table
 

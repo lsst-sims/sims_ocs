@@ -103,6 +103,18 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['slewDistance'], sh.slewDistance)
         self.assertEqual(result['ObsHistory_observationId'], sh.ObsHistory_observationId)
 
+    def test_create_slew_state_table(self):
+        slew_state = tbls.create_slew_state(self.metadata)
+        self.assertEqual(len(slew_state.c), 17)
+        self.assertEqual(len(slew_state.indexes), 1)
+
+    def test_write_slew_state_table(self):
+        ss = topic_helpers.slew_state_coll
+        result = tbls.write_slew_state(ss, 1000)
+        self.assertEqual(result['slewStateId'], ss.slewStateId)
+        self.assertEqual(result['slewStateDate'], ss.slewStateDate)
+        self.assertEqual(result['SlewHistory_slewCount'], ss.SlewHistory_slewCount)
+
     def test_create_target_exposures_table(self):
         exposure = tbls.create_target_exposures(self.metadata)
         self.assertEqual(len(exposure.c), 5)

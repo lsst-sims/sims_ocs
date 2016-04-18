@@ -60,6 +60,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(observation.exposure_times[1], 15.0)
         self.assertAlmostEqual(observation.observation_start_time, self.truth_slew_time, delta=1e-4)
         self.assertIsNotNone(slew_history)
+        self.assertEqual(self.observatory.slew_state_count, 2)
         self.assertEqual(self.observatory.exposures_made, 2)
         self.assertEqual(len(exposures), 2)
         self.assertEqual(len(exposures["target_exposures"]), 2)
@@ -72,3 +73,12 @@ class MainObservatoryTest(unittest.TestCase):
         time_handler = TimeHandler("1970-01-01")
         visit_time = self.observatory.calculate_visit_time(target, time_handler)
         self.assertEqual(visit_time[0], 34.0)
+
+    def test_get_slew_state(self):
+        self.observatory.configure()
+        current_state = self.observatory.model.currentState
+        ss = self.observatory.get_slew_state(current_state, 0)
+        self.assertEqual(ss.state, 0)
+        self.assertEqual(ss.telAlt, 86.5)
+        self.assertEqual(ss.domeAlt, 90.0)
+        self.assertEqual(ss.filter, 'r')

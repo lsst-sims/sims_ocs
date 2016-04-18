@@ -10,7 +10,7 @@ from ts_scheduler.sky_model import DateProfile
 
 from lsst.sims.ocs.configuration import Camera, Observatory, ObservingSite
 from lsst.sims.ocs.setup import LoggingLevel
-from lsst.sims.ocs.observatory import ObsExposure, TargetExposure, SlewHistory
+from lsst.sims.ocs.observatory import ObsExposure, TargetExposure, SlewHistory, SlewState
 
 __all__ = ["MainObservatory"]
 
@@ -42,6 +42,7 @@ class MainObservatory(object):
         self.date_profile = DateProfile(0, observatory_location)
         self.param_dict = {}
         self.slew_count = 0
+        self.slew_state_count = 0
         self.observations_made = 0
         self.exposures_made = 0
         self.target_exposure_list = None
@@ -112,6 +113,33 @@ class MainObservatory(object):
         """
         self.param_dict.update(Observatory().toDict())
         self.model.configure(self.param_dict)
+
+    def get_slew_state(self, slew_state_info, state_flag):
+        """Get the slew state from the current state instance.
+
+        This function takes a given slew state instance and copies the information to the namedtuple
+        that will allow it to be transferred to the database.
+
+        Parameters
+        ----------
+        slew_stateinfo : ts_scheduler.observatoryModel.ObservatoryState
+            The current slew state instance.
+        state_flag : int
+            A value representing the current slew state with respect to others being captured.
+
+        Returns
+        -------
+        :class:`.SlewState`
+            The copied slew state information.
+        """
+        self.slew_state_count += 1
+        slew_state = SlewState(self.slew_state_count, slew_state_info.time, slew_state_info.ra,
+                               slew_state_info.dec, str(slew_state_info.tracking), slew_state_info.alt,
+                               slew_state_info.az, slew_state_info.pa, slew_state_info.domalt,
+                               slew_state_info.domaz, slew_state_info.telalt, slew_state_info.telaz,
+                               slew_state_info.rot, slew_state_info.rot_sky, slew_state_info.filter,
+                               state_flag, self.slew_count)
+        return slew_state
 
     def observe(self, time_handler, target, observation):
         """Perform the observation of the given target.
@@ -190,10 +218,17 @@ class MainObservatory(object):
             The slew history information from the current slew.
         """
         self.slew_count += 1
+        slew_state = []
+
         initial_slew_state = copy.deepcopy(self.model.currentState)
+        slew_state.append(self.get_slew_state(initial_slew_state, 0))
+
+ 
         sched_target = Target.from_topic(target)
         self.model.slew(sched_target)
         final_slew_state = copy.deepcopy(self.model.currentState)
+        slew_state.append(self.get_slew_state(final_slew_state, 1))
+
 
         slew_time = (final_slew_state.time - initial_slew_state.time, "seconds")
 
