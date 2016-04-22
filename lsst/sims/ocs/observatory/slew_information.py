@@ -7,7 +7,7 @@ __all__ = ["SlewHistory", "SlewState"]
 SlewHistory = collections.namedtuple("SlewHistory", ["slewCount", "startDate", "endDate", "slewTime",
                                                      "slewDistance", "ObsHistory_observationID"])
 
-SlewState = collections.namedtuple("SlewState", ["slewStateId", "slewStateDate", "targetRA", "targetDec",
+SlewState = collections.namedtuple("SlewState", ["slewStateDate", "targetRA", "targetDec",
                                                  "tracking", "altitude", "azimuth", "posAngle", "domeAlt",
                                                  "domeAz", "telAlt", "telAz", "rotTelPos", "rotSkyPos",
                                                  "filter", "state", "SlewHistory_slewCount"])

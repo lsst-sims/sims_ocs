@@ -133,7 +133,7 @@ class MainObservatory(object):
             The copied slew state information.
         """
         self.slew_state_count += 1
-        slew_state = SlewState(self.slew_state_count, slew_state_info.time, slew_state_info.ra,
+        slew_state = SlewState(slew_state_info.time, slew_state_info.ra,
                                slew_state_info.dec, str(slew_state_info.tracking), slew_state_info.alt,
                                slew_state_info.az, slew_state_info.pa, slew_state_info.domalt,
                                slew_state_info.domaz, slew_state_info.telalt, slew_state_info.telaz,

@@ -102,6 +102,7 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['slewTime'], sh.slewTime)
         self.assertEqual(result['slewDistance'], sh.slewDistance)
         self.assertEqual(result['ObsHistory_observationId'], sh.ObsHistory_observationId)
+        self.assertEqual(result['Session_sessionID'], 1000)
 
     def test_create_slew_state_table(self):
         slew_state = tbls.create_slew_state(self.metadata)

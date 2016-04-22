@@ -117,6 +117,7 @@ def write_slew_history(data, sid):
         A dictionary of the topic data.
     """
     values = data._asdict()
+    values["Session_sessionID"] = sid
     return values
 
 def write_slew_state(data, sid):

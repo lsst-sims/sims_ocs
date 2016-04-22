@@ -170,6 +170,7 @@ class Simulator(object):
                 self.field_list.append(write_field(self.field, self.db.session_id))
                 time.sleep(0.003)
             self.log.info("{} fields retrieved".format(len(self.field_list)))
+            self.log.log(LoggingLevel.EXTENSIVE.value, "{}".format(self.field_list))
             self.db.write_table("field", self.field_list)
 
         self.log.debug("Duration = {}".format(self.duration))
