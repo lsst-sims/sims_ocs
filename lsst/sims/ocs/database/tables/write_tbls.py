@@ -39,7 +39,7 @@ def write_field(data):
         A dictionary of the topic data.
     """
     values = collections.OrderedDict([
-        ('ID', data.ID),
+        ('fieldId', data.ID),
         ('fov', data.fov),
         ('ra', data.ra),
         ('dec', data.dec),
@@ -66,18 +66,18 @@ def write_observation_history(data, sid):
         A dictionary of the topic data.
     """
     values = collections.OrderedDict([
-        ('observationID', data.observationId),
+        ('observationId', data.observationId),
         ('Session_sessionID', sid),
-        ('observationTime', data.observationTime),
-        ('targetID', data.targetId),
-        ('fieldID', data.fieldId),
+        ('observationStartTime', data.observationTime),
+        ('targetId', data.targetId),
+        ('Field_fieldId', data.fieldId),
         ('ra', data.ra),
         ('dec', data.dec),
         ('filter', data.filter),
         ('angle', data.angle),
-        ('num_exposures', data.num_exposures),
-        ('visit_time', data.visit_time),
-        ('visit_exposure_time', sum([data.exposure_times[i] for i in range(data.num_exposures)]))
+        ('numExposures', data.num_exposures),
+        ('visitTime', data.visit_time),
+        ('visitExposureTime', sum([data.exposure_times[i] for i in range(data.num_exposures)]))
     ])
     return values
 
@@ -115,14 +115,14 @@ def write_target_history(data, sid):
         A dictionary of the topic data.
     """
     values = collections.OrderedDict([
-        ('targetID', data.targetId),
+        ('targetId', data.targetId),
         ('Session_sessionID', sid),
-        ('fieldID', data.fieldId),
+        ('Field_fieldId', data.fieldId),
         ('ra', data.ra),
         ('dec', data.dec),
         ('filter', data.filter),
         ('angle', data.angle),
-        ('num_exposures', data.num_exposures),
-        ('requested_exp_time', sum([data.exposure_times[i] for i in range(data.num_exposures)]))
+        ('numExposures', data.num_exposures),
+        ('requestedExpTime', sum([data.exposure_times[i] for i in range(data.num_exposures)]))
     ])
     return values
