@@ -167,7 +167,7 @@ class Simulator(object):
                     else:
                         end_fields = True
                         continue
-                self.field_list.append(write_field(self.field))
+                self.field_list.append(write_field(self.field, self.db.session_id))
                 time.sleep(0.00075)
             self.log.info("{} fields retrieved".format(len(self.field_list)))
             self.db.write_table("field", self.field_list)
@@ -202,8 +202,8 @@ class Simulator(object):
                 if self.wait_for_scheduler:
                     self.db.append_data("target_history", self.target)
                     self.db.append_data("observation_history", observation)
-                    self.db.append_data("slew_history", slew_history)
-                    for exposure in exposures:
-                        self.db.append_data("exposures", exposure)
+                    #self.db.append_data("slew_history", slew_history)
+                    #for exposure in exposures:
+                    #    self.db.append_data("exposures", exposure)
 
             self._end_night()

@@ -19,13 +19,13 @@ class TablesTest(unittest.TestCase):
         session = tbls.create_session(self.metadata)
         self.assertEqual(len(session.c), 6)
         self.assertEqual(len(session.indexes), 1)
-        self.assertTrue(session.c.sessionID.autoincrement)
+        self.assertTrue(session.c.sessionId.autoincrement)
 
     def test_create_session_table_without_autoincrement(self):
         session = tbls.create_session(self.metadata, False)
         self.assertEqual(len(session.c), 6)
         self.assertEqual(len(session.indexes), 1)
-        self.assertFalse(session.c.sessionID.autoincrement)
+        self.assertFalse(session.c.sessionId.autoincrement)
 
     def test_create_target_history_table(self):
         targets = tbls.create_target_history(self.metadata)
@@ -39,7 +39,7 @@ class TablesTest(unittest.TestCase):
         result = tbls.write_target_history(target_topic, session_id)
         targets = tbls.create_target_history(self.metadata)
         self.check_ordered_dict_to_table(result, targets)
-        self.assertEqual(result['Session_sessionID'], session_id)
+        self.assertEqual(result['Session_sessionId'], session_id)
         self.assertEqual(result['Field_fieldId'], target_topic.fieldId)
         self.assertEqual(result['filter'], target_topic.filter)
         self.assertEqual(result['dec'], target_topic.dec)
@@ -47,13 +47,13 @@ class TablesTest(unittest.TestCase):
 
     def test_create_field_table(self):
         fields = tbls.create_field(self.metadata)
-        self.assertEqual(len(fields.c), 8)
+        self.assertEqual(len(fields.c), 9)
         self.assertEqual(len(fields.indexes), 4)
 
     def test_write_field_table(self):
         field_topic = topic_helpers.field_topic
 
-        result = tbls.write_field(field_topic)
+        result = tbls.write_field(field_topic, 1000)
         fields = tbls.create_field(self.metadata)
         self.check_ordered_dict_to_table(result, fields)
         self.assertEqual(result['fieldId'], field_topic.ID)
@@ -73,10 +73,10 @@ class TablesTest(unittest.TestCase):
         result = tbls.write_observation_history(obs_topic, session_id)
         obs_hist = tbls.create_observation_history(self.metadata)
         self.check_ordered_dict_to_table(result, obs_hist)
-        self.assertEqual(result['Session_sessionID'], session_id)
+        self.assertEqual(result['Session_sessionId'], session_id)
         self.assertEqual(result['observationId'], obs_topic.observationId)
         self.assertEqual(result['observationStartTime'], obs_topic.observationTime)
-        self.assertEqual(result['targetId'], obs_topic.targetId)
+        self.assertEqual(result['TargetHistory_targetId'], obs_topic.targetId)
         self.assertEqual(result['Field_fieldId'], obs_topic.fieldId)
         self.assertEqual(result['filter'], obs_topic.filter)
         self.assertEqual(result['dec'], obs_topic.dec)
@@ -98,7 +98,7 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['endDate'], sh.endDate)
         self.assertEqual(result['slewTime'], sh.slewTime)
         self.assertEqual(result['slewDistance'], sh.slewDistance)
-        self.assertEqual(result['ObsHistory_observationID'], sh.ObsHistory_observationID)
+        self.assertEqual(result['ObsHistory_observationId'], sh.ObsHistory_observationId)
 
     def test_create_exposures_table(self):
         exposure = tbls.create_exposures_table(self.metadata)
@@ -110,7 +110,7 @@ class TablesTest(unittest.TestCase):
         result = tbls.write_exposures(exposure, 1000)
         exposure_table = tbls.create_exposures_table(self.metadata)
         self.check_ordered_dict_to_table(result, exposure_table)
-        self.assertEqual(result['exposureID'], exposure.exposureID)
+        self.assertEqual(result['exposureId'], exposure.exposureId)
         self.assertEqual(result['exposureNum'], exposure.exposureNum)
         self.assertEqual(result['exposureTime'], exposure.exposureTime)
-        self.assertEqual(result['ObsHistory_observationID'], exposure.ObsHistory_observationID)
+        self.assertEqual(result['ObsHistory_observationId'], exposure.ObsHistory_observationId)

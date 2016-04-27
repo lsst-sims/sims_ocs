@@ -41,7 +41,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(slew_time[0], self.truth_slew_time)
         self.assertEqual(self.observatory.slew_count, 1)
         self.assertEqual(slew_history.slewCount, 1)
-        self.assertEqual(slew_history.ObsHistory_observationID, 0)
+        self.assertEqual(slew_history.ObsHistory_observationId, 0)
         self.assertEqual(slew_history.slewDistance, 3.1621331347877555)
 
     def test_observe(self):

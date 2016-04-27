@@ -25,13 +25,15 @@ def write_exposures(data, sid):
     """
     return ordered_dict_from_namedtuple(data)
 
-def write_field(data):
+def write_field(data, sid):
     """Create a dictionary of data for the Field table.
 
     Parameters
     ----------
     data : SALPY_scheduler.fieldC
         The SAL target topic instance.
+    sid : int
+        The current session ID.
 
     Returns
     -------
@@ -40,6 +42,7 @@ def write_field(data):
     """
     values = collections.OrderedDict([
         ('fieldId', data.ID),
+        ('Session_sessionId', sid),
         ('fov', data.fov),
         ('ra', data.ra),
         ('dec', data.dec),
@@ -67,9 +70,9 @@ def write_observation_history(data, sid):
     """
     values = collections.OrderedDict([
         ('observationId', data.observationId),
-        ('Session_sessionID', sid),
+        ('Session_sessionId', sid),
         ('observationStartTime', data.observationTime),
-        ('targetId', data.targetId),
+        ('TargetHistory_targetId', data.targetId),
         ('Field_fieldId', data.fieldId),
         ('ra', data.ra),
         ('dec', data.dec),
@@ -116,7 +119,7 @@ def write_target_history(data, sid):
     """
     values = collections.OrderedDict([
         ('targetId', data.targetId),
-        ('Session_sessionID', sid),
+        ('Session_sessionId', sid),
         ('Field_fieldId', data.fieldId),
         ('ra', data.ra),
         ('dec', data.dec),

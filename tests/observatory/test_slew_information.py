@@ -12,4 +12,4 @@ class SlewInformationTest(unittest.TestCase):
         self.assertEqual(sh.endDate, 2925)
         self.assertEqual(sh.slewTime, 6.0)
         self.assertEqual(sh.slewDistance, 1.0)
-        self.assertEqual(sh.ObsHistory_observationID, 1)
+        self.assertEqual(sh.ObsHistory_observationId, 1)
