@@ -16,6 +16,10 @@ class MainObservatoryTest(unittest.TestCase):
         logging.getLogger().setLevel(logging.WARN)
         self.observatory = MainObservatory()
 
+    def test_object_has_no_attribute(self):
+        with self.assertRaises(AttributeError):
+            self.observatory.no_find
+
     def test_basic_information_after_creation(self):
         self.assertIsNotNone(self.observatory.log)
         self.assertEqual(len(self.observatory.param_dict), 0)
