@@ -1,7 +1,7 @@
 import collections
 
-__all__ = ["write_field", "write_observation_history", "write_slew_history", "write_target_exposures",
-           "write_target_history"]
+__all__ = ["write_field", "write_observation_exposures", "write_observation_history", "write_slew_history",
+           "write_target_exposures", "write_target_history"]
 
 def ordered_dict_from_namedtuple(data, sid=None):
     """Convert a namedtuple to an OrderedDict.
@@ -10,7 +10,7 @@ def ordered_dict_from_namedtuple(data, sid=None):
     ----------
     data : collections.namedtuple
         The data to convert.
-    sid : int (OPTIONAL)
+    sid : int (Optional)
         The current session ID.
 
     Returns
@@ -49,6 +49,23 @@ def write_field(data, sid):
         ('eb', data.eb)
     ])
     return values
+
+def write_observation_exposures(data, sid):
+    """Create a dictionary of data for the ObsExposures table.
+
+    Parameters
+    ----------
+    data : class:`.ObsExposure`
+        The instance containing the observation exposure information
+    sid : int
+        The current session ID.
+
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the topic data.
+    """
+    return ordered_dict_from_namedtuple(data, sid=sid)
 
 def write_observation_history(data, sid):
     """Create a dictionary of data for the ObsHistory table.
@@ -112,7 +129,7 @@ def write_target_exposures(data, sid):
     Returns
     -------
     collections.OrderedDict
-        A dictionaries of the topic data.
+        A dictionary of the topic data.
     """
     return ordered_dict_from_namedtuple(data, sid=sid)
 

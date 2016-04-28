@@ -114,3 +114,19 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['exposureNum'], exposure.exposureNum)
         self.assertEqual(result['exposureTime'], exposure.exposureTime)
         self.assertEqual(result['TargetHistory_targetId'], exposure.TargetHistory_targetId)
+
+    def test_create_observation_exposures_table(self):
+        exposure = tbls.create_observation_exposures_table(self.metadata)
+        self.assertEqual(len(exposure.c), 6)
+        self.assertEqual(len(exposure.indexes), 2)
+
+    def test_write_observation_exposures_table(self):
+        exposure = topic_helpers.exposure_coll3
+        result = tbls.write_observation_exposures(exposure, 1000)
+        exposure_table = tbls.create_observation_exposures_table(self.metadata)
+        self.check_ordered_dict_to_table(result, exposure_table)
+        self.assertEqual(result['exposureId'], exposure.exposureId)
+        self.assertEqual(result['exposureNum'], exposure.exposureNum)
+        self.assertEqual(result['exposureTime'], exposure.exposureTime)
+        self.assertEqual(result['exposureStartTime'], exposure.exposureStartTime)
+        self.assertEqual(result['ObsHistory_observationId'], exposure.ObsHistory_observationId)

@@ -70,6 +70,7 @@ class SequencerTest(unittest.TestCase):
         self.assertEqual(self.seq.targets_received, 1)
         self.assertEqual(self.seq.observations_made, 1)
         self.assertIsNotNone(slew_history)
+        self.assertEqual(len(exposures), 2)
 
     @mock.patch("logging.Logger.log")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetrySub")

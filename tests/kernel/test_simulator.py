@@ -10,7 +10,8 @@ except ImportError:
 from lsst.sims.ocs.configuration.sim_config import SimulationConfig
 from lsst.sims.ocs.kernel.simulator import Simulator
 
-from tests.database.topic_helpers import exposure_coll1, exposure_coll2, slew_history_coll
+from tests.database.topic_helpers import exposure_coll1, exposure_coll2, exposure_coll3, exposure_coll4
+from tests.database.topic_helpers import slew_history_coll
 from tests.helpers import CONFIG_COMM_PUT_CALLS
 
 class SimulatorTest(unittest.TestCase):
@@ -88,6 +89,7 @@ class SimulatorTest(unittest.TestCase):
         self.sim.seq.observatory_model.slew = mock.Mock(return_value=((6.0, "seconds"), slew_history_coll))
         self.sim.seq.observatory_model.calculate_visit_time = mock.Mock(return_value=((34.0, "seconds")))
         self.sim.seq.observatory_model.target_exposure_list = [exposure_coll1, exposure_coll2]
+        self.sim.seq.observatory_model.observation_exposure_list = [exposure_coll3, exposure_coll4]
 
         self.assertEqual(self.sim.duration, 1.0)
 

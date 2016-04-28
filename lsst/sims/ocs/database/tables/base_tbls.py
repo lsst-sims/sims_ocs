@@ -2,8 +2,8 @@ from sqlalchemy import Column, Float, Index, Integer, String, Table
 from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event, ForeignKeyConstraint
 
-__all__ = ["create_field", "create_observation_history", "create_session",
-           "create_slew_history", "create_target_exposures_table", "create_target_history"]
+__all__ = ["create_field", "create_observation_exposures_table", "create_observation_history",
+           "create_session", "create_slew_history", "create_target_exposures_table", "create_target_history"]
 
 def create_field(metadata):
     """Create Field table.
@@ -35,6 +35,33 @@ def create_field(metadata):
     Index("fov_gl_gb", table.c.fov, table.c.gl, table.c.gb)
     Index("fov_el_eb", table.c.fov, table.c.el, table.c.eb)
     Index("fov_ra_dec", table.c.fov, table.c.ra, table.c.dec)
+
+    return table
+def create_observation_exposures_table(metadata):
+    """Create ObsExposures table.
+
+    This function creates the ObsExposures table from the observation exposures.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+      The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+      The ObsExposure table object.
+    """
+    table = Table("ObsExposures", metadata,
+                  Column("exposureId", Integer, primary_key=True, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, nullable=False),
+                  Column("exposureNum", Integer, nullable=False),
+                  Column("exposureStartTime", Float, nullable=False),
+                  Column("exposureTime", Float, nullable=False),
+                  Column("ObsHistory_observationId", Integer, nullable=False))
+
+    Index("obs_expId_expNum", table.c.exposureId, table.c.exposureNum)
+    Index("fk_ObsHistory_observationId", table.c.ObsHistory_observationId)
 
     return table
 

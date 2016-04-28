@@ -24,6 +24,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(len(self.observatory.model.currentState.mountedfilters), 5)
         self.assertEqual(self.observatory.exposures_made, 0)
         self.assertIsNone(self.observatory.target_exposure_list)
+        self.assertIsNone(self.observatory.observation_exposure_list)
 
     def test_information_after_configuration(self):
         self.observatory.configure()
@@ -56,10 +57,14 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertAlmostEqual(observation.observationTime, self.truth_slew_time, delta=1e-4)
         self.assertIsNotNone(slew_history)
         self.assertEqual(self.observatory.exposures_made, 2)
-        self.assertEqual(len(exposures), self.observatory.exposures_made)
+        self.assertEqual(len(exposures), 2)
+        self.assertEqual(len(exposures["target_exposures"]), 2)
+        self.assertEqual(len(exposures["observation_exposures"]), 2)
 
     def test_visit_time(self):
         self.observatory.configure()
         target = topic_helpers.target
-        visit_time = self.observatory.calculate_visit_time(target)
+        # Make it so initial timestamp is 0
+        time_handler = TimeHandler("1970-01-01")
+        visit_time = self.observatory.calculate_visit_time(target, time_handler)
         self.assertEqual(visit_time[0], 34.0)

@@ -195,8 +195,8 @@ class Simulator(object):
                     if rcode == 0 and self.target.num_exposures != 0:
                         break
 
-                observation, slew_history, target_exposures = self.seq.observe_target(self.target,
-                                                                                      self.time_handler)
+                observation, slew_history, exposure_info = self.seq.observe_target(self.target,
+                                                                                   self.time_handler)
                 # Pass observation back to scheduler
                 self.sal.put(observation)
 
@@ -204,7 +204,8 @@ class Simulator(object):
                     self.db.append_data("target_history", self.target)
                     self.db.append_data("observation_history", observation)
                     #self.db.append_data("slew_history", slew_history)
-                    for target_exposure in target_exposures:
-                        self.db.append_data("target_exposures", target_exposure)
+                    for exposure_type in exposure_info:
+                        for exposure in exposure_info[exposure_type]:
+                            self.db.append_data(exposure_type, exposure)
 
             self._end_night()

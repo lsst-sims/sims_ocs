@@ -47,3 +47,9 @@ exposure_coll1 = lsst.sims.ocs.observatory.TargetExposure(exposureId=1, exposure
 
 exposure_coll2 = lsst.sims.ocs.observatory.TargetExposure(exposureId=2, exposureNum=1, exposureTime=15.0,
                                                           TargetHistory_targetId=3)
+
+exposure_coll3 = lsst.sims.ocs.observatory.ObsExposure(exposureId=1, exposureNum=0, exposureTime=15.0,
+                                                       exposureStartTime=2922.0, ObsHistory_observationId=3)
+
+exposure_coll4 = lsst.sims.ocs.observatory.ObsExposure(exposureId=1, exposureNum=0, exposureTime=15.0,
+                                                       exposureStartTime=2922.2, ObsHistory_observationId=3)
