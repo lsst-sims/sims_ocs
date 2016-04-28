@@ -1,10 +1,12 @@
 import collections
 from datetime import datetime
+import logging
 import os
 
 import MySQLdb as mysql
 from sqlalchemy import create_engine, MetaData
 
+from lsst.sims.ocs.setup import LoggingLevel
 import tables
 from lsst.sims.ocs.utilities import expand_path, get_hostname, get_user, get_version
 
@@ -53,6 +55,7 @@ class SocsDatabase(object):
             A path to save all resulting database files for SQLite.
         """
         self.db_name = "SocsDB"
+        self.log = logging.getLogger("database.SocsDatabase")
         self.db_dialect = dialect
         self.session_id = -1
         self.metadata = MetaData()
@@ -90,8 +93,8 @@ class SocsDatabase(object):
         self.target_history = tables.create_target_history(metadata)
         self.observation_history = tables.create_observation_history(metadata)
         self.slew_history = tables.create_slew_history(metadata)
-        self.target_exposures = tables.create_target_exposures_table(metadata)
-        self.observation_exposures = tables.create_observation_exposures_table(metadata)
+        self.target_exposures = tables.create_target_exposures(metadata)
+        self.observation_exposures = tables.create_observation_exposures(metadata)
 
     def _connect(self):
         """Create the database connection for MySQL.
@@ -210,6 +213,7 @@ class SocsDatabase(object):
         """Clear all stored data lists.
         """
         self.data_list.clear()
+        self.log.log(LoggingLevel.EXTENSIVE.value, "After clearing: {}".format(self.data_list))
 
     def _get_conn(self):
         """Get the DB connection.
@@ -231,6 +235,8 @@ class SocsDatabase(object):
         conn = self._get_conn()
 
         for table_name, table_data in self.data_list.items():
+            self.log.log(LoggingLevel.EXTENSIVE.value, "Writing {} data into DB.".format(table_name))
+            self.log.log(LoggingLevel.EXTENSIVE.value, "Length of data: {}".format(len(table_data)))
             tbl = getattr(self, table_name)
             conn.execute(tbl.insert(), table_data)
 

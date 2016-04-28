@@ -101,14 +101,14 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['ObsHistory_observationId'], sh.ObsHistory_observationId)
 
     def test_create_target_exposures_table(self):
-        exposure = tbls.create_target_exposures_table(self.metadata)
+        exposure = tbls.create_target_exposures(self.metadata)
         self.assertEqual(len(exposure.c), 5)
         self.assertEqual(len(exposure.indexes), 2)
 
     def test_write_target_exposures_table(self):
         exposure = topic_helpers.exposure_coll1
         result = tbls.write_target_exposures(exposure, 1000)
-        exposure_table = tbls.create_target_exposures_table(self.metadata)
+        exposure_table = tbls.create_target_exposures(self.metadata)
         self.check_ordered_dict_to_table(result, exposure_table)
         self.assertEqual(result['exposureId'], exposure.exposureId)
         self.assertEqual(result['exposureNum'], exposure.exposureNum)
@@ -116,14 +116,14 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['TargetHistory_targetId'], exposure.TargetHistory_targetId)
 
     def test_create_observation_exposures_table(self):
-        exposure = tbls.create_observation_exposures_table(self.metadata)
+        exposure = tbls.create_observation_exposures(self.metadata)
         self.assertEqual(len(exposure.c), 6)
         self.assertEqual(len(exposure.indexes), 2)
 
     def test_write_observation_exposures_table(self):
         exposure = topic_helpers.exposure_coll3
         result = tbls.write_observation_exposures(exposure, 1000)
-        exposure_table = tbls.create_observation_exposures_table(self.metadata)
+        exposure_table = tbls.create_observation_exposures(self.metadata)
         self.check_ordered_dict_to_table(result, exposure_table)
         self.assertEqual(result['exposureId'], exposure.exposureId)
         self.assertEqual(result['exposureNum'], exposure.exposureNum)

@@ -2,8 +2,8 @@ from sqlalchemy import Column, Float, Index, Integer, String, Table
 from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event, ForeignKeyConstraint
 
-__all__ = ["create_field", "create_observation_exposures_table", "create_observation_history",
-           "create_session", "create_slew_history", "create_target_exposures_table", "create_target_history"]
+__all__ = ["create_field", "create_observation_exposures", "create_observation_history",
+           "create_session", "create_slew_history", "create_target_exposures", "create_target_history"]
 
 def create_field(metadata):
     """Create Field table.
@@ -21,8 +21,8 @@ def create_field(metadata):
         The Field table object.
     """
     table = Table("Field", metadata,
-                  Column("fieldId", Integer, primary_key=True, nullable=False),
-                  Column("Session_sessionId", Integer, primary_key=True, nullable=False),
+                  Column("fieldId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
                   Column("fov", Float, nullable=False),
                   Column("ra", Float, nullable=False),
                   Column("dec", Float, nullable=False),
@@ -37,7 +37,7 @@ def create_field(metadata):
     Index("fov_ra_dec", table.c.fov, table.c.ra, table.c.dec)
 
     return table
-def create_observation_exposures_table(metadata):
+def create_observation_exposures(metadata):
     """Create ObsExposures table.
 
     This function creates the ObsExposures table from the observation exposures.
@@ -53,8 +53,8 @@ def create_observation_exposures_table(metadata):
       The ObsExposure table object.
     """
     table = Table("ObsExposures", metadata,
-                  Column("exposureId", Integer, primary_key=True, nullable=False),
-                  Column("Session_sessionId", Integer, primary_key=True, nullable=False),
+                  Column("exposureId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
                   Column("exposureNum", Integer, nullable=False),
                   Column("exposureStartTime", Float, nullable=False),
                   Column("exposureTime", Float, nullable=False),
@@ -82,8 +82,8 @@ def create_observation_history(metadata):
         The ObsHistory table object.
     """
     table = Table("ObsHistory", metadata,
-                  Column("observationId", Integer, primary_key=True),
-                  Column("Session_sessionId", Integer, primary_key=True),
+                  Column("observationId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
                   Column('observationStartTime', Float, nullable=False),
                   Column('TargetHistory_targetId', Integer, nullable=False),
                   Column("Field_fieldId", Integer, nullable=False),
@@ -165,7 +165,7 @@ def create_slew_history(metadata):
 
     return table
 
-def create_target_exposures_table(metadata):
+def create_target_exposures(metadata):
     """Create TargetExposures table.
 
     This function creates the TargetExposures table from the target exposures.
@@ -181,8 +181,8 @@ def create_target_exposures_table(metadata):
       The Target Exposure table object.
     """
     table = Table("TargetExposures", metadata,
-                  Column("exposureId", Integer, primary_key=True, nullable=False),
-                  Column("Session_sessionId", Integer, primary_key=True, nullable=False),
+                  Column("exposureId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
                   Column("exposureNum", Integer, nullable=False),
                   Column("exposureTime", Float, nullable=False),
                   Column("TargetHistory_targetId", Integer, nullable=False))
@@ -209,8 +209,8 @@ def create_target_history(metadata):
         The TargetHistory table object.
     """
     table = Table("TargetHistory", metadata,
-                  Column("targetId", Integer, primary_key=True),
-                  Column("Session_sessionId", Integer, primary_key=True),
+                  Column("targetId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
                   Column("Field_fieldId", Integer, nullable=False),
                   Column("filter", String(1), nullable=False),
                   Column("ra", Float, nullable=False),
