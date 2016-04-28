@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Float, Index, Integer, String, Table
 from sqlalchemy.types import DATETIME
-from sqlalchemy import DDL, event
+from sqlalchemy import DDL, event, ForeignKeyConstraint
 
-__all__ = ["create_field", "create_observation_history", "create_session",
-           "create_slew_history", "create_target_history"]
+__all__ = ["create_field", "create_observation_exposures", "create_observation_history",
+           "create_session", "create_slew_history", "create_target_exposures", "create_target_history"]
 
 def create_field(metadata):
     """Create Field table.
@@ -21,7 +21,8 @@ def create_field(metadata):
         The Field table object.
     """
     table = Table("Field", metadata,
-                  Column("ID", Integer, primary_key=True, nullable=False),
+                  Column("fieldId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
                   Column("fov", Float, nullable=False),
                   Column("ra", Float, nullable=False),
                   Column("dec", Float, nullable=False),
@@ -30,10 +31,37 @@ def create_field(metadata):
                   Column("el", Float, nullable=False),
                   Column("eb", Float, nullable=False))
 
-    Index("field_fov", table.c.ID, table.c.fov)
+    Index("field_fov", table.c.fieldId, table.c.fov)
     Index("fov_gl_gb", table.c.fov, table.c.gl, table.c.gb)
     Index("fov_el_eb", table.c.fov, table.c.el, table.c.eb)
     Index("fov_ra_dec", table.c.fov, table.c.ra, table.c.dec)
+
+    return table
+def create_observation_exposures(metadata):
+    """Create ObsExposures table.
+
+    This function creates the ObsExposures table from the observation exposures.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+      The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+      The ObsExposure table object.
+    """
+    table = Table("ObsExposures", metadata,
+                  Column("exposureId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("exposureNum", Integer, nullable=False),
+                  Column("exposureStartTime", Float, nullable=False),
+                  Column("exposureTime", Float, nullable=False),
+                  Column("ObsHistory_observationId", Integer, nullable=False))
+
+    Index("obs_expId_expNum", table.c.exposureId, table.c.exposureNum)
+    Index("fk_ObsHistory_observationId", table.c.ObsHistory_observationId)
 
     return table
 
@@ -54,21 +82,29 @@ def create_observation_history(metadata):
         The ObsHistory table object.
     """
     table = Table("ObsHistory", metadata,
-                  Column("observationID", Integer, primary_key=True),
-                  Column("Session_sessionID", Integer, primary_key=True),
-                  Column('observationTime', Float),
-                  Column('targetID', Integer),
-                  Column("fieldID", Integer),
-                  Column("filter", String(1)),
-                  Column("ra", Float),
-                  Column("dec", Float),
-                  Column("angle", Float),
-                  Column("num_exposures", Integer))
+                  Column("observationId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column('night', Integer, nullable=False),
+                  Column('observationStartTime', Float, nullable=False),
+                  Column('observationStartMJD', Float, nullable=False),
+                  Column('observationStartLST', Float, nullable=False,
+                         doc="The Local Sidereal Time at observation start"),
+                  Column('TargetHistory_targetId', Integer, nullable=False),
+                  Column("Field_fieldId", Integer, nullable=False),
+                  Column("filter", String(1), nullable=False),
+                  Column("ra", Float, nullable=False),
+                  Column("dec", Float, nullable=False),
+                  Column("angle", Float, nullable=False),
+                  Column("numExposures", Integer, nullable=False),
+                  Column("visitTime", Float, nullable=False),
+                  Column("visitExposureTime", Float, nullable=False),
+                  ForeignKeyConstraint(["Field_fieldId"], ["Field.fieldId"]),
+                  ForeignKeyConstraint(["TargetHistory_targetId"], ["TargetHistory.targetId"]))
 
     Index("o_filter", table.c.filter)
-    Index("fk_ObsHistory_Session1", table.c.Session_sessionID)
-    Index("fk_ObsHistory_Field1", table.c.fieldID)
-    Index("fk_ObsHistory_Target1", table.c.targetID)
+    Index("fk_ObsHistory_Session1", table.c.Session_sessionId)
+    Index("fk_ObsHistory_Field1", table.c.Field_fieldId)
+    Index("fk_ObsHistory_Target1", table.c.TargetHistory_targetId)
 
     return table
 
@@ -91,7 +127,7 @@ def create_session(metadata, autoincrement=True):
         The Session table object.
     """
     table = Table("Session", metadata,
-                  Column("sessionID", Integer, primary_key=True, autoincrement=autoincrement, nullable=False),
+                  Column("sessionId", Integer, primary_key=True, autoincrement=autoincrement, nullable=False),
                   Column("sessionUser", String(80), nullable=False),
                   Column("sessionHost", String(80), nullable=False),
                   Column("sessionDate", DATETIME, nullable=False),
@@ -127,9 +163,36 @@ def create_slew_history(metadata):
                   Column("endDate", Float, nullable=False),
                   Column("slewTime", Float, nullable=False),
                   Column("slewDistance", Float, nullable=False),
-                  Column("ObsHistory_observationID", Integer))
+                  Column("ObsHistory_observationId", Integer))
 
-    Index("fk_SlewHistory_ObsHistory1", table.c.ObsHistory_observationID)
+    Index("fk_SlewHistory_ObsHistory1", table.c.ObsHistory_observationId)
+
+    return table
+
+def create_target_exposures(metadata):
+    """Create TargetExposures table.
+
+    This function creates the TargetExposures table from the target exposures.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+      The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+      The Target Exposure table object.
+    """
+    table = Table("TargetExposures", metadata,
+                  Column("exposureId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("exposureNum", Integer, nullable=False),
+                  Column("exposureTime", Float, nullable=False),
+                  Column("TargetHistory_targetId", Integer, nullable=False))
+
+    Index("expId_expNum", table.c.exposureId, table.c.exposureNum)
+    Index("fk_TargetHistory_targetId", table.c.TargetHistory_targetId)
 
     return table
 
@@ -150,17 +213,18 @@ def create_target_history(metadata):
         The TargetHistory table object.
     """
     table = Table("TargetHistory", metadata,
-                  Column("targetID", Integer, primary_key=True),
-                  Column("Session_sessionID", Integer, primary_key=True),
-                  Column("fieldID", Integer),
-                  Column("filter", String(1)),
-                  Column("ra", Float),
-                  Column("dec", Float),
-                  Column("angle", Float),
-                  Column("num_exposures", Integer))
+                  Column("targetId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Field_fieldId", Integer, nullable=False),
+                  Column("filter", String(1), nullable=False),
+                  Column("ra", Float, nullable=False),
+                  Column("dec", Float, nullable=False),
+                  Column("angle", Float, nullable=False),
+                  Column("numExposures", Integer, nullable=False),
+                  Column("requestedExpTime", Float, nullable=False))
 
     Index("t_filter", table.c.filter)
-    Index("fk_TargetHistory_Session1", table.c.Session_sessionID)
-    Index("fk_TargetHistory_Field1", table.c.fieldID)
+    Index("fk_TargetHistory_Session1", table.c.Session_sessionId)
+    Index("fk_TargetHistory_Field1", table.c.Field_fieldId)
 
     return table

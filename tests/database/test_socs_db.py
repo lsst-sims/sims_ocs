@@ -26,6 +26,8 @@ class SocsDatabaseMySqlTest(unittest.TestCase):
         self.assertTrue(hasattr(self.db, "target_history"))
         self.assertTrue(hasattr(self.db, "observation_history"))
         self.assertTrue(hasattr(self.db, "slew_history"))
+        self.assertTrue(hasattr(self.db, "target_exposures"))
+        self.assertTrue(hasattr(self.db, "observation_exposures"))
 
     @mock.patch("sqlalchemy.MetaData.create_all")
     def test_database_creation(self, mock_create_all):
@@ -98,7 +100,7 @@ class SocsDatabaseSqliteTest(unittest.TestCase):
         row = result.fetchone()
         self.assertEqual(len(row), len(th.c))
         target = topic_helpers.target
-        self.assertEqual(row['fieldID'], target.fieldId)
+        self.assertEqual(row['Field_fieldId'], target.fieldId)
 
     def test_initial_creation(self):
         self.assertEqual(self.db.db_dialect, "sqlite")

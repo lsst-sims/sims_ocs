@@ -6,10 +6,11 @@ import palpy
 
 from ts_scheduler.observatoryModel import ObservatoryLocation, ObservatoryModel
 from ts_scheduler.schedulerTarget import Target
+from ts_scheduler.sky_model import DateProfile
 
 from lsst.sims.ocs.configuration import Camera, Observatory, ObservingSite
 from lsst.sims.ocs.setup import LoggingLevel
-from lsst.sims.ocs.observatory import SlewHistory
+from lsst.sims.ocs.observatory import ObsExposure, TargetExposure, SlewHistory
 
 __all__ = ["MainObservatory"]
 
@@ -38,9 +39,13 @@ class MainObservatory(object):
         observatory_location = ObservatoryLocation()
         observatory_location.configure({"obs_site": ObservingSite().toDict()})
         self.model = ObservatoryModel(observatory_location)
+        self.date_profile = DateProfile(0, observatory_location)
         self.param_dict = {}
         self.slew_count = 0
         self.observations_made = 0
+        self.exposures_made = 0
+        self.target_exposure_list = None
+        self.observation_exposure_list = None
 
     def __getattr__(self, name):
         """Find attributes in ts_scheduler.observatorModel.ObservatorModel as well as MainObservatory.
@@ -54,7 +59,7 @@ class MainObservatory(object):
                                                                                        aclass_name,
                                                                                        name))
 
-    def calculate_visit_time(self, target):
+    def calculate_visit_time(self, target, th):
         """Calculate the visit time from the target and camera information.
 
         This function calculates the visit time from the current camera configuration parameters
@@ -74,14 +79,31 @@ class MainObservatory(object):
         (float, str)
             The calculated visit time and a unit string (default it seconds).
         """
+        self.target_exposure_list = []
+        self.observation_exposure_list = []
+
         camera_config = Camera()
         shutter_time = 2.0 * (0.5 * camera_config.shutter_time)
 
         visit_time = 0.0
         for i in xrange(target.num_exposures):
-            visit_time += (shutter_time + target.exposure_times[i])
+            self.exposures_made += 1
+            effective_exposure_time = target.exposure_times[i]
+            self.target_exposure_list.append(TargetExposure(self.exposures_made, i + 1,
+                                                            effective_exposure_time,
+                                                            target.targetId))
 
-        visit_time += (target.num_exposures - 1) * camera_config.readout_time
+            exposure_start_time = th.future_timestamp(visit_time, "seconds")
+            visit_time += (shutter_time + effective_exposure_time)
+
+            self.observation_exposure_list.append(ObsExposure(self.exposures_made, i + 1,
+                                                              effective_exposure_time,
+                                                              exposure_start_time, self.observations_made))
+
+            if i < (target.num_exposures - 1):
+                visit_time += camera_config.readout_time
+
+        #visit_time += (target.num_exposures - 1) * camera_config.readout_time
 
         return (visit_time, "seconds")
 
@@ -107,6 +129,8 @@ class MainObservatory(object):
         -------
         :class:`.SlewHistory`
             The slew history information from the current slew.
+        dict(list[:class:`.TargetExposure`], list[:class:`.ObsExposure`])
+            A dictionary of all the exposure information from the visit.
         """
         self.observations_made += 1
 
@@ -118,7 +142,10 @@ class MainObservatory(object):
         time_handler.update_time(*slew_time)
 
         observation.observationId = self.observations_made
-        observation.observationTime = time_handler.current_timestamp
+        observation.observation_start_time = time_handler.current_timestamp
+        start_mjd, start_lst = self.date_profile(observation.observation_start_time)
+        observation.observation_start_mjd = start_mjd
+        observation.observation_start_lst = math.degrees(start_lst)
         observation.targetId = target.targetId
         observation.fieldId = target.fieldId
         observation.filter = target.filter
@@ -128,9 +155,13 @@ class MainObservatory(object):
 
         self.log.log(LoggingLevel.EXTENSIVE.value,
                      "Exposure Times for Target {}: {}".format(target.targetId, list(target.exposure_times)))
-        visit_time = self.calculate_visit_time(target)
+        visit_time = self.calculate_visit_time(target, time_handler)
         self.log.log(LoggingLevel.EXTENSIVE.value,
                      "Visit Time for Target {}: {}".format(target.targetId, visit_time[0]))
+
+        observation.visit_time = visit_time[0]
+        for i, exposure in enumerate(self.observation_exposure_list):
+            observation.exposure_times[i] = exposure.exposureTime
 
         time_handler.update_time(*visit_time)
 
@@ -138,7 +169,10 @@ class MainObservatory(object):
                      "Observation {} completed at {}.".format(self.observations_made,
                                                               time_handler.current_timestring))
 
-        return slew_history
+        exposure_info = {"target_exposures": self.target_exposure_list,
+                         "observation_exposures": self.observation_exposure_list}
+
+        return slew_history, exposure_info
 
     def slew(self, target):
         """Perform the slewing operation for the observatory to the given target.
