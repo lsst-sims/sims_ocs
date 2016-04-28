@@ -1,9 +1,8 @@
 import collections
 
-__all__ = ["ExposureInformation"]
+__all__ = ["TargetExposure"]
 
-"""Simple tuple for handling a single exposure's information
+"""Simple tuple for handling a single target exposure's information
 """
-ExposureInformation = collections.namedtuple("ExposureInformation", ["exposureId", "exposureNum",
-                                                                     "exposureTime",
-                                                                     "ObsHistory_observationId"])
+TargetExposure = collections.namedtuple("TargetExposure", ["exposureId", "exposureNum", "exposureTime",
+                                                           "TargetHistory_targetId"])

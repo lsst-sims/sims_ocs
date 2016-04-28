@@ -120,12 +120,12 @@ class Sequencer(object):
             An observation telemetry topic containing the observed target parameters.
         :class:`.SlewHistory`
             The slew history information from the current slew.
-        list[:class:.ExposureInformation`]
-            A list of the exposure information from the visit.
+        list[:class:.TargetExposure`]
+            A list of the target exposure information from the visit.
         """
         self.log.log(LoggingLevel.EXTENSIVE.value, "Received target {}".format(target.targetId))
         self.targets_received += 1
 
-        slew_history, exposures = self.observatory_model.observe(th, target, self.observation)
+        slew_history, target_exposures = self.observatory_model.observe(th, target, self.observation)
 
-        return self.observation, slew_history, exposures
+        return self.observation, slew_history, target_exposures

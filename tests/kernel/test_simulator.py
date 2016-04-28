@@ -87,7 +87,7 @@ class SimulatorTest(unittest.TestCase):
                                                                      self.starting_timestamp + 360.0))
         self.sim.seq.observatory_model.slew = mock.Mock(return_value=((6.0, "seconds"), slew_history_coll))
         self.sim.seq.observatory_model.calculate_visit_time = mock.Mock(return_value=((34.0, "seconds")))
-        self.sim.seq.observatory_model.exposure_list = [exposure_coll1, exposure_coll2]
+        self.sim.seq.observatory_model.target_exposure_list = [exposure_coll1, exposure_coll2]
 
         self.assertEqual(self.sim.duration, 1.0)
 

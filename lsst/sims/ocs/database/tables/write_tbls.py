@@ -1,29 +1,26 @@
 import collections
 
-__all__ = ["write_exposures", "write_field", "write_observation_history", "write_slew_history",
+__all__ = ["write_field", "write_observation_history", "write_slew_history", "write_target_exposures",
            "write_target_history"]
 
-def ordered_dict_from_namedtuple(data):
-    """Convert an OrderedDict.
-    """
-    return data._asdict()
-
-def write_exposures(data, sid):
-    """Create a dictionary of data for the ExposureInformation table.
+def ordered_dict_from_namedtuple(data, sid=None):
+    """Convert a namedtuple to an OrderedDict.
 
     Parameters
     ----------
-    data : class:`.ExposureInformation`
-        The instance containing the exposure information
-    sid : int
-        The current session ID. CURRENTLY UNUSED.
+    data : collections.namedtuple
+        The data to convert.
+    sid : int (OPTIONAL)
+        The current session ID.
 
     Returns
     -------
-    list[collections.OrderedDict]
-        A list of dictionaries of the topic data.
+        collections.OrderedDict
     """
-    return ordered_dict_from_namedtuple(data)
+    values = data._asdict()
+    if sid is not None:
+        values["Session_sessionId"] = sid
+    return values
 
 def write_field(data, sid):
     """Create a dictionary of data for the Field table.
@@ -101,6 +98,23 @@ def write_slew_history(data, sid):
     """
     values = data._asdict()
     return values
+
+def write_target_exposures(data, sid):
+    """Create a dictionary of data for the TargetExposures table.
+
+    Parameters
+    ----------
+    data : class:`.TargetExposure`
+        The instance containing the target exposure information
+    sid : int
+        The current session ID.
+
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionaries of the topic data.
+    """
+    return ordered_dict_from_namedtuple(data, sid=sid)
 
 def write_target_history(data, sid):
     """Create a dictionary of data for the TargetHistory table.

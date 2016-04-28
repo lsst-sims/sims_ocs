@@ -42,8 +42,8 @@ slew_history_coll = lsst.sims.ocs.observatory.SlewHistory(slewCount=1, startDate
                                                           slewTime=6.0, slewDistance=1.0,
                                                           ObsHistory_observationId=1)
 
-exposure_coll1 = lsst.sims.ocs.observatory.ExposureInformation(exposureId=1, exposureNum=0, exposureTime=15.0,
-                                                               ObsHistory_observationId=3)
+exposure_coll1 = lsst.sims.ocs.observatory.TargetExposure(exposureId=1, exposureNum=0, exposureTime=15.0,
+                                                          TargetHistory_targetId=3)
 
-exposure_coll2 = lsst.sims.ocs.observatory.ExposureInformation(exposureId=2, exposureNum=1, exposureTime=15.0,
-                                                               ObsHistory_observationId=3)
+exposure_coll2 = lsst.sims.ocs.observatory.TargetExposure(exposureId=2, exposureNum=1, exposureTime=15.0,
+                                                          TargetHistory_targetId=3)

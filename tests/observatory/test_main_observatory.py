@@ -23,7 +23,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertFalse(self.observatory.model.parkState.tracking)
         self.assertEqual(len(self.observatory.model.currentState.mountedfilters), 5)
         self.assertEqual(self.observatory.exposures_made, 0)
-        self.assertIsNone(self.observatory.exposure_list)
+        self.assertIsNone(self.observatory.target_exposure_list)
 
     def test_information_after_configuration(self):
         self.observatory.configure()
