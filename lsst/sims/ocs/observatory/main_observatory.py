@@ -6,6 +6,7 @@ import palpy
 
 from ts_scheduler.observatoryModel import ObservatoryLocation, ObservatoryModel
 from ts_scheduler.schedulerTarget import Target
+from ts_scheduler.sky_model import DateProfile
 
 from lsst.sims.ocs.configuration import Camera, Observatory, ObservingSite
 from lsst.sims.ocs.setup import LoggingLevel
@@ -38,6 +39,7 @@ class MainObservatory(object):
         observatory_location = ObservatoryLocation()
         observatory_location.configure({"obs_site": ObservingSite().toDict()})
         self.model = ObservatoryModel(observatory_location)
+        self.date_profile = DateProfile(0, observatory_location)
         self.param_dict = {}
         self.slew_count = 0
         self.observations_made = 0
@@ -85,17 +87,18 @@ class MainObservatory(object):
 
         visit_time = 0.0
         for i in xrange(target.num_exposures):
+            self.exposures_made += 1
             effective_exposure_time = target.exposure_times[i]
-            self.target_exposure_list.append(TargetExposure(self.exposures_made, i, effective_exposure_time,
+            self.target_exposure_list.append(TargetExposure(self.exposures_made, i + 1,
+                                                            effective_exposure_time,
                                                             target.targetId))
 
             exposure_start_time = th.future_timestamp(visit_time, "seconds")
             visit_time += (shutter_time + effective_exposure_time)
 
-            self.observation_exposure_list.append(ObsExposure(self.exposures_made, i, effective_exposure_time,
+            self.observation_exposure_list.append(ObsExposure(self.exposures_made, i + 1,
+                                                              effective_exposure_time,
                                                               exposure_start_time, self.observations_made))
-
-            self.exposures_made += 1
 
             if i < (target.num_exposures - 1):
                 visit_time += camera_config.readout_time
@@ -139,7 +142,10 @@ class MainObservatory(object):
         time_handler.update_time(*slew_time)
 
         observation.observationId = self.observations_made
-        observation.observationTime = time_handler.current_timestamp
+        observation.observation_start_time = time_handler.current_timestamp
+        start_mjd, start_lst = self.date_profile(observation.observation_start_time)
+        observation.observation_start_mjd = start_mjd
+        observation.observation_start_lst = math.degrees(start_lst)
         observation.targetId = target.targetId
         observation.fieldId = target.fieldId
         observation.filter = target.filter

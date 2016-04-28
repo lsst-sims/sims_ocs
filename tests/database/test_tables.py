@@ -63,7 +63,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_observation_history_table(self):
         obs_hist = tbls.create_observation_history(self.metadata)
-        self.assertEqual(len(obs_hist.c), 12)
+        self.assertEqual(len(obs_hist.c), 15)
         self.assertEqual(len(obs_hist.indexes), 4)
 
     def test_write_observation_history_table(self):
@@ -75,7 +75,10 @@ class TablesTest(unittest.TestCase):
         self.check_ordered_dict_to_table(result, obs_hist)
         self.assertEqual(result['Session_sessionId'], session_id)
         self.assertEqual(result['observationId'], obs_topic.observationId)
-        self.assertEqual(result['observationStartTime'], obs_topic.observationTime)
+        self.assertEqual(result['observationStartTime'], obs_topic.observation_start_time)
+        self.assertEqual(result['observationStartMJD'], obs_topic.observation_start_mjd)
+        self.assertEqual(result['observationStartLST'], obs_topic.observation_start_lst)
+        self.assertEqual(result['night'], obs_topic.night)
         self.assertEqual(result['TargetHistory_targetId'], obs_topic.targetId)
         self.assertEqual(result['Field_fieldId'], obs_topic.fieldId)
         self.assertEqual(result['filter'], obs_topic.filter)

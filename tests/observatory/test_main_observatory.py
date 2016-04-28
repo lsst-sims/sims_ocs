@@ -54,7 +54,7 @@ class MainObservatoryTest(unittest.TestCase):
         slew_history, exposures = self.observatory.observe(time_handler, target, observation)
         self.assertEqual(observation.observationId, 1)
         self.assertEqual(observation.exposure_times[1], 15.0)
-        self.assertAlmostEqual(observation.observationTime, self.truth_slew_time, delta=1e-4)
+        self.assertAlmostEqual(observation.observation_start_time, self.truth_slew_time, delta=1e-4)
         self.assertIsNotNone(slew_history)
         self.assertEqual(self.observatory.exposures_made, 2)
         self.assertEqual(len(exposures), 2)

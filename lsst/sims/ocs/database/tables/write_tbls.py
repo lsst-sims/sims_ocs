@@ -85,7 +85,10 @@ def write_observation_history(data, sid):
     values = collections.OrderedDict([
         ('observationId', data.observationId),
         ('Session_sessionId', sid),
-        ('observationStartTime', data.observationTime),
+        ('observationStartTime', data.observation_start_time),
+        ('observationStartMJD', data.observation_start_mjd),
+        ('observationStartLST', data.observation_start_lst),
+        ('night', data.night),
         ('TargetHistory_targetId', data.targetId),
         ('Field_fieldId', data.fieldId),
         ('ra', data.ra),

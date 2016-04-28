@@ -197,13 +197,16 @@ class Simulator(object):
 
                 observation, slew_history, exposure_info = self.seq.observe_target(self.target,
                                                                                    self.time_handler)
+                # Add a few more things to the observation
+                observation.night = night
+
                 # Pass observation back to scheduler
                 self.sal.put(observation)
 
                 if self.wait_for_scheduler:
                     self.db.append_data("target_history", self.target)
                     self.db.append_data("observation_history", observation)
-                    #self.db.append_data("slew_history", slew_history)
+                    self.db.append_data("slew_history", slew_history)
                     for exposure_type in exposure_info:
                         self.log.log(LoggingLevel.TRACE.value, "Adding {} to DB".format(exposure_type))
                         self.log.log(LoggingLevel.TRACE.value,
