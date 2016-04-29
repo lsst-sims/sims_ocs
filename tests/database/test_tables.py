@@ -104,14 +104,26 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['ObsHistory_observationId'], sh.ObsHistory_observationId)
         self.assertEqual(result['Session_sessionId'], 1000)
 
-    def test_create_slew_state_table(self):
-        slew_state = tbls.create_slew_state(self.metadata)
-        self.assertEqual(len(slew_state.c), 18)
+    def test_create_slew_final_state_table(self):
+        slew_state = tbls.create_slew_final_state(self.metadata)
+        self.assertEqual(len(slew_state.c), 17)
         self.assertEqual(len(slew_state.indexes), 1)
 
-    def test_write_slew_state_table(self):
+    def test_write_slew_state_final_table(self):
         ss = topic_helpers.slew_state_coll
-        result = tbls.write_slew_state(ss, 1000)
+        result = tbls.write_slew_final_state(ss, 1000)
+        self.assertEqual(result['slewStateId'], ss.slewStateId)
+        self.assertEqual(result['slewStateDate'], ss.slewStateDate)
+        self.assertEqual(result['SlewHistory_slewCount'], ss.SlewHistory_slewCount)
+
+    def test_create_slew_initial_state_table(self):
+        slew_state = tbls.create_slew_initial_state(self.metadata)
+        self.assertEqual(len(slew_state.c), 17)
+        self.assertEqual(len(slew_state.indexes), 1)
+
+    def test_write_slew_state_initial_table(self):
+        ss = topic_helpers.slew_state_coll
+        result = tbls.write_slew_initial_state(ss, 1000)
         self.assertEqual(result['slewStateId'], ss.slewStateId)
         self.assertEqual(result['slewStateDate'], ss.slewStateDate)
         self.assertEqual(result['SlewHistory_slewCount'], ss.SlewHistory_slewCount)

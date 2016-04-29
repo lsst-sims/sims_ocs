@@ -16,8 +16,8 @@ class SlewInformationTest(unittest.TestCase):
 
     def test_slew_state_information(self):
         ss = SlewState(1, 1640995200.0, 1.000, -3.000, "False", 34.1, 155.4, 0.5, 35.2, 156.3, 34.6, 155.6,
-                       1.0, 0.5, "r", 0, 1)
-        self.assertEqual(len(ss._fields), 17)
+                       1.0, 0.5, "r", 1)
+        self.assertEqual(len(ss._fields), 16)
         self.assertEqual(ss.slewStateId, 1)
         self.assertEqual(ss.slewStateDate, 1640995200.0)
         self.assertEqual(ss.targetRA, 1.000)
@@ -33,5 +33,4 @@ class SlewInformationTest(unittest.TestCase):
         self.assertEqual(ss.rotTelPos, 1.0)
         self.assertEqual(ss.rotSkyPos, 0.5)
         self.assertEqual(ss.filter, 'r')
-        self.assertEqual(ss.state, 0)
         self.assertEqual(ss.SlewHistory_slewCount, 1)
