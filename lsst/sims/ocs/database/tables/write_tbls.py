@@ -116,9 +116,7 @@ def write_slew_history(data, sid):
     collections.OrderedDict
         A dictionary of the topic data.
     """
-    values = data._asdict()
-    values["Session_sessionID"] = sid
-    return values
+    return ordered_dict_from_namedtuple(data, sid=sid)
 
 def write_slew_state(data, sid):
     """Create a dictionary of data for the SlewState table.
@@ -128,15 +126,14 @@ def write_slew_state(data, sid):
     data : class:`.SlewState`
         The instance containing the slew state information
     sid : int
-        The current session ID. CURRENTLY UNUSED.
+        The current session ID.
 
     Returns
     -------
     collections.OrderedDict
         A dictionary of the topic data.
     """
-    values = data._asdict()
-    return values
+    return ordered_dict_from_namedtuple(data, sid=sid)
 
 def write_target_exposures(data, sid):
     """Create a dictionary of data for the TargetExposures table.

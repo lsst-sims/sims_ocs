@@ -88,7 +88,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_slew_history_table(self):
         slew_hist = tbls.create_slew_history(self.metadata)
-        self.assertEqual(len(slew_hist.c), 6)
+        self.assertEqual(len(slew_hist.c), 7)
         self.assertEqual(len(slew_hist.indexes), 1)
 
     def test_write_slew_history_table(self):
@@ -102,11 +102,11 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['slewTime'], sh.slewTime)
         self.assertEqual(result['slewDistance'], sh.slewDistance)
         self.assertEqual(result['ObsHistory_observationId'], sh.ObsHistory_observationId)
-        self.assertEqual(result['Session_sessionID'], 1000)
+        self.assertEqual(result['Session_sessionId'], 1000)
 
     def test_create_slew_state_table(self):
         slew_state = tbls.create_slew_state(self.metadata)
-        self.assertEqual(len(slew_state.c), 17)
+        self.assertEqual(len(slew_state.c), 18)
         self.assertEqual(len(slew_state.indexes), 1)
 
     def test_write_slew_state_table(self):

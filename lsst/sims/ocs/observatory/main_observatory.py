@@ -104,8 +104,6 @@ class MainObservatory(object):
             if i < (target.num_exposures - 1):
                 visit_time += camera_config.readout_time
 
-        #visit_time += (target.num_exposures - 1) * camera_config.readout_time
-
         return (visit_time, "seconds")
 
     def configure(self):
@@ -133,11 +131,11 @@ class MainObservatory(object):
             The copied slew state information.
         """
         self.slew_state_count += 1
-        slew_state = SlewState(slew_state_info.time, slew_state_info.ra,
+        slew_state = SlewState(self.slew_state_count, slew_state_info.time, slew_state_info.ra,
                                slew_state_info.dec, str(slew_state_info.tracking), slew_state_info.alt,
                                slew_state_info.az, slew_state_info.pa, slew_state_info.domalt,
                                slew_state_info.domaz, slew_state_info.telalt, slew_state_info.telaz,
-                               slew_state_info.rot, slew_state_info.rot_sky, slew_state_info.filter,
+                               slew_state_info.rot, slew_state_info.ang, slew_state_info.filter,
                                state_flag, self.slew_count)
         return slew_state
 
@@ -223,12 +221,10 @@ class MainObservatory(object):
         initial_slew_state = copy.deepcopy(self.model.currentState)
         slew_state.append(self.get_slew_state(initial_slew_state, 0))
 
- 
         sched_target = Target.from_topic(target)
         self.model.slew(sched_target)
         final_slew_state = copy.deepcopy(self.model.currentState)
         slew_state.append(self.get_slew_state(final_slew_state, 1))
-
 
         slew_time = (final_slew_state.time - initial_slew_state.time, "seconds")
 

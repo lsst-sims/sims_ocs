@@ -3,7 +3,8 @@ from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event, ForeignKeyConstraint
 
 __all__ = ["create_field", "create_observation_exposures", "create_observation_history",
-           "create_session", "create_slew_history", "create_slew_state", "create_slew_state", "create_target_exposures", "create_target_history"]
+           "create_session", "create_slew_history", "create_slew_state", "create_slew_state",
+           "create_target_exposures", "create_target_history"]
 
 def create_field(metadata):
     """Create Field table.
@@ -159,14 +160,14 @@ def create_slew_history(metadata):
         The SlewHistory table object.
     """
     table = Table("SlewHistory", metadata,
-                  Column("slewCount", Integer, primary_key=True, autoincrement=True, nullable=False),
+                  Column("slewCount", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
                   Column("startDate", Float, nullable=False),
                   Column("endDate", Float, nullable=False),
                   Column("slewTime", Float, nullable=False),
                   Column("slewDistance", Float, nullable=False),
-                  Column("ObsHistory_observationId", Integer)ForeignKey("ObsHistory.observationID"),
-                         nullable=False),
-                  Column("Session_sessionID", Integer, ForeignKey("Session.sessionID"), nullable=False)))
+                  Column("ObsHistory_observationId", Integer, nullable=False),
+                  ForeignKeyConstraint(["ObsHistory_observationId"], ["ObsHistory.observationId"]))
 
     Index("fk_SlewHistory_ObsHistory1", table.c.ObsHistory_observationId)
 
@@ -189,7 +190,8 @@ def create_slew_state(metadata):
         The SlewState table object.
     """
     table = Table("SlewState", metadata,
-                  Column("slewStateId", Integer, primary_key=True, nullable=False),
+                  Column("slewStateId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
                   Column("slewStateDate", Float, nullable=False),
                   Column("targetRA", Float, nullable=False),
                   Column("targetDec", Float, nullable=False),
