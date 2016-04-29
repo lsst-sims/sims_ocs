@@ -48,15 +48,22 @@ class Sequencer(object):
         # Park the telescope for the day.
         self.observatory_model.reset()
 
-    def get_observatory_state(self):
+    def get_observatory_state(self, timestamp):
         """Return the observatory state in a DDS topic instance.
+
+        Parameters
+        ----------
+        timestamp : float
+            The current timestamp at the state retrieval request.
 
         Return
         ------
         SALPY_scheduler.observatoryStateC
         """
+        self.observatory_model.update_state(timestamp)
         obs_current_state = self.observatory_model.currentState
 
+        self.observatory_state.timestamp = timestamp
         self.observatory_state.pointing_ra = obs_current_state.ra
         self.observatory_state.pointing_dec = obs_current_state.dec
         self.observatory_state.pointing_angle = obs_current_state.ang

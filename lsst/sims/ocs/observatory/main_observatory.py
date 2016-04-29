@@ -233,14 +233,16 @@ class MainObservatory(object):
             The time to slew the telescope from its current position to the target position.
         """
         self.slew_count += 1
-
+        self.log.log(LoggingLevel.TRACE.value, "Slew count: {}".format(self.slew_count))
         initial_slew_state = copy.deepcopy(self.model.currentState)
+        self.log.log(LoggingLevel.TRACE.value, "Initial slew state: {}".format(initial_slew_state))
         self.slew_initial_state = self.get_slew_state(initial_slew_state)
 
         sched_target = Target.from_topic(target)
         self.model.slew(sched_target)
 
         final_slew_state = copy.deepcopy(self.model.currentState)
+        self.log.log(LoggingLevel.TRACE.value, "Final slew state: {}".format(final_slew_state))
         self.slew_final_state = self.get_slew_state(final_slew_state)
 
         slew_time = (final_slew_state.time - initial_slew_state.time, "seconds")

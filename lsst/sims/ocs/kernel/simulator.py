@@ -184,8 +184,7 @@ class Simulator(object):
                              "Timestamp sent: {}".format(self.time_handler.current_timestring))
                 self.sal.put(self.comm_time)
 
-                observatory_state = self.seq.get_observatory_state()
-                observatory_state.timestamp = self.time_handler.current_timestamp
+                observatory_state = self.seq.get_observatory_state(self.time_handler.current_timestamp)
                 self.log.log(LoggingLevel.EXTENSIVE.value,
                              "Observatory State: {}".format(topic_strdict(observatory_state)))
                 self.sal.put(observatory_state)

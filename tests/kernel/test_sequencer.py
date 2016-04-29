@@ -97,15 +97,16 @@ class SequencerTest(unittest.TestCase):
     def test_get_observatory_state_after_initialization(self, mock_sal_telemetry_pub,
                                                         mock_sal_telemetry_sub, mock_logger_log):
         self.initialize_sequencer()
-        observatory_state = self.seq.get_observatory_state()
+        _, time_handler = self.create_objects()
+        observatory_state = self.seq.get_observatory_state(time_handler.current_timestamp)
 
         # Observatory state should be in the park position
         self.assertEqual(observatory_state.timestamp, 0.0)
-        self.assertEqual(observatory_state.pointing_ra, 0.0)
-        self.assertEqual(observatory_state.pointing_dec, 0.0)
+        self.assertEqual(observatory_state.pointing_ra, 29.34160493523685)
+        self.assertEqual(observatory_state.pointing_dec, -26.7444)
         self.assertEqual(observatory_state.pointing_altitude, 86.5)
         self.assertEqual(observatory_state.pointing_azimuth, 0.0)
-        self.assertEqual(observatory_state.pointing_pa, 0.0)
+        self.assertEqual(observatory_state.pointing_pa, -180.0)
         self.assertEqual(observatory_state.pointing_rot, 0.0)
         self.assertFalse(observatory_state.tracking)
         self.assertEqual(observatory_state.telescope_altitude, 86.5)
