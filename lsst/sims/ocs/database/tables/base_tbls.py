@@ -3,7 +3,8 @@ from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event, ForeignKeyConstraint
 
 __all__ = ["create_field", "create_observation_exposures", "create_observation_history",
-           "create_session", "create_slew_history", "create_target_exposures", "create_target_history"]
+           "create_session", "create_slew_activities", "create_slew_final_state", "create_slew_history",
+           "create_slew_initial_state", "create_target_exposures", "create_target_history"]
 
 def create_field(metadata):
     """Create Field table.
@@ -37,6 +38,7 @@ def create_field(metadata):
     Index("fov_ra_dec", table.c.fov, table.c.ra, table.c.dec)
 
     return table
+
 def create_observation_exposures(metadata):
     """Create ObsExposures table.
 
@@ -158,14 +160,118 @@ def create_slew_history(metadata):
         The SlewHistory table object.
     """
     table = Table("SlewHistory", metadata,
-                  Column("slewCount", Integer, primary_key=True, nullable=False),
+                  Column("slewCount", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
                   Column("startDate", Float, nullable=False),
                   Column("endDate", Float, nullable=False),
                   Column("slewTime", Float, nullable=False),
                   Column("slewDistance", Float, nullable=False),
-                  Column("ObsHistory_observationId", Integer))
+                  Column("ObsHistory_observationId", Integer, nullable=False),
+                  ForeignKeyConstraint(["ObsHistory_observationId"], ["ObsHistory.observationId"]))
 
     Index("fk_SlewHistory_ObsHistory1", table.c.ObsHistory_observationId)
+
+    return table
+
+def create_slew_activities(metadata):
+    """Create the SlewActivities table.
+
+    This function creates the SlewActivities table for tracking the activities during a slew.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The SlewActivities table object.
+    """
+    table = Table("SlewActivities", metadata,
+                  Column("slewActivityId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("activity", String(20), nullable=False),
+                  Column("activityDelay", Float, nullable=False),
+                  Column("inCriticalPath", String(10), nullable=False),
+                  Column("SlewHistory_slewCount", Integer, nullable=False),
+                  ForeignKeyConstraint(["SlewHistory_slewCount"], ["SlewHistory.slewCount"]))
+
+    Index("fk_SlewActivites_SlewHistory1_idx", table.c.SlewHistory_slewCount)
+
+    return table
+
+def create_slew_final_state(metadata):
+    """Create the SlewFinalState tables.
+
+    This function creates the SlewFinalState table for tracking the state of the observatory after slewing.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The SlewFinalState table object.
+    """
+    return create_slew_state("SlewFinalState", metadata)
+
+def create_slew_initial_state(metadata):
+    """Create the SlewInitialState tables.
+
+    This function creates the SlewInitialState table for tracking the state of the observatory before slewing.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The SlewInitialState table object.
+    """
+    return create_slew_state("SlewInitialState", metadata)
+
+def create_slew_state(name, metadata):
+    """Create one of the SlewState tables.
+
+    This function creates on of the SlewState tables.
+
+    Parameters
+    ----------
+    name : str
+        The name of the slew state table.
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        One of the SlewState table objects.
+    """
+    table = Table(name, metadata,
+                  Column("slewStateId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("slewStateDate", Float, nullable=False),
+                  Column("targetRA", Float, nullable=False),
+                  Column("targetDec", Float, nullable=False),
+                  Column("tracking", String(10), nullable=False),
+                  Column("altitude", Float, nullable=False),
+                  Column("azimuth", Float, nullable=False),
+                  Column("paraAngle", Float, nullable=False),
+                  Column("domeAlt", Float, nullable=False),
+                  Column("domeAz", Float, nullable=False),
+                  Column("telAlt", Float, nullable=False),
+                  Column("telAz", Float, nullable=False),
+                  Column("rotTelPos", Float, nullable=False),
+                  Column("rotSkyPos", Float, nullable=False),
+                  Column("filter", String(1), nullable=False),
+                  Column("SlewHistory_slewCount", Integer, nullable=False))
+
+    Index("fk_{}_SlewHistory1".format(name), table.c.SlewHistory_slewCount)
 
     return table
 

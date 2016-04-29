@@ -45,6 +45,17 @@ slew_history_coll = lsst.sims.ocs.observatory.SlewHistory(slewCount=1, startDate
                                                           slewTime=6.0, slewDistance=1.0,
                                                           ObsHistory_observationId=1)
 
+slew_state_coll = lsst.sims.ocs.observatory.SlewState(slewStateId=1, slewStateDate=1640995200.0,
+                                                      targetRA=1.000, targetDec=-3.000, tracking="False",
+                                                      altitude=34.1, azimuth=155.4, paraAngle=0.5,
+                                                      domeAlt=35.2, domeAz=156.3, telAlt=34.6, telAz=155.6,
+                                                      rotTelPos=1.0, rotSkyPos=-0.5, filter="r",
+                                                      SlewHistory_slewCount=1)
+
+slew_activity_coll = lsst.sims.ocs.observatory.SlewActivity(slewActivityId=1, activity="Readout",
+                                                            activityDelay=2.0, inCriticalPath="False",
+                                                            SlewHistory_slewCount=1)
+
 exposure_coll1 = lsst.sims.ocs.observatory.TargetExposure(exposureId=1, exposureNum=1, exposureTime=15.0,
                                                           TargetHistory_targetId=3)
 

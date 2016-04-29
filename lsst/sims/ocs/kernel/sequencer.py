@@ -48,15 +48,22 @@ class Sequencer(object):
         # Park the telescope for the day.
         self.observatory_model.reset()
 
-    def get_observatory_state(self):
+    def get_observatory_state(self, timestamp):
         """Return the observatory state in a DDS topic instance.
+
+        Parameters
+        ----------
+        timestamp : float
+            The current timestamp at the state retrieval request.
 
         Return
         ------
         SALPY_scheduler.observatoryStateC
         """
+        self.observatory_model.update_state(timestamp)
         obs_current_state = self.observatory_model.currentState
 
+        self.observatory_state.timestamp = timestamp
         self.observatory_state.pointing_ra = obs_current_state.ra
         self.observatory_state.pointing_dec = obs_current_state.dec
         self.observatory_state.pointing_angle = obs_current_state.ang
@@ -118,14 +125,14 @@ class Sequencer(object):
         -------
         SALPY_scheduler.observationTestC
             An observation telemetry topic containing the observed target parameters.
-        :class:`.SlewHistory`
-            The slew history information from the current slew.
+        dict(:class:`.SlewHistory`, :class:`.SlewState`, :class:`.SlewState`, list[:class:`.SlewActivity`])
+            A dictionanry of all the slew information from the visit.
         dict(list[:class:`.TargetExposure`], list[:class:`.ObsExposure`])
             A dictionary of all the exposure information from the visit.
         """
         self.log.log(LoggingLevel.EXTENSIVE.value, "Received target {}".format(target.targetId))
         self.targets_received += 1
 
-        slew_history, exposure_info = self.observatory_model.observe(th, target, self.observation)
+        slew_info, exposure_info = self.observatory_model.observe(th, target, self.observation)
 
-        return self.observation, slew_history, exposure_info
+        return self.observation, slew_info, exposure_info

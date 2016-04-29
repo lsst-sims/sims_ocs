@@ -26,6 +26,9 @@ class SocsDatabaseMySqlTest(unittest.TestCase):
         self.assertTrue(hasattr(self.db, "target_history"))
         self.assertTrue(hasattr(self.db, "observation_history"))
         self.assertTrue(hasattr(self.db, "slew_history"))
+        self.assertTrue(hasattr(self.db, "slew_initial_state"))
+        self.assertTrue(hasattr(self.db, "slew_final_state"))
+        self.assertTrue(hasattr(self.db, "slew_activities"))
         self.assertTrue(hasattr(self.db, "target_exposures"))
         self.assertTrue(hasattr(self.db, "observation_exposures"))
 

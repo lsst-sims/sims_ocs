@@ -88,7 +88,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_slew_history_table(self):
         slew_hist = tbls.create_slew_history(self.metadata)
-        self.assertEqual(len(slew_hist.c), 6)
+        self.assertEqual(len(slew_hist.c), 7)
         self.assertEqual(len(slew_hist.indexes), 1)
 
     def test_write_slew_history_table(self):
@@ -102,6 +102,31 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['slewTime'], sh.slewTime)
         self.assertEqual(result['slewDistance'], sh.slewDistance)
         self.assertEqual(result['ObsHistory_observationId'], sh.ObsHistory_observationId)
+        self.assertEqual(result['Session_sessionId'], 1000)
+
+    def test_create_slew_final_state_table(self):
+        slew_state = tbls.create_slew_final_state(self.metadata)
+        self.assertEqual(len(slew_state.c), 17)
+        self.assertEqual(len(slew_state.indexes), 1)
+
+    def test_write_slew_state_final_table(self):
+        ss = topic_helpers.slew_state_coll
+        result = tbls.write_slew_final_state(ss, 1000)
+        self.assertEqual(result['slewStateId'], ss.slewStateId)
+        self.assertEqual(result['slewStateDate'], ss.slewStateDate)
+        self.assertEqual(result['SlewHistory_slewCount'], ss.SlewHistory_slewCount)
+
+    def test_create_slew_initial_state_table(self):
+        slew_state = tbls.create_slew_initial_state(self.metadata)
+        self.assertEqual(len(slew_state.c), 17)
+        self.assertEqual(len(slew_state.indexes), 1)
+
+    def test_write_slew_state_initial_table(self):
+        ss = topic_helpers.slew_state_coll
+        result = tbls.write_slew_initial_state(ss, 1000)
+        self.assertEqual(result['slewStateId'], ss.slewStateId)
+        self.assertEqual(result['slewStateDate'], ss.slewStateDate)
+        self.assertEqual(result['SlewHistory_slewCount'], ss.SlewHistory_slewCount)
 
     def test_create_target_exposures_table(self):
         exposure = tbls.create_target_exposures(self.metadata)
@@ -133,3 +158,19 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['exposureTime'], exposure.exposureTime)
         self.assertEqual(result['exposureStartTime'], exposure.exposureStartTime)
         self.assertEqual(result['ObsHistory_observationId'], exposure.ObsHistory_observationId)
+
+    def test_create_slew_activities_table(self):
+        slew_ac = tbls.create_slew_activities(self.metadata)
+        self.assertEqual(len(slew_ac.c), 6)
+        self.assertEqual(len(slew_ac.indexes), 1)
+
+    def test_write_slew_activities_table(self):
+        sa = topic_helpers.slew_activity_coll
+        result = tbls.write_slew_activities(sa, 1000)
+        slew_ac_table = tbls.create_slew_activities(self.metadata)
+        self.check_ordered_dict_to_table(result, slew_ac_table)
+        self.assertEqual(result['slewActivityId'], 1)
+        self.assertEqual(result['Session_sessionId'], 1000)
+        self.assertEqual(result['activityDelay'], sa.activityDelay)
+        self.assertEqual(result['inCriticalPath'], sa.inCriticalPath)
+        self.assertEqual(result['SlewHistory_slewCount'], sa.SlewHistory_slewCount)

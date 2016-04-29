@@ -1,6 +1,7 @@
 import collections
 
-__all__ = ["write_field", "write_observation_exposures", "write_observation_history", "write_slew_history",
+__all__ = ["write_field", "write_observation_exposures", "write_observation_history", "write_slew_activities",
+           "write_slew_history", "write_slew_final_state", "write_slew_initial_state",
            "write_target_exposures", "write_target_history"]
 
 def ordered_dict_from_namedtuple(data, sid=None):
@@ -101,6 +102,23 @@ def write_observation_history(data, sid):
     ])
     return values
 
+def write_slew_activities(data, sid):
+    """Create a dictionary of data for the SlewHistory table.
+
+    Parameters
+    ----------
+    data : class:`.SlewActivity`
+        The instance containing the slew activity information
+    sid : int
+        The current session ID.
+
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the topic data.
+    """
+    return ordered_dict_from_namedtuple(data, sid=sid)
+
 def write_slew_history(data, sid):
     """Create a dictionary of data for the SlewHistory table.
 
@@ -109,15 +127,48 @@ def write_slew_history(data, sid):
     data : class:`.SlewHistory`
         The instance containing the slew history information
     sid : int
-        The current session ID. CURRENTLY UNUSED.
+        The current session ID.
 
     Returns
     -------
     collections.OrderedDict
         A dictionary of the topic data.
     """
-    values = data._asdict()
-    return values
+    return ordered_dict_from_namedtuple(data, sid=sid)
+
+def write_slew_final_state(data, sid):
+    """Create a dictionary of data for the SlewFinalState table.
+
+    Parameters
+    ----------
+    data : class:`.SlewFinalState`
+        The instance containing the slew state information
+    sid : int
+        The current session ID.
+
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the topic data.
+    """
+    return ordered_dict_from_namedtuple(data, sid=sid)
+
+def write_slew_initial_state(data, sid):
+    """Create a dictionary of data for the SlewInitialState table.
+
+    Parameters
+    ----------
+    data : class:`.SlewInitialState`
+        The instance containing the slew state information
+    sid : int
+        The current session ID.
+
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the topic data.
+    """
+    return ordered_dict_from_namedtuple(data, sid=sid)
 
 def write_target_exposures(data, sid):
     """Create a dictionary of data for the TargetExposures table.

@@ -168,8 +168,9 @@ class Simulator(object):
                         end_fields = True
                         continue
                 self.field_list.append(write_field(self.field, self.db.session_id))
-                time.sleep(0.003)
+                time.sleep(0.001)
             self.log.info("{} fields retrieved".format(len(self.field_list)))
+            self.log.log(LoggingLevel.EXTENSIVE.value, "{}".format(self.field_list))
             self.db.write_table("field", self.field_list)
 
         self.log.debug("Duration = {}".format(self.duration))
@@ -183,8 +184,7 @@ class Simulator(object):
                              "Timestamp sent: {}".format(self.time_handler.current_timestring))
                 self.sal.put(self.comm_time)
 
-                observatory_state = self.seq.get_observatory_state()
-                observatory_state.timestamp = self.time_handler.current_timestamp
+                observatory_state = self.seq.get_observatory_state(self.time_handler.current_timestamp)
                 self.log.log(LoggingLevel.EXTENSIVE.value,
                              "Observatory State: {}".format(topic_strdict(observatory_state)))
                 self.sal.put(observatory_state)
@@ -195,8 +195,8 @@ class Simulator(object):
                     if rcode == 0 and self.target.num_exposures != 0:
                         break
 
-                observation, slew_history, exposure_info = self.seq.observe_target(self.target,
-                                                                                   self.time_handler)
+                observation, slew_info, exposure_info = self.seq.observe_target(self.target,
+                                                                                self.time_handler)
                 # Add a few more things to the observation
                 observation.night = night
 
@@ -206,7 +206,13 @@ class Simulator(object):
                 if self.wait_for_scheduler:
                     self.db.append_data("target_history", self.target)
                     self.db.append_data("observation_history", observation)
-                    self.db.append_data("slew_history", slew_history)
+                    for slew_type, slew_data in slew_info.items():
+                        self.log.log(LoggingLevel.TRACE.value, "{}, {}".format(slew_type, type(slew_data)))
+                        if isinstance(slew_data, list):
+                            for data in slew_data:
+                                self.db.append_data(slew_type, data)
+                        else:
+                            self.db.append_data(slew_type, slew_data)
                     for exposure_type in exposure_info:
                         self.log.log(LoggingLevel.TRACE.value, "Adding {} to DB".format(exposure_type))
                         self.log.log(LoggingLevel.TRACE.value,

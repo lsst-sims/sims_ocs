@@ -10,7 +10,7 @@ from ts_scheduler.sky_model import DateProfile
 
 from lsst.sims.ocs.configuration import Camera, Observatory, ObservingSite
 from lsst.sims.ocs.setup import LoggingLevel
-from lsst.sims.ocs.observatory import ObsExposure, TargetExposure, SlewHistory
+from lsst.sims.ocs.observatory import ObsExposure, TargetExposure, SlewActivity, SlewHistory, SlewState
 
 __all__ = ["MainObservatory"]
 
@@ -46,6 +46,11 @@ class MainObservatory(object):
         self.exposures_made = 0
         self.target_exposure_list = None
         self.observation_exposure_list = None
+        self.slew_history = None
+        self.slew_final_state = None
+        self.slew_initial_state = None
+        self.slew_activities_list = None
+        self.slew_activities_done = 0
 
     def __getattr__(self, name):
         """Find attributes in ts_scheduler.observatorModel.ObservatorModel as well as MainObservatory.
@@ -103,8 +108,6 @@ class MainObservatory(object):
             if i < (target.num_exposures - 1):
                 visit_time += camera_config.readout_time
 
-        #visit_time += (target.num_exposures - 1) * camera_config.readout_time
-
         return (visit_time, "seconds")
 
     def configure(self):
@@ -112,6 +115,45 @@ class MainObservatory(object):
         """
         self.param_dict.update(Observatory().toDict())
         self.model.configure(self.param_dict)
+
+    def get_slew_activities(self):
+        """Get the slew activities for the given slew.
+
+        This function retrieved the list of slew activities from the model after
+        ts_scheduler.ObservatoryModel::slew is called. The activites are stored in an internal structure so
+        parameters nor returns are necessary.
+        """
+        self.slew_activities_list = []
+        critical_activities = self.model.lastslew_criticalpath
+        for activity, delay in self.model.lastslew_delays_dict.items():
+            self.slew_activities_done += 1
+            self.slew_activities_list.append(SlewActivity(self.slew_activities_done, activity, delay,
+                                                          str(activity in critical_activities),
+                                                          self.slew_count))
+
+    def get_slew_state(self, slew_state_info):
+        """Get the slew state from the current state instance.
+
+        This function takes a given slew state instance and copies the information to the namedtuple
+        that will allow it to be transferred to the database.
+
+        Parameters
+        ----------
+        slew_state_info : ts_scheduler.observatoryModel.ObservatoryState
+            The current slew state instance.
+
+        Returns
+        -------
+        :class:`.SlewState`
+            The copied slew state information.
+        """
+        slew_state = SlewState(self.slew_count, slew_state_info.time, slew_state_info.ra,
+                               slew_state_info.dec, str(slew_state_info.tracking), slew_state_info.alt,
+                               slew_state_info.az, slew_state_info.pa, slew_state_info.domalt,
+                               slew_state_info.domaz, slew_state_info.telalt, slew_state_info.telaz,
+                               slew_state_info.rot, slew_state_info.ang, slew_state_info.filter,
+                               self.slew_count)
+        return slew_state
 
     def observe(self, time_handler, target, observation):
         """Perform the observation of the given target.
@@ -127,8 +169,8 @@ class MainObservatory(object):
 
         Returns
         -------
-        :class:`.SlewHistory`
-            The slew history information from the current slew.
+        dict(:class:`.SlewHistory`, :class:`.SlewState`, :class:`.SlewState`, list[:class:`.SlewActivity`])
+            A dictionanry of all the slew information from the visit.
         dict(list[:class:`.TargetExposure`], list[:class:`.ObsExposure`])
             A dictionary of all the exposure information from the visit.
         """
@@ -138,7 +180,7 @@ class MainObservatory(object):
                      "Starting observation {} for target {}.".format(self.observations_made,
                                                                      target.targetId))
 
-        slew_time, slew_history = self.slew(target)
+        slew_time = self.slew(target)
         time_handler.update_time(*slew_time)
 
         observation.observationId = self.observations_made
@@ -169,10 +211,13 @@ class MainObservatory(object):
                      "Observation {} completed at {}.".format(self.observations_made,
                                                               time_handler.current_timestring))
 
+        slew_info = {"slew_history": self.slew_history, "slew_initial_state": self.slew_initial_state,
+                     "slew_final_state": self.slew_final_state, "slew_activities": self.slew_activities_list}
+
         exposure_info = {"target_exposures": self.target_exposure_list,
                          "observation_exposures": self.observation_exposure_list}
 
-        return slew_history, exposure_info
+        return slew_info, exposure_info
 
     def slew(self, target):
         """Perform the slewing operation for the observatory to the given target.
@@ -186,21 +231,28 @@ class MainObservatory(object):
         -------
         float
             The time to slew the telescope from its current position to the target position.
-        :class:`.SlewHistory`
-            The slew history information from the current slew.
         """
         self.slew_count += 1
+        self.log.log(LoggingLevel.TRACE.value, "Slew count: {}".format(self.slew_count))
         initial_slew_state = copy.deepcopy(self.model.currentState)
+        self.log.log(LoggingLevel.TRACE.value, "Initial slew state: {}".format(initial_slew_state))
+        self.slew_initial_state = self.get_slew_state(initial_slew_state)
+
         sched_target = Target.from_topic(target)
         self.model.slew(sched_target)
+
         final_slew_state = copy.deepcopy(self.model.currentState)
+        self.log.log(LoggingLevel.TRACE.value, "Final slew state: {}".format(final_slew_state))
+        self.slew_final_state = self.get_slew_state(final_slew_state)
 
         slew_time = (final_slew_state.time - initial_slew_state.time, "seconds")
 
         slew_distance = palpy.dsep(final_slew_state.ra_rad, final_slew_state.dec_rad,
                                    initial_slew_state.ra_rad, initial_slew_state.dec_rad)
 
-        slew_history = SlewHistory(self.slew_count, initial_slew_state.time, final_slew_state.time,
-                                   slew_time[0], math.degrees(slew_distance), self.observations_made)
+        self.slew_history = SlewHistory(self.slew_count, initial_slew_state.time, final_slew_state.time,
+                                        slew_time[0], math.degrees(slew_distance), self.observations_made)
 
-        return slew_time, slew_history
+        self.get_slew_activities()
+
+        return slew_time

@@ -93,6 +93,9 @@ class SocsDatabase(object):
         self.target_history = tables.create_target_history(metadata)
         self.observation_history = tables.create_observation_history(metadata)
         self.slew_history = tables.create_slew_history(metadata)
+        self.slew_initial_state = tables.create_slew_initial_state(metadata)
+        self.slew_final_state = tables.create_slew_final_state(metadata)
+        self.slew_activities = tables.create_slew_activities(metadata)
         self.target_exposures = tables.create_target_exposures(metadata)
         self.observation_exposures = tables.create_observation_exposures(metadata)
 
