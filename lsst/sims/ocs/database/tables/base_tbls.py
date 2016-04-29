@@ -230,17 +230,17 @@ def create_slew_state(name, metadata):
                   Column("slewStateDate", Float, nullable=False),
                   Column("targetRA", Float, nullable=False),
                   Column("targetDec", Float, nullable=False),
-                  Column("tracking", String, nullable=False),
+                  Column("tracking", String(10), nullable=False),
                   Column("altitude", Float, nullable=False),
                   Column("azimuth", Float, nullable=False),
-                  Column("posAngle", Float, nullable=False),
+                  Column("paraAngle", Float, nullable=False),
                   Column("domeAlt", Float, nullable=False),
                   Column("domeAz", Float, nullable=False),
                   Column("telAlt", Float, nullable=False),
                   Column("telAz", Float, nullable=False),
                   Column("rotTelPos", Float, nullable=False),
                   Column("rotSkyPos", Float, nullable=False),
-                  Column("filter", Float, nullable=False),
+                  Column("filter", String(1), nullable=False),
                   Column("SlewHistory_slewCount", Integer, nullable=False))
 
     Index("fk_{}_SlewHistory1".format(name), table.c.SlewHistory_slewCount)

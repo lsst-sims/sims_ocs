@@ -63,13 +63,13 @@ class SequencerTest(unittest.TestCase):
         self.initialize_sequencer()
         target, time_handler = self.create_objects()
 
-        observation, slew_history, exposures = self.seq.observe_target(target, time_handler)
+        observation, slew, exposures = self.seq.observe_target(target, time_handler)
 
         self.assertEqual(observation.observation_start_time, time_handler.initial_timestamp + 140.0)
         self.assertEqual(observation.targetId, target.targetId)
         self.assertEqual(self.seq.targets_received, 1)
         self.assertEqual(self.seq.observations_made, 1)
-        self.assertIsNotNone(slew_history)
+        self.assertEqual(len(slew), 3)
         self.assertEqual(len(exposures), 2)
 
     @mock.patch("logging.Logger.log")

@@ -10,6 +10,6 @@ SlewHistory = collections.namedtuple("SlewHistory", ["slewCount", "startDate", "
 """Simple tuple for handling slew state information.
 """
 SlewState = collections.namedtuple("SlewState", ["slewStateId", "slewStateDate", "targetRA", "targetDec",
-                                                 "tracking", "altitude", "azimuth", "posAngle", "domeAlt",
+                                                 "tracking", "altitude", "azimuth", "paraAngle", "domeAlt",
                                                  "domeAz", "telAlt", "telAz", "rotTelPos", "rotSkyPos",
                                                  "filter", "SlewHistory_slewCount"])

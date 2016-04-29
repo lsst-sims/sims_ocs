@@ -29,6 +29,9 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(self.observatory.exposures_made, 0)
         self.assertIsNone(self.observatory.target_exposure_list)
         self.assertIsNone(self.observatory.observation_exposure_list)
+        self.assertIsNone(self.observatory.slew_history)
+        self.assertIsNone(self.observatory.slew_final_state)
+        self.assertIsNone(self.observatory.slew_initial_state)
 
     def test_information_after_configuration(self):
         self.observatory.configure()
@@ -42,12 +45,12 @@ class MainObservatoryTest(unittest.TestCase):
         self.observatory.configure()
         target = topic_helpers.target
         self.assertEqual(self.observatory.slew_count, 0)
-        slew_time, slew_history = self.observatory.slew(target)
+        slew_time = self.observatory.slew(target)
         self.assertEqual(slew_time[0], self.truth_slew_time)
         self.assertEqual(self.observatory.slew_count, 1)
-        self.assertEqual(slew_history.slewCount, 1)
-        self.assertEqual(slew_history.ObsHistory_observationId, 0)
-        self.assertEqual(slew_history.slewDistance, 3.1621331347877555)
+        self.assertEqual(self.observatory.slew_history.slewCount, 1)
+        self.assertEqual(self.observatory.slew_history.ObsHistory_observationId, 0)
+        self.assertEqual(self.observatory.slew_history.slewDistance, 3.1621331347877555)
 
     def test_observe(self):
         self.observatory.configure()
@@ -55,11 +58,14 @@ class MainObservatoryTest(unittest.TestCase):
         observation = scheduler_observationTestC()
         # Make it so initial timestamp is 0
         time_handler = TimeHandler("1970-01-01")
-        slew_history, exposures = self.observatory.observe(time_handler, target, observation)
+        slew_info, exposures = self.observatory.observe(time_handler, target, observation)
         self.assertEqual(observation.observationId, 1)
         self.assertEqual(observation.exposure_times[1], 15.0)
         self.assertAlmostEqual(observation.observation_start_time, self.truth_slew_time, delta=1e-4)
-        self.assertIsNotNone(slew_history)
+        self.assertEqual(len(slew_info), 3)
+        self.assertIsNotNone(slew_info["slew_history"])
+        self.assertIsNotNone(slew_info["slew_final_state"])
+        self.assertIsNotNone(slew_info["slew_initial_state"])
         self.assertEqual(self.observatory.exposures_made, 2)
         self.assertEqual(len(exposures), 2)
         self.assertEqual(len(exposures["target_exposures"]), 2)

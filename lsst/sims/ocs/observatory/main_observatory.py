@@ -46,6 +46,9 @@ class MainObservatory(object):
         self.exposures_made = 0
         self.target_exposure_list = None
         self.observation_exposure_list = None
+        self.slew_history = None
+        self.slew_final_state = None
+        self.slew_initial_state = None
 
     def __getattr__(self, name):
         """Find attributes in ts_scheduler.observatorModel.ObservatorModel as well as MainObservatory.
@@ -149,8 +152,8 @@ class MainObservatory(object):
 
         Returns
         -------
-        :class:`.SlewHistory`
-            The slew history information from the current slew.
+        dict(:class:`.SlewHistory`, :class:`.SlewState`, :class:`.SlewState`)
+            A dictionanry of all the slew information from the visit.
         dict(list[:class:`.TargetExposure`], list[:class:`.ObsExposure`])
             A dictionary of all the exposure information from the visit.
         """
@@ -160,7 +163,7 @@ class MainObservatory(object):
                      "Starting observation {} for target {}.".format(self.observations_made,
                                                                      target.targetId))
 
-        slew_time, slew_history = self.slew(target)
+        slew_time = self.slew(target)
         time_handler.update_time(*slew_time)
 
         observation.observationId = self.observations_made
@@ -191,10 +194,13 @@ class MainObservatory(object):
                      "Observation {} completed at {}.".format(self.observations_made,
                                                               time_handler.current_timestring))
 
+        slew_info = {"slew_history": self.slew_history, "slew_initial_state": self.slew_initial_state,
+                     "slew_final_state": self.slew_final_state}
+
         exposure_info = {"target_exposures": self.target_exposure_list,
                          "observation_exposures": self.observation_exposure_list}
 
-        return slew_history, exposure_info
+        return slew_info, exposure_info
 
     def slew(self, target):
         """Perform the slewing operation for the observatory to the given target.
@@ -208,26 +214,24 @@ class MainObservatory(object):
         -------
         float
             The time to slew the telescope from its current position to the target position.
-        :class:`.SlewHistory`
-            The slew history information from the current slew.
         """
         self.slew_count += 1
-        slew_state = []
 
         initial_slew_state = copy.deepcopy(self.model.currentState)
-        slew_state.append(self.get_slew_state(initial_slew_state))
+        self.slew_initial_state = self.get_slew_state(initial_slew_state)
 
         sched_target = Target.from_topic(target)
         self.model.slew(sched_target)
+
         final_slew_state = copy.deepcopy(self.model.currentState)
-        slew_state.append(self.get_slew_state(final_slew_state))
+        self.slew_final_state = self.get_slew_state(final_slew_state)
 
         slew_time = (final_slew_state.time - initial_slew_state.time, "seconds")
 
         slew_distance = palpy.dsep(final_slew_state.ra_rad, final_slew_state.dec_rad,
                                    initial_slew_state.ra_rad, initial_slew_state.dec_rad)
 
-        slew_history = SlewHistory(self.slew_count, initial_slew_state.time, final_slew_state.time,
-                                   slew_time[0], math.degrees(slew_distance), self.observations_made)
+        self.slew_history = SlewHistory(self.slew_count, initial_slew_state.time, final_slew_state.time,
+                                        slew_time[0], math.degrees(slew_distance), self.observations_made)
 
-        return slew_time, slew_history
+        return slew_time

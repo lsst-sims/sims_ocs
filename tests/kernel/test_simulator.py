@@ -11,7 +11,6 @@ from lsst.sims.ocs.configuration.sim_config import SimulationConfig
 from lsst.sims.ocs.kernel.simulator import Simulator
 
 from tests.database.topic_helpers import exposure_coll1, exposure_coll2, exposure_coll3, exposure_coll4
-from tests.database.topic_helpers import slew_history_coll
 from tests.helpers import CONFIG_COMM_PUT_CALLS
 
 class SimulatorTest(unittest.TestCase):
@@ -86,7 +85,7 @@ class SimulatorTest(unittest.TestCase):
         self.sim.wait_for_scheduler = wait_for_sched
         self.sim.get_night_boundaries = mock.MagicMock(return_value=(self.starting_timestamp,
                                                                      self.starting_timestamp + 360.0))
-        self.sim.seq.observatory_model.slew = mock.Mock(return_value=((6.0, "seconds"), slew_history_coll))
+        self.sim.seq.observatory_model.slew = mock.Mock(return_value=((6.0, "seconds")))
         self.sim.seq.observatory_model.calculate_visit_time = mock.Mock(return_value=((34.0, "seconds")))
         self.sim.seq.observatory_model.target_exposure_list = [exposure_coll1, exposure_coll2]
         self.sim.seq.observatory_model.observation_exposure_list = [exposure_coll3, exposure_coll4]
@@ -128,8 +127,7 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(self.sim.seq.targets_received, self.num_visits)
         self.assertEqual(self.sim.seq.observations_made, self.num_visits)
         self.assertEqual(self.mock_socs_db.clear_data.call_count, self.num_nights)
-        # FIXME: Take out due to missing slew history
-        #self.assertEqual(self.mock_socs_db.append_data.call_count, self.num_visits * 5)
+        self.assertEqual(self.mock_socs_db.append_data.call_count, self.num_visits * 9)
         self.assertEqual(self.mock_socs_db.write.call_count, self.num_nights)
 
     def test_get_night_boundaries(self):
