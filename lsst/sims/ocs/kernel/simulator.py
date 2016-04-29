@@ -168,7 +168,7 @@ class Simulator(object):
                         end_fields = True
                         continue
                 self.field_list.append(write_field(self.field, self.db.session_id))
-                time.sleep(0.003)
+                time.sleep(0.001)
             self.log.info("{} fields retrieved".format(len(self.field_list)))
             self.log.log(LoggingLevel.EXTENSIVE.value, "{}".format(self.field_list))
             self.db.write_table("field", self.field_list)
@@ -208,7 +208,12 @@ class Simulator(object):
                     self.db.append_data("target_history", self.target)
                     self.db.append_data("observation_history", observation)
                     for slew_type, slew_data in slew_info.items():
-                        self.db.append_data(slew_type, slew_data)
+                        self.log.log(LoggingLevel.TRACE.value, "{}, {}".format(slew_type, type(slew_data)))
+                        if isinstance(slew_data, list):
+                            for data in slew_data:
+                                self.db.append_data(slew_type, data)
+                        else:
+                            self.db.append_data(slew_type, slew_data)
                     for exposure_type in exposure_info:
                         self.log.log(LoggingLevel.TRACE.value, "Adding {} to DB".format(exposure_type))
                         self.log.log(LoggingLevel.TRACE.value,

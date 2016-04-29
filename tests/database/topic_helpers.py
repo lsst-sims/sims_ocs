@@ -52,6 +52,10 @@ slew_state_coll = lsst.sims.ocs.observatory.SlewState(slewStateId=1, slewStateDa
                                                       rotTelPos=1.0, rotSkyPos=-0.5, filter="r",
                                                       SlewHistory_slewCount=1)
 
+slew_activity_coll = lsst.sims.ocs.observatory.SlewActivity(slewActivityId=1, activity="Readout",
+                                                            activityDelay=2.0, inCriticalPath="False",
+                                                            SlewHistory_slewCount=1)
+
 exposure_coll1 = lsst.sims.ocs.observatory.TargetExposure(exposureId=1, exposureNum=1, exposureTime=15.0,
                                                           TargetHistory_targetId=3)
 

@@ -158,3 +158,19 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['exposureTime'], exposure.exposureTime)
         self.assertEqual(result['exposureStartTime'], exposure.exposureStartTime)
         self.assertEqual(result['ObsHistory_observationId'], exposure.ObsHistory_observationId)
+
+    def test_create_slew_activities_table(self):
+        slew_ac = tbls.create_slew_activities(self.metadata)
+        self.assertEqual(len(slew_ac.c), 6)
+        self.assertEqual(len(slew_ac.indexes), 1)
+
+    def test_write_slew_activities_table(self):
+        sa = topic_helpers.slew_activity_coll
+        result = tbls.write_slew_activities(sa, 1000)
+        slew_ac_table = tbls.create_slew_activities(self.metadata)
+        self.check_ordered_dict_to_table(result, slew_ac_table)
+        self.assertEqual(result['slewActivityId'], 1)
+        self.assertEqual(result['Session_sessionId'], 1000)
+        self.assertEqual(result['activityDelay'], sa.activityDelay)
+        self.assertEqual(result['inCriticalPath'], sa.inCriticalPath)
+        self.assertEqual(result['SlewHistory_slewCount'], sa.SlewHistory_slewCount)

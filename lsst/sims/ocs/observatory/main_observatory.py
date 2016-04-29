@@ -10,7 +10,7 @@ from ts_scheduler.sky_model import DateProfile
 
 from lsst.sims.ocs.configuration import Camera, Observatory, ObservingSite
 from lsst.sims.ocs.setup import LoggingLevel
-from lsst.sims.ocs.observatory import ObsExposure, TargetExposure, SlewHistory, SlewState
+from lsst.sims.ocs.observatory import ObsExposure, TargetExposure, SlewActivity, SlewHistory, SlewState
 
 __all__ = ["MainObservatory"]
 
@@ -49,6 +49,8 @@ class MainObservatory(object):
         self.slew_history = None
         self.slew_final_state = None
         self.slew_initial_state = None
+        self.slew_activities_list = None
+        self.slew_activities_done = 0
 
     def __getattr__(self, name):
         """Find attributes in ts_scheduler.observatorModel.ObservatorModel as well as MainObservatory.
@@ -114,6 +116,21 @@ class MainObservatory(object):
         self.param_dict.update(Observatory().toDict())
         self.model.configure(self.param_dict)
 
+    def get_slew_activities(self):
+        """Get the slew activities for the given slew.
+
+        This function retrieved the list of slew activities from the model after
+        ts_scheduler.ObservatoryModel::slew is called. The activites are stored in an internal structure so
+        parameters nor returns are necessary.
+        """
+        self.slew_activities_list = []
+        critical_activities = self.model.lastslew_criticalpath
+        for activity, delay in self.model.lastslew_delays_dict.items():
+            self.slew_activities_done += 1
+            self.slew_activities_list.append(SlewActivity(self.slew_activities_done, activity, delay,
+                                                          str(activity in critical_activities),
+                                                          self.slew_count))
+
     def get_slew_state(self, slew_state_info):
         """Get the slew state from the current state instance.
 
@@ -152,7 +169,7 @@ class MainObservatory(object):
 
         Returns
         -------
-        dict(:class:`.SlewHistory`, :class:`.SlewState`, :class:`.SlewState`)
+        dict(:class:`.SlewHistory`, :class:`.SlewState`, :class:`.SlewState`, list[:class:`.SlewActivity`])
             A dictionanry of all the slew information from the visit.
         dict(list[:class:`.TargetExposure`], list[:class:`.ObsExposure`])
             A dictionary of all the exposure information from the visit.
@@ -195,7 +212,7 @@ class MainObservatory(object):
                                                               time_handler.current_timestring))
 
         slew_info = {"slew_history": self.slew_history, "slew_initial_state": self.slew_initial_state,
-                     "slew_final_state": self.slew_final_state}
+                     "slew_final_state": self.slew_final_state, "slew_activities": self.slew_activities_list}
 
         exposure_info = {"target_exposures": self.target_exposure_list,
                          "observation_exposures": self.observation_exposure_list}
@@ -233,5 +250,7 @@ class MainObservatory(object):
 
         self.slew_history = SlewHistory(self.slew_count, initial_slew_state.time, final_slew_state.time,
                                         slew_time[0], math.degrees(slew_distance), self.observations_made)
+
+        self.get_slew_activities()
 
         return slew_time

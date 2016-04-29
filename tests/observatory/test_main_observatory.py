@@ -32,6 +32,8 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertIsNone(self.observatory.slew_history)
         self.assertIsNone(self.observatory.slew_final_state)
         self.assertIsNone(self.observatory.slew_initial_state)
+        self.assertIsNone(self.observatory.slew_activities_list)
+        self.assertEqual(self.observatory.slew_activities_done, 0)
 
     def test_information_after_configuration(self):
         self.observatory.configure()
@@ -51,6 +53,9 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(self.observatory.slew_history.slewCount, 1)
         self.assertEqual(self.observatory.slew_history.ObsHistory_observationId, 0)
         self.assertEqual(self.observatory.slew_history.slewDistance, 3.1621331347877555)
+        self.assertEqual(len(self.observatory.slew_activities_list), 12)
+        self.assertEqual(self.observatory.slew_activities_done, 12)
+        self.assertEqual(self.observatory.slew_activities_list[0].activity, "telopticsclosedloop")
 
     def test_observe(self):
         self.observatory.configure()
@@ -62,10 +67,11 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(observation.observationId, 1)
         self.assertEqual(observation.exposure_times[1], 15.0)
         self.assertAlmostEqual(observation.observation_start_time, self.truth_slew_time, delta=1e-4)
-        self.assertEqual(len(slew_info), 3)
+        self.assertEqual(len(slew_info), 4)
         self.assertIsNotNone(slew_info["slew_history"])
         self.assertIsNotNone(slew_info["slew_final_state"])
         self.assertIsNotNone(slew_info["slew_initial_state"])
+        self.assertIsNotNone(slew_info["slew_activities"])
         self.assertEqual(self.observatory.exposures_made, 2)
         self.assertEqual(len(exposures), 2)
         self.assertEqual(len(exposures["target_exposures"]), 2)
@@ -87,3 +93,9 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(ss.telAlt, 86.5)
         self.assertEqual(ss.domeAlt, 90.0)
         self.assertEqual(ss.filter, 'r')
+
+    def test_get_slew_activites(self):
+        self.observatory.configure()
+        self.observatory.get_slew_activities()
+        # No slew performed
+        self.assertEquals(len(self.observatory.slew_activities_list), 0)

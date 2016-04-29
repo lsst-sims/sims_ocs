@@ -3,8 +3,8 @@ from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event, ForeignKeyConstraint
 
 __all__ = ["create_field", "create_observation_exposures", "create_observation_history",
-           "create_session", "create_slew_history", "create_slew_final_state", "create_slew_initial_state",
-           "create_target_exposures", "create_target_history"]
+           "create_session", "create_slew_activities", "create_slew_final_state", "create_slew_history",
+           "create_slew_initial_state", "create_target_exposures", "create_target_history"]
 
 def create_field(metadata):
     """Create Field table.
@@ -170,6 +170,34 @@ def create_slew_history(metadata):
                   ForeignKeyConstraint(["ObsHistory_observationId"], ["ObsHistory.observationId"]))
 
     Index("fk_SlewHistory_ObsHistory1", table.c.ObsHistory_observationId)
+
+    return table
+
+def create_slew_activities(metadata):
+    """Create the SlewActivities table.
+
+    This function creates the SlewActivities table for tracking the activities during a slew.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The SlewActivities table object.
+    """
+    table = Table("SlewActivities", metadata,
+                  Column("slewActivityId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("activity", String(20), nullable=False),
+                  Column("activityDelay", Float, nullable=False),
+                  Column("inCriticalPath", String(10), nullable=False),
+                  Column("SlewHistory_slewCount", Integer, nullable=False),
+                  ForeignKeyConstraint(["SlewHistory_slewCount"], ["SlewHistory.slewCount"]))
+
+    Index("fk_SlewActivites_SlewHistory1_idx", table.c.SlewHistory_slewCount)
 
     return table
 

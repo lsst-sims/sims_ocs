@@ -1,6 +1,6 @@
 import collections
 
-__all__ = ["SlewHistory", "SlewState"]
+__all__ = ["SlewActivity", "SlewHistory", "SlewState"]
 
 """Simple tuple for handling slew history information.
 """
@@ -13,3 +13,8 @@ SlewState = collections.namedtuple("SlewState", ["slewStateId", "slewStateDate",
                                                  "tracking", "altitude", "azimuth", "paraAngle", "domeAlt",
                                                  "domeAz", "telAlt", "telAz", "rotTelPos", "rotSkyPos",
                                                  "filter", "SlewHistory_slewCount"])
+
+"""Simple tuple for handling slew activity information.
+"""
+SlewActivity = collections.namedtuple("SlewActivity", ["slewActivityId", "activity", "activityDelay",
+                                                       "inCriticalPath", "SlewHistory_slewCount"])

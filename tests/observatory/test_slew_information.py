@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.observatory import SlewHistory, SlewState
+from lsst.sims.ocs.observatory import SlewActivity, SlewHistory, SlewState
 
 class SlewInformationTest(unittest.TestCase):
 
@@ -34,3 +34,12 @@ class SlewInformationTest(unittest.TestCase):
         self.assertEqual(ss.rotSkyPos, -0.5)
         self.assertEqual(ss.filter, 'r')
         self.assertEqual(ss.SlewHistory_slewCount, 1)
+
+    def test_slew_activity_information(self):
+        sa = SlewActivity(1, "Readout", 2.0, "False", 1)
+        self.assertEqual(len(sa._fields), 5)
+        self.assertEqual(sa.slewActivityId, 1)
+        self.assertEqual(sa.activity, "Readout")
+        self.assertEqual(sa.activityDelay, 2.0)
+        self.assertEqual(sa.inCriticalPath, "False")
+        self.assertEqual(sa.SlewHistory_slewCount, 1)

@@ -118,7 +118,7 @@ class Sequencer(object):
         -------
         SALPY_scheduler.observationTestC
             An observation telemetry topic containing the observed target parameters.
-        dict(:class:`.SlewHistory`, :class:`.SlewState`, :class:`.SlewState`)
+        dict(:class:`.SlewHistory`, :class:`.SlewState`, :class:`.SlewState`, list[:class:`.SlewActivity`])
             A dictionanry of all the slew information from the visit.
         dict(list[:class:`.TargetExposure`], list[:class:`.ObsExposure`])
             A dictionary of all the exposure information from the visit.
