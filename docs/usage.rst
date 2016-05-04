@@ -8,7 +8,8 @@ The Operations Simulator consists of running the SOCS and Scheduler. Currently, 
 
 	#!/bin/bash
 	export LSST_DDS_DOMAIN=SOCS
-
+    export NDDS_DISCOVERY_PEERS=shmem://
+    
 	export OPENSPLICE_LOC=${HOME}/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
 	export OSPL_URI=file://${OPENSPLICE_LOC}/etc/config/ospl.xml
 

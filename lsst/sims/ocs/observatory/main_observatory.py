@@ -10,7 +10,8 @@ from ts_scheduler.sky_model import DateProfile
 
 from lsst.sims.ocs.configuration import Camera, Observatory, ObservingSite
 from lsst.sims.ocs.setup import LoggingLevel
-from lsst.sims.ocs.observatory import ObsExposure, TargetExposure, SlewActivity, SlewHistory, SlewState
+from lsst.sims.ocs.observatory import ObsExposure, TargetExposure
+from lsst.sims.ocs.observatory import SlewActivity, SlewHistory, SlewMaxSpeeds, SlewState
 
 __all__ = ["MainObservatory"]
 
@@ -51,6 +52,7 @@ class MainObservatory(object):
         self.slew_initial_state = None
         self.slew_activities_list = None
         self.slew_activities_done = 0
+        self.slew_maxspeeds = None
 
     def __getattr__(self, name):
         """Find attributes in ts_scheduler.observatorModel.ObservatorModel as well as MainObservatory.
@@ -212,7 +214,8 @@ class MainObservatory(object):
                                                               time_handler.current_timestring))
 
         slew_info = {"slew_history": self.slew_history, "slew_initial_state": self.slew_initial_state,
-                     "slew_final_state": self.slew_final_state, "slew_activities": self.slew_activities_list}
+                     "slew_final_state": self.slew_final_state, "slew_activities": self.slew_activities_list,
+                     "slew_maxspeeds": self.slew_maxspeeds}
 
         exposure_info = {"target_exposures": self.target_exposure_list,
                          "observation_exposures": self.observation_exposure_list}
@@ -254,5 +257,11 @@ class MainObservatory(object):
                                         slew_time[0], math.degrees(slew_distance), self.observations_made)
 
         self.get_slew_activities()
+
+        self.slew_maxspeeds = SlewMaxSpeeds(self.slew_count, final_slew_state.domalt_peakspeed,
+                                            final_slew_state.domaz_peakspeed,
+                                            final_slew_state.telalt_peakspeed,
+                                            final_slew_state.telaz_peakspeed,
+                                            final_slew_state.telrot_peakspeed, self.slew_count)
 
         return slew_time

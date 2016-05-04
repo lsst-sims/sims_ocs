@@ -1,6 +1,6 @@
 import collections
 
-__all__ = ["SlewActivity", "SlewHistory", "SlewState"]
+__all__ = ["SlewActivity", "SlewHistory", "SlewMaxSpeeds", "SlewState"]
 
 """Simple tuple for handling slew history information.
 """
@@ -18,3 +18,9 @@ SlewState = collections.namedtuple("SlewState", ["slewStateId", "slewStateDate",
 """
 SlewActivity = collections.namedtuple("SlewActivity", ["slewActivityId", "activity", "activityDelay",
                                                        "inCriticalPath", "SlewHistory_slewCount"])
+
+"""Simple tuple for handling slew maxspeeds.
+"""
+SlewMaxSpeeds = collections.namedtuple("SlewMaxSpeeds", ["slewMaxSpeedId", "domeAltSpeed", "domeAzSpeed",
+                                                         "telAltSpeed", "telAzSpeed", "rotatorSpeed",
+                                                         "SlewHistory_slewCount"])

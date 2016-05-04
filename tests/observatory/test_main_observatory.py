@@ -34,14 +34,15 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertIsNone(self.observatory.slew_initial_state)
         self.assertIsNone(self.observatory.slew_activities_list)
         self.assertEqual(self.observatory.slew_activities_done, 0)
+        self.assertIsNone(self.observatory.slew_maxspeeds)
 
     def test_information_after_configuration(self):
         self.observatory.configure()
         self.assertEqual(len(self.observatory.param_dict), 6)
-        self.assertEqual(self.observatory.model.TelAz_MaxSpeed_rad, math.radians(7.0))
+        self.assertEqual(self.observatory.model.params.TelAz_MaxSpeed_rad, math.radians(7.0))
         self.assertEqual(self.observatory.model.parkState.alt_rad, math.radians(86.5))
-        self.assertFalse(self.observatory.model.Rotator_FollowSky)
-        self.assertEqual(len(self.observatory.model.prerequisites["telsettle"]), 2)
+        self.assertFalse(self.observatory.model.params.Rotator_FollowSky)
+        self.assertEqual(len(self.observatory.model.params.prerequisites["telsettle"]), 2)
 
     def test_slew(self):
         self.observatory.configure()
@@ -56,6 +57,8 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(len(self.observatory.slew_activities_list), 12)
         self.assertEqual(self.observatory.slew_activities_done, 12)
         self.assertEqual(self.observatory.slew_activities_list[0].activity, "telopticsclosedloop")
+        self.assertEqual(self.observatory.slew_maxspeeds.domeAltSpeed, -1.75)
+        self.assertEqual(self.observatory.slew_maxspeeds.telAzSpeed, -7.0)
 
     def test_observe(self):
         self.observatory.configure()
@@ -67,11 +70,12 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(observation.observationId, 1)
         self.assertEqual(observation.exposure_times[1], 15.0)
         self.assertAlmostEqual(observation.observation_start_time, self.truth_slew_time, delta=1e-4)
-        self.assertEqual(len(slew_info), 4)
+        self.assertEqual(len(slew_info), 5)
         self.assertIsNotNone(slew_info["slew_history"])
         self.assertIsNotNone(slew_info["slew_final_state"])
         self.assertIsNotNone(slew_info["slew_initial_state"])
         self.assertIsNotNone(slew_info["slew_activities"])
+        self.assertIsNotNone(slew_info["slew_maxspeeds"])
         self.assertEqual(self.observatory.exposures_made, 2)
         self.assertEqual(len(exposures), 2)
         self.assertEqual(len(exposures["target_exposures"]), 2)

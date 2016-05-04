@@ -69,7 +69,7 @@ class SequencerTest(unittest.TestCase):
         self.assertEqual(observation.targetId, target.targetId)
         self.assertEqual(self.seq.targets_received, 1)
         self.assertEqual(self.seq.observations_made, 1)
-        self.assertEqual(len(slew), 4)
+        self.assertEqual(len(slew), 5)
         self.assertEqual(len(exposures), 2)
 
     @mock.patch("logging.Logger.log")
