@@ -96,6 +96,7 @@ class SocsDatabase(object):
         self.slew_initial_state = tables.create_slew_initial_state(metadata)
         self.slew_final_state = tables.create_slew_final_state(metadata)
         self.slew_activities = tables.create_slew_activities(metadata)
+        self.slew_maxspeeds = tables.create_slew_maxspeeds(metadata)
         self.target_exposures = tables.create_target_exposures(metadata)
         self.observation_exposures = tables.create_observation_exposures(metadata)
 

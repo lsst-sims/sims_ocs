@@ -56,6 +56,10 @@ slew_activity_coll = lsst.sims.ocs.observatory.SlewActivity(slewActivityId=1, ac
                                                             activityDelay=2.0, inCriticalPath="False",
                                                             SlewHistory_slewCount=1)
 
+slew_maxspeed_coll = lsst.sims.ocs.observatory.SlewMaxSpeeds(slewMaxSpeedId=1, domeAltSpeed=1.0,
+                                                             domeAzSpeed=2.3, telAltSpeed=0.5, telAzSpeed=1.1,
+                                                             rotatorSpeed=0.1, SlewHistory_slewCount=1)
+
 exposure_coll1 = lsst.sims.ocs.observatory.TargetExposure(exposureId=1, exposureNum=1, exposureTime=15.0,
                                                           TargetHistory_targetId=3)
 

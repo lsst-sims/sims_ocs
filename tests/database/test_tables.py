@@ -174,3 +174,19 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['activityDelay'], sa.activityDelay)
         self.assertEqual(result['inCriticalPath'], sa.inCriticalPath)
         self.assertEqual(result['SlewHistory_slewCount'], sa.SlewHistory_slewCount)
+
+    def test_create_slew_maxspeeds_table(self):
+        slew_ms = tbls.create_slew_maxspeeds(self.metadata)
+        self.assertEqual(len(slew_ms.c), 8)
+        self.assertEqual(len(slew_ms.indexes), 1)
+
+    def test_write_slew_maxspeeds_table(self):
+        sm = topic_helpers.slew_maxspeed_coll
+        result = tbls.write_slew_maxspeeds(sm, 1000)
+        slew_ms_table = tbls.create_slew_maxspeeds(self.metadata)
+        self.check_ordered_dict_to_table(result, slew_ms_table)
+        self.assertEqual(result['slewMaxSpeedId'], 1)
+        self.assertEqual(result['Session_sessionId'], 1000)
+        self.assertEqual(result['domeAzSpeed'], sm.domeAzSpeed)
+        self.assertEqual(result['telAltSpeed'], sm.telAltSpeed)
+        self.assertEqual(result['SlewHistory_slewCount'], sm.SlewHistory_slewCount)

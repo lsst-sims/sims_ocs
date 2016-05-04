@@ -4,7 +4,8 @@ from sqlalchemy import DDL, event, ForeignKeyConstraint
 
 __all__ = ["create_field", "create_observation_exposures", "create_observation_history",
            "create_session", "create_slew_activities", "create_slew_final_state", "create_slew_history",
-           "create_slew_initial_state", "create_target_exposures", "create_target_history"]
+           "create_slew_initial_state", "create_slew_maxspeeds", "create_target_exposures",
+           "create_target_history"]
 
 def create_field(metadata):
     """Create Field table.
@@ -234,6 +235,36 @@ def create_slew_initial_state(metadata):
         The SlewInitialState table object.
     """
     return create_slew_state("SlewInitialState", metadata)
+
+def create_slew_maxspeeds(metadata):
+    """Create the SlewMaxSpeeds table.
+
+    This function creates the SlewMaxSpeeds table for tracking the maximum speeds of observatory
+    achieved during a slew.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The SlewMaxSpeeds table object.
+    """
+    table = Table("SlewMaxSpeeds", metadata,
+                  Column("slewMaxSpeedId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("domeAltSpeed", Float, nullable=False),
+                  Column("domeAzSpeed", Float, nullable=False),
+                  Column("telAltSpeed", Float, nullable=False),
+                  Column("telAzSpeed", Float, nullable=False),
+                  Column("rotatorSpeed", Float, nullable=False),
+                  Column("SlewHistory_slewCount", Integer, nullable=False))
+
+    Index("fk_SlewMaxSpeeds_SlewHistory1", table.c.SlewHistory_slewCount)
+
+    return table
 
 def create_slew_state(name, metadata):
     """Create one of the SlewState tables.

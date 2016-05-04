@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.observatory import SlewActivity, SlewHistory, SlewState
+from lsst.sims.ocs.observatory import SlewActivity, SlewHistory, SlewMaxSpeeds, SlewState
 
 class SlewInformationTest(unittest.TestCase):
 
@@ -43,3 +43,14 @@ class SlewInformationTest(unittest.TestCase):
         self.assertEqual(sa.activityDelay, 2.0)
         self.assertEqual(sa.inCriticalPath, "False")
         self.assertEqual(sa.SlewHistory_slewCount, 1)
+
+    def test_slew_maxspeeds_information(self):
+        sm = SlewMaxSpeeds(1, 1.0, 2.3, 0.5, 1.1, 0.1, 1)
+        self.assertEqual(len(sm._fields), 7)
+        self.assertEqual(sm.slewMaxSpeedId, 1)
+        self.assertEqual(sm.domeAltSpeed, 1.0)
+        self.assertEqual(sm.domeAzSpeed, 2.3)
+        self.assertEqual(sm.telAltSpeed, 0.5)
+        self.assertEqual(sm.telAzSpeed, 1.1)
+        self.assertEqual(sm.rotatorSpeed, 0.1)
+        self.assertEqual(sm.SlewHistory_slewCount, 1)
