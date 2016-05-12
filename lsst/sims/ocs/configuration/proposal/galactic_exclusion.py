@@ -7,7 +7,7 @@ class GalacticExclusion(pexConfig.Config):
     """
 
     taper_l = pexConfig.Field('The half width in galactic latitude (units=degrees) at the galactic longitude '
-                              'specified by taper_l.', float)
+                              'specified by taper_b.', float)
     taper_b = pexConfig.Field('The galactic longitude (units=degrees) where taper_l is in effect.', float)
     peak_l = pexConfig.Field('The half width in galactic latitude (units=degrees) at the galactic longitude '
                              'of 0.', float)
