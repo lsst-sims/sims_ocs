@@ -1,8 +1,11 @@
+import lsst.pex.config as pexConfig
+
 from lsst.sims.ocs.configuration.proposal import AreaDistribution, BandFilter, Selection
-from lsst.sims.ocs.configuration.proposal import SELECTION_LIMIT_TYPES
+from lsst.sims.ocs.configuration.proposal import area_dist_prop_reg, SELECTION_LIMIT_TYPES
 
 __all__ = ["UniversalWeak"]
 
+@pexConfig.registerConfig("UniversalWeak", area_dist_prop_reg, AreaDistribution)
 class UniversalWeak(AreaDistribution):
     """This class sets the parameters for specifying the Universal Weak proposal.
     """
