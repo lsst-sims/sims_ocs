@@ -11,3 +11,4 @@ class AreaDistributionTest(unittest.TestCase):
         self.assertIsNone(self.ad.name)
         self.assertIsNotNone(self.ad.sky_region)
         self.assertIsNone(self.ad.filters)
+        self.assertIsNotNone(self.ad.scheduling)
