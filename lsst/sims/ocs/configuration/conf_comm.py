@@ -1,4 +1,3 @@
-import copy
 import logging
 
 __all__ = ["ConfigurationCommunicator"]
@@ -188,5 +187,5 @@ class ConfigurationCommunicator(object):
         self.sal.put(self.cam_conf)
         self.sal.put(self.slew_conf)
         self.sal.put(self.park_conf)
-        for _, ad_config in self.config.lsst_survey.area_dist_props.items():
+        for _, ad_config in self.config.survey.area_dist_props.items():
             self.sal.put(ad_config.set_topic(self.ad_conf))

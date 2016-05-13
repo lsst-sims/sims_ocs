@@ -40,8 +40,8 @@ class SimulationConfigTest(unittest.TestCase):
         cls.config_dir = "config_temp"
         os.mkdir(cls.config_dir)
         cls.file4 = create_file(4, cls.config_dir)
-        cls.file5 = create_file(5, message=create_content("lsst.sims.ocs.configuration.lsst_survey",
-                                                          "LsstSurvey", ["config.duration=10.0"]))
+        cls.file5 = create_file(5, message=create_content("lsst.sims.ocs.configuration.survey",
+                                                          "Survey", ["config.duration=10.0"]))
         cls.file6 = create_file(6, message=create_content("lsst.sims.ocs.configuration.slew", "Slew",
                                                           ["config.tel_optics_cl_delay=[0.0, 18.0]"]))
 
@@ -62,7 +62,7 @@ class SimulationConfigTest(unittest.TestCase):
         self.sim_config = SimulationConfig()
 
     def test_basic_information_from_creation(self):
-        self.assertIsNotNone(self.sim_config.lsst_survey)
+        self.assertIsNotNone(self.sim_config.survey)
         self.assertIsNotNone(self.sim_config.observing_site)
         self.assertIsNotNone(self.sim_config.observatory)
 
@@ -80,7 +80,7 @@ class SimulationConfigTest(unittest.TestCase):
 
     def test_load_does_override(self):
         self.sim_config.load([self.file5])
-        self.assertEqual(self.sim_config.lsst_survey.duration, 10.0)
+        self.assertEqual(self.sim_config.survey.duration, 10.0)
         self.sim_config.load([self.file6])
         self.assertEqual(self.sim_config.observatory.slew.tel_optics_cl_delay[1], 18.0)
 
@@ -97,8 +97,8 @@ class SimulationConfigTest(unittest.TestCase):
 
     def test_load_proposals(self):
         with self.assertRaises(TypeError):
-            self.assertEqual(len(self.sim_config.lsst_survey.area_dist_props.names), NUM_AREA_DIST_PROPS)
+            self.assertEqual(len(self.sim_config.survey.area_dist_props.names), NUM_AREA_DIST_PROPS)
 
         self.sim_config.load_proposals()
-        self.assertEqual(len(self.sim_config.lsst_survey.area_dist_props.names), NUM_AREA_DIST_PROPS)
-        self.assertEqual(len(self.sim_config.lsst_survey.area_dist_props.active), NUM_AREA_DIST_PROPS)
+        self.assertEqual(len(self.sim_config.survey.area_dist_props.names), NUM_AREA_DIST_PROPS)
+        self.assertEqual(len(self.sim_config.survey.area_dist_props.active), NUM_AREA_DIST_PROPS)
