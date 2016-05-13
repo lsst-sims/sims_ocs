@@ -6,7 +6,7 @@ try:
 except ImportError:
     import mock
 
-from lsst.sims.ocs.configuration.sim_config import SimulationConfig
+from lsst.sims.ocs.configuration import SimulationConfig
 from tests.helpers import NUM_AREA_DIST_PROPS
 
 def create_file(i, directory=None, message=None):
@@ -63,6 +63,7 @@ class SimulationConfigTest(unittest.TestCase):
 
     def test_basic_information_from_creation(self):
         self.assertIsNotNone(self.sim_config.survey)
+        self.assertIsNotNone(self.sim_config.science)
         self.assertIsNotNone(self.sim_config.observing_site)
         self.assertIsNotNone(self.sim_config.observatory)
 
@@ -88,7 +89,7 @@ class SimulationConfigTest(unittest.TestCase):
     def test_saving_blank_configurations(self, mock_pexconfig_save):
         # The real configurations can get very expensive to save, so we're just testing that the
         # correct number of executions and blank files are created.
-        expected_calls = 8
+        expected_calls = 8 + NUM_AREA_DIST_PROPS
         save_files = ["save_conf{}.py".format(i + 1) for i in range(expected_calls)]
         mock_pexconfig_save.side_effect = [save_file(f, self.config_save_dir) for f in save_files]
         self.sim_config.save(self.config_save_dir)
@@ -97,8 +98,8 @@ class SimulationConfigTest(unittest.TestCase):
 
     def test_load_proposals(self):
         with self.assertRaises(TypeError):
-            self.assertEqual(len(self.sim_config.survey.area_dist_props.names), NUM_AREA_DIST_PROPS)
+            self.assertEqual(len(self.sim_config.science.area_dist_props.names), NUM_AREA_DIST_PROPS)
 
         self.sim_config.load_proposals()
-        self.assertEqual(len(self.sim_config.survey.area_dist_props.names), NUM_AREA_DIST_PROPS)
-        self.assertEqual(len(self.sim_config.survey.area_dist_props.active), NUM_AREA_DIST_PROPS)
+        self.assertEqual(len(self.sim_config.science.area_dist_props.names), NUM_AREA_DIST_PROPS)
+        self.assertEqual(len(self.sim_config.science.area_dist_props.active), NUM_AREA_DIST_PROPS)

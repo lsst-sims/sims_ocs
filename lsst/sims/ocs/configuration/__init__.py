@@ -9,6 +9,7 @@ from .helpers import *
 from .obs_site import *
 from .park import *
 from .rotator import *
+from .science_proposals import *
 from .slew import *
 from .survey import *
 from .telescope import *
