@@ -5,6 +5,7 @@ try:
 except ImportError:
     import mock
 
+from lsst.sims.ocs.configuration import Observatory, ObservingSite
 from lsst.sims.ocs.kernel.sequencer import Sequencer
 from lsst.sims.ocs.kernel.time_handler import TimeHandler
 from lsst.sims.ocs.sal.sal_manager import SalManager
@@ -12,12 +13,12 @@ from lsst.sims.ocs.sal.sal_manager import SalManager
 class SequencerTest(unittest.TestCase):
 
     def setUp(self):
-        self.seq = Sequencer()
+        self.seq = Sequencer(ObservingSite())
 
     def initialize_sequencer(self):
         self.sal = SalManager()
         self.sal.initialize()
-        self.seq.initialize(self.sal)
+        self.seq.initialize(self.sal, Observatory())
 
     def create_objects(self):
         target = self.sal.set_subscribe_topic("targetTest")

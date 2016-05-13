@@ -4,6 +4,7 @@ import unittest
 
 from SALPY_scheduler import scheduler_observationTestC
 
+from lsst.sims.ocs.configuration import Observatory, ObservingSite
 from lsst.sims.ocs.kernel import TimeHandler
 from lsst.sims.ocs.observatory import MainObservatory
 
@@ -14,7 +15,10 @@ class MainObservatoryTest(unittest.TestCase):
     def setUp(self):
         self.truth_slew_time = 56.347699999734026
         logging.getLogger().setLevel(logging.WARN)
-        self.observatory = MainObservatory()
+        self.observatory = MainObservatory(ObservingSite())
+
+    def observatory_configure(self):
+        self.observatory.configure(Observatory())
 
     def test_object_has_no_attribute(self):
         with self.assertRaises(AttributeError):
@@ -22,6 +26,7 @@ class MainObservatoryTest(unittest.TestCase):
 
     def test_basic_information_after_creation(self):
         self.assertIsNotNone(self.observatory.log)
+        self.assertIsNone(self.observatory.config)
         self.assertEqual(len(self.observatory.param_dict), 0)
         self.assertEqual(self.observatory.model.location.latitude_rad, math.radians(-30.2444))
         self.assertFalse(self.observatory.model.parkState.tracking)
@@ -37,7 +42,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertIsNone(self.observatory.slew_maxspeeds)
 
     def test_information_after_configuration(self):
-        self.observatory.configure()
+        self.observatory_configure()
         self.assertEqual(len(self.observatory.param_dict), 7)
         self.assertEqual(self.observatory.model.params.TelAz_MaxSpeed_rad, math.radians(7.0))
         self.assertEqual(self.observatory.model.parkState.alt_rad, math.radians(86.5))
@@ -45,7 +50,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(len(self.observatory.model.params.prerequisites["telsettle"]), 2)
 
     def test_slew(self):
-        self.observatory.configure()
+        self.observatory_configure()
         target = topic_helpers.target
         self.assertEqual(self.observatory.slew_count, 0)
         slew_time = self.observatory.slew(target)
@@ -61,7 +66,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(self.observatory.slew_maxspeeds.telAzSpeed, -7.0)
 
     def test_observe(self):
-        self.observatory.configure()
+        self.observatory_configure()
         target = topic_helpers.target
         observation = scheduler_observationTestC()
         # Make it so initial timestamp is 0
@@ -82,7 +87,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(len(exposures["observation_exposures"]), 2)
 
     def test_visit_time(self):
-        self.observatory.configure()
+        self.observatory_configure()
         target = topic_helpers.target
         # Make it so initial timestamp is 0
         time_handler = TimeHandler("1970-01-01")
@@ -90,7 +95,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(visit_time[0], 34.0)
 
     def test_get_slew_state(self):
-        self.observatory.configure()
+        self.observatory_configure()
         current_state = self.observatory.model.currentState
         ss = self.observatory.get_slew_state(current_state)
         self.assertEqual(ss.slewStateId, 0)
@@ -99,7 +104,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(ss.filter, 'r')
 
     def test_get_slew_activites(self):
-        self.observatory.configure()
+        self.observatory_configure()
         self.observatory.get_slew_activities()
         # No slew performed
         self.assertEquals(len(self.observatory.slew_activities_list), 0)
