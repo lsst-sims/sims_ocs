@@ -9,7 +9,7 @@ from lsst.sims.ocs.configuration.conf_comm import ConfigurationCommunicator
 from lsst.sims.ocs.configuration.sim_config import SimulationConfig
 from lsst.sims.ocs.sal.sal_manager import SalManager
 
-from tests.helpers import CONFIG_COMM_PUT_CALLS
+from tests.helpers import CONFIG_AREA_DIST_PROPS, CONFIG_COMM_PUT_CALLS
 
 class ConfigurationCommunicatorTest(unittest.TestCase):
 
@@ -34,4 +34,4 @@ class ConfigurationCommunicatorTest(unittest.TestCase):
         self.conf_comm.initialize(self.sal, self.config)
         self.conf_comm.run()
         self.assertEqual(mock_sal_telemetry_pub.call_count, CONFIG_COMM_PUT_CALLS)
-        self.assertEqual(mock_salmanager_put.call_count, CONFIG_COMM_PUT_CALLS)
+        self.assertEqual(mock_salmanager_put.call_count, CONFIG_COMM_PUT_CALLS + CONFIG_AREA_DIST_PROPS)

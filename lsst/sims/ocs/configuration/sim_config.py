@@ -50,6 +50,11 @@ class SimulationConfig(pexConfig.Config):
             load_config(self.observing_site, config_files)
             self.observatory.load(config_files)
 
+    def load_proposals(self):
+        """Tell the survey configuration to load science proposals.
+        """
+        self.lsst_survey.load_proposals()
+
     def save(self, save_dir=''):
         """Save the configuration objects to separate files.
 

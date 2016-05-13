@@ -7,6 +7,7 @@ except ImportError:
     import mock
 
 from lsst.sims.ocs.configuration.sim_config import SimulationConfig
+from tests.helpers import NUM_AREA_DIST_PROPS
 
 def create_file(i, directory=None, message=None):
     filename = "conf{}.py".format(i)
@@ -93,3 +94,11 @@ class SimulationConfigTest(unittest.TestCase):
         self.sim_config.save(self.config_save_dir)
         self.assertEqual(mock_pexconfig_save.call_count, expected_calls)
         self.assertEqual(len(os.listdir(self.config_save_dir)), expected_calls)
+
+    def test_load_proposals(self):
+        with self.assertRaises(TypeError):
+            self.assertEqual(len(self.sim_config.lsst_survey.area_dist_props.names), NUM_AREA_DIST_PROPS)
+
+        self.sim_config.load_proposals()
+        self.assertEqual(len(self.sim_config.lsst_survey.area_dist_props.names), NUM_AREA_DIST_PROPS)
+        self.assertEqual(len(self.sim_config.lsst_survey.area_dist_props.active), NUM_AREA_DIST_PROPS)

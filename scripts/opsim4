@@ -48,6 +48,7 @@ def main(args):
     start_time = datetime.now()
 
     configuration = SimulationConfig()
+    configuration.load_proposals()
     configuration.load(args.config)
     configuration.validate()
 
