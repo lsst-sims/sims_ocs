@@ -3,6 +3,7 @@ import os
 import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration import Camera, Dome, load_config, Park, Rotator, Slew, Telescope
+from lsst.sims.ocs.configuration import ObservatoryVariation
 
 __all__ = ["Observatory"]
 
@@ -16,6 +17,7 @@ class Observatory(pexConfig.Config):
     camera = pexConfig.ConfigField("The LSST camera configuration.", Camera)
     slew = pexConfig.ConfigField("The LSST slew configuration.", Slew)
     park = pexConfig.ConfigField("The LSST observatory park position configuration.", Park)
+    obs_var = pexConfig.ConfigField("The observatory variational model configuration", ObservatoryVariation)
 
     def setDefaults(self):
         """Set defaults for the observatory configuration.
@@ -36,6 +38,7 @@ class Observatory(pexConfig.Config):
         load_config(self.camera, config_files)
         load_config(self.slew, config_files)
         load_config(self.park, config_files)
+        load_config(self.obs_var, config_files)
 
     def save_as(self, save_dir=''):
         """Save the configuration objects to separate files.
@@ -51,3 +54,4 @@ class Observatory(pexConfig.Config):
         self.camera.save(os.path.join(save_dir, "camera.py"))
         self.slew.save(os.path.join(save_dir, "slew.py"))
         self.park.save(os.path.join(save_dir, "park.py"))
+        self.obs_var.save(os.path.join(save_dir, "obs_variation.py"))
