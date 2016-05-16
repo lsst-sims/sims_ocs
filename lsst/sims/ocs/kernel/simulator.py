@@ -89,6 +89,7 @@ class Simulator(object):
             The current night.
         """
         self.log.info("Night {}".format(night))
+        self.seq.start_of_night(night, self.duration)
 
         (set_timestamp, rise_timestamp) = self.get_night_boundaries()
 

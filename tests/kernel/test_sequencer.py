@@ -117,3 +117,13 @@ class SequencerTest(unittest.TestCase):
         self.assertEqual(observatory_state.filter_position, 'r')
         self.assertEqual(observatory_state.filter_mounted, 'g,r,i,z,y')
         self.assertEqual(observatory_state.filter_unmounted, 'u')
+
+    @mock.patch("logging.Logger.log")
+    @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetrySub")
+    @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
+    @mock.patch("lsst.sims.ocs.observatory.main_observatory.MainObservatory.start_of_night")
+    def test_start_of_night(self, mock_obs_son, mock_sal_telemetry_pub, mock_sal_telemetry_sub,
+                            mock_logger_log):
+        self.initialize_sequencer()
+        self.seq.start_of_night(2281, 3560)
+        self.assertTrue(mock_obs_son.called)

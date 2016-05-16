@@ -20,6 +20,12 @@ class MainObservatoryTest(unittest.TestCase):
     def observatory_configure(self):
         self.observatory.configure(Observatory())
 
+    def observatory_variational_model_configure(self):
+        self.observatory.variational_model.config.obs_var.apply_variation = True
+        self.observatory.variational_model.config.obs_var.telescope_change = 80.0
+        self.observatory.variational_model.config.obs_var.dome_change = 80.0
+        self.observatory.start_of_night(2281, 3650)
+
     def test_object_has_no_attribute(self):
         with self.assertRaises(AttributeError):
             self.observatory.no_find
@@ -40,6 +46,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertIsNone(self.observatory.slew_activities_list)
         self.assertEqual(self.observatory.slew_activities_done, 0)
         self.assertIsNone(self.observatory.slew_maxspeeds)
+        self.assertIsNone(self.observatory.variational_model)
 
     def test_information_after_configuration(self):
         self.observatory_configure()
@@ -48,6 +55,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(self.observatory.model.parkState.alt_rad, math.radians(86.5))
         self.assertFalse(self.observatory.model.params.Rotator_FollowSky)
         self.assertEqual(len(self.observatory.model.params.prerequisites["telsettle"]), 2)
+        self.assertIsNotNone(self.observatory.variational_model)
 
     def test_slew(self):
         self.observatory_configure()
@@ -108,3 +116,16 @@ class MainObservatoryTest(unittest.TestCase):
         self.observatory.get_slew_activities()
         # No slew performed
         self.assertEquals(len(self.observatory.slew_activities_list), 0)
+
+    def test_start_of_night(self):
+        self.observatory_configure()
+        self.observatory_variational_model_configure()
+        self.assertAlmostEqual(math.degrees(self.observatory.model.params.TelAz_MaxSpeed_rad), 3.5,
+                               delta=1.0e-3)
+
+    def test_slew_with_variational_model(self):
+        self.observatory_configure()
+        self.observatory_variational_model_configure()
+        target = topic_helpers.target
+        slew_time = self.observatory.slew(target)
+        self.assertAlmostEqual(slew_time[0], 89.68809171544446, delta=1.0e-3)

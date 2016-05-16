@@ -143,3 +143,15 @@ class Sequencer(object):
         slew_info, exposure_info = self.observatory_model.observe(th, target, self.observation)
 
         return self.observation, slew_info, exposure_info
+
+    def start_of_night(self, night, duration):
+        """Perform start of night functions.
+
+        Parameters
+        ----------
+        night : int
+            The current survey observing night.
+        duration : int
+            The survey duration in days.
+        """
+        self.observatory_model.start_of_night(night, duration)
