@@ -56,10 +56,10 @@ class Simulator(object):
         self.conf = configuration
         self.db = database
         if self.opts.frac_duration == -1:
-            self.fractional_duration = self.conf.lsst_survey.duration
+            self.fractional_duration = self.conf.survey.duration
         else:
             self.fractional_duration = self.opts.frac_duration
-        self.time_handler = TimeHandler(self.conf.lsst_survey.start_date)
+        self.time_handler = TimeHandler(self.conf.survey.start_date)
         self.log = logging.getLogger("kernel.Simulator")
         self.sal = SalManager()
         self.seq = Sequencer()

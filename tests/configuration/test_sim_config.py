@@ -6,7 +6,8 @@ try:
 except ImportError:
     import mock
 
-from lsst.sims.ocs.configuration.sim_config import SimulationConfig
+from lsst.sims.ocs.configuration import SimulationConfig
+from tests.helpers import NUM_AREA_DIST_PROPS
 
 def create_file(i, directory=None, message=None):
     filename = "conf{}.py".format(i)
@@ -39,8 +40,8 @@ class SimulationConfigTest(unittest.TestCase):
         cls.config_dir = "config_temp"
         os.mkdir(cls.config_dir)
         cls.file4 = create_file(4, cls.config_dir)
-        cls.file5 = create_file(5, message=create_content("lsst.sims.ocs.configuration.lsst_survey",
-                                                          "LsstSurvey", ["config.duration=10.0"]))
+        cls.file5 = create_file(5, message=create_content("lsst.sims.ocs.configuration.survey",
+                                                          "Survey", ["config.duration=10.0"]))
         cls.file6 = create_file(6, message=create_content("lsst.sims.ocs.configuration.slew", "Slew",
                                                           ["config.tel_optics_cl_delay=[0.0, 18.0]"]))
 
@@ -61,7 +62,8 @@ class SimulationConfigTest(unittest.TestCase):
         self.sim_config = SimulationConfig()
 
     def test_basic_information_from_creation(self):
-        self.assertIsNotNone(self.sim_config.lsst_survey)
+        self.assertIsNotNone(self.sim_config.survey)
+        self.assertIsNotNone(self.sim_config.science)
         self.assertIsNotNone(self.sim_config.observing_site)
         self.assertIsNotNone(self.sim_config.observatory)
 
@@ -79,7 +81,7 @@ class SimulationConfigTest(unittest.TestCase):
 
     def test_load_does_override(self):
         self.sim_config.load([self.file5])
-        self.assertEqual(self.sim_config.lsst_survey.duration, 10.0)
+        self.assertEqual(self.sim_config.survey.duration, 10.0)
         self.sim_config.load([self.file6])
         self.assertEqual(self.sim_config.observatory.slew.tel_optics_cl_delay[1], 18.0)
 
@@ -87,9 +89,17 @@ class SimulationConfigTest(unittest.TestCase):
     def test_saving_blank_configurations(self, mock_pexconfig_save):
         # The real configurations can get very expensive to save, so we're just testing that the
         # correct number of executions and blank files are created.
-        expected_calls = 8
+        expected_calls = 8 + NUM_AREA_DIST_PROPS
         save_files = ["save_conf{}.py".format(i + 1) for i in range(expected_calls)]
         mock_pexconfig_save.side_effect = [save_file(f, self.config_save_dir) for f in save_files]
         self.sim_config.save(self.config_save_dir)
         self.assertEqual(mock_pexconfig_save.call_count, expected_calls)
         self.assertEqual(len(os.listdir(self.config_save_dir)), expected_calls)
+
+    def test_load_proposals(self):
+        with self.assertRaises(TypeError):
+            self.assertEqual(len(self.sim_config.science.area_dist_props.names), NUM_AREA_DIST_PROPS)
+
+        self.sim_config.load_proposals()
+        self.assertEqual(len(self.sim_config.science.area_dist_props.names), NUM_AREA_DIST_PROPS)
+        self.assertEqual(len(self.sim_config.science.area_dist_props.active), NUM_AREA_DIST_PROPS)

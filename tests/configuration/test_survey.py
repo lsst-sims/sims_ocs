@@ -1,11 +1,11 @@
 import unittest
 
-from lsst.sims.ocs.configuration.lsst_survey import LsstSurvey
+from lsst.sims.ocs.configuration.survey import Survey
 
-class LsstSurveyTest(unittest.TestCase):
+class SurveyTest(unittest.TestCase):
 
     def setUp(self):
-        self.survey = LsstSurvey()
+        self.survey = Survey()
         self.truth_start_date = "2022-01-01"
 
     def test_basic_information_from_creation(self):

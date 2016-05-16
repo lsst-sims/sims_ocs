@@ -157,6 +157,11 @@ class ConfigurationCommunicator(object):
         self.park_conf.dome_azimuth = self.config.observatory.park.dome_azimuth
         self.park_conf.filter_position = self.config.observatory.park.filter_position
 
+    def _configure_area_distribution_proposals(self):
+        """Configure all of the area distribution proposals.
+        """
+        self.ad_conf = self.sal.set_publish_topic("areaDistPropConfig")
+
     def configure(self):
         """Configure all publish topics for the configuration communicator.
         """
@@ -169,6 +174,7 @@ class ConfigurationCommunicator(object):
         self._configure_camera()
         self._configure_slew()
         self._configure_park()
+        self._configure_area_distribution_proposals()
 
     def run(self):
         """Send all of the configuration topics.
@@ -181,3 +187,5 @@ class ConfigurationCommunicator(object):
         self.sal.put(self.cam_conf)
         self.sal.put(self.slew_conf)
         self.sal.put(self.park_conf)
+        for _, ad_config in self.config.science.area_dist_props.items():
+            self.sal.put(ad_config.set_topic(self.ad_conf))
