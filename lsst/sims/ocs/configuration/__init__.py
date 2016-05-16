@@ -6,12 +6,13 @@ from .conf_comm import *
 from .dome import *
 from .field import *
 from .helpers import *
-from .lsst_survey import *
 from .obs_site import *
 from .obs_variation import *
 from .park import *
 from .rotator import *
+from .science_proposals import *
 from .slew import *
+from .survey import *
 from .telescope import *
 from .observatory import *
 from .sim_config import *
