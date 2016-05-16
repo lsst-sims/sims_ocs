@@ -23,12 +23,17 @@ class Sequencer(object):
         The logging instance.
     """
 
-    def __init__(self):
+    def __init__(self, obs_site_config):
         """Initialize the class.
+
+        Parameters
+        ----------
+        obs_site_config : :class:`.ObservingSite`
+            The instance of the observing site configuration.
         """
         self.targets_received = 0
         self.observation = None
-        self.observatory_model = MainObservatory()
+        self.observatory_model = MainObservatory(obs_site_config)
         self.observatory_state = None
         self.log = logging.getLogger("kernel.Sequencer")
 
@@ -83,7 +88,7 @@ class Sequencer(object):
 
         return self.observatory_state
 
-    def initialize(self, sal):
+    def initialize(self, sal, obs_config):
         """Perform initialization steps.
 
         This function handles gathering the observation telemetry topic from the given SalManager instance.
@@ -92,10 +97,12 @@ class Sequencer(object):
         ----------
         sal : :class:`.SalManager`
             A SalManager instance.
+        obs_config : :class:`.Observatory`
+            The instance of the observatory configuration.
         """
         self.observation = sal.set_publish_topic("observationTest")
         self.observatory_state = sal.set_publish_topic("observatoryState")
-        self.observatory_model.configure()
+        self.observatory_model.configure(obs_config)
 
     def finalize(self):
         """Perform finalization steps.
@@ -136,3 +143,15 @@ class Sequencer(object):
         slew_info, exposure_info = self.observatory_model.observe(th, target, self.observation)
 
         return self.observation, slew_info, exposure_info
+
+    def start_of_night(self, night, duration):
+        """Perform start of night functions.
+
+        Parameters
+        ----------
+        night : int
+            The current survey observing night.
+        duration : int
+            The survey duration in days.
+        """
+        self.observatory_model.start_of_night(night, duration)

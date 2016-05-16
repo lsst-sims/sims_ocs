@@ -4,4 +4,6 @@ Scheduler Observatory Model.
 """
 from .exposure_information import *
 from .slew_information import *
+from .variational_model import *
 from .main_observatory import *
+

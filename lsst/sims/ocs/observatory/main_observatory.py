@@ -8,10 +8,10 @@ from ts_scheduler.observatoryModel import ObservatoryLocation, ObservatoryModel
 from ts_scheduler.schedulerTarget import Target
 from ts_scheduler.sky_model import DateProfile
 
-from lsst.sims.ocs.configuration import Camera, Observatory, ObservingSite
 from lsst.sims.ocs.setup import LoggingLevel
 from lsst.sims.ocs.observatory import ObsExposure, TargetExposure
 from lsst.sims.ocs.observatory import SlewActivity, SlewHistory, SlewMaxSpeeds, SlewState
+from lsst.sims.ocs.observatory import VariationalModel
 
 __all__ = ["MainObservatory"]
 
@@ -33,12 +33,18 @@ class MainObservatory(object):
         The configuration parameters for the Observatory model.
     """
 
-    def __init__(self):
+    def __init__(self, obs_site_config):
         """Initialize the class.
+
+        Parameters
+        ----------
+        obs_site_config : :class:`.ObservingSite`
+            The instance of the observing site configuration.
         """
         self.log = logging.getLogger("observatory.MainObservatory")
         observatory_location = ObservatoryLocation()
-        observatory_location.configure({"obs_site": ObservingSite().toDict()})
+        observatory_location.configure({"obs_site": obs_site_config.toDict()})
+        self.config = None
         self.model = ObservatoryModel(observatory_location)
         self.date_profile = DateProfile(0, observatory_location)
         self.param_dict = {}
@@ -53,6 +59,7 @@ class MainObservatory(object):
         self.slew_activities_list = None
         self.slew_activities_done = 0
         self.slew_maxspeeds = None
+        self.variational_model = None
 
     def __getattr__(self, name):
         """Find attributes in ts_scheduler.observatorModel.ObservatorModel as well as MainObservatory.
@@ -89,7 +96,7 @@ class MainObservatory(object):
         self.target_exposure_list = []
         self.observation_exposure_list = []
 
-        camera_config = Camera()
+        camera_config = self.config.camera
         shutter_time = 2.0 * (0.5 * camera_config.shutter_time)
 
         visit_time = 0.0
@@ -112,11 +119,18 @@ class MainObservatory(object):
 
         return (visit_time, "seconds")
 
-    def configure(self):
+    def configure(self, obs_config):
         """Configure the ObservatoryModel parameters.
+
+        Parameters
+        ----------
+        obs_config : :class:`.Observatory`
+            The instance of the observatory configuration.
         """
-        self.param_dict.update(Observatory().toDict())
+        self.config = obs_config
+        self.param_dict.update(self.config.toDict())
         self.model.configure(self.param_dict)
+        self.variational_model = VariationalModel(obs_config)
 
     def get_slew_activities(self):
         """Get the slew activities for the given slew.
@@ -265,3 +279,17 @@ class MainObservatory(object):
                                             final_slew_state.telrot_peakspeed, self.slew_count)
 
         return slew_time
+
+    def start_of_night(self, night, duration):
+        """Perform start of night functions.
+
+        Parameters
+        ----------
+        night : int
+            The current survey observing night.
+        duration : int
+            The survey duration in days.
+        """
+        if self.variational_model.active:
+            new_obs_config = self.variational_model.modify_parameters(night, duration)
+            self.model.configure(new_obs_config)

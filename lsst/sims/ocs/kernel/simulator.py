@@ -62,7 +62,7 @@ class Simulator(object):
         self.time_handler = TimeHandler(self.conf.survey.start_date)
         self.log = logging.getLogger("kernel.Simulator")
         self.sal = SalManager()
-        self.seq = Sequencer()
+        self.seq = Sequencer(self.conf.observing_site)
         self.conf_comm = ConfigurationCommunicator()
         self.sun = Sun()
         self.obs_site_info = (self.conf.observing_site.longitude, self.conf.observing_site.latitude)
@@ -89,6 +89,7 @@ class Simulator(object):
             The current night.
         """
         self.log.info("Night {}".format(night))
+        self.seq.start_of_night(night, self.duration)
 
         (set_timestamp, rise_timestamp) = self.get_night_boundaries()
 
@@ -138,7 +139,7 @@ class Simulator(object):
         """
         self.log.info("Initializing simulation")
         self.sal.initialize()
-        self.seq.initialize(self.sal)
+        self.seq.initialize(self.sal, self.conf.observatory)
         self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
         self.target = self.sal.set_subscribe_topic("targetTest")
