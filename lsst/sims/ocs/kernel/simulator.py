@@ -62,7 +62,7 @@ class Simulator(object):
         self.time_handler = TimeHandler(self.conf.survey.start_date)
         self.log = logging.getLogger("kernel.Simulator")
         self.sal = SalManager()
-        self.seq = Sequencer(self.conf.observing_site)
+        self.seq = Sequencer(self.conf.observing_site, self.conf.survey.idle_delay)
         self.conf_comm = ConfigurationCommunicator()
         self.sun = Sun()
         self.obs_site_info = (self.conf.observing_site.longitude, self.conf.observing_site.latitude)
@@ -204,7 +204,7 @@ class Simulator(object):
                 # Pass observation back to scheduler
                 self.sal.put(observation)
 
-                if self.wait_for_scheduler:
+                if self.wait_for_scheduler and observation.targetId != -1:
                     self.db.append_data("target_history", self.target)
                     self.db.append_data("observation_history", observation)
                     for slew_type, slew_data in slew_info.items():

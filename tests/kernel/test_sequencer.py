@@ -5,7 +5,7 @@ try:
 except ImportError:
     import mock
 
-from lsst.sims.ocs.configuration import Observatory, ObservingSite
+from lsst.sims.ocs.configuration import Observatory, ObservingSite, Survey
 from lsst.sims.ocs.kernel.sequencer import Sequencer
 from lsst.sims.ocs.kernel.time_handler import TimeHandler
 from lsst.sims.ocs.sal.sal_manager import SalManager
@@ -13,7 +13,7 @@ from lsst.sims.ocs.sal.sal_manager import SalManager
 class SequencerTest(unittest.TestCase):
 
     def setUp(self):
-        self.seq = Sequencer(ObservingSite())
+        self.seq = Sequencer(ObservingSite(), Survey().idle_delay)
 
     def initialize_sequencer(self):
         self.sal = SalManager()
@@ -127,3 +127,20 @@ class SequencerTest(unittest.TestCase):
         self.initialize_sequencer()
         self.seq.start_of_night(2281, 3560)
         self.assertTrue(mock_obs_son.called)
+
+    @mock.patch("logging.Logger.log")
+    @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetrySub")
+    @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
+    def test_observe_with_no_target(self, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
+        self.initialize_sequencer()
+        target, time_handler = self.create_objects()
+        target.targetId = -1
+
+        observation, slew, exposures = self.seq.observe_target(target, time_handler)
+
+        self.assertEqual(time_handler.current_timestamp, 60.0)
+        self.assertEqual(observation.targetId, target.targetId)
+        self.assertEqual(self.seq.targets_received, 0)
+        self.assertEqual(self.seq.observations_made, 0)
+        self.assertIsNone(slew)
+        self.assertIsNone(exposures)

@@ -23,19 +23,22 @@ class Sequencer(object):
         The logging instance.
     """
 
-    def __init__(self, obs_site_config):
+    def __init__(self, obs_site_config, idle_delay):
         """Initialize the class.
 
         Parameters
         ----------
         obs_site_config : :class:`.ObservingSite`
             The instance of the observing site configuration.
+        idle_delay : float
+            The delay time (seconds) to skip forward when no target is received.
         """
         self.targets_received = 0
         self.observation = None
         self.observatory_model = MainObservatory(obs_site_config)
         self.observatory_state = None
         self.log = logging.getLogger("kernel.Sequencer")
+        self.idle_delay = (idle_delay, "seconds")
 
     @property
     def observations_made(self):
@@ -121,6 +124,10 @@ class Sequencer(object):
           * Copy target information to observation
           * Update the simulation time after "visit"
 
+        If the targetId is -1, this means a target was not offered by the Scheduler. Time is forwarded
+        by the idle delay time and slew and exposure information are set to None. The observation takes the
+        target's Id.
+
         Parameters
         ----------
         target : SALPY_scheduler.targetTestC
@@ -137,10 +144,17 @@ class Sequencer(object):
         dict(list[:class:`.TargetExposure`], list[:class:`.ObsExposure`])
             A dictionary of all the exposure information from the visit.
         """
-        self.log.log(LoggingLevel.EXTENSIVE.value, "Received target {}".format(target.targetId))
-        self.targets_received += 1
+        if target.targetId != -1:
+            self.log.log(LoggingLevel.EXTENSIVE.value, "Received target {}".format(target.targetId))
+            self.targets_received += 1
 
-        slew_info, exposure_info = self.observatory_model.observe(th, target, self.observation)
+            slew_info, exposure_info = self.observatory_model.observe(th, target, self.observation)
+        else:
+            self.log.log(LoggingLevel.EXTENSIVE.value, "No target received!")
+            self.observation.targetId = target.targetId
+            slew_info = None
+            exposure_info = None
+            th.update_time(*self.idle_delay)
 
         return self.observation, slew_info, exposure_info
 

@@ -11,3 +11,4 @@ class SurveyTest(unittest.TestCase):
     def test_basic_information_from_creation(self):
         self.assertEqual(self.survey.start_date, self.truth_start_date)
         self.assertEqual(self.survey.duration, 1.0)
+        self.assertEqual(self.survey.idle_delay, 60.0)
