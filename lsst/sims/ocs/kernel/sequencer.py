@@ -151,6 +151,7 @@ class Sequencer(object):
             slew_info, exposure_info = self.observatory_model.observe(th, target, self.observation)
         else:
             self.log.log(LoggingLevel.EXTENSIVE.value, "No target received!")
+            self.observation.observationId = target.targetId
             self.observation.targetId = target.targetId
             slew_info = None
             exposure_info = None
