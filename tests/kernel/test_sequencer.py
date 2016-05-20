@@ -41,6 +41,7 @@ class SequencerTest(unittest.TestCase):
         self.assertIsNone(self.seq.observation)
         self.assertIsNotNone(self.seq.observatory_model)
         self.assertIsNone(self.seq.observatory_state)
+        self.assertEqual(self.seq.targets_missed, 0)
 
     @mock.patch("lsst.sims.ocs.observatory.main_observatory.MainObservatory.configure")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
@@ -55,7 +56,7 @@ class SequencerTest(unittest.TestCase):
     @mock.patch("logging.Logger.info")
     def test_finalization(self, mock_logger_info):
         self.seq.finalize()
-        self.assertEqual(mock_logger_info.call_count, 2)
+        self.assertEqual(mock_logger_info.call_count, 3)
 
     @mock.patch("logging.Logger.log")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetrySub")
@@ -70,6 +71,7 @@ class SequencerTest(unittest.TestCase):
         self.assertEqual(observation.targetId, target.targetId)
         self.assertEqual(self.seq.targets_received, 1)
         self.assertEqual(self.seq.observations_made, 1)
+        self.assertEqual(self.seq.targets_missed, 0)
         self.assertEqual(len(slew), 5)
         self.assertEqual(len(exposures), 2)
 
@@ -142,5 +144,6 @@ class SequencerTest(unittest.TestCase):
         self.assertEqual(observation.targetId, target.targetId)
         self.assertEqual(self.seq.targets_received, 0)
         self.assertEqual(self.seq.observations_made, 0)
+        self.assertEqual(self.seq.targets_missed, 1)
         self.assertIsNone(slew)
         self.assertIsNone(exposures)

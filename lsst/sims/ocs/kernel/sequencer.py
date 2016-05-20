@@ -34,6 +34,7 @@ class Sequencer(object):
             The delay time (seconds) to skip forward when no target is received.
         """
         self.targets_received = 0
+        self.targets_missed = 0
         self.observation = None
         self.observatory_model = MainObservatory(obs_site_config)
         self.observatory_state = None
@@ -114,6 +115,7 @@ class Sequencer(object):
         """
         self.log.info("Number of targets received: {}".format(self.targets_received))
         self.log.info("Number of observations made: {}".format(self.observations_made))
+        self.log.info("Number of targets missed: {}".format(self.targets_missed))
 
     def observe_target(self, target, th):
         """Observe the given target.
@@ -156,6 +158,7 @@ class Sequencer(object):
             slew_info = None
             exposure_info = None
             th.update_time(*self.idle_delay)
+            self.targets_missed += 1
 
         return self.observation, slew_info, exposure_info
 
