@@ -26,6 +26,8 @@ def create_parser():
                         help="Flag to make program not wait for Scheduler.")
     parser.add_argument("-s", "--session-id", dest="session_id", default="1000",
                         help="Temporary flag to set a session ID.")
+    parser.add_argument("--profile", dest="profile", action="store_true", help="Run the profiler on SOCS and"
+                        "Scheduler code.")
 
     db_group_descr = ["This group of arguments controls the behavior of the simulation database."]
     db_group_descr.append("The simulation database is available through MySQL or SQLite.")
