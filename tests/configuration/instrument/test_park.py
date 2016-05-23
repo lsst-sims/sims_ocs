@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.park import Park
+from lsst.sims.ocs.configuration.instrument import Park
 
 class ParkTest(unittest.TestCase):
 

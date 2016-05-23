@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.camera import Camera
+from lsst.sims.ocs.configuration.instrument import Camera
 
 class CameraTest(unittest.TestCase):
 

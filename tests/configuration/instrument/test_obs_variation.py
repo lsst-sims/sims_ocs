@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration import ObservatoryVariation
+from lsst.sims.ocs.configuration.instrument import ObservatoryVariation
 
 class ObservatoryVariationTest(unittest.TestCase):
 

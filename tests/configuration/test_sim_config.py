@@ -42,8 +42,8 @@ class SimulationConfigTest(unittest.TestCase):
         cls.file4 = create_file(4, cls.config_dir)
         cls.file5 = create_file(5, message=create_content("lsst.sims.ocs.configuration.survey",
                                                           "Survey", ["config.duration=10.0"]))
-        cls.file6 = create_file(6, message=create_content("lsst.sims.ocs.configuration.slew", "Slew",
-                                                          ["config.tel_optics_cl_delay=[0.0, 18.0]"]))
+        cls.file6 = create_file(6, message=create_content("lsst.sims.ocs.configuration.instrument.slew",
+                                                          "Slew", ["config.tel_optics_cl_delay=[0.0, 18.0]"]))
 
         cls.config_save_dir = "config_save"
         os.mkdir(cls.config_save_dir)

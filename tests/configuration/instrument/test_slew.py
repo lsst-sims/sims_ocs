@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.slew import Slew
+from lsst.sims.ocs.configuration.instrument import Slew
 import SALPY_scheduler
 
 class SlewTest(unittest.TestCase):

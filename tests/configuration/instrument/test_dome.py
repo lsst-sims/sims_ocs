@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.dome import Dome
+from lsst.sims.ocs.configuration.instrument import Dome
 
 class DomeTest(unittest.TestCase):
 
