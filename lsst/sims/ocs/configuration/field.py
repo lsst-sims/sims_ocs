@@ -95,43 +95,43 @@ class Field(object):
         return cls(topic.ID, topic.fov, topic.ra, topic.dec, topic.gl, topic.gb, topic.el, topic.eb)
 
     @property
-    def fov_rads(self):
+    def fov_rad(self):
         """float: Field-of-view in radians.
         """
         return math.radians(self.fov)
 
     @property
-    def ra_rads(self):
+    def ra_rad(self):
         """float: Right ascension in radians.
         """
         return math.radians(self.ra)
 
     @property
-    def dec_rads(self):
+    def dec_rad(self):
         """float: Declination in radians.
         """
         return math.radians(self.dec)
 
     @property
-    def gl_rads(self):
+    def gl_rad(self):
         """float: Galactic latitude in radians.
         """
         return math.radians(self.gl)
 
     @property
-    def gb_rads(self):
+    def gb_rad(self):
         """float: Galactic longitude in radians.
         """
         return math.radians(self.gb)
 
     @property
-    def el_rads(self):
+    def el_rad(self):
         """float: Ecliptic latitude in radians.
         """
         return math.radians(self.el)
 
     @property
-    def eb_rads(self):
+    def eb_rad(self):
         """float: Ecliptic longitude in radians.
         """
         return math.radians(self.eb)

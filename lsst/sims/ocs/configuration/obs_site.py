@@ -29,13 +29,13 @@ class ObservingSite(pexConfig.Config):
         self.relativeHumidity = lsst.humidity
 
     @property
-    def latitude_rads(self):
+    def latitude_rad(self):
         """float: The observing site latitude in radians.
         """
         return math.radians(self.latitude)
 
     @property
-    def longitude_rads(self):
+    def longitude_rad(self):
         """float: The observing site longitude in radians.
         """
         return math.radians(self.longitude)

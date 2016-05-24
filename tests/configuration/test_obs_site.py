@@ -20,5 +20,5 @@ class ObservingSiteTest(unittest.TestCase):
 
     def test_radians_return_for_latlon(self):
         import math
-        self.assertEqual(self.obs_site.latitude_rads, math.radians(self.truth_latitude))
-        self.assertEqual(self.obs_site.longitude_rads, math.radians(self.truth_longitude))
+        self.assertEqual(self.obs_site.latitude_rad, math.radians(self.truth_latitude))
+        self.assertEqual(self.obs_site.longitude_rad, math.radians(self.truth_longitude))
