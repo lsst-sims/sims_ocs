@@ -19,7 +19,7 @@ class ConfigurationCommunicatorTest(unittest.TestCase):
         self.sal.initialize()
         self.config = SimulationConfig()
 
-    def test_initial_creation(self):
+    def test_basic_information_after_creation(self):
         self.assertIsNone(self.conf_comm.sal)
         self.assertIsNone(self.conf_comm.config)
 

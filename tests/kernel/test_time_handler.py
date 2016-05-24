@@ -10,7 +10,7 @@ class TimeHandlerTest(unittest.TestCase):
         self.start_date = "2020-05-24"
         self.th = TimeHandler(self.start_date)
 
-    def test_initial_creation(self):
+    def test_basic_information_after_creation(self):
         self.assertEqual(self.th.initial_dt, datetime(2020, 5, 24))
 
     def test_bad_date_string(self):

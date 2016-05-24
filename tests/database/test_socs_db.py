@@ -17,7 +17,7 @@ class SocsDatabaseMySqlTest(unittest.TestCase):
     def setUp(self):
         self.db = SocsDatabase()
 
-    def test_initial_creation(self):
+    def test_basic_information_after_creation(self):
         self.assertEqual(self.db.db_dialect, "mysql")
         self.assertIsNotNone(self.db.engine)
         self.assertIsNotNone(self.db.metadata)
@@ -106,7 +106,7 @@ class SocsDatabaseSqliteTest(unittest.TestCase):
         target = topic_helpers.target
         self.assertEqual(row['Field_fieldId'], target.fieldId)
 
-    def test_initial_creation(self):
+    def test_basic_information_after_creation(self):
         self.assertEqual(self.db.db_dialect, "sqlite")
         self.assertIsNotNone(self.db.engine)
         self.assertIsNotNone(self.db.metadata)
@@ -188,7 +188,7 @@ class SocsDatabaseSqliteWithSavePathTest(unittest.TestCase):
 
         self.db = SocsDatabase("sqlite", sqlite_save_path=self.save_path)
 
-    def test_initial_creation(self):
+    def test_basic_information_after_creation(self):
         self.assertIsNotNone(self.db.sqlite_save_path)
         self.assertEqual(self.db.sqlite_save_path, self.save_path)
 

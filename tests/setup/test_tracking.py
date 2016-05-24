@@ -18,7 +18,7 @@ class TrackingTest(unittest.TestCase):
         self.version = '4.0.9.0'
         self.track = Tracking(self.session_id_truth, self.session_type_truth, self.startup_comment_truth)
 
-    def test_initial_creation(self):
+    def test_basic_information_after_creation(self):
         self.assertEquals(self.track.session_id, self.session_id_truth)
         self.assertEquals(self.track.tracking_url, self.track.opsim_tracking_url + "/tracking.php")
         self.assertEquals(self.track.update_url, self.track.opsim_tracking_url + "/status.php")

@@ -48,7 +48,7 @@ class SimulatorTest(unittest.TestCase):
         self.assertAlmostEqual(set_timestamp, truth_set_timestamp, delta=self.time_tolerance)
         self.assertAlmostEqual(rise_timestamp, truth_rise_timestamp, delta=self.time_tolerance)
 
-    def test_initial_creation(self):
+    def test_basic_information_after_creation(self):
         self.assertEqual(self.sim.duration, 183.0)
         self.assertEqual(self.sim.time_handler.initial_timestamp, self.starting_timestamp)
         self.assertIsNotNone(self.sim.obs_site_info)

@@ -10,7 +10,7 @@ class FieldTest(unittest.TestCase):
     def setUp(self):
         self.field = Field(1, 0.5, 30.0, -30.0, -45.0, 45.0, 60.0, -60.0)
 
-    def test_initial_creation_from_constructor(self):
+    def test_basic_information_after_creation_from_constructor(self):
         self.assertEqual(self.field.fid, 1)
         self.assertEqual(self.field.fov, 0.5)
         self.assertEqual(self.field.ra, 30.0)
@@ -20,7 +20,7 @@ class FieldTest(unittest.TestCase):
         self.assertEqual(self.field.el, 60.0)
         self.assertEqual(self.field.eb_rad, math.radians(-60.0))
 
-    def test_initial_creation_from_topic(self):
+    def test_basic_information_after_creation_from_topic(self):
         ft = Field.from_topic(field_topic)
         self.assertEqual(ft.fid, 1)
         self.assertEqual(ft.fov_rad, math.radians(0.5))
