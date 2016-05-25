@@ -3,6 +3,31 @@
 History
 -------
 
+0.3 (2016-05-20)
+~~~~~~~~~~~~~~~~
+
+Next interim release of SOCS. Focused on performing observations and handling area 
+distribution proposals.
+
+* More information to survey data base
+  * All slew related information: SlewHistory, InitialSlewState, FinalSlewState, SlewMaxSpeeds
+  * More information to TargetHistory and ObsHistory tables
+  * New tables (TargetExposures and ObservationExposures) for tracking exposure cadences
+
+* Implemented configuration for area distribution proposals
+
+* Observation cycle
+  * Use real night boundaries to drive simulation
+  * Slew SOCS Observatory model to target from Scheduler
+  * Calculate visit time from exposure cadence
+  * Passing Observatory state back to Scheduler
+
+* Create system to log information to a central file from both SOCS and Scheduler
+
+* Implemented simple variational model for Observatory model
+  * Percent change degradation
+  * Only effects telescope and dome accelerations and speeds
+
 0.2 (2015-12-30)
 ~~~~~~~~~~~~~~~~
 
@@ -15,7 +40,7 @@ Initial release of SOCS in conjunction with the Scheduler.  Focused on infrastru
 * Implemented configuration system
   
   * Survey, Scheduler, Site and Observatory configurations implemented
-  * Communcation of configuration via SAL to Scheduler implemented
+  * Communication of configuration via SAL to Scheduler implemented
 
 * Implement DB interaction layer with MySQL and SQLite options
 
@@ -27,7 +52,7 @@ Initial release of SOCS in conjunction with the Scheduler.  Focused on infrastru
   * Start and end of simulation operations
   * Start and end of night operations
   * Basic target-observation cycle
-  * Communcation of configuration, timestamp, targets and observations to Scheduler
+  * Communication of configuration, timestamp, targets and observations to Scheduler
 
 * Implemented time handler for simulation time
 
