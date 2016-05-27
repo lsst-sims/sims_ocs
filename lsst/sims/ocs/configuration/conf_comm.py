@@ -98,6 +98,7 @@ class ConfigurationCommunicator(object):
 
         self.rot_conf.minpos = self.config.observatory.rotator.minpos
         self.rot_conf.maxpos = self.config.observatory.rotator.maxpos
+        self.rot_conf.filter_change_pos = self.config.observatory.rotator.filter_change_pos
         self.rot_conf.maxspeed = self.config.observatory.rotator.maxspeed
         self.rot_conf.accel = self.config.observatory.rotator.accel
         self.rot_conf.decel = self.config.observatory.rotator.decel
