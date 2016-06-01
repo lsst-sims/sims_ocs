@@ -135,14 +135,11 @@
            <div itemprop="articleBody">
             
   <h1>Source code for lsst.sims.ocs.configuration.sim_config</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
 
-<span class="kn">from</span> <span class="nn">.helpers</span> <span class="kn">import</span> <span class="n">load_config</span>
-<span class="kn">from</span> <span class="nn">.lsst_survey</span> <span class="kn">import</span> <span class="n">LsstSurvey</span>
-<span class="kn">from</span> <span class="nn">.observatory</span> <span class="kn">import</span> <span class="n">Observatory</span>
-<span class="kn">from</span> <span class="nn">.obs_site</span> <span class="kn">import</span> <span class="n">ObservingSite</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration</span> <span class="kn">import</span> <span class="n">load_config</span><span class="p">,</span> <span class="n">Observatory</span><span class="p">,</span> <span class="n">ObservingSite</span><span class="p">,</span> <span class="n">ScienceProposals</span><span class="p">,</span> <span class="n">Survey</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SimulationConfig&quot;</span><span class="p">]</span>
 
@@ -151,7 +148,8 @@
 
 <span class="sd">    This class gathers all of the configuration objects into one place.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">lsst_survey</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST survey configuration.&quot;</span><span class="p">,</span> <span class="n">LsstSurvey</span><span class="p">)</span>
+    <span class="n">survey</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST survey configuration.&quot;</span><span class="p">,</span> <span class="n">Survey</span><span class="p">)</span>
+    <span class="n">science</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The science proposal configuration.&quot;</span><span class="p">,</span> <span class="n">ScienceProposals</span><span class="p">)</span>
     <span class="n">observing_site</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The observing site configuration.&quot;</span><span class="p">,</span> <span class="n">ObservingSite</span><span class="p">)</span>
     <span class="n">observatory</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST observatory configuration.&quot;</span><span class="p">,</span> <span class="n">Observatory</span><span class="p">)</span>
 
@@ -186,9 +184,15 @@
                 <span class="n">config_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ifile</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">config_files</span><span class="p">):</span>
-            <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lsst_survey</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
+            <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">survey</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_files</span><span class="p">)</span>
             <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observing_site</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_files</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SimulationConfig.load_proposals"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.load_proposals">[docs]</a>    <span class="k">def</span> <span class="nf">load_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tell the science proposals to load their configuration.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">load_proposals</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="SimulationConfig.save"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the configuration objects to separate files.</span>
@@ -198,8 +202,9 @@
 <span class="sd">        save_dir : str</span>
 <span class="sd">            The directory in which to save the configuration files.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lsst_survey</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;lsst_survey_config.py&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;observing_site_config.py&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">survey</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;survey.py&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">save_as</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;observing_site.py&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">save_as</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)</span></div></div>
 </pre></div>
 

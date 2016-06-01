@@ -135,18 +135,18 @@
            <div itemprop="articleBody">
             
   <h1>Source code for lsst.sims.ocs.kernel.simulator</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">..configuration.conf_comm</span> <span class="kn">import</span> <span class="n">ConfigurationCommunicator</span>
-<span class="kn">from</span> <span class="nn">..database.tables.write_tbls</span> <span class="kn">import</span> <span class="n">write_field</span>
-<span class="kn">from</span> <span class="nn">..kernel.sequencer</span> <span class="kn">import</span> <span class="n">Sequencer</span>
-<span class="kn">from</span> <span class="nn">..kernel.time_handler</span> <span class="kn">import</span> <span class="n">DAYS_IN_YEAR</span>
-<span class="kn">from</span> <span class="nn">..kernel.time_handler</span> <span class="kn">import</span> <span class="n">HOURS_IN_DAY</span>
-<span class="kn">from</span> <span class="nn">..kernel.time_handler</span> <span class="kn">import</span> <span class="n">SECONDS_IN_HOUR</span>
-<span class="kn">from</span> <span class="nn">..kernel.time_handler</span> <span class="kn">import</span> <span class="n">TimeHandler</span>
-<span class="kn">from</span> <span class="nn">..sal.sal_manager</span> <span class="kn">import</span> <span class="n">SalManager</span>
-<span class="kn">from</span> <span class="nn">..setup.log</span> <span class="kn">import</span> <span class="n">LoggingLevel</span>
+<span class="kn">from</span> <span class="nn">ts_scheduler.sky_model</span> <span class="kn">import</span> <span class="n">Sun</span>
+
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration</span> <span class="kn">import</span> <span class="n">ConfigurationCommunicator</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.database.tables</span> <span class="kn">import</span> <span class="n">write_field</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.kernel</span> <span class="kn">import</span> <span class="n">Sequencer</span><span class="p">,</span> <span class="n">TimeHandler</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.kernel.time_handler</span> <span class="kn">import</span> <span class="n">DAYS_IN_YEAR</span><span class="p">,</span> <span class="n">SECONDS_IN_HOUR</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.sal</span> <span class="kn">import</span> <span class="n">SalManager</span><span class="p">,</span> <span class="n">topic_strdict</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.setup</span> <span class="kn">import</span> <span class="n">LoggingLevel</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Simulator&quot;</span><span class="p">]</span>
 
@@ -193,30 +193,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">configuration</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">database</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">frac_duration</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fractional_duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">lsst_survey</span><span class="o">.</span><span class="n">duration</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fractional_duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">survey</span><span class="o">.</span><span class="n">duration</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fractional_duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">frac_duration</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span> <span class="o">=</span> <span class="n">TimeHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">lsst_survey</span><span class="o">.</span><span class="n">start_date</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span> <span class="o">=</span> <span class="n">TimeHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">survey</span><span class="o">.</span><span class="n">start_date</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;kernel.Simulator&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sal</span> <span class="o">=</span> <span class="n">SalManager</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">seq</span> <span class="o">=</span> <span class="n">Sequencer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seq</span> <span class="o">=</span> <span class="n">Sequencer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">observing_site</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">survey</span><span class="o">.</span><span class="n">idle_delay</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">conf_comm</span> <span class="o">=</span> <span class="n">ConfigurationCommunicator</span><span class="p">()</span>
-        <span class="c1"># Variables that will disappear as more functionality is added.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">night_adjust</span> <span class="o">=</span> <span class="p">(</span><span class="mf">19.0</span><span class="p">,</span> <span class="s2">&quot;hours&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hours_in_night</span> <span class="o">=</span> <span class="mf">10.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sun</span> <span class="o">=</span> <span class="n">Sun</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_site_info</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_scheduler</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">no_scheduler</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">seconds_in_night</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;float: The number of seconds in a night.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hours_in_night</span> <span class="o">*</span> <span class="n">SECONDS_IN_HOUR</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">hours_in_daylight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;float: The number of hours in daylight (day hours - night hours).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">HOURS_IN_DAY</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">hours_in_night</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">duration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -224,19 +211,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fractional_duration</span> <span class="o">*</span> <span class="n">DAYS_IN_YEAR</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Simulator.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform initialization steps.</span>
-
-<span class="sd">        This function handles initialization of the :class:`.SalManager` and :class:`.Sequencer` instances and</span>
-<span class="sd">        gathering the necessary telemetry topics.</span>
+    <span class="k">def</span> <span class="nf">_end_night</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform actions at the end of the night.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initializing simulation&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">conf_comm</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">comm_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;timeHandler&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_subscribe_topic</span><span class="p">(</span><span class="s2">&quot;targetTest&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_subscribe_topic</span><span class="p">(</span><span class="s2">&quot;field&quot;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">end_of_night</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_start_night</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">night</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform actions at the start of the night.</span>
@@ -247,19 +226,61 @@
 <span class="sd">            The current night.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Night {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">night</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">start_of_night</span><span class="p">(</span><span class="n">night</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">end_of_night</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestamp</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">seconds_in_night</span>
-        <span class="n">end_of_night_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">future_timestring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seconds_in_night</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">set_timestamp</span><span class="p">,</span> <span class="n">rise_timestamp</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_night_boundaries</span><span class="p">()</span>
+
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestamp</span> <span class="o">-</span> <span class="n">set_timestamp</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">update_time</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Start of night {} at {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">night</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestring</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_of_night</span> <span class="o">=</span> <span class="n">rise_timestamp</span>
+
+        <span class="n">end_of_night_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">future_timestring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">end_of_night</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;End of night {} at {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">night</span><span class="p">,</span> <span class="n">end_of_night_str</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">clear_data</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_end_night</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform actions at the end of the night.</span>
+<div class="viewcode-block" id="Simulator.finalize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.finalize">[docs]</a>    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform finalization steps.</span>
+
+<span class="sd">        This function handles finalization of the :class:`.SalManager` and :class:`.Sequencer` instances.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Run time to next night</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">update_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hours_in_daylight</span><span class="p">,</span> <span class="s2">&quot;hours&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Ending simulation&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulator.get_night_boundaries"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.get_night_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_night_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the set and rise times for night.&quot;</span>
+
+<span class="sd">        Return</span>
+<span class="sd">        ------</span>
+<span class="sd">        tuple (float, float)</span>
+<span class="sd">            A tuple of the set and rise timestamp respectively.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_midnight_timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">current_midnight_timestamp</span>
+        <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">set_naut_twi</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sun</span><span class="o">.</span><span class="n">nautical_twilight</span><span class="p">(</span><span class="n">current_midnight_timestamp</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_site_info</span><span class="p">)</span>
+        <span class="n">set_timestamp</span> <span class="o">=</span> <span class="n">current_midnight_timestamp</span> <span class="o">+</span> <span class="p">(</span><span class="n">set_naut_twi</span> <span class="o">*</span> <span class="n">SECONDS_IN_HOUR</span><span class="p">)</span>
+        <span class="n">next_midnight_timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">next_midnight_timestamp</span>
+        <span class="p">(</span><span class="n">rise_naut_twi_next</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sun</span><span class="o">.</span><span class="n">nautical_twilight</span><span class="p">(</span><span class="n">next_midnight_timestamp</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_site_info</span><span class="p">)</span>
+        <span class="n">rise_timestamp</span> <span class="o">=</span> <span class="n">next_midnight_timestamp</span> <span class="o">+</span> <span class="p">(</span><span class="n">rise_naut_twi_next</span> <span class="o">*</span> <span class="n">SECONDS_IN_HOUR</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">set_timestamp</span><span class="p">,</span> <span class="n">rise_timestamp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulator.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform initialization steps.</span>
+
+<span class="sd">        This function handles initialization of the :class:`.SalManager` and :class:`.Sequencer` instances and</span>
+<span class="sd">        gathering the necessary telemetry topics.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initializing simulation&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">observatory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf_comm</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comm_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;timeHandler&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_subscribe_topic</span><span class="p">(</span><span class="s2">&quot;targetTest&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_subscribe_topic</span><span class="p">(</span><span class="s2">&quot;field&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Simulator.run"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run the simulation.</span>
@@ -284,13 +305,11 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">end_fields</span> <span class="o">=</span> <span class="bp">True</span>
                         <span class="k">continue</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">field_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">write_field</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">))</span>
-                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.0005</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">field_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">write_field</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">session_id</span><span class="p">))</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.00001</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;{} fields retrieved&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_list</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_list</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="s2">&quot;field&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_list</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">update_time</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">night_adjust</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">comm_time</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestamp</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Duration = {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">night</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
@@ -303,29 +322,44 @@
                              <span class="s2">&quot;Timestamp sent: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestring</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comm_time</span><span class="p">)</span>
 
+                <span class="n">observatory_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">get_observatory_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestamp</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                             <span class="s2">&quot;Observatory State: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">topic_strdict</span><span class="p">(</span><span class="n">observatory_state</span><span class="p">)))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">observatory_state</span><span class="p">)</span>
+
                 <span class="c1"># Get target from scheduler</span>
                 <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_scheduler</span><span class="p">:</span>
                     <span class="n">rcode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">getNextSample_targetTest</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">rcode</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">num_exposures</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="k">break</span>
 
-                <span class="n">observation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">observe_target</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="p">)</span>
+                <span class="n">observation</span><span class="p">,</span> <span class="n">slew_info</span><span class="p">,</span> <span class="n">exposure_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">observe_target</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
+                                                                                <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="p">)</span>
+                <span class="c1"># Add a few more things to the observation</span>
+                <span class="n">observation</span><span class="o">.</span><span class="n">night</span> <span class="o">=</span> <span class="n">night</span>
+
                 <span class="c1"># Pass observation back to scheduler</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="s2">&quot;target_history&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="s2">&quot;observation_history&quot;</span><span class="p">,</span> <span class="n">observation</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_scheduler</span> <span class="ow">and</span> <span class="n">observation</span><span class="o">.</span><span class="n">targetId</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="s2">&quot;target_history&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="s2">&quot;observation_history&quot;</span><span class="p">,</span> <span class="n">observation</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">slew_type</span><span class="p">,</span> <span class="n">slew_data</span> <span class="ow">in</span> <span class="n">slew_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;{}, {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">slew_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">slew_data</span><span class="p">)))</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">slew_data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                            <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">slew_data</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="n">slew_type</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="n">slew_type</span><span class="p">,</span> <span class="n">slew_data</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">exposure_type</span> <span class="ow">in</span> <span class="n">exposure_info</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Adding {} to DB&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exposure_type</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                     <span class="s2">&quot;Number of exposures being added: &quot;</span>
+                                     <span class="s2">&quot;{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">exposure_info</span><span class="p">[</span><span class="n">exposure_type</span><span class="p">])))</span>
+                        <span class="k">for</span> <span class="n">exposure</span> <span class="ow">in</span> <span class="n">exposure_info</span><span class="p">[</span><span class="n">exposure_type</span><span class="p">]:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="n">exposure_type</span><span class="p">,</span> <span class="n">exposure</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_end_night</span><span class="p">()</span></div>
-
-<div class="viewcode-block" id="Simulator.finalize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.finalize">[docs]</a>    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform finalization steps.</span>
-
-<span class="sd">        This function handles finalization of the :class:`.SalManager` and :class:`.Sequencer` instances.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Ending simulation&quot;</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_end_night</span><span class="p">()</span></div></div>
 </pre></div>
 
            </div>

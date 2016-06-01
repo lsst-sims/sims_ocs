@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.proposal.area_distribution module
+=============================================================
+
+.. automodule:: lsst.sims.ocs.configuration.proposal.area_distribution
+    :members:
+    :undoc-members:
+    :show-inheritance:

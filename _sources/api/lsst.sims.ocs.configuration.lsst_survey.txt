@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.lsst_survey module
-==============================================
-
-.. automodule:: lsst.sims.ocs.configuration.lsst_survey
-    :members:
-    :undoc-members:
-    :show-inheritance:

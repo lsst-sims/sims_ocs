@@ -1,0 +1,23 @@
+lsst.sims.ocs.configuration.proposal package
+============================================
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.configuration.proposal.area_distribution
+   lsst.sims.ocs.configuration.proposal.band_filter
+   lsst.sims.ocs.configuration.proposal.galactic_exclusion
+   lsst.sims.ocs.configuration.proposal.helpers
+   lsst.sims.ocs.configuration.proposal.scheduling
+   lsst.sims.ocs.configuration.proposal.selection
+   lsst.sims.ocs.configuration.proposal.sky_region
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs.configuration.proposal
+    :members:
+    :undoc-members:
+    :show-inheritance:

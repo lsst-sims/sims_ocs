@@ -32,8 +32,8 @@
   
     <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.configuration package" href="lsst.sims.ocs.configuration.html"/>
-        <link rel="next" title="lsst.sims.ocs.configuration.slew module" href="lsst.sims.ocs.configuration.slew.html"/>
-        <link rel="prev" title="lsst.sims.ocs.configuration.rotator module" href="lsst.sims.ocs.configuration.rotator.html"/> 
+        <link rel="next" title="lsst.sims.ocs.configuration.survey module" href="lsst.sims.ocs.configuration.survey.html"/>
+        <link rel="prev" title="lsst.sims.ocs.configuration.science_proposals module" href="lsst.sims.ocs.configuration.science_proposals.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -94,6 +94,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="lsst.sims.ocs.html">lsst.sims.ocs package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="lsst.sims.ocs.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.configuration.html#subpackages">Subpackages</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="lsst.sims.ocs.configuration.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.configuration.html#module-lsst.sims.ocs.configuration">Module contents</a></li>
 </ul>
@@ -184,6 +185,12 @@ files.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="lsst.sims.ocs.configuration.sim_config.SimulationConfig.load_proposals">
+<code class="descname">load_proposals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/sim_config.html#SimulationConfig.load_proposals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.sim_config.SimulationConfig.load_proposals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tell the science proposals to load their configuration.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="lsst.sims.ocs.configuration.sim_config.SimulationConfig.save">
 <code class="descname">save</code><span class="sig-paren">(</span><em>save_dir=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/sim_config.html#SimulationConfig.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.sim_config.SimulationConfig.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the configuration objects to separate files.</p>
@@ -204,12 +211,6 @@ files.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.sim_config.SimulationConfig.lsst_survey">
-<code class="descname">lsst_survey</code><a class="headerlink" href="#lsst.sims.ocs.configuration.sim_config.SimulationConfig.lsst_survey" title="Permalink to this definition">¶</a></dt>
-<dd><p>The LSST survey configuration.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.sim_config.SimulationConfig.observatory">
 <code class="descname">observatory</code><a class="headerlink" href="#lsst.sims.ocs.configuration.sim_config.SimulationConfig.observatory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The LSST observatory configuration.</p>
@@ -219,6 +220,18 @@ files.</p>
 <dt id="lsst.sims.ocs.configuration.sim_config.SimulationConfig.observing_site">
 <code class="descname">observing_site</code><a class="headerlink" href="#lsst.sims.ocs.configuration.sim_config.SimulationConfig.observing_site" title="Permalink to this definition">¶</a></dt>
 <dd><p>The observing site configuration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.sim_config.SimulationConfig.science">
+<code class="descname">science</code><a class="headerlink" href="#lsst.sims.ocs.configuration.sim_config.SimulationConfig.science" title="Permalink to this definition">¶</a></dt>
+<dd><p>The science proposal configuration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.sim_config.SimulationConfig.survey">
+<code class="descname">survey</code><a class="headerlink" href="#lsst.sims.ocs.configuration.sim_config.SimulationConfig.survey" title="Permalink to this definition">¶</a></dt>
+<dd><p>The LSST survey configuration.</p>
 </dd></dl>
 
 </dd></dl>
@@ -232,10 +245,10 @@ files.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="lsst.sims.ocs.configuration.slew.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.configuration.slew module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="lsst.sims.ocs.configuration.survey.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.configuration.survey module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="lsst.sims.ocs.configuration.rotator.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.rotator module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="lsst.sims.ocs.configuration.science_proposals.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.science_proposals module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

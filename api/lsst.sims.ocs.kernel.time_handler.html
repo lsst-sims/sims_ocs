@@ -196,8 +196,59 @@
 </tbody>
 </table>
 <dl class="method">
+<dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.future_datetime">
+<code class="descname">future_datetime</code><span class="sig-paren">(</span><em>time_increment</em>, <em>time_units</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/time_handler.html#TimeHandler.future_datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_datetime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a future datetime object.</p>
+<p>This function adds the requested time increment to the current date/time to get a future date/time
+and returns a datetime object. An alternative timestamp can be supplied and the time increment will
+be applied to that instead. This function does not update the internal timestamp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>time_increment</strong> (<em>float</em>) &#8211; The increment to adjust the current time.</li>
+<li><strong>time_units</strong> (<em>str</em>) &#8211; The time unit for the increment value.</li>
+<li><strong>timestamp</strong> (<em>float (Optional)</em>) &#8211; An alternative timestamp to apply the time increment to.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>datetime.datetime</em> &#8211;
+The datetime object for the future date/time.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.future_timestamp">
+<code class="descname">future_timestamp</code><span class="sig-paren">(</span><em>time_increment</em>, <em>time_units</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/time_handler.html#TimeHandler.future_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the UNIX timestamp for the future date/time.</p>
+<p>This function adds the requested time increment to the current date/time to get a future date/time
+and returns the UNIX timestamp for that date/time. It does not update the internal timestamp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>time_increment</strong> (<em>float</em>) &#8211; The increment to adjust the current time.</li>
+<li><strong>time_units</strong> (<em>str</em>) &#8211; The time unit for the increment value.</li>
+<li><strong>timestamp</strong> (<em>float (Optional)</em>) &#8211; An alternative timestamp to apply the time increment to.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>float</em> &#8211;
+The future UNIX timestamp.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.future_timestring">
-<code class="descname">future_timestring</code><span class="sig-paren">(</span><em>time_increment</em>, <em>time_units</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/time_handler.html#TimeHandler.future_timestring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_timestring" title="Permalink to this definition">¶</a></dt>
+<code class="descname">future_timestring</code><span class="sig-paren">(</span><em>time_increment</em>, <em>time_units</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/time_handler.html#TimeHandler.future_timestring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_timestring" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the ISO-8601 representation of the future date/time.</p>
 <p>This function adds the requested time increment to the current date/time to get a future date/time
 and returns the ISO-8601 formatted string for that date/time. It does not update the internal
@@ -209,6 +260,7 @@ timestamp.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>time_increment</strong> (<em>float</em>) &#8211; The increment to adjust the current time.</li>
 <li><strong>time_units</strong> (<em>str</em>) &#8211; The time unit for the increment value.</li>
+<li><strong>timestamp</strong> (<em>float (Optional)</em>) &#8211; An alternative timestamp to apply the time increment to.</li>
 </ul>
 </td>
 </tr>
@@ -261,6 +313,12 @@ units.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.current_midnight_timestamp">
+<code class="descname">current_midnight_timestamp</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.current_midnight_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>float: Return the UNIX timestamp of midnight for the current date.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.current_timestamp">
 <code class="descname">current_timestamp</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.current_timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: Return the UNIX timestamp for the current date/time.</p>
@@ -276,6 +334,12 @@ units.</p>
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.initial_timestamp">
 <code class="descname">initial_timestamp</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.initial_timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>float: Return the UNIX timestamp for the initial date/time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.next_midnight_timestamp">
+<code class="descname">next_midnight_timestamp</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.next_midnight_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>float: Return the UNIX timestamp of midnight for the next day after current date.</p>
 </dd></dl>
 
 </dd></dl>

@@ -1,0 +1,17 @@
+lsst.sims.ocs.configuration.science package
+===========================================
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.configuration.science.universal_weak
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs.configuration.science
+    :members:
+    :undoc-members:
+    :show-inheritance:

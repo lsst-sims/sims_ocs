@@ -1,0 +1,23 @@
+lsst.sims.ocs.configuration.instrument package
+==============================================
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.configuration.instrument.camera
+   lsst.sims.ocs.configuration.instrument.dome
+   lsst.sims.ocs.configuration.instrument.obs_variation
+   lsst.sims.ocs.configuration.instrument.park
+   lsst.sims.ocs.configuration.instrument.rotator
+   lsst.sims.ocs.configuration.instrument.slew
+   lsst.sims.ocs.configuration.instrument.telescope
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs.configuration.instrument
+    :members:
+    :undoc-members:
+    :show-inheritance:

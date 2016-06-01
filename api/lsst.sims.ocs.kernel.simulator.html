@@ -251,6 +251,21 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.get_night_boundaries">
+<code class="descname">get_night_boundaries</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.get_night_boundaries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.get_night_boundaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the set and rise times for night.&#8221;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>tuple (float, float)</em> &#8211;
+A tuple of the set and rise timestamp respectively.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.initialize">
 <code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.initialize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform initialization steps.</p>
@@ -268,18 +283,6 @@ gathering the necessary telemetry topics.</p>
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.duration">
 <code class="descname">duration</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.duration" title="Permalink to this definition">¶</a></dt>
 <dd><p>int: The duration of the simulation in days.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lsst.sims.ocs.kernel.simulator.Simulator.hours_in_daylight">
-<code class="descname">hours_in_daylight</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.hours_in_daylight" title="Permalink to this definition">¶</a></dt>
-<dd><p>float: The number of hours in daylight (day hours - night hours).</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lsst.sims.ocs.kernel.simulator.Simulator.seconds_in_night">
-<code class="descname">seconds_in_night</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.seconds_in_night" title="Permalink to this definition">¶</a></dt>
-<dd><p>float: The number of seconds in a night.</p>
 </dd></dl>
 
 </dd></dl>

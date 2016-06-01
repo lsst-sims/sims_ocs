@@ -135,7 +135,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for lsst.sims.ocs.kernel.time_handler</h1><div class="highlight"><pre>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
 
 <span class="n">SECONDS_IN_HOUR</span> <span class="o">=</span> <span class="mf">60.0</span> <span class="o">*</span> <span class="mf">60.0</span>
@@ -205,6 +205,21 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_midnight_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;float: Return the UNIX timestamp of midnight for the current date.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">midnight_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="n">midnight_dt</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">next_midnight_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;float: Return the UNIX timestamp of midnight for the next day after current date.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">midnight_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+        <span class="n">midnight_dt</span> <span class="o">+=</span> <span class="n">timedelta</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s2">&quot;days&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="n">midnight_dt</span><span class="p">)</span>
+
 <div class="viewcode-block" id="TimeHandler.update_time"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.update_time">[docs]</a>    <span class="k">def</span> <span class="nf">update_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the currently held timestamp.</span>
 
@@ -246,7 +261,57 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">time_span</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_dt</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TimeHandler.future_timestring"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_timestring">[docs]</a>    <span class="k">def</span> <span class="nf">future_timestring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeHandler.future_datetime"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_datetime">[docs]</a>    <span class="k">def</span> <span class="nf">future_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a future datetime object.</span>
+
+<span class="sd">        This function adds the requested time increment to the current date/time to get a future date/time</span>
+<span class="sd">        and returns a datetime object. An alternative timestamp can be supplied and the time increment will</span>
+<span class="sd">        be applied to that instead. This function does not update the internal timestamp.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        time_increment : float</span>
+<span class="sd">            The increment to adjust the current time.</span>
+<span class="sd">        time_units : str</span>
+<span class="sd">            The time unit for the increment value.</span>
+<span class="sd">        timestamp : float (Optional)</span>
+<span class="sd">            An alternative timestamp to apply the time increment to.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        datetime.datetime</span>
+<span class="sd">            The datetime object for the future date/time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span>
+        <span class="n">time_delta_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">time_units</span><span class="p">:</span> <span class="n">time_increment</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="o">**</span><span class="n">time_delta_dict</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimeHandler.future_timestamp"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_timestamp">[docs]</a>    <span class="k">def</span> <span class="nf">future_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the UNIX timestamp for the future date/time.</span>
+
+<span class="sd">        This function adds the requested time increment to the current date/time to get a future date/time</span>
+<span class="sd">        and returns the UNIX timestamp for that date/time. It does not update the internal timestamp.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        time_increment : float</span>
+<span class="sd">            The increment to adjust the current time.</span>
+<span class="sd">        time_units : str</span>
+<span class="sd">            The time unit for the increment value.</span>
+<span class="sd">        timestamp : float (Optional)</span>
+<span class="sd">            An alternative timestamp to apply the time increment to.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The future UNIX timestamp.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">future_datetime</span><span class="p">(</span><span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="TimeHandler.future_timestring"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_timestring">[docs]</a>    <span class="k">def</span> <span class="nf">future_timestring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the ISO-8601 representation of the future date/time.</span>
 
 <span class="sd">        This function adds the requested time increment to the current date/time to get a future date/time</span>
@@ -259,14 +324,15 @@
 <span class="sd">            The increment to adjust the current time.</span>
 <span class="sd">        time_units : str</span>
 <span class="sd">            The time unit for the increment value.</span>
+<span class="sd">        timestamp : float (Optional)</span>
+<span class="sd">            An alternative timestamp to apply the time increment to.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            The future date/time in ISO-8601.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">time_delta_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">time_units</span><span class="p">:</span> <span class="n">time_increment</span><span class="p">}</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="o">**</span><span class="n">time_delta_dict</span><span class="p">))</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">future_datetime</span><span class="p">(</span><span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span></div></div>
 </pre></div>
 
            </div>

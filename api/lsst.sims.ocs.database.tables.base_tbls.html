@@ -182,6 +182,24 @@ The Field table object.</td>
 </dd></dl>
 
 <dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_observation_exposures">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_observation_exposures</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_observation_exposures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_observation_exposures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create ObsExposures table.</p>
+<p>This function creates the ObsExposures table from the observation exposures.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
+The ObsExposure table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="lsst.sims.ocs.database.tables.base_tbls.create_observation_history">
 <code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_observation_history</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_observation_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_observation_history" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create ObsHistory table.</p>
@@ -219,6 +237,116 @@ a post-create command to set the lower limit of the auto increment value.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>sqlalchemy.Table</em> &#8211;
 The Session table object.</p>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_slew_activities">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_slew_activities</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_slew_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_slew_activities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the SlewActivities table.</p>
+<p>This function creates the SlewActivities table for tracking the activities during a slew.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
+The SlewActivities table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_slew_final_state">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_slew_final_state</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_slew_final_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_slew_final_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the SlewFinalState tables.</p>
+<p>This function creates the SlewFinalState table for tracking the state of the observatory after slewing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
+The SlewFinalState table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_slew_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_slew_history</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_slew_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_slew_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create SlewHistory table.</p>
+<p>This function creates the SlewHistory table for tracking all the general slew information
+performed by the observatory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
+The SlewHistory table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_slew_initial_state">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_slew_initial_state</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_slew_initial_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_slew_initial_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the SlewInitialState tables.</p>
+<p>This function creates the SlewInitialState table for tracking the state of the observatory before slewing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
+The SlewInitialState table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_slew_maxspeeds">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_slew_maxspeeds</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_slew_maxspeeds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_slew_maxspeeds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the SlewMaxSpeeds table.</p>
+<p>This function creates the SlewMaxSpeeds table for tracking the maximum speeds of observatory
+achieved during a slew.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
+The SlewMaxSpeeds table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_target_exposures">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_target_exposures</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_target_exposures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_target_exposures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create TargetExposures table.</p>
+<p>This function creates the TargetExposures table from the target exposures.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
+The Target Exposure table object.</td>
 </tr>
 </tbody>
 </table>

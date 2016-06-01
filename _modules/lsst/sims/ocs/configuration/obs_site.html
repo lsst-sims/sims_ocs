@@ -135,9 +135,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for lsst.sims.ocs.configuration.obs_site</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">math</span>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
 
 <span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
+<span class="kn">import</span> <span class="nn">lsst.sims.utils</span> <span class="kn">as</span> <span class="nn">simsUtils</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ObservingSite&quot;</span><span class="p">]</span>
 
@@ -155,22 +156,23 @@
 <div class="viewcode-block" id="ObservingSite.setDefaults"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.obs_site.html#lsst.sims.ocs.configuration.obs_site.ObservingSite.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set defaults for the Cerro Pachon observing site.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lsst</span> <span class="o">=</span> <span class="n">simsUtils</span><span class="o">.</span><span class="n">Site</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;LSST&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Cerro Pachon&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="o">-</span><span class="mf">30.2444</span>  <span class="c1"># OSS-REQ-0008 (LSE-30)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="o">-</span><span class="mf">70.7494</span>  <span class="c1"># OSS-REQ-0008 (LSE-30)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">2650.</span>  <span class="c1"># OSS-REQ-0008 (LSE-30)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="mf">1010.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="mf">12.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">relativeHumidity</span> <span class="o">=</span> <span class="mf">0.0</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="n">lsst</span><span class="o">.</span><span class="n">latitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="n">lsst</span><span class="o">.</span><span class="n">longitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">lsst</span><span class="o">.</span><span class="n">height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="n">lsst</span><span class="o">.</span><span class="n">pressure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">lsst</span><span class="o">.</span><span class="n">temperature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relativeHumidity</span> <span class="o">=</span> <span class="n">lsst</span><span class="o">.</span><span class="n">humidity</span></div>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">latitude_rads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">latitude_rad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;float: The observing site latitude in radians.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">longitude_rads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">longitude_rad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;float: The observing site longitude in radians.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span></div>

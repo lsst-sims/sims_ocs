@@ -88,7 +88,8 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">History</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">0.2 (2015-12-30)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">0.3 (2016-05-20)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">0.2 (2015-12-30)</a></li>
 </ul>
 </li>
 </ul>
@@ -141,14 +142,35 @@
   <div class="section" id="history">
 <h1>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>0.2 (2015-12-30)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2>0.3 (2016-05-20)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Next interim release of SOCS. Focused on performing observations and handling area
+distribution proposals.</p>
+<ul class="simple">
+<li>More information to survey data base
+* All slew related information: SlewHistory, InitialSlewState, FinalSlewState, SlewMaxSpeeds and SlewActivities
+* More information to TargetHistory and ObsHistory tables
+* New tables (TargetExposures and ObservationExposures) for tracking exposure cadences</li>
+<li>Implemented configuration for area distribution proposals</li>
+<li>Observation cycle
+* Use real night boundaries to drive simulation
+* Slew SOCS Observatory model to target from Scheduler
+* Calculate visit time from exposure cadence
+* Passing Observatory state back to Scheduler</li>
+<li>Create system to log information to a central file from both SOCS and Scheduler</li>
+<li>Implemented simple variational model for Observatory model
+* Percent change degradation
+* Only effects telescope and dome accelerations and speeds</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>0.2 (2015-12-30)<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>Initial release of SOCS in conjunction with the Scheduler.  Focused on infrastructure and basic observation loop.</p>
 <ul class="simple">
 <li>Implemented SAL interaction layer</li>
 <li>Created the initial driver script</li>
 <li>Implemented configuration system<ul>
 <li>Survey, Scheduler, Site and Observatory configurations implemented</li>
-<li>Communcation of configuration via SAL to Scheduler implemented</li>
+<li>Communication of configuration via SAL to Scheduler implemented</li>
 </ul>
 </li>
 <li>Implement DB interaction layer with MySQL and SQLite options<ul>
@@ -160,7 +182,7 @@
 <li>Start and end of simulation operations</li>
 <li>Start and end of night operations</li>
 <li>Basic target-observation cycle</li>
-<li>Communcation of configuration, timestamp, targets and observations to Scheduler</li>
+<li>Communication of configuration, timestamp, targets and observations to Scheduler</li>
 </ul>
 </li>
 <li>Implemented time handler for simulation time</li>

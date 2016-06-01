@@ -169,20 +169,55 @@
 
 <dl class="function">
 <dt id="lsst.sims.ocs.setup.log.configure_logging">
-<code class="descclassname">lsst.sims.ocs.setup.log.</code><code class="descname">configure_logging</code><span class="sig-paren">(</span><em>log_file_path='log'</em>, <em>session_id='1000'</em>, <em>verbose=0</em>, <em>debug=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/setup/log.html#configure_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.setup.log.configure_logging" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lsst.sims.ocs.setup.log.</code><code class="descname">configure_logging</code><span class="sig-paren">(</span><em>console_detail</em>, <em>file_detail</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/setup/log.html#configure_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.setup.log.configure_logging" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configure logging for the application.</p>
-<p>Configuration for both the console and file logging for the application.</p>
+<p>Configuration for both the console and file (via socket) logging for the application.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>console_detail</strong> (<em>int</em>) &#8211; The requested detail level for the console logger.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.setup.log.generate_logfile_path">
+<code class="descclassname">lsst.sims.ocs.setup.log.</code><code class="descname">generate_logfile_path</code><span class="sig-paren">(</span><em>log_file_path='log'</em>, <em>session_id='1000'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/setup/log.html#generate_logfile_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.setup.log.generate_logfile_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the full log file path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>log_file_path</strong> (<em>Optional[str]</em>) &#8211; The location to write the log file.</li>
 <li><strong>session_id</strong> (<em>Optional[str]</em>) &#8211; The OpSim session ID tag.</li>
-<li><strong>verbose</strong> (<em>Optional[int]</em>) &#8211; The INFO logging level.</li>
-<li><strong>debug</strong> (<em>Optional[int]</em>) &#8211; The DEBUG logging level.</li>
 </ul>
 </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str</em> &#8211;
+The full path of the log file.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.setup.log.set_log_levels">
+<code class="descclassname">lsst.sims.ocs.setup.log.</code><code class="descname">set_log_levels</code><span class="sig-paren">(</span><em>verbose=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/setup/log.html#set_log_levels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.setup.log.set_log_levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set detail levels for console and file logging systems.</p>
+<p>This function sets the detail levels for console and file (via socket) logging systems. These
+levels are keys into the DETAIL_LEVEL dictionary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbose</strong> (<em>int</em>) &#8211; The requested verbosity level.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>(int, int)</em> &#8211;
+A tuple containing the console detail level and the file detail level respectively.</td>
 </tr>
 </tbody>
 </table>

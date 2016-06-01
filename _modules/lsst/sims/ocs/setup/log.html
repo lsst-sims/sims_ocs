@@ -135,14 +135,18 @@
            <div itemprop="articleBody">
             
   <h1>Source code for lsst.sims.ocs.setup.log</h1><div class="highlight"><pre>
-<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">logging.handlers</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;LoggingLevel&quot;</span><span class="p">,</span> <span class="s2">&quot;configure_logging&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;LoggingLevel&quot;</span><span class="p">,</span> <span class="s2">&quot;configure_logging&quot;</span><span class="p">,</span> <span class="s2">&quot;generate_logfile_path&quot;</span><span class="p">,</span> <span class="s2">&quot;set_log_levels&quot;</span><span class="p">]</span>
 
-<span class="n">MAX_VERBOSE</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">MAX_DEBUG</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">MAX_CONSOLE</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">MIN_FILE</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">MAX_FILE</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="n">CONSOLE_FORMAT</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%(message)s</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="LoggingLevel"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.log.html#lsst.sims.ocs.setup.log.LoggingLevel">[docs]</a><span class="k">class</span> <span class="nc">LoggingLevel</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Handle some extra logging levels.</span>
@@ -153,22 +157,66 @@
     <span class="n">EXTENSIVE</span> <span class="o">=</span> <span class="mi">5</span>
     <span class="n">TRACE</span> <span class="o">=</span> <span class="mi">2</span></div>
 
-<span class="n">VERBOSE_LEVEL</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">DETAIL_LEVEL</span> <span class="o">=</span> <span class="p">{</span>
     <span class="mi">0</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">WARN</span><span class="p">,</span>
     <span class="mi">1</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
-    <span class="mi">2</span><span class="p">:</span> <span class="n">LoggingLevel</span><span class="o">.</span><span class="n">WORDY</span><span class="o">.</span><span class="n">value</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="n">LoggingLevel</span><span class="o">.</span><span class="n">WORDY</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span>
 <span class="p">}</span>
 
-<span class="n">DEBUG_LEVEL</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="mi">0</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
-    <span class="mi">1</span><span class="p">:</span> <span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-    <span class="mi">2</span><span class="p">:</span> <span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span>
-<span class="p">}</span>
-
-<div class="viewcode-block" id="configure_logging"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.log.html#lsst.sims.ocs.setup.log.configure_logging">[docs]</a><span class="k">def</span> <span class="nf">configure_logging</span><span class="p">(</span><span class="n">log_file_path</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">session_id</span><span class="o">=</span><span class="s2">&quot;1000&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="configure_logging"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.log.html#lsst.sims.ocs.setup.log.configure_logging">[docs]</a><span class="k">def</span> <span class="nf">configure_logging</span><span class="p">(</span><span class="n">console_detail</span><span class="p">,</span> <span class="n">file_detail</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Configure logging for the application.</span>
 
-<span class="sd">    Configuration for both the console and file logging for the application.</span>
+<span class="sd">    Configuration for both the console and file (via socket) logging for the application.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    console_detail : int</span>
+<span class="sd">        The requested detail level for the console logger.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">main_level</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">console_detail</span><span class="p">,</span> <span class="n">file_detail</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">DETAIL_LEVEL</span><span class="p">[</span><span class="n">main_level</span><span class="p">],</span> <span class="n">format</span><span class="o">=</span><span class="n">CONSOLE_FORMAT</span><span class="p">)</span>
+    <span class="c1"># Remove old console logger as it will double up messages when levels match.</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">removeHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">LoggingLevel</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">addLevelName</span><span class="p">(</span><span class="n">level</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">level</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="n">ch</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+    <span class="n">ch</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">DETAIL_LEVEL</span><span class="p">[</span><span class="n">console_detail</span><span class="p">])</span>
+    <span class="n">ch</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="n">CONSOLE_FORMAT</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+
+    <span class="n">sh</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">handlers</span><span class="o">.</span><span class="n">SocketHandler</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">handlers</span><span class="o">.</span><span class="n">DEFAULT_TCP_LOGGING_PORT</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">sh</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="set_log_levels"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.log.html#lsst.sims.ocs.setup.log.set_log_levels">[docs]</a><span class="k">def</span> <span class="nf">set_log_levels</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set detail levels for console and file logging systems.</span>
+
+<span class="sd">    This function sets the detail levels for console and file (via socket) logging systems. These</span>
+<span class="sd">    levels are keys into the DETAIL_LEVEL dictionary.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    verbose : int</span>
+<span class="sd">        The requested verbosity level.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (int, int)</span>
+<span class="sd">        A tuple containing the console detail level and the file detail level respectively.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">console_detail</span> <span class="o">=</span> <span class="n">MAX_CONSOLE</span> <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="n">MAX_CONSOLE</span> <span class="k">else</span> <span class="n">verbose</span>
+
+    <span class="n">file_detail</span> <span class="o">=</span> <span class="n">MIN_FILE</span> <span class="k">if</span> <span class="n">verbose</span> <span class="o">&lt;</span> <span class="n">MIN_FILE</span> <span class="k">else</span> <span class="n">verbose</span>
+    <span class="n">file_detail</span> <span class="o">=</span> <span class="n">MAX_FILE</span> <span class="k">if</span> <span class="n">file_detail</span> <span class="o">&gt;</span> <span class="n">MAX_FILE</span> <span class="k">else</span> <span class="n">file_detail</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">console_detail</span><span class="p">,</span> <span class="n">file_detail</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="generate_logfile_path"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.log.html#lsst.sims.ocs.setup.log.generate_logfile_path">[docs]</a><span class="k">def</span> <span class="nf">generate_logfile_path</span><span class="p">(</span><span class="n">log_file_path</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">session_id</span><span class="o">=</span><span class="s2">&quot;1000&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate the full log file path.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -176,39 +224,16 @@
 <span class="sd">        The location to write the log file.</span>
 <span class="sd">    session_id : Optional[str]</span>
 <span class="sd">        The OpSim session ID tag.</span>
-<span class="sd">    verbose : Optional[int]</span>
-<span class="sd">        The INFO logging level.</span>
-<span class="sd">    debug : Optional[int]</span>
-<span class="sd">        The DEBUG logging level.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        The full path of the log file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">max_verbose</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">VERBOSE_LEVEL</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-    <span class="n">max_debug</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">DEBUG_LEVEL</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-
-    <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="n">max_verbose</span><span class="p">:</span>
-        <span class="n">verbose</span> <span class="o">=</span> <span class="n">max_verbose</span>
-
-    <span class="k">if</span> <span class="n">debug</span> <span class="o">&gt;</span> <span class="n">max_debug</span><span class="p">:</span>
-        <span class="n">debug</span> <span class="o">=</span> <span class="n">max_debug</span>
-
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">log_file_path</span><span class="p">):</span>
         <span class="n">log_file_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">log_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_file_path</span><span class="p">,</span> <span class="s2">&quot;lsst.log_{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">session_id</span><span class="p">))</span>
-
-    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">DEBUG_LEVEL</span><span class="p">[</span><span class="n">debug</span><span class="p">],</span>
-                        <span class="n">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
-                        <span class="n">filename</span><span class="o">=</span><span class="n">log_file</span><span class="p">,</span>
-                        <span class="n">filemode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">LoggingLevel</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">addLevelName</span><span class="p">(</span><span class="n">level</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">level</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-
-    <span class="n">console_format</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">ch</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
-    <span class="n">ch</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">VERBOSE_LEVEL</span><span class="p">[</span><span class="n">verbose</span><span class="p">])</span>
-    <span class="n">ch</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">console_format</span><span class="p">)</span>
-
-    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">log_file</span></div>
 </pre></div>
 
            </div>

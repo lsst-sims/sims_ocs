@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.proposal.galactic_exclusion module
+==============================================================
+
+.. automodule:: lsst.sims.ocs.configuration.proposal.galactic_exclusion
+    :members:
+    :undoc-members:
+    :show-inheritance:

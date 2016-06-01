@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.instrument.obs_variation module
+===========================================================
+
+.. automodule:: lsst.sims.ocs.configuration.instrument.obs_variation
+    :members:
+    :undoc-members:
+    :show-inheritance:

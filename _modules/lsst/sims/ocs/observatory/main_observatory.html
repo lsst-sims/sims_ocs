@@ -1,0 +1,493 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.sims.ocs.observatory.main_observatory &mdash; Simulated OCS 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../../index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../../../../../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../history.html">History</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/lsst.sims.ocs.html">lsst.sims.ocs package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.observatory.main_observatory</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lsst.sims.ocs.observatory.main_observatory</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">import</span> <span class="nn">palpy</span>
+
+<span class="kn">from</span> <span class="nn">ts_scheduler.observatoryModel</span> <span class="kn">import</span> <span class="n">ObservatoryLocation</span><span class="p">,</span> <span class="n">ObservatoryModel</span>
+<span class="kn">from</span> <span class="nn">ts_scheduler.schedulerTarget</span> <span class="kn">import</span> <span class="n">Target</span>
+<span class="kn">from</span> <span class="nn">ts_scheduler.sky_model</span> <span class="kn">import</span> <span class="n">DateProfile</span>
+
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.setup</span> <span class="kn">import</span> <span class="n">LoggingLevel</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.observatory</span> <span class="kn">import</span> <span class="n">ObsExposure</span><span class="p">,</span> <span class="n">TargetExposure</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.observatory</span> <span class="kn">import</span> <span class="n">SlewActivity</span><span class="p">,</span> <span class="n">SlewHistory</span><span class="p">,</span> <span class="n">SlewMaxSpeeds</span><span class="p">,</span> <span class="n">SlewState</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.observatory</span> <span class="kn">import</span> <span class="n">VariationalModel</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MainObservatory&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="MainObservatory"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory">[docs]</a><span class="k">class</span> <span class="nc">MainObservatory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for the Main Observatory.</span>
+
+<span class="sd">    This class is designed to look like the real observatory. In the default case, the observatory</span>
+<span class="sd">    configuration is the main LSST obesrvatory. It uses the observatory model from the LSST Scheduler</span>
+<span class="sd">    as its base information. There is an option to add variations onto the parameters and values that</span>
+<span class="sd">    the model calculates to simulate real world behaviors.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    log : logging.Logger</span>
+<span class="sd">        The logging instance.</span>
+<span class="sd">    model : ts_scheduler.observatoryModel</span>
+<span class="sd">        The instance of the Observatory model from the LSST Scheduler.</span>
+<span class="sd">    param_dict : dict</span>
+<span class="sd">        The configuration parameters for the Observatory model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs_site_config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obs_site_config : :class:`.ObservingSite`</span>
+<span class="sd">            The instance of the observing site configuration.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;observatory.MainObservatory&quot;</span><span class="p">)</span>
+        <span class="n">observatory_location</span> <span class="o">=</span> <span class="n">ObservatoryLocation</span><span class="p">()</span>
+        <span class="n">observatory_location</span><span class="o">.</span><span class="n">configure</span><span class="p">({</span><span class="s2">&quot;obs_site&quot;</span><span class="p">:</span> <span class="n">obs_site_config</span><span class="o">.</span><span class="n">toDict</span><span class="p">()})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ObservatoryModel</span><span class="p">(</span><span class="n">observatory_location</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date_profile</span> <span class="o">=</span> <span class="n">DateProfile</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">observatory_location</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exposures_made</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_exposure_list</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation_exposure_list</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_history</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_final_state</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_initial_state</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_activities_list</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_activities_done</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_maxspeeds</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variational_model</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="MainObservatory.__getattr__"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.__getattr__">[docs]</a>    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Find attributes in ts_scheduler.observatorModel.ObservatorModel as well as MainObservatory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">cclass_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+            <span class="n">aclass_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;{}&#39; and &#39;{}&#39; objects have no attribute &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cclass_name</span><span class="p">,</span>
+                                                                                       <span class="n">aclass_name</span><span class="p">,</span>
+                                                                                       <span class="n">name</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="MainObservatory.calculate_visit_time"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.calculate_visit_time">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_visit_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">th</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the visit time from the target and camera information.</span>
+
+<span class="sd">        This function calculates the visit time from the current camera configuration parameters</span>
+<span class="sd">        and the list of effective exposure times from the target. The visit time is calculated as:</span>
+
+<span class="sd">        shutter_time = 2.0 * (0.5 * camera shutter time)</span>
+<span class="sd">        visit_time = sum over number of exposures (shutter_time + effective exposure time)</span>
+<span class="sd">        visit_time += (number of exposures - 1) * camera readout time</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        target : SALPY_scheduler.targetTestC</span>
+<span class="sd">            The Scheduler topic instance holding the target information.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (float, str)</span>
+<span class="sd">            The calculated visit time and a unit string (default it seconds).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_exposure_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation_exposure_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">camera_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">camera</span>
+        <span class="n">shutter_time</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">camera_config</span><span class="o">.</span><span class="n">shutter_time</span><span class="p">)</span>
+
+        <span class="n">visit_time</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">num_exposures</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">exposures_made</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">effective_exposure_time</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">exposure_times</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">target_exposure_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TargetExposure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exposures_made</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                                                            <span class="n">effective_exposure_time</span><span class="p">,</span>
+                                                            <span class="n">target</span><span class="o">.</span><span class="n">targetId</span><span class="p">))</span>
+
+            <span class="n">exposure_start_time</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">future_timestamp</span><span class="p">(</span><span class="n">visit_time</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+            <span class="n">visit_time</span> <span class="o">+=</span> <span class="p">(</span><span class="n">shutter_time</span> <span class="o">+</span> <span class="n">effective_exposure_time</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation_exposure_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ObsExposure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exposures_made</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                                                              <span class="n">effective_exposure_time</span><span class="p">,</span>
+                                                              <span class="n">exposure_start_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">num_exposures</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">visit_time</span> <span class="o">+=</span> <span class="n">camera_config</span><span class="o">.</span><span class="n">readout_time</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">visit_time</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MainObservatory.configure"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.configure">[docs]</a>    <span class="k">def</span> <span class="nf">configure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs_config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure the ObservatoryModel parameters.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obs_config : :class:`.Observatory`</span>
+<span class="sd">            The instance of the observatory configuration.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">obs_config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">toDict</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variational_model</span> <span class="o">=</span> <span class="n">VariationalModel</span><span class="p">(</span><span class="n">obs_config</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MainObservatory.get_slew_activities"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.get_slew_activities">[docs]</a>    <span class="k">def</span> <span class="nf">get_slew_activities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the slew activities for the given slew.</span>
+
+<span class="sd">        This function retrieved the list of slew activities from the model after</span>
+<span class="sd">        ts_scheduler.ObservatoryModel::slew is called. The activites are stored in an internal structure so</span>
+<span class="sd">        parameters nor returns are necessary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_activities_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">critical_activities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lastslew_criticalpath</span>
+        <span class="k">for</span> <span class="n">activity</span><span class="p">,</span> <span class="n">delay</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lastslew_delays_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slew_activities_done</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slew_activities_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SlewActivity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slew_activities_done</span><span class="p">,</span> <span class="n">activity</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span>
+                                                          <span class="nb">str</span><span class="p">(</span><span class="n">activity</span> <span class="ow">in</span> <span class="n">critical_activities</span><span class="p">),</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="MainObservatory.get_slew_state"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.get_slew_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_slew_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slew_state_info</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the slew state from the current state instance.</span>
+
+<span class="sd">        This function takes a given slew state instance and copies the information to the namedtuple</span>
+<span class="sd">        that will allow it to be transferred to the database.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        slew_state_info : ts_scheduler.observatoryModel.ObservatoryState</span>
+<span class="sd">            The current slew state instance.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`.SlewState`</span>
+<span class="sd">            The copied slew state information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">slew_state</span> <span class="o">=</span> <span class="n">SlewState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span><span class="p">,</span> <span class="n">slew_state_info</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">slew_state_info</span><span class="o">.</span><span class="n">ra</span><span class="p">,</span>
+                               <span class="n">slew_state_info</span><span class="o">.</span><span class="n">dec</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">slew_state_info</span><span class="o">.</span><span class="n">tracking</span><span class="p">),</span> <span class="n">slew_state_info</span><span class="o">.</span><span class="n">alt</span><span class="p">,</span>
+                               <span class="n">slew_state_info</span><span class="o">.</span><span class="n">az</span><span class="p">,</span> <span class="n">slew_state_info</span><span class="o">.</span><span class="n">pa</span><span class="p">,</span> <span class="n">slew_state_info</span><span class="o">.</span><span class="n">domalt</span><span class="p">,</span>
+                               <span class="n">slew_state_info</span><span class="o">.</span><span class="n">domaz</span><span class="p">,</span> <span class="n">slew_state_info</span><span class="o">.</span><span class="n">telalt</span><span class="p">,</span> <span class="n">slew_state_info</span><span class="o">.</span><span class="n">telaz</span><span class="p">,</span>
+                               <span class="n">slew_state_info</span><span class="o">.</span><span class="n">rot</span><span class="p">,</span> <span class="n">slew_state_info</span><span class="o">.</span><span class="n">ang</span><span class="p">,</span> <span class="n">slew_state_info</span><span class="o">.</span><span class="n">filter</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">slew_state</span></div>
+
+<div class="viewcode-block" id="MainObservatory.observe"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.observe">[docs]</a>    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_handler</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">observation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform the observation of the given target.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        time_handler : :class:`.TimeHandler`</span>
+<span class="sd">            An instance of the simulation&#39;s TimeHandler.</span>
+<span class="sd">        target : SALPY_scheduler.targetTestC</span>
+<span class="sd">            The Scheduler topic instance holding the target information.</span>
+<span class="sd">        observation : SALPY_scheduler.observationTestC</span>
+<span class="sd">            The Scheduler topic instance for recording the observation information.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict(:class:`.SlewHistory`, :class:`.SlewState`, :class:`.SlewState`, list[:class:`.SlewActivity`])</span>
+<span class="sd">            A dictionanry of all the slew information from the visit.</span>
+<span class="sd">        dict(list[:class:`.TargetExposure`], list[:class:`.ObsExposure`])</span>
+<span class="sd">            A dictionary of all the exposure information from the visit.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                     <span class="s2">&quot;Starting observation {} for target {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span><span class="p">,</span>
+                                                                     <span class="n">target</span><span class="o">.</span><span class="n">targetId</span><span class="p">))</span>
+
+        <span class="n">slew_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slew</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="n">time_handler</span><span class="o">.</span><span class="n">update_time</span><span class="p">(</span><span class="o">*</span><span class="n">slew_time</span><span class="p">)</span>
+
+        <span class="n">observation</span><span class="o">.</span><span class="n">observationId</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span>
+        <span class="n">observation</span><span class="o">.</span><span class="n">observation_start_time</span> <span class="o">=</span> <span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestamp</span>
+        <span class="n">start_mjd</span><span class="p">,</span> <span class="n">start_lst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">date_profile</span><span class="p">(</span><span class="n">observation</span><span class="o">.</span><span class="n">observation_start_time</span><span class="p">)</span>
+        <span class="n">observation</span><span class="o">.</span><span class="n">observation_start_mjd</span> <span class="o">=</span> <span class="n">start_mjd</span>
+        <span class="n">observation</span><span class="o">.</span><span class="n">observation_start_lst</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">start_lst</span><span class="p">)</span>
+        <span class="n">observation</span><span class="o">.</span><span class="n">targetId</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">targetId</span>
+        <span class="n">observation</span><span class="o">.</span><span class="n">fieldId</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">fieldId</span>
+        <span class="n">observation</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">filter</span>
+        <span class="n">observation</span><span class="o">.</span><span class="n">ra</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">ra</span>
+        <span class="n">observation</span><span class="o">.</span><span class="n">dec</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">dec</span>
+        <span class="n">observation</span><span class="o">.</span><span class="n">num_exposures</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">num_exposures</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                     <span class="s2">&quot;Exposure Times for Target {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">targetId</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">exposure_times</span><span class="p">)))</span>
+        <span class="n">visit_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_visit_time</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">time_handler</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                     <span class="s2">&quot;Visit Time for Target {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">targetId</span><span class="p">,</span> <span class="n">visit_time</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="n">observation</span><span class="o">.</span><span class="n">visit_time</span> <span class="o">=</span> <span class="n">visit_time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">exposure</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_exposure_list</span><span class="p">):</span>
+            <span class="n">observation</span><span class="o">.</span><span class="n">exposure_times</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">exposure</span><span class="o">.</span><span class="n">exposureTime</span>
+
+        <span class="n">time_handler</span><span class="o">.</span><span class="n">update_time</span><span class="p">(</span><span class="o">*</span><span class="n">visit_time</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                     <span class="s2">&quot;Observation {} completed at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span><span class="p">,</span>
+                                                              <span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestring</span><span class="p">))</span>
+
+        <span class="n">slew_info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;slew_history&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">slew_history</span><span class="p">,</span> <span class="s2">&quot;slew_initial_state&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">slew_initial_state</span><span class="p">,</span>
+                     <span class="s2">&quot;slew_final_state&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">slew_final_state</span><span class="p">,</span> <span class="s2">&quot;slew_activities&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">slew_activities_list</span><span class="p">,</span>
+                     <span class="s2">&quot;slew_maxspeeds&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">slew_maxspeeds</span><span class="p">}</span>
+
+        <span class="n">exposure_info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;target_exposures&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_exposure_list</span><span class="p">,</span>
+                         <span class="s2">&quot;observation_exposures&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation_exposure_list</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">slew_info</span><span class="p">,</span> <span class="n">exposure_info</span></div>
+
+<div class="viewcode-block" id="MainObservatory.slew"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.slew">[docs]</a>    <span class="k">def</span> <span class="nf">slew</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform the slewing operation for the observatory to the given target.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        target : SALPY_scheduler.targetTestC</span>
+<span class="sd">            The Scheduler topic instance holding the target information.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The time to slew the telescope from its current position to the target position.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Slew count: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span><span class="p">))</span>
+        <span class="n">initial_slew_state</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">currentState</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Initial slew state: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">initial_slew_state</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_initial_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_slew_state</span><span class="p">(</span><span class="n">initial_slew_state</span><span class="p">)</span>
+
+        <span class="n">sched_target</span> <span class="o">=</span> <span class="n">Target</span><span class="o">.</span><span class="n">from_topic</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">slew</span><span class="p">(</span><span class="n">sched_target</span><span class="p">)</span>
+
+        <span class="n">final_slew_state</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">currentState</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Final slew state: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">final_slew_state</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_final_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_slew_state</span><span class="p">(</span><span class="n">final_slew_state</span><span class="p">)</span>
+
+        <span class="n">slew_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">final_slew_state</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="n">initial_slew_state</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+
+        <span class="n">slew_distance</span> <span class="o">=</span> <span class="n">palpy</span><span class="o">.</span><span class="n">dsep</span><span class="p">(</span><span class="n">final_slew_state</span><span class="o">.</span><span class="n">ra_rad</span><span class="p">,</span> <span class="n">final_slew_state</span><span class="o">.</span><span class="n">dec_rad</span><span class="p">,</span>
+                                   <span class="n">initial_slew_state</span><span class="o">.</span><span class="n">ra_rad</span><span class="p">,</span> <span class="n">initial_slew_state</span><span class="o">.</span><span class="n">dec_rad</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_history</span> <span class="o">=</span> <span class="n">SlewHistory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span><span class="p">,</span> <span class="n">initial_slew_state</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">final_slew_state</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
+                                        <span class="n">slew_time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">slew_distance</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_slew_activities</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_maxspeeds</span> <span class="o">=</span> <span class="n">SlewMaxSpeeds</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span><span class="p">,</span> <span class="n">final_slew_state</span><span class="o">.</span><span class="n">domalt_peakspeed</span><span class="p">,</span>
+                                            <span class="n">final_slew_state</span><span class="o">.</span><span class="n">domaz_peakspeed</span><span class="p">,</span>
+                                            <span class="n">final_slew_state</span><span class="o">.</span><span class="n">telalt_peakspeed</span><span class="p">,</span>
+                                            <span class="n">final_slew_state</span><span class="o">.</span><span class="n">telaz_peakspeed</span><span class="p">,</span>
+                                            <span class="n">final_slew_state</span><span class="o">.</span><span class="n">telrot_peakspeed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">slew_time</span></div>
+
+<div class="viewcode-block" id="MainObservatory.start_of_night"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.start_of_night">[docs]</a>    <span class="k">def</span> <span class="nf">start_of_night</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">night</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform start of night functions.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        night : int</span>
+<span class="sd">            The current survey observing night.</span>
+<span class="sd">        duration : int</span>
+<span class="sd">            The survey duration in days.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">variational_model</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+            <span class="n">new_obs_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variational_model</span><span class="o">.</span><span class="n">modify_parameters</span><span class="p">(</span><span class="n">night</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">new_obs_config</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

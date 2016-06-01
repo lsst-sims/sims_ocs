@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.telescope module
-============================================
-
-.. automodule:: lsst.sims.ocs.configuration.telescope
-    :members:
-    :undoc-members:
-    :show-inheritance:

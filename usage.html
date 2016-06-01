@@ -138,33 +138,34 @@
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
 <p>The Operations Simulator consists of running the SOCS and Scheduler. Currently, they are separate scripts that must be started separately. Due to the nature of the setup, a wrapper script is recommended when launching both processes. If you have followed the installation recommendations, a highly recommended example is below.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>#!/bin/bash
-export LSST_DDS_DOMAIN=SOCS
+<div class="code bash highlight-python"><div class="highlight"><pre><span></span>    #!/bin/bash
+    export LSST_DDS_DOMAIN=SOCS
+export NDDS_DISCOVERY_PEERS=shmem://
 
-export OPENSPLICE_LOC=${HOME}/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
-export OSPL_URI=file://${OPENSPLICE_LOC}/etc/config/ospl.xml
+    export OPENSPLICE_LOC=${HOME}/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
+    export OSPL_URI=file://${OPENSPLICE_LOC}/etc/config/ospl.xml
 
-export SCHED_TOPIC_LIB=${HOME}/dds/lib
-export SCHED_CODE=${HOME}/git/ts/ts_scheduler
+    export SCHED_TOPIC_LIB=${HOME}/dds/lib
+    export SCHED_CODE=${HOME}/git/ts/ts_scheduler
 
-export LD_LIBRARY_PATH=${OPENSPLICE_LOC}/lib:${SCHED_TOPIC_LIB}:${LD_LIBRARY_PATH}
-export PYTHONPATH=${SCHED_TOPIC_LIB}:${SCHED_CODE}:${PYTHONPATH}
+    export LD_LIBRARY_PATH=${OPENSPLICE_LOC}/lib:${SCHED_TOPIC_LIB}:${LD_LIBRARY_PATH}
+    export PYTHONPATH=${SCHED_TOPIC_LIB}:${SCHED_CODE}:${PYTHONPATH}
 
-$@
+    $@
 </pre></div>
 </div>
 <p>The LSST_DDS_DOMAIN is important so that messages from other instances using DDS do not pollute the currently running process. It needs to be a unique name within the user&#8217;s network environment.</p>
 <p>The following instructions will refer to this wrapper script as <code class="docutils literal"><span class="pre">drun</span></code>.</p>
 <p>To run the Scheduler, go to the <code class="docutils literal"><span class="pre">gitdir/ts/ts_scheduler/ts_scheduler</span></code> directory and run the following:</p>
-<div class="highlight-python"><div class="highlight"><pre>drun python scheduler.py
+<div class="highlight-python"><div class="highlight"><pre><span></span>drun python scheduler.py
 </pre></div>
 </div>
 <p>The SOCS driver can be run from anywhere if the setup from the installation instructions were followed. We&#8217;ll assume that you are running from <code class="docutils literal"><span class="pre">$HOME/run_local</span></code>. To invoke a basic instance of SOCS, do the following:</p>
-<div class="highlight-python"><div class="highlight"><pre>drun opsim4 -l $PWD/log -c &quot;Running a one year sim.&quot; -v
+<div class="highlight-python"><div class="highlight"><pre><span></span>drun opsim4 -l $PWD/log -c &quot;Running a one year sim.&quot; -v
 </pre></div>
 </div>
 <p>This will run a one year simulation while passing messages between SOCS and the Scheduler via SAL/DDS. Further options are available to the driver script and can be acertained by the following:</p>
-<div class="highlight-python"><div class="highlight"><pre>drun opsim -h
+<div class="highlight-python"><div class="highlight"><pre><span></span>drun opsim -h
 </pre></div>
 </div>
 </div>

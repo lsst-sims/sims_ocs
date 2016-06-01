@@ -135,16 +135,37 @@
            <div itemprop="articleBody">
             
   <h1>Source code for lsst.sims.ocs.database.tables.write_tbls</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">collections</span>
+<span></span><span class="kn">import</span> <span class="nn">collections</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;write_field&quot;</span><span class="p">,</span> <span class="s2">&quot;write_observation_history&quot;</span><span class="p">,</span> <span class="s2">&quot;write_target_history&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;write_field&quot;</span><span class="p">,</span> <span class="s2">&quot;write_observation_exposures&quot;</span><span class="p">,</span> <span class="s2">&quot;write_observation_history&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_activities&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;write_slew_history&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_final_state&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_initial_state&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_maxspeeds&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;write_target_exposures&quot;</span><span class="p">,</span> <span class="s2">&quot;write_target_history&quot;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="write_target_history"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_target_history">[docs]</a><span class="k">def</span> <span class="nf">write_target_history</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the TargetHistory table.</span>
+<span class="k">def</span> <span class="nf">ordered_dict_from_namedtuple</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a namedtuple to an OrderedDict.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    data : SALPY_scheduler.targetTestC</span>
+<span class="sd">    data : collections.namedtuple</span>
+<span class="sd">        The data to convert.</span>
+<span class="sd">    sid : int (Optional)</span>
+<span class="sd">        The current session ID.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        collections.OrderedDict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">sid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sid</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+<div class="viewcode-block" id="write_field"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_field">[docs]</a><span class="k">def</span> <span class="nf">write_field</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the Field table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : SALPY_scheduler.fieldC</span>
 <span class="sd">        The SAL target topic instance.</span>
 <span class="sd">    sid : int</span>
 <span class="sd">        The current session ID.</span>
@@ -155,32 +176,8 @@
 <span class="sd">        A dictionary of the topic data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">values</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
-        <span class="p">(</span><span class="s1">&#39;targetID&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">targetId</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;Session_sessionID&#39;</span><span class="p">,</span> <span class="n">sid</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;fieldID&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">fieldId</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">ra</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">dec</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;filter&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;angle&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">angle</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;num_exposures&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">num_exposures</span><span class="p">)</span>
-    <span class="p">])</span>
-    <span class="k">return</span> <span class="n">values</span></div>
-
-<div class="viewcode-block" id="write_field"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_field">[docs]</a><span class="k">def</span> <span class="nf">write_field</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the Field table.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    data : SALPY_scheduler.fieldC</span>
-<span class="sd">        The SAL target topic instance.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    collections.OrderedDict</span>
-<span class="sd">        A dictionary of the topic data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">values</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
-        <span class="p">(</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">ID</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;fieldId&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">ID</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;Session_sessionId&#39;</span><span class="p">,</span> <span class="n">sid</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;fov&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">fov</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">ra</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">dec</span><span class="p">),</span>
@@ -190,6 +187,23 @@
         <span class="p">(</span><span class="s1">&#39;eb&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">eb</span><span class="p">)</span>
     <span class="p">])</span>
     <span class="k">return</span> <span class="n">values</span></div>
+
+<div class="viewcode-block" id="write_observation_exposures"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_observation_exposures">[docs]</a><span class="k">def</span> <span class="nf">write_observation_exposures</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the ObsExposures table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : class:`.ObsExposure`</span>
+<span class="sd">        The instance containing the observation exposure information</span>
+<span class="sd">    sid : int</span>
+<span class="sd">        The current session ID.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    collections.OrderedDict</span>
+<span class="sd">        A dictionary of the topic data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ordered_dict_from_namedtuple</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="o">=</span><span class="n">sid</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="write_observation_history"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_observation_history">[docs]</a><span class="k">def</span> <span class="nf">write_observation_history</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the ObsHistory table.</span>
@@ -207,16 +221,151 @@
 <span class="sd">        A dictionary of the topic data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">values</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
-        <span class="p">(</span><span class="s1">&#39;observationID&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">observationId</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;Session_sessionID&#39;</span><span class="p">,</span> <span class="n">sid</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;observationTime&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">observationTime</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;targetID&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">targetId</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;fieldID&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">fieldId</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;observationId&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">observationId</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;Session_sessionId&#39;</span><span class="p">,</span> <span class="n">sid</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;observationStartTime&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">observation_start_time</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;observationStartMJD&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">observation_start_mjd</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;observationStartLST&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">observation_start_lst</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;night&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">night</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;TargetHistory_targetId&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">targetId</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;Field_fieldId&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">fieldId</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">ra</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">dec</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;filter&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;angle&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">angle</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;num_exposures&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">num_exposures</span><span class="p">)</span>
+        <span class="p">(</span><span class="s1">&#39;numExposures&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">num_exposures</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;visitTime&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">visit_time</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;visitExposureTime&#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">([</span><span class="n">data</span><span class="o">.</span><span class="n">exposure_times</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">num_exposures</span><span class="p">)]))</span>
+    <span class="p">])</span>
+    <span class="k">return</span> <span class="n">values</span></div>
+
+<div class="viewcode-block" id="write_slew_activities"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_slew_activities">[docs]</a><span class="k">def</span> <span class="nf">write_slew_activities</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the SlewHistory table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : class:`.SlewActivity`</span>
+<span class="sd">        The instance containing the slew activity information</span>
+<span class="sd">    sid : int</span>
+<span class="sd">        The current session ID.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    collections.OrderedDict</span>
+<span class="sd">        A dictionary of the topic data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ordered_dict_from_namedtuple</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="o">=</span><span class="n">sid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="write_slew_history"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_slew_history">[docs]</a><span class="k">def</span> <span class="nf">write_slew_history</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the SlewHistory table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : class:`.SlewHistory`</span>
+<span class="sd">        The instance containing the slew history information</span>
+<span class="sd">    sid : int</span>
+<span class="sd">        The current session ID.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    collections.OrderedDict</span>
+<span class="sd">        A dictionary of the topic data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ordered_dict_from_namedtuple</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="o">=</span><span class="n">sid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="write_slew_final_state"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_slew_final_state">[docs]</a><span class="k">def</span> <span class="nf">write_slew_final_state</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the SlewFinalState table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : class:`.SlewFinalState`</span>
+<span class="sd">        The instance containing the slew state information</span>
+<span class="sd">    sid : int</span>
+<span class="sd">        The current session ID.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    collections.OrderedDict</span>
+<span class="sd">        A dictionary of the topic data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ordered_dict_from_namedtuple</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="o">=</span><span class="n">sid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="write_slew_initial_state"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_slew_initial_state">[docs]</a><span class="k">def</span> <span class="nf">write_slew_initial_state</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the SlewInitialState table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : class:`.SlewInitialState`</span>
+<span class="sd">        The instance containing the slew state information</span>
+<span class="sd">    sid : int</span>
+<span class="sd">        The current session ID.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    collections.OrderedDict</span>
+<span class="sd">        A dictionary of the topic data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ordered_dict_from_namedtuple</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="o">=</span><span class="n">sid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="write_slew_maxspeeds"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_slew_maxspeeds">[docs]</a><span class="k">def</span> <span class="nf">write_slew_maxspeeds</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the SlewMaxSpeeds table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : class:`.SlewMaxSpeeds`</span>
+<span class="sd">        The instance containing the slew maxspeeds information</span>
+<span class="sd">    sid : int</span>
+<span class="sd">        The current session ID.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    collections.OrderedDict</span>
+<span class="sd">        A dictionary of the topic data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ordered_dict_from_namedtuple</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="o">=</span><span class="n">sid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="write_target_exposures"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_target_exposures">[docs]</a><span class="k">def</span> <span class="nf">write_target_exposures</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the TargetExposures table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : class:`.TargetExposure`</span>
+<span class="sd">        The instance containing the target exposure information</span>
+<span class="sd">    sid : int</span>
+<span class="sd">        The current session ID.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    collections.OrderedDict</span>
+<span class="sd">        A dictionary of the topic data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ordered_dict_from_namedtuple</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="o">=</span><span class="n">sid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="write_target_history"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_target_history">[docs]</a><span class="k">def</span> <span class="nf">write_target_history</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the TargetHistory table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : SALPY_scheduler.targetTestC</span>
+<span class="sd">        The SAL target topic instance.</span>
+<span class="sd">    sid : int</span>
+<span class="sd">        The current session ID.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    collections.OrderedDict</span>
+<span class="sd">        A dictionary of the topic data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
+        <span class="p">(</span><span class="s1">&#39;targetId&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">targetId</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;Session_sessionId&#39;</span><span class="p">,</span> <span class="n">sid</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;Field_fieldId&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">fieldId</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">ra</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">dec</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;filter&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;angle&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">angle</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;numExposures&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">num_exposures</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;requestedExpTime&#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">([</span><span class="n">data</span><span class="o">.</span><span class="n">exposure_times</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">num_exposures</span><span class="p">)]))</span>
     <span class="p">])</span>
     <span class="k">return</span> <span class="n">values</span></div>
 </pre></div>

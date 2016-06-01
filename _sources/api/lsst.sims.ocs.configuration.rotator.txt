@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.rotator module
-==========================================
-
-.. automodule:: lsst.sims.ocs.configuration.rotator
-    :members:
-    :undoc-members:
-    :show-inheritance:

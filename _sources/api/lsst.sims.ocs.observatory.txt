@@ -6,7 +6,10 @@ Submodules
 
 .. toctree::
 
-   lsst.sims.ocs.observatory.lsst_observatory
+   lsst.sims.ocs.observatory.exposure_information
+   lsst.sims.ocs.observatory.main_observatory
+   lsst.sims.ocs.observatory.slew_information
+   lsst.sims.ocs.observatory.variational_model
 
 Module contents
 ---------------

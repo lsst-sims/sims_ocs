@@ -135,16 +135,17 @@
            <div itemprop="articleBody">
             
   <h1>Source code for lsst.sims.ocs.database.socs_db</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">collections</span>
+<span></span><span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">MySQLdb</span> <span class="kn">as</span> <span class="nn">mysql</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">MetaData</span>
 
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.setup</span> <span class="kn">import</span> <span class="n">LoggingLevel</span>
 <span class="kn">import</span> <span class="nn">tables</span>
-<span class="kn">from</span> <span class="nn">..utilities.file_helpers</span> <span class="kn">import</span> <span class="n">expand_path</span>
-<span class="kn">from</span> <span class="nn">..utilities.session_info</span> <span class="kn">import</span> <span class="n">get_hostname</span><span class="p">,</span> <span class="n">get_user</span><span class="p">,</span> <span class="n">get_version</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.utilities</span> <span class="kn">import</span> <span class="n">expand_path</span><span class="p">,</span> <span class="n">get_hostname</span><span class="p">,</span> <span class="n">get_user</span><span class="p">,</span> <span class="n">get_version</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SocsDatabase&quot;</span><span class="p">]</span>
 
@@ -191,6 +192,7 @@
 <span class="sd">            A path to save all resulting database files for SQLite.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db_name</span> <span class="o">=</span> <span class="s2">&quot;SocsDB&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;database.SocsDatabase&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db_dialect</span> <span class="o">=</span> <span class="n">dialect</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
@@ -227,6 +229,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_field</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">target_history</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_target_history</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observation_history</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_observation_history</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_history</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_slew_history</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_initial_state</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_slew_initial_state</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_final_state</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_slew_final_state</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_activities</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_slew_activities</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_maxspeeds</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_slew_maxspeeds</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_exposures</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_target_exposures</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation_exposures</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_observation_exposures</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create the database connection for MySQL.</span>
@@ -344,7 +353,8 @@
 <div class="viewcode-block" id="SocsDatabase.clear_data"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase.clear_data">[docs]</a>    <span class="k">def</span> <span class="nf">clear_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear all stored data lists.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_list</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_list</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;After clearing: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_list</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">_get_conn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the DB connection.</span>
@@ -366,6 +376,8 @@
         <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_conn</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">table_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Writing {} data into DB.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Length of data: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">table_data</span><span class="p">)))</span>
             <span class="n">tbl</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">)</span>
             <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">tbl</span><span class="o">.</span><span class="n">insert</span><span class="p">(),</span> <span class="n">table_data</span><span class="p">)</span></div>
 
