@@ -10,7 +10,7 @@ Next interim release of SOCS. Focused on performing observations and handling ar
 distribution proposals.
 
 * More information to survey data base
-  * All slew related information: SlewHistory, InitialSlewState, FinalSlewState, SlewMaxSpeeds
+  * All slew related information: SlewHistory, InitialSlewState, FinalSlewState, SlewMaxSpeeds and SlewActivities
   * More information to TargetHistory and ObsHistory tables
   * New tables (TargetExposures and ObservationExposures) for tracking exposure cadences
 
