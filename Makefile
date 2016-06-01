@@ -1,4 +1,4 @@
-GH_PAGES_SOURCES = Makefile docs setup.py lsst README.rst HISTORY.rst scripts
+GH_PAGES_SOURCES = Makefile docs setup.py lsst README.rst HISTORY.rst scripts sims_ocs.egg-info
 
 .PHONY: clean-pyc clean-build docs clean
 
