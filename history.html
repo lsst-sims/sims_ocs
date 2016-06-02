@@ -146,20 +146,26 @@
 <p>Next interim release of SOCS. Focused on performing observations and handling area
 distribution proposals.</p>
 <ul class="simple">
-<li>More information to survey data base
-* All slew related information: SlewHistory, InitialSlewState, FinalSlewState, SlewMaxSpeeds and SlewActivities
-* More information to TargetHistory and ObsHistory tables
-* New tables (TargetExposures and ObservationExposures) for tracking exposure cadences</li>
+<li>More information to survey data base<ul>
+<li>All slew related information: SlewHistory, InitialSlewState, FinalSlewState, SlewMaxSpeeds and SlewActivities</li>
+<li>More information to TargetHistory and ObsHistory tables</li>
+<li>New tables (TargetExposures and ObservationExposures) for tracking exposure cadences</li>
+</ul>
+</li>
 <li>Implemented configuration for area distribution proposals</li>
-<li>Observation cycle
-* Use real night boundaries to drive simulation
-* Slew SOCS Observatory model to target from Scheduler
-* Calculate visit time from exposure cadence
-* Passing Observatory state back to Scheduler</li>
+<li>Observation cycle<ul>
+<li>Use real night boundaries to drive simulation</li>
+<li>Slew SOCS Observatory model to target from Scheduler</li>
+<li>Calculate visit time from exposure cadence</li>
+<li>Passing Observatory state back to Scheduler</li>
+</ul>
+</li>
 <li>Create system to log information to a central file from both SOCS and Scheduler</li>
-<li>Implemented simple variational model for Observatory model
-* Percent change degradation
-* Only effects telescope and dome accelerations and speeds</li>
+<li>Implemented simple variational model for Observatory model<ul>
+<li>Percent change degradation</li>
+<li>Only effects telescope and dome accelerations and speeds</li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section" id="id2">
