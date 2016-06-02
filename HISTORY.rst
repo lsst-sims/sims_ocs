@@ -10,6 +10,7 @@ Next interim release of SOCS. Focused on performing observations and handling ar
 distribution proposals.
 
 * More information to survey data base
+
   * All slew related information: SlewHistory, InitialSlewState, FinalSlewState, SlewMaxSpeeds and SlewActivities
   * More information to TargetHistory and ObsHistory tables
   * New tables (TargetExposures and ObservationExposures) for tracking exposure cadences
@@ -17,6 +18,7 @@ distribution proposals.
 * Implemented configuration for area distribution proposals
 
 * Observation cycle
+
   * Use real night boundaries to drive simulation
   * Slew SOCS Observatory model to target from Scheduler
   * Calculate visit time from exposure cadence
@@ -25,6 +27,7 @@ distribution proposals.
 * Create system to log information to a central file from both SOCS and Scheduler
 
 * Implemented simple variational model for Observatory model
+
   * Percent change degradation
   * Only effects telescope and dome accelerations and speeds
 
