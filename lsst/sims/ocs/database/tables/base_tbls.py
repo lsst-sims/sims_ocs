@@ -104,6 +104,12 @@ def create_observation_history(metadata):
     This function creates the ObsHistory table for tracking all the observations performed
     by the Sequencer in the simulation run.
 
+    Table Description:
+
+    This table keeps a record of each visit made by the telescope during a simulated survey.
+    Multiple proposals can be associated with a single visit leading to duplicate entries in
+    this table.
+
     Parameters
     ----------
     metadata : sqlalchemy.MetaData
