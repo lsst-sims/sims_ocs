@@ -42,6 +42,15 @@ def create_field(metadata):
 
     This function creates the Field table from the sky tesellation.
 
+    Table Description:
+
+    This table contains all the coordinate information for the "visiting" fields. The field centers
+    are determined from a tesselation (or tiling) of the celestial sphere which results in a
+    closest-packed set of 5280 hexagons and 12 pentagons inscribed in circular fields having a
+    3.5-degree diameter
+    (R. H. Hardin, N. J. A. Sloane and W. D. Smith, *Tables of spherical codes with icosahedral symmetry*,
+    published electronically at http://NeilSloane.com/icosahedral.codes/).
+
     Parameters
     ----------
     metadata : sqlalchemy.MetaData
@@ -75,6 +84,12 @@ def create_observation_exposures(metadata):
 
     This function creates the ObsExposures table from the observation exposures.
 
+    Table Description:
+
+    This table contains all of the individual exposure information for each visit in the
+    :ref:`database-tables-obshistory` table. The number of exposures in a visit is determined
+    by the visit target's exposure cadence.
+
     Parameters
     ----------
     metadata : sqlalchemy.MetaData
@@ -106,7 +121,7 @@ def create_observation_history(metadata):
 
     Table Description:
 
-    This table keeps a record of each visit made by the telescope during a simulated survey.
+    This table keeps a record of each visit made by the observatory during a simulated survey.
     Multiple proposals can be associated with a single visit leading to duplicate entries in
     this table.
 
@@ -171,6 +186,11 @@ def create_session(metadata, autoincrement=True):
     This function creates the Session table for tracking the various simulations run. For MySQL, it adds
     a post-create command to set the lower limit of the auto increment value.
 
+    Table Description:
+
+    This table contains the log of all simulations (MySQL) or a single simulation (SQLite). Simulation
+    runs are identified by the combination of the hostname and session Id: *sessionHost_sessionId*.
+
     Parameters
     ----------
     metadata : sqlalchemy.MetaData
@@ -204,6 +224,10 @@ def create_slew_history(metadata):
     This function creates the SlewHistory table for tracking all the general slew information
     performed by the observatory.
 
+    Table Description:
+
+    This table contains the basic slew information for each visit.
+
     Parameters
     ----------
     metadata : sqlalchemy.MetaData
@@ -233,6 +257,11 @@ def create_slew_activities(metadata):
 
     This function creates the SlewActivities table for tracking the activities during a slew.
 
+    Table Description:
+
+    This table contains all the activites for a given visit's slew. The *SlewHistory_slewCount* column
+    points to a given slew in the :ref:`database-tables-slewhistory` table.
+
     Parameters
     ----------
     metadata : sqlalchemy.MetaData
@@ -261,6 +290,12 @@ def create_slew_final_state(metadata):
 
     This function creates the SlewFinalState table for tracking the state of the observatory after slewing.
 
+    Table Description:
+
+    This table contains all of the final state information from a given visit's slew. The state
+    information is collected after the slew has completed, but before the visit activity has started.
+    The *SlewHistory_slewCount* column points to a given slew in the :ref:`database-tables-slewhistory` table.
+
     Parameters
     ----------
     metadata : sqlalchemy.MetaData
@@ -277,6 +312,12 @@ def create_slew_initial_state(metadata):
     """Create the SlewInitialState tables.
 
     This function creates the SlewInitialState table for tracking the state of the observatory before slewing.
+
+    Table Description:
+
+    This table contains all of the initial state information from a given visit's slew. The state
+    information is collected before the slew to the given target has started. The *SlewHistory_slewCount*
+    column points to a given slew in the :ref:`database-tables-slewhistory` table.
 
     Parameters
     ----------
@@ -295,6 +336,12 @@ def create_slew_maxspeeds(metadata):
 
     This function creates the SlewMaxSpeeds table for tracking the maximum speeds of observatory
     achieved during a slew.
+
+    Table Description:
+
+    This table contains all of the maximum speeds obtained by the telescope, dome and rotator
+    during a given visit's slew. The *SlewHistory_slewCount* column points to a given slew in
+    the :ref:`database-tables-slewhistory` table.
 
     Parameters
     ----------
@@ -365,6 +412,12 @@ def create_target_exposures(metadata):
 
     This function creates the TargetExposures table from the target exposures.
 
+    Table Description:
+
+    This table contains all of the individual exposure information for each target in the
+    :ref:`database-tables-targethistory` table. The number of exposures for a target is determined
+    by the requesting proposal's exposure cadence.
+
     Parameters
     ----------
     metadata : sqlalchemy.MetaData
@@ -392,6 +445,10 @@ def create_target_history(metadata):
 
     This function creates the TargetHistory table for tracking all the requested targets from
     the Scheduler in the simulation run.
+
+    Table Description:
+
+    This table keeps a record of the information from the requested targets during a simulated survey.
 
     Parameters
     ----------

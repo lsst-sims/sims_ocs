@@ -109,6 +109,8 @@ To declare and setup SOCS, do::
 	source eups-setups.sh
 	setup sims_ocs -t $USER
 
+.. _installation-database:
+
 Database Setup
 --------------
 

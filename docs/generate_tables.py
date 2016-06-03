@@ -1,6 +1,7 @@
 import os
 import re
 import rst
+import shutil
 from sqlalchemy import MetaData
 
 import lsst.sims.ocs.database.tables as tbls
@@ -53,6 +54,19 @@ def main():
         para = rst.Paragraph("   {}".format(rst_file.split(".rst")[0]))
         collection_doc.add_child(para)
     collection_doc.save(os.path.join(TOP_LEVEL_DIR, "table_descriptions.rst"))
+
+    # Write link anchors a top of file.
+    for rst_file in table_rst_files:
+        rst_full_file = os.path.join(TOP_LEVEL_DIR, rst_file)
+        tmp_file = rst_full_file + "_tmp"
+        link_anchor = ".. _database-tables-{}:".format(os.path.basename(rst_file).split(".rst")[0])
+        with open(tmp_file, 'w') as ofile:
+            with open(rst_full_file, 'r') as ifile:
+                ofile.write(link_anchor + os.linesep)
+                ofile.write(os.linesep)
+                for row in iter(ifile):
+                    ofile.write(row)
+        shutil.move(tmp_file, rst_full_file)
 
 if __name__ == "__main__":
     main()
