@@ -11,7 +11,7 @@ def ordered_dict_from_namedtuple(data, sid=None):
     ----------
     data : collections.namedtuple
         The data to convert.
-    sid : int (Optional)
+    sid : int, optional
         The current session ID.
 
     Returns

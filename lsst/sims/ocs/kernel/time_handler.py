@@ -137,7 +137,7 @@ class TimeHandler(object):
             The increment to adjust the current time.
         time_units : str
             The time unit for the increment value.
-        timestamp : float (Optional)
+        timestamp : float, optional
             An alternative timestamp to apply the time increment to.
 
         Returns
@@ -164,7 +164,7 @@ class TimeHandler(object):
             The increment to adjust the current time.
         time_units : str
             The time unit for the increment value.
-        timestamp : float (Optional)
+        timestamp : float, optional
             An alternative timestamp to apply the time increment to.
 
         Returns
@@ -187,7 +187,7 @@ class TimeHandler(object):
             The increment to adjust the current time.
         time_units : str
             The time unit for the increment value.
-        timestamp : float (Optional)
+        timestamp : float, optional
             An alternative timestamp to apply the time increment to.
 
         Returns

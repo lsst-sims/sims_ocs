@@ -16,7 +16,7 @@ def write_file_config(options, conf_dir=None):
     ----------
     options : argparse.Namespace
         The options from ArgumentParser
-    conf_dir : Optional[str]
+    conf_dir : str, optional
         A directory for saving the configuration file in. Default is $HOME/.config/opsim4.
     """
     parser = configparser.SafeConfigParser()
@@ -39,9 +39,9 @@ def read_file_config(conf_file=None, conf_dir=None):
 
     Parameters
     ----------
-    conf_file : Optional[str]
+    conf_file : str, optional
         The name of the configuration file. Default is opsim4.
-    conf_dir : Optional[str]
+    conf_dir : str, optional
         The directory location of the configuration file. Default is $HOME/.config
     """
     if conf_file is None:

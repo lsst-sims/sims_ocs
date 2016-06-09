@@ -83,9 +83,9 @@ def generate_logfile_path(log_file_path="log", session_id="1000"):
 
     Parameters
     ----------
-    log_file_path : Optional[str]
+    log_file_path : str, optional
         The location to write the log file.
-    session_id : Optional[str]
+    session_id : str, optional
         The OpSim session ID tag.
 
     Returns

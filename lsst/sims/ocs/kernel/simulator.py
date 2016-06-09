@@ -117,8 +117,8 @@ class Simulator(object):
     def get_night_boundaries(self):
         """Calculate the set and rise times for night."
 
-        Return
-        ------
+        Returns
+        -------
         tuple (float, float)
             A tuple of the set and rise timestamp respectively.
         """
