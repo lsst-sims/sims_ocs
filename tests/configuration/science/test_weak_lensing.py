@@ -9,11 +9,12 @@ class WeakLensingTest(unittest.TestCase):
         self.prop = WeakLensing()
 
     def test_basic_information_after_creation(self):
-        self.assertEqual(len(self.prop.sky_region.region_selections), 1)
-        self.assertEqual(self.prop.sky_region.region_selections[0].limit_type, "Dec")
-        self.assertEqual(self.prop.sky_region.region_selections[0].minimum_limit, -62.5)
-        self.assertEqual(self.prop.sky_exclusion.exclusion_selections[0].limit_type, "GP")
-        self.assertEqual(self.prop.sky_exclusion.exclusion_selections[0].minimum_limit, 0.0)
+        self.assertEqual(len(self.prop.sky_region.selections), 1)
+        self.assertEqual(self.prop.sky_region.selections[0].limit_type, "Dec")
+        self.assertEqual(self.prop.sky_region.selections[0].minimum_limit, -62.5)
+        self.assertEqual(len(self.prop.sky_exclusion.selections), 1)
+        self.assertEqual(self.prop.sky_exclusion.selections[0].limit_type, "GP")
+        self.assertEqual(self.prop.sky_exclusion.selections[0].minimum_limit, 0.0)
         self.assertEqual(self.prop.sky_constraints.max_airmass, 2.5)
         self.assertEqual(self.prop.sky_nightly_bounds.twilight_boundary, -12.0)
         self.assertEqual(len(self.prop.filters), 6)

@@ -36,25 +36,25 @@ class AreaDistribution(pexConfig.Config):
         topic.delta_lst = self.sky_nightly_bounds.delta_lst
         topic.dec_window = self.sky_exclusion.dec_window
 
-        num_region_selections = len(self.sky_region.region_selections) \
-            if self.sky_region.region_selections is not None else 0
+        num_region_selections = len(self.sky_region.selections) \
+            if self.sky_region.selections is not None else 0
         topic.num_region_selections = num_region_selections
         if num_region_selections:
             limit_types = []
-            for i, v in enumerate(self.sky_region.region_selections.values()):
+            for i, v in enumerate(self.sky_region.selections.values()):
                 limit_types.append(v.limit_type)
                 topic.region_minimums[i] = v.minimum_limit
                 topic.region_maximums[i] = v.maximum_limit
             topic.region_types = ','.join(limit_types)
 
-        topic.region_combiners = ','.join(self.sky_region.region_combiners)
+        topic.region_combiners = ','.join(self.sky_region.combiners)
 
-        num_exclusion_selections = len(self.sky_exclusion.exclusion_selections) \
-            if self.sky_exclusion.exclusion_selections is not None else 0
+        num_exclusion_selections = len(self.sky_exclusion.selections) \
+            if self.sky_exclusion.selections is not None else 0
         topic.num_exclusion_selections = num_exclusion_selections
         if num_exclusion_selections:
             limit_types = []
-            for i, v in enumerate(self.sky_exclusion.exclusion_selections.values()):
+            for i, v in enumerate(self.sky_exclusion.selections.values()):
                 limit_types.append(v.limit_type)
                 topic.exclusion_minimums[i] = v.minimum_limit
                 topic.exclusion_maximums[i] = v.maximum_limit

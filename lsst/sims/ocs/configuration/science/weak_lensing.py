@@ -25,7 +25,7 @@ class WeakLensing(AreaDistribution):
         dec_limit.minimum_limit = -62.5
         dec_limit.maximum_limit = 2.8
 
-        self.sky_region.region_selections = {0: dec_limit}
+        self.sky_region.selections = {0: dec_limit}
 
         # -----------------------------
         # Sky Exclusion specifications
@@ -40,7 +40,7 @@ class WeakLensing(AreaDistribution):
         gal_plane.maximum_limit = 10.0
         gal_plane.bounds_limit = 90.0
 
-        self.sky_exclusion.exclusion_selections = {0: gal_plane}
+        self.sky_exclusion.selections = {0: gal_plane}
 
         # ---------------------------------
         # Sky Nightly Bounds specifications
