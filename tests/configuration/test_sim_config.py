@@ -7,7 +7,7 @@ except ImportError:
     import mock
 
 from lsst.sims.ocs.configuration import SimulationConfig
-from tests.helpers import NUM_AREA_DIST_PROPS
+from tests.helpers import CONFIG_COMM_PUT_CALLS, NUM_AREA_DIST_PROPS
 
 def create_file(i, directory=None, message=None):
     filename = "conf{}.py".format(i)
@@ -42,8 +42,10 @@ class SimulationConfigTest(unittest.TestCase):
         cls.file4 = create_file(4, cls.config_dir)
         cls.file5 = create_file(5, message=create_content("lsst.sims.ocs.configuration.survey",
                                                           "Survey", ["config.duration=10.0"]))
-        cls.file6 = create_file(6, message=create_content("lsst.sims.ocs.configuration.instrument.slew",
-                                                          "Slew", ["config.tel_optics_cl_delay=[0.0, 18.0]"]))
+        cls.file6 = create_file(6,
+                                message=create_content(
+                                    "lsst.sims.ocs.configuration.instrument.optics_loop_corr",
+                                    "OpticsLoopCorr", ["config.tel_optics_cl_delay=[0.0, 18.0]"]))
 
         cls.config_save_dir = "config_save"
         os.mkdir(cls.config_save_dir)
@@ -83,13 +85,13 @@ class SimulationConfigTest(unittest.TestCase):
         self.sim_config.load([self.file5])
         self.assertEqual(self.sim_config.survey.duration, 10.0)
         self.sim_config.load([self.file6])
-        self.assertEqual(self.sim_config.observatory.slew.tel_optics_cl_delay[1], 18.0)
+        self.assertEqual(self.sim_config.observatory.optics_loop_corr.tel_optics_cl_delay[1], 18.0)
 
     @mock.patch("lsst.pex.config.Config.save")
     def test_saving_blank_configurations(self, mock_pexconfig_save):
         # The real configurations can get very expensive to save, so we're just testing that the
         # correct number of executions and blank files are created.
-        expected_calls = 9 + NUM_AREA_DIST_PROPS
+        expected_calls = CONFIG_COMM_PUT_CALLS + NUM_AREA_DIST_PROPS
         save_files = ["save_conf{}.py".format(i + 1) for i in range(expected_calls)]
         mock_pexconfig_save.side_effect = [save_file(f, self.config_save_dir) for f in save_files]
         self.sim_config.save(self.config_save_dir)

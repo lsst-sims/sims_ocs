@@ -124,17 +124,14 @@ class ConfigurationCommunicator(object):
         """
         self.slew_conf = self.sal.set_publish_topic("slewConfig")
 
-        self.slew_conf.tel_optics_ol_slope = self.config.observatory.slew.tel_optics_ol_slope
-        self.config.observatory.slew.set_array(self.slew_conf, "tel_optics_cl_alt_limit")
-        self.config.observatory.slew.set_array(self.slew_conf, "tel_optics_cl_delay")
         self.slew_conf.prereq_domalt = self.config.observatory.slew.get_string_rep("prereq_domalt")
         self.slew_conf.prereq_domaz = self.config.observatory.slew.get_string_rep("prereq_domaz")
         self.slew_conf.prereq_telalt = self.config.observatory.slew.get_string_rep("prereq_telalt")
         self.slew_conf.prereq_telaz = self.config.observatory.slew.get_string_rep("prereq_telaz")
-        self.slew_conf.prereq_telopticsopenloop = self.config.observatory.slew.get_string_rep(
-                                                                                "prereq_telopticsopenloop")
-        self.slew_conf.prereq_telopticsclosedloop = self.config.observatory.slew.get_string_rep(
-                                                                                "prereq_telopticsclosedloop")
+        self.slew_conf.prereq_telopticsopenloop = \
+            self.config.observatory.slew.get_string_rep("prereq_telopticsopenloop")
+        self.slew_conf.prereq_telopticsclosedloop = \
+            self.config.observatory.slew.get_string_rep("prereq_telopticsclosedloop")
         self.slew_conf.prereq_telrot = self.config.observatory.slew.get_string_rep("prereq_telrot")
         self.slew_conf.prereq_filter = self.config.observatory.slew.get_string_rep("prereq_filter")
         self.slew_conf.prereq_adc = self.config.observatory.slew.get_string_rep("prereq_adc")
@@ -145,6 +142,15 @@ class ConfigurationCommunicator(object):
         self.slew_conf.prereq_domazsettle = self.config.observatory.slew.get_string_rep("prereq_domazsettle")
         self.slew_conf.prereq_exposures = self.config.observatory.slew.get_string_rep("prereq_exposures")
         self.slew_conf.prereq_readout = self.config.observatory.slew.get_string_rep("prereq_readout")
+
+    def _configure_optics_loop_corr(self):
+        """Configure and send the optics loop correction configuration topic.
+        """
+        self.olc_conf = self.sal.set_publish_topic("opticsLoopCorrConfig")
+
+        self.olc_conf.tel_optics_ol_slope = self.config.observatory.optics_loop_corr.tel_optics_ol_slope
+        self.config.observatory.optics_loop_corr.set_array(self.olc_conf, "tel_optics_cl_alt_limit")
+        self.config.observatory.optics_loop_corr.set_array(self.olc_conf, "tel_optics_cl_delay")
 
     def _configure_park(self):
         """Configure and send the park position configuration.
@@ -174,6 +180,7 @@ class ConfigurationCommunicator(object):
         self._configure_rotator()
         self._configure_camera()
         self._configure_slew()
+        self._configure_optics_loop_corr()
         self._configure_park()
         self._configure_area_distribution_proposals()
 
@@ -187,6 +194,7 @@ class ConfigurationCommunicator(object):
         self.sal.put(self.rot_conf)
         self.sal.put(self.cam_conf)
         self.sal.put(self.slew_conf)
+        self.sal.put(self.olc_conf)
         self.sal.put(self.park_conf)
         num_proposals = 1
         for ad_config in self.config.science.area_dist_props.values():

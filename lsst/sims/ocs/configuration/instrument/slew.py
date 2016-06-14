@@ -6,16 +6,6 @@ class Slew(pexConfig.Config):
     """Configuration of the LSST Slew.
     """
 
-    tel_optics_ol_slope = pexConfig.Field('Delay factor for Open Loop optics correction '
-                                          '(units=seconds/(degrees in ALT slew)', float)
-
-    # Table of delay factors for Closed Loop optics correction according to the ALT slew range.
-    tel_optics_cl_alt_limit = pexConfig.ListField('Altitude (units=degrees) limits for the delay ranges.',
-                                                  float)
-
-    tel_optics_cl_delay = pexConfig.ListField('Time delay (units=seconds) for the corresponding ALT slew '
-                                              'range in the Closed Loop optics correction.', float)
-
     # Dependencies between the slew activities.
     # For each activity there is a list of prerequisites activities, that must be previously completed.
     # The Readout corresponds to the previous observation, that's why it doesn't have prerequisites and it is
@@ -42,9 +32,6 @@ class Slew(pexConfig.Config):
     def setDefaults(self):
         """Set defaults for the LSST Slew.
         """
-        self.tel_optics_ol_slope = 1.0 / 3.5
-        self.tel_optics_cl_alt_limit = [0.0, 9.0, 90.0]
-        self.tel_optics_cl_delay = [0.0, 20.0]
 
         self.prereq_domalt = []
         self.prereq_domaz = []
@@ -63,21 +50,6 @@ class Slew(pexConfig.Config):
         self.prereq_ins_optics = []
         self.prereq_guider_pos = []
         self.prereq_guider_adq = []
-
-    def set_array(self, conf, param):
-        """Set a DDS topic array parameter.
-
-        Parameters
-        ----------
-        conf : SALPY_scheduler.scheduler_slewConfigC
-            The slew configuration instance.
-        param : str
-            The name of the topic parameter to fill.
-        """
-        array = getattr(conf, param)
-        local_param = getattr(self, param)
-        for i, v in enumerate(local_param):
-            array[i] = v
 
     def get_string_rep(self, param):
         """A string representation of a string list parameter.
