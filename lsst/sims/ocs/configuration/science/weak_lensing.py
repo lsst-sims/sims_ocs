@@ -3,17 +3,17 @@ import lsst.pex.config as pexConfig
 from lsst.sims.ocs.configuration.proposal import AreaDistribution, BandFilter, Selection
 from lsst.sims.ocs.configuration.proposal import area_dist_prop_reg, SELECTION_LIMIT_TYPES
 
-__all__ = ["UniversalWeak"]
+__all__ = ["WeakLensing"]
 
-@pexConfig.registerConfig("UniversalWeak", area_dist_prop_reg, AreaDistribution)
-class UniversalWeak(AreaDistribution):
-    """This class sets the parameters for specifying the Universal Weak proposal.
+@pexConfig.registerConfig("WeakLensing", area_dist_prop_reg, AreaDistribution)
+class WeakLensing(AreaDistribution):
+    """This class sets the parameters for specifying the Weak Lensing proposal.
     """
 
     def setDefaults(self):
         """Setup all the proposal information.
         """
-        self.name = "UniversalWeak"
+        self.name = "WeakLensing"
 
         # -------------------------
         # Sky Region specifications
@@ -54,6 +54,14 @@ class UniversalWeak(AreaDistribution):
         # ------------------------------
 
         self.sky_constraints.max_airmass = 2.5
+
+        # ----------------------
+        # Scheduling information
+        # ----------------------
+
+        self.scheduling.max_num_targets = 100
+        self.scheduling.accept_serendipity = False
+        self.scheduling.accept_consecutive_visits = False
 
         # --------------------------
         # Band Filter specifications
@@ -113,11 +121,3 @@ class UniversalWeak(AreaDistribution):
                         i_filter.name: i_filter,
                         z_filter.name: z_filter,
                         y_filter.name: y_filter}
-
-        # ----------------------
-        # Scheduling information
-        # ----------------------
-
-        self.scheduling.max_num_targets = 100
-        self.scheduling.accept_serendipity = False
-        self.scheduling.accept_consecutive_visits = False
