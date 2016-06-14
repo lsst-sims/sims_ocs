@@ -188,5 +188,9 @@ class ConfigurationCommunicator(object):
         self.sal.put(self.cam_conf)
         self.sal.put(self.slew_conf)
         self.sal.put(self.park_conf)
-        for _, ad_config in self.config.science.area_dist_props.items():
-            self.sal.put(ad_config.set_topic(self.sal.get_topic("areaDistPropConfig")))
+        num_proposals = 1
+        for ad_config in self.config.science.area_dist_props.values():
+            ad_topic = ad_config.set_topic(self.sal.get_topic("areaDistPropConfig"))
+            ad_topic.prop_id = num_proposals
+            self.sal.put(ad_topic)
+            num_proposals += 1
