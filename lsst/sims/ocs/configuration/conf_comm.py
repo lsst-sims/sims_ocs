@@ -159,9 +159,9 @@ class ConfigurationCommunicator(object):
         self.park_conf.filter_position = self.config.observatory.park.filter_position
 
     def _configure_area_distribution_proposals(self):
-        """Configure all of the area distribution proposals.
+        """Publish the area distribution proposals.
         """
-        self.ad_conf = self.sal.set_publish_topic("areaDistPropConfig")
+        self.sal.set_publish_topic("areaDistPropConfig")
 
     def configure(self):
         """Configure all publish topics for the configuration communicator.
@@ -188,5 +188,9 @@ class ConfigurationCommunicator(object):
         self.sal.put(self.cam_conf)
         self.sal.put(self.slew_conf)
         self.sal.put(self.park_conf)
-        for _, ad_config in self.config.science.area_dist_props.items():
-            self.sal.put(ad_config.set_topic(self.ad_conf))
+        num_proposals = 1
+        for ad_config in self.config.science.area_dist_props.values():
+            ad_topic = ad_config.set_topic(self.sal.get_topic("areaDistPropConfig"))
+            ad_topic.prop_id = num_proposals
+            self.sal.put(ad_topic)
+            num_proposals += 1

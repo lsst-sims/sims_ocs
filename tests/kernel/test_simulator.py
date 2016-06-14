@@ -12,7 +12,7 @@ from lsst.sims.ocs.kernel.simulator import Simulator
 
 from tests.database.topic_helpers import exposure_coll1, exposure_coll2, exposure_coll3, exposure_coll4
 from tests.database.topic_helpers import slew_activity_coll
-from tests.helpers import CONFIG_COMM_PUT_CALLS
+from tests.helpers import CONFIG_AREA_DIST_PROPS, CONFIG_COMM_PUT_CALLS
 
 class SimulatorTest(unittest.TestCase):
 
@@ -82,6 +82,7 @@ class SimulatorTest(unittest.TestCase):
         self.put_calls = 3 * self.num_visits
         self.config_comm_put_calls = 1
         self.put_calls += CONFIG_COMM_PUT_CALLS
+        self.put_calls += CONFIG_AREA_DIST_PROPS
         self.sim.fractional_duration = 1 / 365
         self.sim.wait_for_scheduler = wait_for_sched
         self.sim.get_night_boundaries = mock.MagicMock(return_value=(self.starting_timestamp,

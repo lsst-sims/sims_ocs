@@ -1,0 +1,11 @@
+import unittest
+
+from lsst.sims.ocs.configuration.proposal import SkyConstraints
+
+class SkyConstraintsTest(unittest.TestCase):
+
+    def setUp(self):
+        self.sky_constraints = SkyConstraints()
+
+    def test_basic_information_after_creation(self):
+        self.assertEqual(self.sky_constraints.max_airmass, 2.5)
