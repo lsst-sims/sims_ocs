@@ -56,3 +56,8 @@ class SalManagerTest(unittest.TestCase):
         topic = self.sal.set_publish_topic(self.publish_topic)
         self.sal.put(topic)
         self.assertTrue(mock_sal_put_sample.called)
+
+    def test_get_topic(self):
+        self.sal.initialize()
+        topic = self.sal.get_topic(self.publish_topic)
+        self.assertIsNotNone(topic)

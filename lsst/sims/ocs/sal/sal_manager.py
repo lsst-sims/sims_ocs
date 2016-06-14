@@ -34,6 +34,25 @@ class SalManager(object):
         """
         self.manager.salShutdown()
 
+    def get_topic(self, topic_short_name):
+        """Get the given topic.
+
+        This function retrieves the associated data structure for the topic.
+
+        Parameters
+        ----------
+        topic_short_name : str
+            The part of the topic name minus the scheduler prefix.
+
+        Returns
+        -------
+        SALPY_scheduler.<topic_short_name>C
+            The telemetry data structure associated with the topic.
+        """
+        topic_name = "scheduler_{}".format(topic_short_name)
+        topic = getattr(SALPY_scheduler, "{}C".format(topic_name))
+        return topic()
+
     def set_publish_topic(self, topic_short_name):
         """Set the given topic for publishing.
 

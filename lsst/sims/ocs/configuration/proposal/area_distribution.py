@@ -1,6 +1,7 @@
 import lsst.pex.config as pexConfig
 
-from lsst.sims.ocs.configuration.proposal import BandFilter, Scheduling, SkyRegion
+from lsst.sims.ocs.configuration.proposal import BandFilter, Scheduling
+from lsst.sims.ocs.configuration.proposal import SkyConstraints, SkyExclusion, SkyNightlyBounds, SkyRegion
 
 __all__ = ["AreaDistribution"]
 
@@ -9,7 +10,10 @@ class AreaDistribution(pexConfig.Config):
     """
 
     name = pexConfig.Field('Name for the proposal.', str)
-    sky_region = pexConfig.ConfigField('Sky selection region for the proposal.', SkyRegion)
+    sky_region = pexConfig.ConfigField('Sky region selectionfor the proposal.', SkyRegion)
+    sky_exclusion = pexConfig.ConfigField('Sky region selectionfor the proposal.', SkyExclusion)
+    sky_nightly_bounds = pexConfig.ConfigField('Sky region selectionfor the proposal.', SkyNightlyBounds)
+    sky_constraints = pexConfig.ConfigField('Sky region selectionfor the proposal.', SkyConstraints)
     filters = pexConfig.ConfigDictField('Filter configuration for the proposal.', str, BandFilter)
     scheduling = pexConfig.ConfigField('Scheduling configuration for the proposal.', Scheduling)
 
@@ -28,25 +32,33 @@ class AreaDistribution(pexConfig.Config):
         """
         topic.name = self.name if self.name is not None else "None"
 
-        topic.twilight_boundary = self.sky_region.twilight_boundary
-        topic.delta_lst = self.sky_region.delta_lst
-        topic.dec_window = self.sky_region.dec_window
+        topic.twilight_boundary = self.sky_nightly_bounds.twilight_boundary
+        topic.delta_lst = self.sky_nightly_bounds.delta_lst
+        topic.dec_window = self.sky_exclusion.dec_window
 
-        num_limit_selections = len(self.sky_region.limit_selections) \
-            if self.sky_region.limit_selections is not None else 0
-        topic.num_limit_selections = num_limit_selections
-        if num_limit_selections:
+        num_region_selections = len(self.sky_region.region_selections) \
+            if self.sky_region.region_selections is not None else 0
+        topic.num_region_selections = num_region_selections
+        if num_region_selections:
             limit_types = []
-            for i, v in enumerate(self.sky_region.limit_selections.values()):
+            for i, v in enumerate(self.sky_region.region_selections.values()):
                 limit_types.append(v.limit_type)
-                topic.limit_minimums[i] = v.minimum_limit
-                topic.limit_maximums[i] = v.maximum_limit
-            topic.limit_types = ','.join(limit_types)
+                topic.region_minimums[i] = v.minimum_limit
+                topic.region_maximums[i] = v.maximum_limit
+            topic.region_types = ','.join(limit_types)
 
-        topic.use_galactic_exclusion = self.sky_region.use_galactic_exclusion
-        topic.taper_l = self.sky_region.galactic_exclusion.taper_l
-        topic.taper_b = self.sky_region.galactic_exclusion.taper_b
-        topic.peak_l = self.sky_region.galactic_exclusion.peak_l
+        topic.region_combiners = ','.join(self.sky_region.region_combiners)
+
+        num_exclusion_selections = len(self.sky_exclusion.exclusion_selections) \
+            if self.sky_exclusion.exclusion_selections is not None else 0
+        topic.num_exclusion_selections = num_exclusion_selections
+        if num_exclusion_selections:
+            limit_types = []
+            for i, v in enumerate(self.sky_exclusion.exclusion_selections.values()):
+                limit_types.append(v.limit_type)
+                topic.exclusion_minimums[i] = v.minimum_limit
+                topic.exclusion_maximums[i] = v.maximum_limit
+            topic.exclusion_types = ','.join(limit_types)
 
         topic.num_filters = len(self.filters) if self.filters is not None else 0
         if topic.num_filters:

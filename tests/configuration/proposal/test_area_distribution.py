@@ -11,6 +11,9 @@ class AreaDistributionTest(unittest.TestCase):
     def test_basic_information_after_creation(self):
         self.assertIsNone(self.ad.name)
         self.assertIsNotNone(self.ad.sky_region)
+        self.assertIsNotNone(self.ad.sky_exclusion)
+        self.assertIsNotNone(self.ad.sky_nightly_bounds)
+        self.assertIsNotNone(self.ad.sky_constraints)
         self.assertIsNone(self.ad.filters)
         self.assertIsNotNone(self.ad.scheduling)
 

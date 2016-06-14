@@ -18,24 +18,42 @@ class UniversalWeak(AreaDistribution):
         # -------------------------
         # Sky Region specifications
         # -------------------------
-        self.sky_region.twilight_boundary = -12.0
-        self.sky_region.delta_lst = 60.0
-        self.sky_region.dec_window = 90.0
-        self.sky_region.use_galactic_exclusion = False
-
-        # RA Band - All Sky
-        ra_limit = Selection()
-        ra_limit.limit_type = SELECTION_LIMIT_TYPES[0]
-        ra_limit.minimum_limit = 0.0
-        ra_limit.maximum_limit = 360.0
 
         # Dec Band
         dec_limit = Selection()
         dec_limit.limit_type = SELECTION_LIMIT_TYPES[1]
-        dec_limit.minimum_limit = -60.0
-        dec_limit.maximum_limit = 0.0
+        dec_limit.minimum_limit = -62.5
+        dec_limit.maximum_limit = 2.8
 
-        self.sky_region.limit_selections = {ra_limit.limit_type: ra_limit, dec_limit.limit_type: dec_limit}
+        self.sky_region.region_selections = {0: dec_limit}
+
+        # -----------------------------
+        # Sky Exclusion specifications
+        # -----------------------------
+
+        self.sky_exclusion.dec_window = 90.0
+
+        # Galactic Plane
+        gal_plane = Selection()
+        gal_plane.limit_type = SELECTION_LIMIT_TYPES[6]
+        gal_plane.minimum_limit = 0.0
+        gal_plane.maximum_limit = 10.0
+        gal_plane.bounds_limit = 90.0
+
+        self.sky_exclusion.exclusion_selections = {0: gal_plane}
+
+        # ---------------------------------
+        # Sky Nightly Bounds specifications
+        # ---------------------------------
+
+        self.sky_nightly_bounds.twilight_boundary = -12.0
+        self.sky_nightly_bounds.delta_lst = 60.0
+
+        # ------------------------------
+        # Sky Constraints specifications
+        # ------------------------------
+
+        self.sky_constraints.max_airmass = 2.5
 
         # --------------------------
         # Band Filter specifications
