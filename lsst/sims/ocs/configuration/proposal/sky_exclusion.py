@@ -19,3 +19,4 @@ class SkyExclusion(pexConfig.Config):
         """Default specification for a sky exclusions.
         """
         self.dec_window = 90.0
+        self.selections = {}
