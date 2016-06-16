@@ -15,6 +15,14 @@ class ScheduledDowntime(object):
         self.downtime_file = None
         self.downtimes = []
 
+    def __call__(self):
+        """Return the top downtime.
+        """
+        try:
+            return self.downtimes.pop(0)
+        except IndexError:
+            return None
+
     def __len__(self):
         """Return number of scheduled downtimes.
 

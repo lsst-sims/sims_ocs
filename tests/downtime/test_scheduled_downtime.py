@@ -48,3 +48,8 @@ class ScheduledDowntimeTest(unittest.TestCase):
         self.check_downtime(self.sdt.downtimes[0], 100, 7, "something to do")
 
         os.remove(downtime_dbfile)
+
+    def test_call(self):
+        self.sdt.initialize()
+        self.check_downtime(self.sdt(), 158, 7, "general maintenance")
+        self.assertEqual(len(self.sdt), 30)

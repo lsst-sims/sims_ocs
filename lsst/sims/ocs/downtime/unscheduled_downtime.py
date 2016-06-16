@@ -20,6 +20,14 @@ class UnscheduledDowntime(object):
         self.downtimes = []
         self.log = logging.getLogger("downtime.UnscheduledDowntime")
 
+    def __call__(self):
+        """Return the top downtime.
+        """
+        try:
+            return self.downtimes.pop(0)
+        except IndexError:
+            return None
+
     def __len__(self):
         """Return number of scheduled downtimes.
 
@@ -47,13 +55,15 @@ class UnscheduledDowntime(object):
         downtimes, but a randomized seed can be requested.
 
         The random downtime is calculated using the following probabilities:
-        minor event (remainder of night and next day) = 5/365 days
-              e.g. power supply failure
-        intermediate (3 nights) = 2/365 days
-              e.g. repair filter mechanism, rotator, hexapod, or shutter
-        major event (7 nights) = 1/2*365 days
-        catastrophic event (14 nights) = 1/3650 days
-              e.g. replace a raft
+
+        minor event
+            remainder of night and next day = 5/365 days e.g. power supply failure
+        intermediate
+            3 nights = 2/365 days e.g. repair filter mechanism, rotator, hexapod, or shutter
+        major event
+            7 nights = 1/2*365 days
+        catastrophic event
+            14 nights = 1/3650 days e.g. replace a raft
 
         Parameters
         ----------
