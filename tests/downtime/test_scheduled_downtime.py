@@ -1,3 +1,4 @@
+import logging
 import os
 import sqlite3
 import unittest
@@ -8,6 +9,7 @@ class ScheduledDowntimeTest(unittest.TestCase):
 
     def setUp(self):
         self.sdt = ScheduledDowntime()
+        logging.getLogger().setLevel(logging.WARN)
 
     def check_downtime(self, downtime, night, duration, activity):
         self.assertEqual(downtime[0], night)

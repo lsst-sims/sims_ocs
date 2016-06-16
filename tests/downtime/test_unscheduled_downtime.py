@@ -1,3 +1,4 @@
+import logging
 try:
     from unittest import mock
 except ImportError:
@@ -10,6 +11,7 @@ class UnscheduledDowntimeTest(unittest.TestCase):
 
     def setUp(self):
         self.usdt = UnscheduledDowntime()
+        logging.getLogger().setLevel(logging.WARN)
 
     def check_downtime(self, downtime, night, duration, activity):
         self.assertEqual(downtime[0], night)
