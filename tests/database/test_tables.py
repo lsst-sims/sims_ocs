@@ -190,3 +190,33 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['domeAzSpeed'], sm.domeAzSpeed)
         self.assertEqual(result['telAltSpeed'], sm.telAltSpeed)
         self.assertEqual(result['SlewHistory_slewCount'], sm.SlewHistory_slewCount)
+
+    def test_create_scheduled_downtime_table(self):
+        sched_down = tbls.create_scheduled_downtime(self.metadata)
+        self.assertEqual(len(sched_down.c), 4)
+        self.assertEqual(len(sched_down.indexes), 1)
+
+    def test_write_scheduled_downtime_table(self):
+        sd = (45, 7, "general maintanence")
+        result = tbls.write_scheduled_downtime(sd, 1000)
+        sched_down = tbls.create_scheduled_downtime(self.metadata)
+        self.check_ordered_dict_to_table(result, sched_down)
+        self.assertEqual(result['night'], sd[0])
+        self.assertEqual(result['Session_sessionId'], 1000)
+        self.assertEqual(result['duration'], sd[1])
+        self.assertEqual(result['activity'], sd[2])
+
+    def test_create_unscheduled_downtime_table(self):
+        unsched_down = tbls.create_unscheduled_downtime(self.metadata)
+        self.assertEqual(len(unsched_down.c), 4)
+        self.assertEqual(len(unsched_down.indexes), 1)
+
+    def test_write_unscheduled_downtime_table(self):
+        usd = (20, 3, "intermediate event")
+        result = tbls.write_unscheduled_downtime(usd, 1000)
+        unsched_down = tbls.create_unscheduled_downtime(self.metadata)
+        self.check_ordered_dict_to_table(result, unsched_down)
+        self.assertEqual(result['night'], usd[0])
+        self.assertEqual(result['Session_sessionId'], 1000)
+        self.assertEqual(result['duration'], usd[1])
+        self.assertEqual(result['activity'], usd[2])

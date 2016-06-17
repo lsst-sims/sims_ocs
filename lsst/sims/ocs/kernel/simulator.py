@@ -37,6 +37,7 @@ class Simulator(object):
     seq : :class:`.Sequencer`
         The sequencer instance.
     dh : :class:`.DowntimeHandler`
+        The downtime handler instance.
     conf_comm : :class:`.ConfigurationCommunicator`
         The configuration communicator instance.
     """
@@ -143,6 +144,7 @@ class Simulator(object):
         self.sal.initialize()
         self.seq.initialize(self.sal, self.conf.observatory)
         self.dh.initialize(self.duration, self.conf.downtime)
+        self.dh.write_downtime_to_db(self.db)
         self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
         self.target = self.sal.set_subscribe_topic("targetTest")

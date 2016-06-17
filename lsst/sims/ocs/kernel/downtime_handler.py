@@ -20,7 +20,7 @@ class DowntimeHandler(object):
         The set of current scheduled downtime information.
     current_unscheduled : tuple or None
         The set of current unscheduled downtime information.
-    log : Log
+    log : Logger
         The handle for the logger.
     """
 
@@ -119,3 +119,18 @@ class DowntimeHandler(object):
 
         # Downtime available, but none tonight.
         return downtime_days
+
+    def write_downtime_to_db(self, db):
+        """Write all the downtime information to the survey database.
+
+        Parameters
+        ----------
+        db : :class:`.SocsDatabase`
+            The instance of the survey database.
+        """
+        for sched_down in self.scheduled.downtimes:
+            db.append_data("scheduled_downtime", sched_down)
+        for unsched_down in self.unscheduled.downtimes:
+            db.append_data("unscheduled_downtime", unsched_down)
+        db.write()
+        db.clear_data()

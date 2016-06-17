@@ -99,6 +99,8 @@ class SocsDatabase(object):
         self.slew_maxspeeds = tables.create_slew_maxspeeds(metadata)
         self.target_exposures = tables.create_target_exposures(metadata)
         self.observation_exposures = tables.create_observation_exposures(metadata)
+        self.scheduled_downtime = tables.create_scheduled_downtime(metadata)
+        self.unscheduled_downtime = tables.create_unscheduled_downtime(metadata)
 
     def _connect(self):
         """Create the database connection for MySQL.

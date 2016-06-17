@@ -1,8 +1,9 @@
 import collections
 
-__all__ = ["write_field", "write_observation_exposures", "write_observation_history", "write_slew_activities",
-           "write_slew_history", "write_slew_final_state", "write_slew_initial_state", "write_slew_maxspeeds",
-           "write_target_exposures", "write_target_history"]
+__all__ = ["write_field", "write_observation_exposures", "write_observation_history",
+           "write_scheduled_downtime", "write_slew_activities", "write_slew_history",
+           "write_slew_final_state", "write_slew_initial_state", "write_slew_maxspeeds",
+           "write_target_exposures", "write_target_history", "write_unscheduled_downtime"]
 
 def ordered_dict_from_namedtuple(data, sid=None):
     """Convert a namedtuple to an OrderedDict.
@@ -99,6 +100,29 @@ def write_observation_history(data, sid):
         ('numExposures', data.num_exposures),
         ('visitTime', data.visit_time),
         ('visitExposureTime', sum([data.exposure_times[i] for i in range(data.num_exposures)]))
+    ])
+    return values
+
+def write_scheduled_downtime(data, sid):
+    """Create a dictionary of data for the ScheduledDowntime table.
+
+    Parameters
+    ----------
+    data : tuple
+        The instance containing the scheduled downtime information
+    sid : int
+        The current session ID.
+
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the topic data.
+    """
+    values = collections.OrderedDict([
+        ('night', data[0]),
+        ('Session_sessionId', sid),
+        ('duration', data[1]),
+        ('activity', data[2])
     ])
     return values
 
@@ -229,5 +253,28 @@ def write_target_history(data, sid):
         ('angle', data.angle),
         ('numExposures', data.num_exposures),
         ('requestedExpTime', sum([data.exposure_times[i] for i in range(data.num_exposures)]))
+    ])
+    return values
+
+def write_unscheduled_downtime(data, sid):
+    """Create a dictionary of data for the UnscheduledDowntime table.
+
+    Parameters
+    ----------
+    data : tuple
+        The instance containing the unscheduled downtime information
+    sid : int
+        The current session ID.
+
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the topic data.
+    """
+    values = collections.OrderedDict([
+        ('night', data[0]),
+        ('Session_sessionId', sid),
+        ('duration', data[1]),
+        ('activity', data[2])
     ])
     return values

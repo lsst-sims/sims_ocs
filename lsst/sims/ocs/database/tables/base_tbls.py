@@ -3,9 +3,39 @@ from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event, ForeignKeyConstraint
 
 __all__ = ["create_field", "create_observation_exposures", "create_observation_history",
-           "create_session", "create_slew_activities", "create_slew_final_state", "create_slew_history",
-           "create_slew_initial_state", "create_slew_maxspeeds", "create_target_exposures",
-           "create_target_history"]
+           "create_scheduled_downtime", "create_session", "create_slew_activities", "create_slew_final_state",
+           "create_slew_history", "create_slew_initial_state", "create_slew_maxspeeds",
+           "create_target_exposures", "create_target_history", "create_unscheduled_downtime"]
+
+def create_downtime(name, metadata):
+    """Create one of the Downtime tables.
+
+    This function creates one of the Downtime tables.
+
+    Parameters
+    ----------
+    name : str
+        The name of the downtime table.
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        One of the Downtime table objects.
+    """
+    table = Table(name, metadata,
+                  Column("night", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The starting night for the downtime."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("duration", Integer, nullable=False, doc="The length of the downtime (units=days)."),
+                  Column("activity", String(128), nullable=False,
+                         doc="The description of the activity associated with the downtime."))
+
+    Index("fk_{}_night1".format(name), table.c.night)
+
+    return table
 
 def create_field(metadata):
     """Create Field table.
@@ -110,6 +140,24 @@ def create_observation_history(metadata):
     Index("fk_ObsHistory_Target1", table.c.TargetHistory_targetId)
 
     return table
+
+def create_scheduled_downtime(metadata):
+    """Create the ScheduledDowntime table.
+
+    This function creates the ScheduledDowntime table for list the scheduled
+    downtime during the survey.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The ScheduledDowntime table object.
+    """
+    return create_downtime("ScheduledDowntime", metadata)
 
 def create_session(metadata, autoincrement=True):
     """Create Session table.
@@ -269,7 +317,7 @@ def create_slew_maxspeeds(metadata):
 def create_slew_state(name, metadata):
     """Create one of the SlewState tables.
 
-    This function creates on of the SlewState tables.
+    This function creates one of the SlewState tables.
 
     Parameters
     ----------
@@ -365,3 +413,21 @@ def create_target_history(metadata):
     Index("fk_TargetHistory_Field1", table.c.Field_fieldId)
 
     return table
+
+def create_unscheduled_downtime(metadata):
+    """Create the UnscheduledDowntime table.
+
+    This function creates the UnscheduledDowntime table for list the unscheduled
+    downtime during the survey.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The UnscheduledDowntime table object.
+    """
+    return create_downtime("UnscheduledDowntime", metadata)
