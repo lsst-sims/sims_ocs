@@ -5,12 +5,14 @@ except ImportError:
     import mock
 import unittest
 
+from lsst.sims.ocs.configuration import Downtime
 from lsst.sims.ocs.kernel import DowntimeHandler
 
 class DowntimeHandlerTest(unittest.TestCase):
 
     def setUp(self):
         self.dh = DowntimeHandler()
+        self.conf = Downtime()
         self.survey_duration = 3650
         logging.getLogger().setLevel(logging.WARN)
 
@@ -22,7 +24,7 @@ class DowntimeHandlerTest(unittest.TestCase):
         self.mock_unscheduled_downtime = patcher2.start()
 
     def initialize(self):
-        self.dh.initialize(self.survey_duration)
+        self.dh.initialize(self.survey_duration, self.conf)
 
     def initialize_mocks(self):
         self.dh.scheduled = self.mock_scheduled_downtime
@@ -36,6 +38,16 @@ class DowntimeHandlerTest(unittest.TestCase):
         self.initialize()
         self.assertGreater(len(self.dh.scheduled), 0)
         self.assertGreater(len(self.dh.unscheduled), 0)
+
+    @mock.patch("time.time")
+    def test_information_with_alternate_unscheduled_downtime_seed(self, mock_time):
+        alt_seed = 1466094470
+        mock_time.return_value = alt_seed
+        self.conf.unscheduled_downtime_use_random_seed = True
+        self.initialize()
+        self.assertGreater(len(self.dh.scheduled), 0)
+        self.assertGreater(len(self.dh.unscheduled), 0)
+        self.assertEqual(self.conf.unscheduled_downtime_random_seed, alt_seed)
 
     def test_no_more_downtime(self):
         self.initialize_mocks()

@@ -47,7 +47,7 @@ class UnscheduledDowntime(object):
         """
         return sum([x[1] for x in self.downtimes])
 
-    def initialize(self, survey_length=3650, random_seed=False):
+    def initialize(self, survey_length=3650, use_random_seed=False, random_seed=-1):
         """Configure the set of unscheduled downtimes.
 
         This function creates the unscheduled downtimes based on a set of probabilities
@@ -67,13 +67,18 @@ class UnscheduledDowntime(object):
 
         Parameters
         ----------
-        survey_length : int
+        survey_length : int, optional
             The length of the survey in days. Default is the length of a 10 year survey.
-        random_seed : bool
+        use_random_seed : bool, optional
             Flag to set the seed based on the current time. Default is to used fixed seed.
+        random_seed : int, optional
+            Provide an alternate random seed. Only works when use_random_seed is True.
         """
-        if random_seed:
-            self.seed = int(time.time())
+        if use_random_seed:
+            if random_seed == -1:
+                self.seed = int(time.time())
+            else:
+                self.seed = random_seed
 
         random.seed(self.seed)
 

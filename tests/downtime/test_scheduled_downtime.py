@@ -35,8 +35,7 @@ class ScheduledDowntimeTest(unittest.TestCase):
         downtime_table.append("duration INTEGER")
         downtime_table.append("activity TEXT")
 
-        conn = sqlite3.connect(downtime_dbfile)
-        with conn:
+        with sqlite3.connect(downtime_dbfile) as conn:
             cur = conn.cursor()
             cur.execute("DROP TABLE IF EXISTS Downtime")
             cur.execute("CREATE TABLE Downtime({})".format(",".join(downtime_table)))

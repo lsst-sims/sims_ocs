@@ -32,7 +32,7 @@ class ScheduledDowntime(object):
         """
         return len(self.downtimes)
 
-    def initialize(self, downtime_file=None):
+    def initialize(self, downtime_file=""):
         """Configure the set of scheduled downtimes.
 
         This function gets the appropriate database file and creates the set of
@@ -49,11 +49,11 @@ class ScheduledDowntime(object):
 
         Parameters
         ----------
-        downtime_file : str
+        downtime_file : str, optional
             A full path to an alternate scheduled downtime database file.
         """
 
-        if downtime_file is not None:
+        if downtime_file != "":
             self.downtime_file = downtime_file
         else:
             rsman = pkg_resources.ResourceManager()
