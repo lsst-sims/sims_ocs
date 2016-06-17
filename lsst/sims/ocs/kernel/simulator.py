@@ -6,7 +6,7 @@ from ts_scheduler.sky_model import Sun
 
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
 from lsst.sims.ocs.database.tables import write_field
-from lsst.sims.ocs.kernel import Sequencer, TimeHandler
+from lsst.sims.ocs.kernel import DowntimeHandler, Sequencer, TimeHandler
 from lsst.sims.ocs.kernel.time_handler import DAYS_IN_YEAR, SECONDS_IN_HOUR
 from lsst.sims.ocs.sal import SalManager, topic_strdict
 from lsst.sims.ocs.setup import LoggingLevel
@@ -36,6 +36,7 @@ class Simulator(object):
         The instance that manages interactions with the SAL.
     seq : :class:`.Sequencer`
         The sequencer instance.
+    dh : :class:`.DowntimeHandler`
     conf_comm : :class:`.ConfigurationCommunicator`
         The configuration communicator instance.
     """
@@ -63,6 +64,7 @@ class Simulator(object):
         self.log = logging.getLogger("kernel.Simulator")
         self.sal = SalManager()
         self.seq = Sequencer(self.conf.observing_site, self.conf.survey.idle_delay)
+        self.dh = DowntimeHandler()
         self.conf_comm = ConfigurationCommunicator()
         self.sun = Sun()
         self.obs_site_info = (self.conf.observing_site.longitude, self.conf.observing_site.latitude)
@@ -140,6 +142,7 @@ class Simulator(object):
         self.log.info("Initializing simulation")
         self.sal.initialize()
         self.seq.initialize(self.sal, self.conf.observatory)
+        self.dh.initialize(self.duration)
         self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
         self.target = self.sal.set_subscribe_topic("targetTest")
