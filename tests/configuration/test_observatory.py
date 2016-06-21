@@ -13,5 +13,6 @@ class ObservatoryTest(unittest.TestCase):
         self.assertIsNotNone(self.observatory.rotator)
         self.assertIsNotNone(self.observatory.camera)
         self.assertIsNotNone(self.observatory.slew)
+        self.assertIsNotNone(self.observatory.optics_loop_corr)
         self.assertIsNotNone(self.observatory.park)
         self.assertIsNotNone(self.observatory.obs_var)
