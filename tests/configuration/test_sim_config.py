@@ -91,8 +91,9 @@ class SimulationConfigTest(unittest.TestCase):
     @mock.patch("lsst.pex.config.Config.save")
     def test_saving_blank_configurations(self, mock_pexconfig_save):
         # The real configurations can get very expensive to save, so we're just testing that the
-        # correct number of executions and blank files are created.
-        expected_calls = CONFIG_COMM_PUT_CALLS + NUM_AREA_DIST_PROPS
+        # correct number of executions and blank files are created. The extra 1 is due
+        # to the downtime config not needing to be sent via conf_comm.
+        expected_calls = CONFIG_COMM_PUT_CALLS + NUM_AREA_DIST_PROPS + 1
         save_files = ["save_conf{}.py".format(i + 1) for i in range(expected_calls)]
         mock_pexconfig_save.side_effect = [save_file(f, self.config_save_dir) for f in save_files]
         self.sim_config.save(self.config_save_dir)
