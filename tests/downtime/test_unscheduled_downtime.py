@@ -24,13 +24,6 @@ class UnscheduledDowntimeTest(unittest.TestCase):
 
     def test_information_after_iniitialization(self):
         self.usdt.initialize()
-        self.assertEqual(len(self.usdt), 95)
-        self.assertEqual(self.usdt.total_downtime, 212)
-        self.check_downtime(self.usdt.downtimes[0], 7, 1, "minor event")
-        self.check_downtime(self.usdt.downtimes[-1], 3605, 7, "major event")
-
-    def test_alternate_survey_length(self):
-        self.usdt.initialize(survey_length=7300)
         self.assertEqual(len(self.usdt), 176)
         self.assertEqual(self.usdt.total_downtime, 376)
         self.check_downtime(self.usdt.downtimes[0], 7, 1, "minor event")
@@ -40,19 +33,19 @@ class UnscheduledDowntimeTest(unittest.TestCase):
     def test_alternate_seed(self, mock_time):
         mock_time.return_value = 1466094470
         self.usdt.initialize(use_random_seed=True)
-        self.assertEqual(len(self.usdt), 86)
-        self.assertEqual(self.usdt.total_downtime, 166)
+        self.assertEqual(len(self.usdt), 166)
+        self.assertEqual(self.usdt.total_downtime, 328)
         self.check_downtime(self.usdt.downtimes[0], 28, 1, "minor event")
-        self.check_downtime(self.usdt.downtimes[-1], 3615, 1, "minor event")
+        self.check_downtime(self.usdt.downtimes[-1], 7248, 3, "intermediate event")
 
     def test_alternate_seed_with_override(self):
         self.usdt.initialize(use_random_seed=True, random_seed=1466094470)
-        self.assertEqual(len(self.usdt), 86)
-        self.assertEqual(self.usdt.total_downtime, 166)
+        self.assertEqual(len(self.usdt), 166)
+        self.assertEqual(self.usdt.total_downtime, 328)
         self.check_downtime(self.usdt.downtimes[0], 28, 1, "minor event")
-        self.check_downtime(self.usdt.downtimes[-1], 3615, 1, "minor event")
+        self.check_downtime(self.usdt.downtimes[-1], 7248, 3, "intermediate event")
 
     def test_call(self):
         self.usdt.initialize()
         self.check_downtime(self.usdt(), 7, 1, "minor event")
-        self.assertEqual(len(self.usdt), 94)
+        self.assertEqual(len(self.usdt), 175)

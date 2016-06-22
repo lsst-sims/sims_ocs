@@ -33,18 +33,16 @@ class DowntimeHandler(object):
         self.current_unscheduled = None
         self.log = logging.getLogger("kernel.DowntimeHandler")
 
-    def initialize(self, survey_duration, config):
+    def initialize(self, config):
         """Perform initialization steps.
 
         Parameters
         ----------
-        survey_duration : int
-            The number of days for the survey duration.
         config : :class:`.Downtime`
             Downtime configuration instance.
         """
         self.scheduled.initialize(config.scheduled_downtime_db)
-        self.unscheduled.initialize(survey_duration, config.unscheduled_downtime_use_random_seed)
+        self.unscheduled.initialize(config.unscheduled_downtime_use_random_seed)
         config.unscheduled_downtime_random_seed = self.unscheduled.seed
 
     def get_downtime(self, night):

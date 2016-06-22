@@ -143,7 +143,7 @@ class Simulator(object):
         self.log.info("Initializing simulation")
         self.sal.initialize()
         self.seq.initialize(self.sal, self.conf.observatory)
-        self.dh.initialize(self.duration, self.conf.downtime)
+        self.dh.initialize(self.conf.downtime)
         self.dh.write_downtime_to_db(self.db)
         self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")

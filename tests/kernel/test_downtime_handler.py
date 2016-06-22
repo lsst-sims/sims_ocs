@@ -13,7 +13,6 @@ class DowntimeHandlerTest(unittest.TestCase):
     def setUp(self):
         self.dh = DowntimeHandler()
         self.conf = Downtime()
-        self.survey_duration = 3650
         logging.getLogger().setLevel(logging.WARN)
 
         patcher1 = mock.patch("lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime", spec=True)
@@ -24,7 +23,7 @@ class DowntimeHandlerTest(unittest.TestCase):
         self.mock_unscheduled_downtime = patcher2.start()
 
     def initialize(self):
-        self.dh.initialize(self.survey_duration, self.conf)
+        self.dh.initialize(self.conf)
 
     def initialize_mocks(self):
         self.dh.scheduled = self.mock_scheduled_downtime
@@ -131,6 +130,6 @@ class DowntimeHandlerTest(unittest.TestCase):
     def test_database_write(self, mock_db):
         self.initialize()
         self.dh.write_downtime_to_db(mock_db)
-        self.assertEqual(mock_db.append_data.call_count, 95 + 31)
+        self.assertEqual(mock_db.append_data.call_count, 176 + 31)
         self.assertEqual(mock_db.write.call_count, 1)
         self.assertEqual(mock_db.clear_data.call_count, 1)

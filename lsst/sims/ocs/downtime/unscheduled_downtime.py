@@ -2,6 +2,8 @@ import logging
 import random
 import time
 
+from lsst.sims.ocs.setup import LoggingLevel
+
 class UnscheduledDowntime(object):
     """Handle creating the unscheduled downtime information.
 
@@ -47,7 +49,7 @@ class UnscheduledDowntime(object):
         """
         return sum([x[1] for x in self.downtimes])
 
-    def initialize(self, survey_length=3650, use_random_seed=False, random_seed=-1):
+    def initialize(self, use_random_seed=False, random_seed=-1, survey_length=7300):
         """Configure the set of unscheduled downtimes.
 
         This function creates the unscheduled downtimes based on a set of probabilities
@@ -67,12 +69,12 @@ class UnscheduledDowntime(object):
 
         Parameters
         ----------
-        survey_length : int, optional
-            The length of the survey in days. Default is the length of a 10 year survey.
         use_random_seed : bool, optional
             Flag to set the seed based on the current time. Default is to used fixed seed.
         random_seed : int, optional
             Provide an alternate random seed. Only works when use_random_seed is True.
+        survey_length : int, optional
+            The length of the survey in days. Default is the length of a 20 year survey.
         """
         if use_random_seed:
             if random_seed == -1:
@@ -108,5 +110,6 @@ class UnscheduledDowntime(object):
                             self.downtimes.append((nights, self.MINOR_EVENT[1], self.MINOR_EVENT[2]))
             nights += 1
 
-        self.log.info("Total unscheduled downtime: {} days in {} days.".format(self.total_downtime,
-                                                                               survey_length))
+        self.log.log(LoggingLevel.WORDY.value,
+                     "Total unscheduled downtime: {} days in {} days.".format(self.total_downtime,
+                                                                              survey_length))
