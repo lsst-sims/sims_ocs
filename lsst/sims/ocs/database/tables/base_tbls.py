@@ -62,15 +62,22 @@ def create_field(metadata):
         The Field table object.
     """
     table = Table("Field", metadata,
-                  Column("fieldId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("fov", Float, nullable=False),
-                  Column("ra", Float, nullable=False),
-                  Column("dec", Float, nullable=False),
-                  Column("gl", Float, nullable=False),
-                  Column("gb", Float, nullable=False),
-                  Column("el", Float, nullable=False),
-                  Column("eb", Float, nullable=False))
+                  Column("fieldId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="Numeric identifier for the given field."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("fov", Float, nullable=False, doc="The field of view of the field (units=degrees)."),
+                  Column("ra", Float, nullable=False,
+                         doc="The Right Ascension of the field (units=degrees)."),
+                  Column("dec", Float, nullable=False, doc="The Declination of the field (units=degrees)."),
+                  Column("gl", Float, nullable=False,
+                         doc="The Galactic Longitude of the field (units=degrees)."),
+                  Column("gb", Float, nullable=False,
+                         doc="The Galactic Latitude of the field (units=degrees)."),
+                  Column("el", Float, nullable=False,
+                         doc="The Ecliptic Longitude of the field (units=degrees)."),
+                  Column("eb", Float, nullable=False,
+                         doc="The Ecliptic Latitude of the field (units=degrees)."))
 
     Index("field_fov", table.c.fieldId, table.c.fov)
     Index("fov_gl_gb", table.c.fov, table.c.gl, table.c.gb)
@@ -101,12 +108,18 @@ def create_observation_exposures(metadata):
       The ObsExposure table object.
     """
     table = Table("ObsExposures", metadata,
-                  Column("exposureId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("exposureNum", Integer, nullable=False),
-                  Column("exposureStartTime", Float, nullable=False),
-                  Column("exposureTime", Float, nullable=False),
-                  Column("ObsHistory_observationId", Integer, nullable=False))
+                  Column("exposureId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="Numeric identifier for an observation exposure."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("exposureNum", Integer, nullable=False,
+                         doc="The order number of the exposure. Starts at 1."),
+                  Column("exposureStartTime", Float, nullable=False,
+                         doc="The start time of the particular exposure (units=seconds)."),
+                  Column("exposureTime", Float, nullable=False,
+                         doc="The duration of the exposure (units=seconds)."),
+                  Column("ObsHistory_observationId", Integer, nullable=False,
+                         doc="Numeric identifier that relates the exposure to an ObservationHistory entry."))
 
     Index("obs_expId_expNum", table.c.exposureId, table.c.exposureNum)
     Index("fk_ObsHistory_observationId", table.c.ObsHistory_observationId)
@@ -136,22 +149,39 @@ def create_observation_history(metadata):
         The ObsHistory table object.
     """
     table = Table("ObsHistory", metadata,
-                  Column("observationId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column('night', Integer, nullable=False),
-                  Column('observationStartTime', Float, nullable=False),
-                  Column('observationStartMJD', Float, nullable=False),
-                  Column('observationStartLST', Float, nullable=False,
-                         doc="The Local Sidereal Time at observation start"),
-                  Column('TargetHistory_targetId', Integer, nullable=False),
-                  Column("Field_fieldId", Integer, nullable=False),
-                  Column("filter", String(1), nullable=False),
-                  Column("ra", Float, nullable=False),
-                  Column("dec", Float, nullable=False),
-                  Column("angle", Float, nullable=False),
-                  Column("numExposures", Integer, nullable=False),
-                  Column("visitTime", Float, nullable=False),
-                  Column("visitExposureTime", Float, nullable=False),
+                  Column("observationId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="Numeric identifier for an observation entry."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("night", Integer, nullable=False,
+                         doc="The night in the survey for the observation. Starts from 1."),
+                  Column("observationStartTime", Float, nullable=False,
+                         doc="The UTC start time for the observation (units=seconds). This occurs after the "
+                             "slew but before the first exposure."),
+                  Column("observationStartMJD", Float, nullable=False,
+                         doc="The Modified Julian Date at observation start (units=seconds)."),
+                  Column("observationStartLST", Float, nullable=False,
+                         doc="The Local Sidereal Time at observation start (units=degrees)"),
+                  Column("TargetHistory_targetId", Integer, nullable=False,
+                         doc="Numeric indentifier that relates the observation to a TargetHistory entry."),
+                  Column("Field_fieldId", Integer, nullable=False,
+                         doc="Numeric identifier that relates to an entry in the Field table."),
+                  Column("filter", String(1), nullable=False,
+                         doc="The one character name for the band filter."),
+                  Column("ra", Float, nullable=False,
+                         doc="The Right Ascention of the observation (units=degrees)."),
+                  Column("dec", Float, nullable=False,
+                         doc="The Declination of the observation (units=degrees)."),
+                  Column("angle", Float, nullable=False,
+                         doc="The Position Angle of the observation (units=degrees)."),
+                  Column("numExposures", Integer, nullable=False,
+                         doc="The number of exposures taken for the observation."),
+                  Column("visitTime", Float, nullable=False,
+                         doc="The total time for the observation (units=seconds). Includes exposure, "
+                             "shutter and readout time."),
+                  Column("visitExposureTime", Float, nullable=False,
+                         doc="The sum of all the exposure times for the observation (units=seconds). No "
+                             "shutter and readout time."),
                   ForeignKeyConstraint(["Field_fieldId"], ["Field.fieldId"]),
                   ForeignKeyConstraint(["TargetHistory_targetId"], ["TargetHistory.targetId"]))
 
@@ -204,12 +234,17 @@ def create_session(metadata, autoincrement=True):
         The Session table object.
     """
     table = Table("Session", metadata,
-                  Column("sessionId", Integer, primary_key=True, autoincrement=autoincrement, nullable=False),
-                  Column("sessionUser", String(80), nullable=False),
-                  Column("sessionHost", String(80), nullable=False),
-                  Column("sessionDate", DATETIME, nullable=False),
-                  Column("version", String(25), nullable=True),
-                  Column("runComment", String(200), nullable=True))
+                  Column("sessionId", Integer, primary_key=True, autoincrement=autoincrement, nullable=False,
+                         doc="Numeric identifier for the current simulation instance."),
+                  Column("sessionUser", String(80), nullable=False,
+                         doc="Computer username of the simulation runner."),
+                  Column("sessionHost", String(80), nullable=False,
+                         doc="Computer hostname where the simulation was run."),
+                  Column("sessionDate", DATETIME, nullable=False,
+                         doc="The date/time of the simulation start."),
+                  Column("version", String(25), nullable=True, doc="The version number of the SOCS code."),
+                  Column("runComment", String(200), nullable=True,
+                         doc="A description of the simulation setup."))
 
     Index("s_host_user_date_idx", table.c.sessionUser, table.c.sessionHost, table.c.sessionDate, unique=True)
 
@@ -239,13 +274,19 @@ def create_slew_history(metadata):
         The SlewHistory table object.
     """
     table = Table("SlewHistory", metadata,
-                  Column("slewCount", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("startDate", Float, nullable=False),
-                  Column("endDate", Float, nullable=False),
-                  Column("slewTime", Float, nullable=False),
-                  Column("slewDistance", Float, nullable=False),
-                  Column("ObsHistory_observationId", Integer, nullable=False),
+                  Column("slewCount", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="Numeric identifier for a particular slew."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("startDate", Float, nullable=False,
+                         doc="The UTC date for the start of the slew (units=seconds)."),
+                  Column("endDate", Float, nullable=False,
+                         doc="The UTC date for the end of the slew (units=seconds)."),
+                  Column("slewTime", Float, nullable=False, doc="The duration of the slew (units=seconds)."),
+                  Column("slewDistance", Float, nullable=False,
+                         doc="The angular distance on the sky of the slew (units=degrees)."),
+                  Column("ObsHistory_observationId", Integer, nullable=False,
+                         doc="Numeric identifier that relates the exposure to an ObservationHistory entry."),
                   ForeignKeyConstraint(["ObsHistory_observationId"], ["ObsHistory.observationId"]))
 
     Index("fk_SlewHistory_ObsHistory1", table.c.ObsHistory_observationId)
@@ -273,12 +314,18 @@ def create_slew_activities(metadata):
         The SlewActivities table object.
     """
     table = Table("SlewActivities", metadata,
-                  Column("slewActivityId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("activity", String(20), nullable=False),
-                  Column("activityDelay", Float, nullable=False),
-                  Column("inCriticalPath", String(10), nullable=False),
-                  Column("SlewHistory_slewCount", Integer, nullable=False),
+                  Column("slewActivityId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="Numeric identifier for a particular slew activity entry."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("activity", String(20), nullable=False,
+                         doc="Short description of the slew activity."),
+                  Column("activityDelay", Float, nullable=False,
+                         doc="The delay time of the slew activity (units=seconds)."),
+                  Column("inCriticalPath", String(10), nullable=False,
+                         doc="True is slew activity is in the critical path and False if not."),
+                  Column("SlewHistory_slewCount", Integer, nullable=False,
+                         doc="Numeric identifier that relates to an entry in the SlewHistory table."),
                   ForeignKeyConstraint(["SlewHistory_slewCount"], ["SlewHistory.slewCount"]))
 
     Index("fk_SlewActivites_SlewHistory1_idx", table.c.SlewHistory_slewCount)
@@ -354,14 +401,25 @@ def create_slew_maxspeeds(metadata):
         The SlewMaxSpeeds table object.
     """
     table = Table("SlewMaxSpeeds", metadata,
-                  Column("slewMaxSpeedId", Integer, primary_key=True, autoincrement=False, nullable=False),
+                  Column("slewMaxSpeedId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="Numeric identifier for a particular slew max speeds entry."),
                   Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("domeAltSpeed", Float, nullable=False),
-                  Column("domeAzSpeed", Float, nullable=False),
-                  Column("telAltSpeed", Float, nullable=False),
-                  Column("telAzSpeed", Float, nullable=False),
-                  Column("rotatorSpeed", Float, nullable=False),
-                  Column("SlewHistory_slewCount", Integer, nullable=False))
+                  Column("domeAltSpeed", Float, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("domeAzSpeed", Float, nullable=False,
+                         doc="The maximum dome azimuth speed achieved during the slew "
+                             "(units=degrees/second)."),
+                  Column("telAltSpeed", Float, nullable=False,
+                         doc="The maximum telescope altitude speed achieved during the slew "
+                             "(units=degrees/second)."),
+                  Column("telAzSpeed", Float, nullable=False,
+                         doc="The maximum telescope azimuth speed achieved during the slew "
+                             "(units=degrees/second)."),
+                  Column("rotatorSpeed", Float, nullable=False,
+                         doc="The maximum rotator speed achieved during the slew "
+                             "(units=degrees/second)."),
+                  Column("SlewHistory_slewCount", Integer, nullable=False,
+                         doc="Numeric identifier that relates to an entry in the SlewHistory table."))
 
     Index("fk_SlewMaxSpeeds_SlewHistory1", table.c.SlewHistory_slewCount)
 
