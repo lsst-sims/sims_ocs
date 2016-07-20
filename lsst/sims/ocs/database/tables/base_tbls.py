@@ -115,7 +115,7 @@ def create_observation_exposures(metadata):
                   Column("exposureNum", Integer, nullable=False,
                          doc="The order number of the exposure. Starts at 1."),
                   Column("exposureStartTime", Float, nullable=False,
-                         doc="The start time of the particular exposure (units=seconds)."),
+                         doc="The UTC start time of the particular exposure (units=seconds)."),
                   Column("exposureTime", Float, nullable=False,
                          doc="The duration of the exposure (units=seconds)."),
                   Column("ObsHistory_observationId", Integer, nullable=False,
@@ -181,7 +181,7 @@ def create_observation_history(metadata):
                              "shutter and readout time."),
                   Column("visitExposureTime", Float, nullable=False,
                          doc="The sum of all the exposure times for the observation (units=seconds). No "
-                             "shutter and readout time."),
+                             "shutter and readout time included."),
                   ForeignKeyConstraint(["Field_fieldId"], ["Field.fieldId"]),
                   ForeignKeyConstraint(["TargetHistory_targetId"], ["TargetHistory.targetId"]))
 
@@ -241,7 +241,7 @@ def create_session(metadata, autoincrement=True):
                   Column("sessionHost", String(80), nullable=False,
                          doc="Computer hostname where the simulation was run."),
                   Column("sessionDate", DATETIME, nullable=False,
-                         doc="The date/time of the simulation start."),
+                         doc="The UTC date/time of the simulation start."),
                   Column("version", String(25), nullable=True, doc="The version number of the SOCS code."),
                   Column("runComment", String(200), nullable=True,
                          doc="A description of the simulation setup."))
@@ -284,7 +284,7 @@ def create_slew_history(metadata):
                          doc="The UTC date for the end of the slew (units=seconds)."),
                   Column("slewTime", Float, nullable=False, doc="The duration of the slew (units=seconds)."),
                   Column("slewDistance", Float, nullable=False,
-                         doc="The angular distance on the sky of the slew (units=degrees)."),
+                         doc="The angular distance travelled on the sky of the slew (units=degrees)."),
                   Column("ObsHistory_observationId", Integer, nullable=False,
                          doc="Numeric identifier that relates the exposure to an ObservationHistory entry."),
                   ForeignKeyConstraint(["ObsHistory_observationId"], ["ObsHistory.observationId"]))
@@ -403,9 +403,11 @@ def create_slew_maxspeeds(metadata):
     table = Table("SlewMaxSpeeds", metadata,
                   Column("slewMaxSpeedId", Integer, primary_key=True, autoincrement=False, nullable=False,
                          doc="Numeric identifier for a particular slew max speeds entry."),
-                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("domeAltSpeed", Float, nullable=False,
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
                          doc="The simulation run session Id."),
+                  Column("domeAltSpeed", Float, nullable=False,
+                         doc="The maximum dome altitude speed achieved during the slew "
+                             "(units=degrees/second)."),
                   Column("domeAzSpeed", Float, nullable=False,
                          doc="The maximum dome azimuth speed achieved during the slew "
                              "(units=degrees/second)."),
@@ -443,23 +445,40 @@ def create_slew_state(name, metadata):
         One of the SlewState table objects.
     """
     table = Table(name, metadata,
-                  Column("slewStateId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("slewStateDate", Float, nullable=False),
-                  Column("targetRA", Float, nullable=False),
-                  Column("targetDec", Float, nullable=False),
-                  Column("tracking", String(10), nullable=False),
-                  Column("altitude", Float, nullable=False),
-                  Column("azimuth", Float, nullable=False),
-                  Column("paraAngle", Float, nullable=False),
-                  Column("domeAlt", Float, nullable=False),
-                  Column("domeAz", Float, nullable=False),
-                  Column("telAlt", Float, nullable=False),
-                  Column("telAz", Float, nullable=False),
-                  Column("rotTelPos", Float, nullable=False),
-                  Column("rotSkyPos", Float, nullable=False),
-                  Column("filter", String(1), nullable=False),
-                  Column("SlewHistory_slewCount", Integer, nullable=False))
+                  Column("slewStateId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="Numeric identifier for a particular slew state."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("slewStateDate", Float, nullable=False,
+                         doc="The UTC date/time of the slew state information (units=seconds)"),
+                  Column("targetRA", Float, nullable=False,
+                         doc="Current target Right Ascension (units=degrees)."),
+                  Column("targetDec", Float, nullable=False,
+                         doc="Current target Declination (units=degress)."),
+                  Column("tracking", String(10), nullable=False,
+                         doc="Whether or not the telescope is tracking the sky."),
+                  Column("altitude", Float, nullable=False,
+                         doc="Current target altitude (units=degrees)."),
+                  Column("azimuth", Float, nullable=False,
+                         doc="Current target azimuth (units=degrees)"),
+                  Column("paraAngle", Float, nullable=False,
+                         doc="Current parallactic angle of the rotator (units=degrees)."),
+                  Column("domeAlt", Float, nullable=False,
+                         doc="Current dome altitude (units=degrees)."),
+                  Column("domeAz", Float, nullable=False,
+                         doc="Current dome azimuth (units=degrees)."),
+                  Column("telAlt", Float, nullable=False,
+                         doc="Current telescope altitude (units=degrees)."),
+                  Column("telAz", Float, nullable=False,
+                         doc="Current telescope azimuth (units=degrees)."),
+                  Column("rotTelPos", Float, nullable=False,
+                         doc="Current position of the telescope rotator (units=degrees)."),
+                  Column("rotSkyPos", Float, nullable=False,
+                         doc="Current position of the camera on the sky (units=degrees)."),
+                  Column("filter", String(1), nullable=False,
+                         doc="Band filter for the recorded slew state."),
+                  Column("SlewHistory_slewCount", Integer, nullable=False,
+                         doc="Numeric identifier that relates to an entry in the SlewHistory table."))
 
     Index("fk_{}_SlewHistory1".format(name), table.c.SlewHistory_slewCount)
 
@@ -487,11 +506,16 @@ def create_target_exposures(metadata):
       The Target Exposure table object.
     """
     table = Table("TargetExposures", metadata,
-                  Column("exposureId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("exposureNum", Integer, nullable=False),
-                  Column("exposureTime", Float, nullable=False),
-                  Column("TargetHistory_targetId", Integer, nullable=False))
+                  Column("exposureId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="Numeric identifier for a particular target exposure."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("exposureNum", Integer, nullable=False,
+                         doc="The order number of the exposure. Starts at 1."),
+                  Column("exposureTime", Float, nullable=False,
+                         doc="The requested duration of the exposure (units=seconds)."),
+                  Column("TargetHistory_targetId", Integer, nullable=False,
+                         doc="Numeric identifier that relates to an entry in the TargetHistory table."))
 
     Index("expId_expNum", table.c.exposureId, table.c.exposureNum)
     Index("fk_TargetHistory_targetId", table.c.TargetHistory_targetId)
@@ -519,15 +543,24 @@ def create_target_history(metadata):
         The TargetHistory table object.
     """
     table = Table("TargetHistory", metadata,
-                  Column("targetId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False),
-                  Column("Field_fieldId", Integer, nullable=False),
-                  Column("filter", String(1), nullable=False),
-                  Column("ra", Float, nullable=False),
-                  Column("dec", Float, nullable=False),
-                  Column("angle", Float, nullable=False),
-                  Column("numExposures", Integer, nullable=False),
-                  Column("requestedExpTime", Float, nullable=False))
+                  Column("targetId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="Numeric identifier for a particular target request."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("Field_fieldId", Integer, nullable=False,
+                         doc="Numeric identifier that relates to an entry in the Field table."),
+                  Column("filter", String(1), nullable=False,
+                         doc="Band filter requested by the target."),
+                  Column("ra", Float, nullable=False,
+                         doc="Right Ascension of the requested target (units=degrees)."),
+                  Column("dec", Float, nullable=False,
+                         doc="Declination of the requested target (units=degrees)."),
+                  Column("angle", Float, nullable=False,
+                         doc="Difference between parallactic angle and rotator angle (units=degrees)."),
+                  Column("numExposures", Integer, nullable=False,
+                         doc="Number of exposures for the requested target."),
+                  Column("requestedExpTime", Float, nullable=False,
+                         doc="The total duration of all requested exposures (units=seconds)."))
 
     Index("t_filter", table.c.filter)
     Index("fk_TargetHistory_Session1", table.c.Session_sessionId)
