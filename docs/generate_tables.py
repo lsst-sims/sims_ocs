@@ -13,8 +13,10 @@ def main():
     table_rst_files = []
     table_descr_match = re.compile(r'(?<=Description:).*?(?=Parameters)')
 
-    if not os.path.exists(GENERATED_TABLE_DIR):
-        os.mkdir(GENERATED_TABLE_DIR)
+    table_file_path = os.path.join(TOP_LEVEL_DIR, GENERATED_TABLE_DIR)
+
+    if not os.path.exists(table_file_path):
+        os.mkdir(table_file_path)
 
     create_calls = [k for k in dir(tbls) if "create" in k]
     for create_call in create_calls:
@@ -55,7 +57,7 @@ def main():
         collection_doc.add_child(para)
     collection_doc.save(os.path.join(TOP_LEVEL_DIR, "table_descriptions.rst"))
 
-    # Write link anchors a top of file.
+    # Write link anchors at top of file.
     for rst_file in table_rst_files:
         rst_full_file = os.path.join(TOP_LEVEL_DIR, rst_file)
         tmp_file = rst_full_file + "_tmp"
