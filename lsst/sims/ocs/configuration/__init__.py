@@ -9,4 +9,5 @@ from .obs_site import *
 from .science_proposals import *
 from .survey import *
 from .observatory import *
+from .scheduler_driver import *
 from .sim_config import *
