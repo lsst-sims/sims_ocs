@@ -3,6 +3,16 @@
 History
 -------
 
+1.0 (in progress)
+~~~~~~~~~~~~~~~~~
+
+This release of SOCS is designed to replace version 3 of the Operations Simulator.
+
+* Downtime system
+
+  * Scheduled downtime information in small SQLite DB
+  * Unscheduled downtime generated on fly using a fixed seed via algorithm
+
 0.3 (2016-05-20)
 ~~~~~~~~~~~~~~~~
 
