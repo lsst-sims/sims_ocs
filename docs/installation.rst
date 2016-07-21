@@ -67,7 +67,11 @@ Conda Installation
 The SOCS and Scheduler installation require a set of Python modules. It is recommended to install a clean version of Python via a mechanism like 
 `Miniconda <http://conda.pydata.org/miniconda.html>`_. A configuration module is also necessary from the LSST Stack for SOCS, so this will need to be setup as well. Going forward, all the prerequisites will be installed via the conda mechanism.
 
-Install miniconda from the above link. It is assumed that the ``bin`` directory from the installation will make it into the ``$PATH`` somehow. This is one of the few places where the user gets to choose how to do this. Next, create a Conda environment and activate it::
+Install miniconda from the above link. It is assumed that the ``bin`` directory from the installation will make it into the ``$PATH`` somehow. This is one of the few places where the user gets to choose how to do this. After the installation, it's a good idea to update it, so do the following::
+
+	conda update conda
+
+Next, create a Conda environment and activate it::
 
 	conda create -n opsim4 python=2
 	source activate opsim4
@@ -83,6 +87,10 @@ In order to run the Operations Simulator (SOCS/Scheduler), the following need to
 If one wishes to develop the code, being able to run the unit tests, check style compliance and generate the documentation is a must. To do this, these packages need to be installed::
 
 	conda install mock sphinx sphinx_rtd_theme flake8 coverage
+
+There is one package that is required for the documentation but is not available via the conda packaging system. To get this package, do::
+
+	pip install rst
 
 Once the above is complete, setup the environment by doing::
 
