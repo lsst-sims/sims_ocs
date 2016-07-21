@@ -40,12 +40,12 @@ def create_downtime(name, metadata):
 def create_field(metadata):
     """Create Field table.
 
-    This function creates the Field table from the sky tesellation.
+    This function creates the Field table from the sky tessellation.
 
     Table Description:
 
     This table contains all the coordinate information for the "visiting" fields. The field centers
-    are determined from a tesselation (or tiling) of the celestial sphere which results in a
+    are determined from a tessellation (or tiling) of the celestial sphere which results in a
     closest-packed set of 5280 hexagons and 12 pentagons inscribed in circular fields having a
     3.5-degree diameter
     (R. H. Hardin, N. J. A. Sloane and W. D. Smith, *Tables of spherical codes with icosahedral symmetry*,
@@ -113,13 +113,13 @@ def create_observation_exposures(metadata):
                   Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
                          doc="The simulation run session Id."),
                   Column("exposureNum", Integer, nullable=False,
-                         doc="The order number of the exposure. Starts at 1."),
+                         doc="The order number of the exposure. Starts at 1 for a set of exposures."),
                   Column("exposureStartTime", Float, nullable=False,
                          doc="The UTC start time of the particular exposure (units=seconds)."),
                   Column("exposureTime", Float, nullable=False,
                          doc="The duration of the exposure (units=seconds)."),
                   Column("ObsHistory_observationId", Integer, nullable=False,
-                         doc="Numeric identifier that relates the exposure to an ObservationHistory entry."))
+                         doc="Numeric identifier that relates to an entry in the ObsHistory table."))
 
     Index("obs_expId_expNum", table.c.exposureId, table.c.exposureNum)
     Index("fk_ObsHistory_observationId", table.c.ObsHistory_observationId)
@@ -163,13 +163,13 @@ def create_observation_history(metadata):
                   Column("observationStartLST", Float, nullable=False,
                          doc="The Local Sidereal Time at observation start (units=degrees)"),
                   Column("TargetHistory_targetId", Integer, nullable=False,
-                         doc="Numeric indentifier that relates the observation to a TargetHistory entry."),
+                         doc="Numeric identifier that relates to an entry in the TargetHistory entry."),
                   Column("Field_fieldId", Integer, nullable=False,
                          doc="Numeric identifier that relates to an entry in the Field table."),
                   Column("filter", String(1), nullable=False,
                          doc="The one character name for the band filter."),
                   Column("ra", Float, nullable=False,
-                         doc="The Right Ascention of the observation (units=degrees)."),
+                         doc="The Right Ascension of the observation (units=degrees)."),
                   Column("dec", Float, nullable=False,
                          doc="The Declination of the observation (units=degrees)."),
                   Column("angle", Float, nullable=False,
@@ -177,7 +177,7 @@ def create_observation_history(metadata):
                   Column("numExposures", Integer, nullable=False,
                          doc="The number of exposures taken for the observation."),
                   Column("visitTime", Float, nullable=False,
-                         doc="The total time for the observation (units=seconds). Includes exposure, "
+                         doc="The total time for the observation (units=seconds) including exposure, "
                              "shutter and readout time."),
                   Column("visitExposureTime", Float, nullable=False,
                          doc="The sum of all the exposure times for the observation (units=seconds). No "
@@ -197,6 +197,11 @@ def create_scheduled_downtime(metadata):
 
     This function creates the ScheduledDowntime table for list the scheduled
     downtime during the survey.
+
+    Table Description:
+
+    This table records all of the scheduled downtime for the entire survey (plus an extra 10 years). The
+    actual downtime used in the simulation maybe different depending on the length of the simulation.
 
     Parameters
     ----------
@@ -284,9 +289,9 @@ def create_slew_history(metadata):
                          doc="The UTC date for the end of the slew (units=seconds)."),
                   Column("slewTime", Float, nullable=False, doc="The duration of the slew (units=seconds)."),
                   Column("slewDistance", Float, nullable=False,
-                         doc="The angular distance travelled on the sky of the slew (units=degrees)."),
+                         doc="The angular distance traveled on the sky of the slew (units=degrees)."),
                   Column("ObsHistory_observationId", Integer, nullable=False,
-                         doc="Numeric identifier that relates the exposure to an ObservationHistory entry."),
+                         doc="Numeric identifier that relates to an entry in the ObsHistory table."),
                   ForeignKeyConstraint(["ObsHistory_observationId"], ["ObsHistory.observationId"]))
 
     Index("fk_SlewHistory_ObsHistory1", table.c.ObsHistory_observationId)
@@ -300,7 +305,7 @@ def create_slew_activities(metadata):
 
     Table Description:
 
-    This table contains all the activites for a given visit's slew. The *SlewHistory_slewCount* column
+    This table contains all the activities for a given visit's slew. The *SlewHistory_slewCount* column
     points to a given slew in the :ref:`database-tables-slewhistory` table.
 
     Parameters
@@ -454,7 +459,7 @@ def create_slew_state(name, metadata):
                   Column("targetRA", Float, nullable=False,
                          doc="Current target Right Ascension (units=degrees)."),
                   Column("targetDec", Float, nullable=False,
-                         doc="Current target Declination (units=degress)."),
+                         doc="Current target Declination (units=degrees)."),
                   Column("tracking", String(10), nullable=False,
                          doc="Whether or not the telescope is tracking the sky."),
                   Column("altitude", Float, nullable=False,
@@ -511,7 +516,7 @@ def create_target_exposures(metadata):
                   Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
                          doc="The simulation run session Id."),
                   Column("exposureNum", Integer, nullable=False,
-                         doc="The order number of the exposure. Starts at 1."),
+                         doc="The order number of the exposure. Starts at 1 for a set of exposures."),
                   Column("exposureTime", Float, nullable=False,
                          doc="The requested duration of the exposure (units=seconds)."),
                   Column("TargetHistory_targetId", Integer, nullable=False,
@@ -573,6 +578,11 @@ def create_unscheduled_downtime(metadata):
 
     This function creates the UnscheduledDowntime table for list the unscheduled
     downtime during the survey.
+
+    Table Description:
+
+    This table records all of the unscheduled downtime for the entire survey (plus an extra 10 years). The
+    actual downtime used in the simulation maybe different depending on the length of the simulation.
 
     Parameters
     ----------
