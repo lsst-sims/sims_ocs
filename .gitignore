@@ -46,6 +46,8 @@ output/*/index.html
 docs/_build
 docs/modules.rst
 docs/lsst*.rst
+docs/tables/*.rst
+docs/table_descriptions.rst
 
 # Project
 version.py

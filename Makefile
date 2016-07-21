@@ -52,6 +52,9 @@ coverage:
 	#open htmlcov/index.html
 
 docs:
+	rm -f docs/tables/*.rst
+	rm -f docs/table_descriptions.rst
+	python docs/generate_tables.py
 	rm -f docs/api/lsst*.rst
 	rm -f docs/api/modules.rst
 	sphinx-apidoc -H sims_ocs -e -o docs/api lsst
