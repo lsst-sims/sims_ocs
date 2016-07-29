@@ -69,6 +69,7 @@ class SimulationConfigTest(unittest.TestCase):
         self.assertIsNotNone(self.sim_config.observing_site)
         self.assertIsNotNone(self.sim_config.observatory)
         self.assertIsNotNone(self.sim_config.downtime)
+        self.assertIsNotNone(self.sim_config.sched_driver)
 
     def test_load_without_files(self):
         self.sim_config.load(None)

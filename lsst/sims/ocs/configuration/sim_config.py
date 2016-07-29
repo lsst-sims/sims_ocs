@@ -3,7 +3,7 @@ import os
 import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration import Downtime, load_config, Observatory, ObservingSite
-from lsst.sims.ocs.configuration import ScienceProposals, Survey
+from lsst.sims.ocs.configuration import SchedulerDriver, ScienceProposals, Survey
 
 __all__ = ["SimulationConfig"]
 
@@ -17,6 +17,7 @@ class SimulationConfig(pexConfig.Config):
     observing_site = pexConfig.ConfigField("The observing site configuration.", ObservingSite)
     observatory = pexConfig.ConfigField("The LSST observatory configuration.", Observatory)
     downtime = pexConfig.ConfigField("The LSST downtime configuration.", Downtime)
+    sched_driver = pexConfig.ConfigField("The LSST Scheduler driver configuration.", SchedulerDriver)
 
     def setDefaults(self):
         """Set defaults for the survey simulation.
@@ -54,6 +55,7 @@ class SimulationConfig(pexConfig.Config):
             load_config(self.observing_site, config_files)
             self.observatory.load(config_files)
             load_config(self.downtime, config_files)
+            load_config(self.sched_driver, config_files)
 
     def load_proposals(self):
         """Tell the science proposals to load their configuration.
@@ -73,3 +75,4 @@ class SimulationConfig(pexConfig.Config):
         self.observing_site.save(os.path.join(save_dir, "observing_site.py"))
         self.observatory.save_as(save_dir)
         self.downtime.save(os.path.join(save_dir, "downtime.py"))
+        self.sched_driver.save(os.path.join(save_dir, "sched_driver.py"))

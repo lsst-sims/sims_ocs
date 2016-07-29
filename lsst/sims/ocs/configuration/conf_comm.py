@@ -48,6 +48,16 @@ class ConfigurationCommunicator(object):
 
         self.sched_conf.log_file = log_file
 
+    def _configure_scheduler_driver(self):
+        """Configure and the Scheduler Driver configuration topic.
+        """
+        self.sched_driver_conf = self.sal.set_publish_topic("driverConfig")
+        self.sched_driver_conf.coadd_values = self.config.sched_driver.coadd_values
+        self.sched_driver_conf.timebonus_tmax = self.config.sched_driver.timebonus_tmax
+        self.sched_driver_conf.timebonus_bmax = self.config.sched_driver.timebonus_bmax
+        self.sched_driver_conf.timebonus_slope = self.config.sched_driver.timebonus_slope
+        self.sched_driver_conf.night_boundary = self.config.sched_driver.night_boundary
+
     def _configure_observing_site(self):
         """Configure and send the Observing Site configuration topic.
         """
@@ -174,6 +184,7 @@ class ConfigurationCommunicator(object):
         """
         self.log.info("Running configuration communication")
         self._configure_scheduler()
+        self._configure_scheduler_driver()
         self._configure_observing_site()
         self._configure_telescope()
         self._configure_dome()
@@ -188,6 +199,7 @@ class ConfigurationCommunicator(object):
         """Send all of the configuration topics.
         """
         self.sal.put(self.sched_conf)
+        self.sal.put(self.sched_driver_conf)
         self.sal.put(self.obs_site_conf)
         self.sal.put(self.tel_conf)
         self.sal.put(self.dome_conf)
