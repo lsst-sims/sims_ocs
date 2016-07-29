@@ -16,7 +16,7 @@ class ObservingSiteTest(unittest.TestCase):
         self.assertEqual(self.obs_site.height, 2650.)
         self.assertEqual(self.obs_site.pressure, 750.0)
         self.assertEqual(self.obs_site.temperature, 11.5)
-        self.assertEqual(self.obs_site.relativeHumidity, 0.4)
+        self.assertEqual(self.obs_site.relative_humidity, 0.4)
 
     def test_radians_return_for_latlon(self):
         import math

@@ -69,7 +69,7 @@ class ConfigurationCommunicator(object):
         self.obs_site_conf.height = self.config.observing_site.height
         self.obs_site_conf.pressure = self.config.observing_site.pressure
         self.obs_site_conf.temperature = self.config.observing_site.temperature
-        self.obs_site_conf.relativeHumidity = self.config.observing_site.relativeHumidity
+        self.obs_site_conf.relative_humidity = self.config.observing_site.relative_humidity
 
     def _configure_telescope(self):
         """Configure and send the Telescope configuration topic.

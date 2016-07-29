@@ -14,7 +14,7 @@ class ObservingSite(pexConfig.Config):
     height = pexConfig.Field('Telescope site\'s Elevation (units=meters above sea level)', float)
     pressure = pexConfig.Field('Telescope site\'s atmospheric pressure (units=millibars)', float)
     temperature = pexConfig.Field('Telescope site\'s atmospheric temperature (units=degrees C)', float)
-    relativeHumidity = pexConfig.Field('Telescope site\'s relative humidity (units=percent)', float)
+    relative_humidity = pexConfig.Field('Telescope site\'s relative humidity (units=percent)', float)
 
     def setDefaults(self):
         """Set defaults for the Cerro Pachon observing site.
@@ -26,7 +26,7 @@ class ObservingSite(pexConfig.Config):
         self.height = lsst.height
         self.pressure = lsst.pressure
         self.temperature = lsst.temperature
-        self.relativeHumidity = lsst.humidity
+        self.relative_humidity = lsst.humidity
 
     @property
     def latitude_rad(self):
