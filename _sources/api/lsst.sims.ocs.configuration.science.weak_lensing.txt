@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.science.weak_lensing module
+=======================================================
+
+.. automodule:: lsst.sims.ocs.configuration.science.weak_lensing
+    :members:
+    :undoc-members:
+    :show-inheritance:

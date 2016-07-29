@@ -16,10 +16,12 @@ Submodules
 .. toctree::
 
    lsst.sims.ocs.configuration.conf_comm
+   lsst.sims.ocs.configuration.downtime
    lsst.sims.ocs.configuration.field
    lsst.sims.ocs.configuration.helpers
    lsst.sims.ocs.configuration.obs_site
    lsst.sims.ocs.configuration.observatory
+   lsst.sims.ocs.configuration.scheduler_driver
    lsst.sims.ocs.configuration.science_proposals
    lsst.sims.ocs.configuration.sim_config
    lsst.sims.ocs.configuration.survey

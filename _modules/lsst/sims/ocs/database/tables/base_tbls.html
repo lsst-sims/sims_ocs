@@ -86,6 +86,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../history.html">History</a></li>
 </ul>
 <ul>
@@ -140,14 +141,53 @@
 <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">DDL</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">ForeignKeyConstraint</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;create_field&quot;</span><span class="p">,</span> <span class="s2">&quot;create_observation_exposures&quot;</span><span class="p">,</span> <span class="s2">&quot;create_observation_history&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;create_session&quot;</span><span class="p">,</span> <span class="s2">&quot;create_slew_activities&quot;</span><span class="p">,</span> <span class="s2">&quot;create_slew_final_state&quot;</span><span class="p">,</span> <span class="s2">&quot;create_slew_history&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;create_slew_initial_state&quot;</span><span class="p">,</span> <span class="s2">&quot;create_slew_maxspeeds&quot;</span><span class="p">,</span> <span class="s2">&quot;create_target_exposures&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;create_target_history&quot;</span><span class="p">]</span>
+           <span class="s2">&quot;create_scheduled_downtime&quot;</span><span class="p">,</span> <span class="s2">&quot;create_session&quot;</span><span class="p">,</span> <span class="s2">&quot;create_slew_activities&quot;</span><span class="p">,</span> <span class="s2">&quot;create_slew_final_state&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;create_slew_history&quot;</span><span class="p">,</span> <span class="s2">&quot;create_slew_initial_state&quot;</span><span class="p">,</span> <span class="s2">&quot;create_slew_maxspeeds&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;create_target_exposures&quot;</span><span class="p">,</span> <span class="s2">&quot;create_target_history&quot;</span><span class="p">,</span> <span class="s2">&quot;create_unscheduled_downtime&quot;</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">create_downtime</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create one of the Downtime tables.</span>
+
+<span class="sd">    This function creates one of the Downtime tables.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The name of the downtime table.</span>
+<span class="sd">    metadata : sqlalchemy.MetaData</span>
+<span class="sd">        The database object that collects the tables.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sqlalchemy.Table</span>
+<span class="sd">        One of the Downtime table objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;night&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The starting night for the downtime.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The simulation run session Id.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The length of the downtime (units=days).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;activity&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">128</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The description of the activity associated with the downtime.&quot;</span><span class="p">))</span>
+
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_{}_night1&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">night</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">table</span>
 
 <div class="viewcode-block" id="create_field"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_field">[docs]</a><span class="k">def</span> <span class="nf">create_field</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create Field table.</span>
 
-<span class="sd">    This function creates the Field table from the sky tesellation.</span>
+<span class="sd">    This function creates the Field table from the sky tessellation.</span>
+
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table contains all the coordinate information for the &quot;visiting&quot; fields. The field centers</span>
+<span class="sd">    are determined from a tessellation (or tiling) of the celestial sphere which results in a</span>
+<span class="sd">    closest-packed set of 5280 hexagons and 12 pentagons inscribed in circular fields having a</span>
+<span class="sd">    3.5-degree diameter</span>
+<span class="sd">    (R. H. Hardin, N. J. A. Sloane and W. D. Smith, *Tables of spherical codes with icosahedral symmetry*,</span>
+<span class="sd">    published electronically at http://NeilSloane.com/icosahedral.codes/).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -160,15 +200,22 @@
 <span class="sd">        The Field table object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;Field&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;fieldId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;fov&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;gl&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;gb&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;el&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;eb&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;fieldId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier for the given field.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The simulation run session Id.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;fov&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The field of view of the field (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The Right Ascension of the field (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The Declination of the field (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;gl&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The Galactic Longitude of the field (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;gb&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The Galactic Latitude of the field (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;el&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The Ecliptic Longitude of the field (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;eb&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The Ecliptic Latitude of the field (units=degrees).&quot;</span><span class="p">))</span>
 
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;field_fov&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">fieldId</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">fov</span><span class="p">)</span>
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fov_gl_gb&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">fov</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">gl</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">gb</span><span class="p">)</span>
@@ -182,6 +229,12 @@
 
 <span class="sd">    This function creates the ObsExposures table from the observation exposures.</span>
 
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table contains all of the individual exposure information for each visit in the</span>
+<span class="sd">    :ref:`database-tables-obshistory` table. The number of exposures in a visit is determined</span>
+<span class="sd">    by the visit target&#39;s exposure cadence.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    metadata : sqlalchemy.MetaData</span>
@@ -193,12 +246,18 @@
 <span class="sd">      The ObsExposure table object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;ObsExposures&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureNum&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureStartTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ObsHistory_observationId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier for an observation exposure.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The simulation run session Id.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureNum&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The order number of the exposure. Starts at 1 for a set of exposures.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureStartTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The UTC start time of the particular exposure (units=seconds).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The duration of the exposure (units=seconds).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ObsHistory_observationId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier that relates to an entry in the ObsHistory table.&quot;</span><span class="p">))</span>
 
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;obs_expId_expNum&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">exposureId</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">exposureNum</span><span class="p">)</span>
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_ObsHistory_observationId&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">ObsHistory_observationId</span><span class="p">)</span>
@@ -211,6 +270,12 @@
 <span class="sd">    This function creates the ObsHistory table for tracking all the observations performed</span>
 <span class="sd">    by the Sequencer in the simulation run.</span>
 
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table keeps a record of each visit made by the observatory during a simulated survey.</span>
+<span class="sd">    Multiple proposals can be associated with a single visit leading to duplicate entries in</span>
+<span class="sd">    this table.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    metadata : sqlalchemy.MetaData</span>
@@ -222,22 +287,39 @@
 <span class="sd">        The ObsHistory table object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;ObsHistory&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;observationId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;night&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;observationStartTime&#39;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;observationStartMJD&#39;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;observationStartLST&#39;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The Local Sidereal Time at observation start&quot;</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;TargetHistory_targetId&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Field_fieldId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;angle&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;numExposures&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;visitTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;visitExposureTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;observationId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier for an observation entry.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The simulation run session Id.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;night&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The night in the survey for the observation. Starts from 1.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;observationStartTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The UTC start time for the observation (units=seconds). This occurs after the &quot;</span>
+                             <span class="s2">&quot;slew but before the first exposure.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;observationStartMJD&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The Modified Julian Date at observation start (units=seconds).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;observationStartLST&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The Local Sidereal Time at observation start (units=degrees)&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;TargetHistory_targetId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier that relates to an entry in the TargetHistory entry.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Field_fieldId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier that relates to an entry in the Field table.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The one character name for the band filter.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The Right Ascension of the observation (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The Declination of the observation (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;angle&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The Position Angle of the observation (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;numExposures&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The number of exposures taken for the observation.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;visitTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The total time for the observation (units=seconds) including exposure, &quot;</span>
+                             <span class="s2">&quot;shutter and readout time.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;visitExposureTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The sum of all the exposure times for the observation (units=seconds). No &quot;</span>
+                             <span class="s2">&quot;shutter and readout time included.&quot;</span><span class="p">),</span>
                   <span class="n">ForeignKeyConstraint</span><span class="p">([</span><span class="s2">&quot;Field_fieldId&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Field.fieldId&quot;</span><span class="p">]),</span>
                   <span class="n">ForeignKeyConstraint</span><span class="p">([</span><span class="s2">&quot;TargetHistory_targetId&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;TargetHistory.targetId&quot;</span><span class="p">]))</span>
 
@@ -248,11 +330,39 @@
 
     <span class="k">return</span> <span class="n">table</span></div>
 
+<div class="viewcode-block" id="create_scheduled_downtime"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_scheduled_downtime">[docs]</a><span class="k">def</span> <span class="nf">create_scheduled_downtime</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create the ScheduledDowntime table.</span>
+
+<span class="sd">    This function creates the ScheduledDowntime table for list the scheduled</span>
+<span class="sd">    downtime during the survey.</span>
+
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table records all of the scheduled downtime for the entire survey (plus an extra 10 years). The</span>
+<span class="sd">    actual downtime used in the simulation maybe different depending on the length of the simulation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    metadata : sqlalchemy.MetaData</span>
+<span class="sd">        The database object that collects the tables.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sqlalchemy.Table</span>
+<span class="sd">        The ScheduledDowntime table object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">create_downtime</span><span class="p">(</span><span class="s2">&quot;ScheduledDowntime&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="create_session"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_session">[docs]</a><span class="k">def</span> <span class="nf">create_session</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create Session table.</span>
 
 <span class="sd">    This function creates the Session table for tracking the various simulations run. For MySQL, it adds</span>
 <span class="sd">    a post-create command to set the lower limit of the auto increment value.</span>
+
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table contains the log of all simulations (MySQL) or a single simulation (SQLite). Simulation</span>
+<span class="sd">    runs are identified by the combination of the hostname and session Id: *sessionHost_sessionId*.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -267,12 +377,17 @@
 <span class="sd">        The Session table object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;Session&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="n">autoincrement</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sessionUser&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">80</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sessionHost&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">80</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sessionDate&quot;</span><span class="p">,</span> <span class="n">DATETIME</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;runComment&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="n">autoincrement</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier for the current simulation instance.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sessionUser&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">80</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Computer username of the simulation runner.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sessionHost&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">80</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Computer hostname where the simulation was run.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sessionDate&quot;</span><span class="p">,</span> <span class="n">DATETIME</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The UTC date/time of the simulation start.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The version number of the SOCS code.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;runComment&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;A description of the simulation setup.&quot;</span><span class="p">))</span>
 
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;s_host_user_date_idx&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">sessionUser</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">sessionHost</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">sessionDate</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
@@ -287,6 +402,10 @@
 <span class="sd">    This function creates the SlewHistory table for tracking all the general slew information</span>
 <span class="sd">    performed by the observatory.</span>
 
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table contains the basic slew information for each visit.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    metadata : sqlalchemy.MetaData</span>
@@ -298,13 +417,19 @@
 <span class="sd">        The SlewHistory table object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;SlewHistory&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewCount&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;startDate&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;endDate&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewDistance&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ObsHistory_observationId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewCount&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier for a particular slew.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The simulation run session Id.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;startDate&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The UTC date for the start of the slew (units=seconds).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;endDate&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The UTC date for the end of the slew (units=seconds).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The duration of the slew (units=seconds).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewDistance&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The angular distance traveled on the sky of the slew (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ObsHistory_observationId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier that relates to an entry in the ObsHistory table.&quot;</span><span class="p">),</span>
                   <span class="n">ForeignKeyConstraint</span><span class="p">([</span><span class="s2">&quot;ObsHistory_observationId&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;ObsHistory.observationId&quot;</span><span class="p">]))</span>
 
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_SlewHistory_ObsHistory1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">ObsHistory_observationId</span><span class="p">)</span>
@@ -315,6 +440,11 @@
     <span class="sd">&quot;&quot;&quot;Create the SlewActivities table.</span>
 
 <span class="sd">    This function creates the SlewActivities table for tracking the activities during a slew.</span>
+
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table contains all the activities for a given visit&#39;s slew. The *SlewHistory_slewCount* column</span>
+<span class="sd">    points to a given slew in the :ref:`database-tables-slewhistory` table.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -327,12 +457,18 @@
 <span class="sd">        The SlewActivities table object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;SlewActivities&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewActivityId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;activity&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;activityDelay&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;inCriticalPath&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;SlewHistory_slewCount&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewActivityId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier for a particular slew activity entry.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The simulation run session Id.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;activity&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Short description of the slew activity.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;activityDelay&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The delay time of the slew activity (units=seconds).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;inCriticalPath&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;True is slew activity is in the critical path and False if not.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;SlewHistory_slewCount&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier that relates to an entry in the SlewHistory table.&quot;</span><span class="p">),</span>
                   <span class="n">ForeignKeyConstraint</span><span class="p">([</span><span class="s2">&quot;SlewHistory_slewCount&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;SlewHistory.slewCount&quot;</span><span class="p">]))</span>
 
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_SlewActivites_SlewHistory1_idx&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">SlewHistory_slewCount</span><span class="p">)</span>
@@ -343,6 +479,12 @@
     <span class="sd">&quot;&quot;&quot;Create the SlewFinalState tables.</span>
 
 <span class="sd">    This function creates the SlewFinalState table for tracking the state of the observatory after slewing.</span>
+
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table contains all of the final state information from a given visit&#39;s slew. The state</span>
+<span class="sd">    information is collected after the slew has completed, but before the visit activity has started.</span>
+<span class="sd">    The *SlewHistory_slewCount* column points to a given slew in the :ref:`database-tables-slewhistory` table.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -360,6 +502,12 @@
     <span class="sd">&quot;&quot;&quot;Create the SlewInitialState tables.</span>
 
 <span class="sd">    This function creates the SlewInitialState table for tracking the state of the observatory before slewing.</span>
+
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table contains all of the initial state information from a given visit&#39;s slew. The state</span>
+<span class="sd">    information is collected before the slew to the given target has started. The *SlewHistory_slewCount*</span>
+<span class="sd">    column points to a given slew in the :ref:`database-tables-slewhistory` table.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -379,6 +527,12 @@
 <span class="sd">    This function creates the SlewMaxSpeeds table for tracking the maximum speeds of observatory</span>
 <span class="sd">    achieved during a slew.</span>
 
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table contains all of the maximum speeds obtained by the telescope, dome and rotator</span>
+<span class="sd">    during a given visit&#39;s slew. The *SlewHistory_slewCount* column points to a given slew in</span>
+<span class="sd">    the :ref:`database-tables-slewhistory` table.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    metadata : sqlalchemy.MetaData</span>
@@ -390,14 +544,27 @@
 <span class="sd">        The SlewMaxSpeeds table object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;SlewMaxSpeeds&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewMaxSpeedId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;domeAltSpeed&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;domeAzSpeed&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;telAltSpeed&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;telAzSpeed&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;rotatorSpeed&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;SlewHistory_slewCount&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewMaxSpeedId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier for a particular slew max speeds entry.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The simulation run session Id.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;domeAltSpeed&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The maximum dome altitude speed achieved during the slew &quot;</span>
+                             <span class="s2">&quot;(units=degrees/second).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;domeAzSpeed&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The maximum dome azimuth speed achieved during the slew &quot;</span>
+                             <span class="s2">&quot;(units=degrees/second).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;telAltSpeed&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The maximum telescope altitude speed achieved during the slew &quot;</span>
+                             <span class="s2">&quot;(units=degrees/second).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;telAzSpeed&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The maximum telescope azimuth speed achieved during the slew &quot;</span>
+                             <span class="s2">&quot;(units=degrees/second).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;rotatorSpeed&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The maximum rotator speed achieved during the slew &quot;</span>
+                             <span class="s2">&quot;(units=degrees/second).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;SlewHistory_slewCount&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier that relates to an entry in the SlewHistory table.&quot;</span><span class="p">))</span>
 
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_SlewMaxSpeeds_SlewHistory1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">SlewHistory_slewCount</span><span class="p">)</span>
 
@@ -406,7 +573,7 @@
 <span class="k">def</span> <span class="nf">create_slew_state</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create one of the SlewState tables.</span>
 
-<span class="sd">    This function creates on of the SlewState tables.</span>
+<span class="sd">    This function creates one of the SlewState tables.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -421,23 +588,40 @@
 <span class="sd">        One of the SlewState table objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewStateId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewStateDate&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;targetRA&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;targetDec&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;tracking&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;altitude&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;azimuth&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;paraAngle&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;domeAlt&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;domeAz&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;telAlt&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;telAz&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;rotTelPos&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;rotSkyPos&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;SlewHistory_slewCount&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewStateId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier for a particular slew state.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The simulation run session Id.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewStateDate&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The UTC date/time of the slew state information (units=seconds)&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;targetRA&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Current target Right Ascension (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;targetDec&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Current target Declination (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;tracking&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Whether or not the telescope is tracking the sky.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;altitude&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Current target altitude (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;azimuth&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Current target azimuth (units=degrees)&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;paraAngle&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Current parallactic angle of the rotator (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;domeAlt&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Current dome altitude (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;domeAz&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Current dome azimuth (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;telAlt&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Current telescope altitude (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;telAz&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Current telescope azimuth (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;rotTelPos&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Current position of the telescope rotator (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;rotSkyPos&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Current position of the camera on the sky (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Band filter for the recorded slew state.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;SlewHistory_slewCount&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier that relates to an entry in the SlewHistory table.&quot;</span><span class="p">))</span>
 
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_{}_SlewHistory1&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">SlewHistory_slewCount</span><span class="p">)</span>
 
@@ -447,6 +631,12 @@
     <span class="sd">&quot;&quot;&quot;Create TargetExposures table.</span>
 
 <span class="sd">    This function creates the TargetExposures table from the target exposures.</span>
+
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table contains all of the individual exposure information for each target in the</span>
+<span class="sd">    :ref:`database-tables-targethistory` table. The number of exposures for a target is determined</span>
+<span class="sd">    by the requesting proposal&#39;s exposure cadence.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -459,11 +649,16 @@
 <span class="sd">      The Target Exposure table object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;TargetExposures&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureNum&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;TargetHistory_targetId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier for a particular target exposure.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The simulation run session Id.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureNum&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The order number of the exposure. Starts at 1 for a set of exposures.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The requested duration of the exposure (units=seconds).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;TargetHistory_targetId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier that relates to an entry in the TargetHistory table.&quot;</span><span class="p">))</span>
 
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;expId_expNum&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">exposureId</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">exposureNum</span><span class="p">)</span>
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_TargetHistory_targetId&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">TargetHistory_targetId</span><span class="p">)</span>
@@ -476,6 +671,10 @@
 <span class="sd">    This function creates the TargetHistory table for tracking all the requested targets from</span>
 <span class="sd">    the Scheduler in the simulation run.</span>
 
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table keeps a record of the information from the requested targets during a simulated survey.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    metadata : sqlalchemy.MetaData</span>
@@ -487,21 +686,53 @@
 <span class="sd">        The TargetHistory table object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;TargetHistory&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;targetId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Field_fieldId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;angle&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;numExposures&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;requestedExpTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;targetId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier for a particular target request.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The simulation run session Id.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Field_fieldId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier that relates to an entry in the Field table.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Band filter requested by the target.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Right Ascension of the requested target (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Declination of the requested target (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;angle&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Difference between parallactic angle and rotator angle (units=degrees).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;numExposures&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Number of exposures for the requested target.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;requestedExpTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The total duration of all requested exposures (units=seconds).&quot;</span><span class="p">))</span>
 
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;t_filter&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">filter</span><span class="p">)</span>
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_TargetHistory_Session1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">Session_sessionId</span><span class="p">)</span>
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_TargetHistory_Field1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">Field_fieldId</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">table</span></div>
+
+<div class="viewcode-block" id="create_unscheduled_downtime"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_unscheduled_downtime">[docs]</a><span class="k">def</span> <span class="nf">create_unscheduled_downtime</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create the UnscheduledDowntime table.</span>
+
+<span class="sd">    This function creates the UnscheduledDowntime table for list the unscheduled</span>
+<span class="sd">    downtime during the survey.</span>
+
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table records all of the unscheduled downtime for the entire survey (plus an extra 10 years). The</span>
+<span class="sd">    actual downtime used in the simulation maybe different depending on the length of the simulation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    metadata : sqlalchemy.MetaData</span>
+<span class="sd">        The database object that collects the tables.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sqlalchemy.Table</span>
+<span class="sd">        The UnscheduledDowntime table object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">create_downtime</span><span class="p">(</span><span class="s2">&quot;UnscheduledDowntime&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

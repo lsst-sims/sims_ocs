@@ -1,0 +1,31 @@
+.. _database-tables-targethistory:
+
+=============
+TargetHistory
+=============
+
+This table keeps a record of the information from the requested targets during a simulated survey.
+
+.. list-table:: 
+    :header-rows: 1
+
+    * -  Column
+      -  Description
+    * -  targetId
+      -  Numeric identifier for a particular target request.
+    * -  Session_sessionId
+      -  The simulation run session Id.
+    * -  Field_fieldId
+      -  Numeric identifier that relates to an entry in the Field table.
+    * -  filter
+      -  Band filter requested by the target.
+    * -  ra
+      -  Right Ascension of the requested target (units=degrees).
+    * -  dec
+      -  Declination of the requested target (units=degrees).
+    * -  angle
+      -  Difference between parallactic angle and rotator angle (units=degrees).
+    * -  numExposures
+      -  Number of exposures for the requested target.
+    * -  requestedExpTime
+      -  The total duration of all requested exposures (units=seconds).

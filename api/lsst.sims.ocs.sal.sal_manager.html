@@ -88,6 +88,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 </ul>
 <ul class="current">
@@ -95,6 +96,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="lsst.sims.ocs.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a><ul class="current">
@@ -180,6 +182,24 @@
 <code class="descname">finalize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/sal/sal_manager.html#SalManager.finalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.sal.sal_manager.SalManager.finalize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform finalization steps.</p>
 <p>This function shuts down the Scheduler SAL manager.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.sal.sal_manager.SalManager.get_topic">
+<code class="descname">get_topic</code><span class="sig-paren">(</span><em>topic_short_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/sal/sal_manager.html#SalManager.get_topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.sal.sal_manager.SalManager.get_topic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the given topic.</p>
+<p>This function retrieves the associated data structure for the topic.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>topic_short_name</strong> (<em>str</em>) &#8211; The part of the topic name minus the scheduler prefix.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>SALPY_scheduler.&lt;topic_short_name&gt;C</em> &#8211;
+The telemetry data structure associated with the topic.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">

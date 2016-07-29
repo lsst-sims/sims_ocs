@@ -8,10 +8,12 @@ Submodules
 
    lsst.sims.ocs.configuration.proposal.area_distribution
    lsst.sims.ocs.configuration.proposal.band_filter
-   lsst.sims.ocs.configuration.proposal.galactic_exclusion
    lsst.sims.ocs.configuration.proposal.helpers
    lsst.sims.ocs.configuration.proposal.scheduling
    lsst.sims.ocs.configuration.proposal.selection
+   lsst.sims.ocs.configuration.proposal.sky_constraints
+   lsst.sims.ocs.configuration.proposal.sky_exclusion
+   lsst.sims.ocs.configuration.proposal.sky_nightly_bounds
    lsst.sims.ocs.configuration.proposal.sky_region
 
 Module contents

@@ -86,6 +86,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../history.html">History</a></li>
 </ul>
 <ul>
@@ -143,7 +144,7 @@
 
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration</span> <span class="kn">import</span> <span class="n">ConfigurationCommunicator</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.database.tables</span> <span class="kn">import</span> <span class="n">write_field</span>
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.kernel</span> <span class="kn">import</span> <span class="n">Sequencer</span><span class="p">,</span> <span class="n">TimeHandler</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.kernel</span> <span class="kn">import</span> <span class="n">DowntimeHandler</span><span class="p">,</span> <span class="n">Sequencer</span><span class="p">,</span> <span class="n">TimeHandler</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.kernel.time_handler</span> <span class="kn">import</span> <span class="n">DAYS_IN_YEAR</span><span class="p">,</span> <span class="n">SECONDS_IN_HOUR</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.sal</span> <span class="kn">import</span> <span class="n">SalManager</span><span class="p">,</span> <span class="n">topic_strdict</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.setup</span> <span class="kn">import</span> <span class="n">LoggingLevel</span>
@@ -173,6 +174,8 @@
 <span class="sd">        The instance that manages interactions with the SAL.</span>
 <span class="sd">    seq : :class:`.Sequencer`</span>
 <span class="sd">        The sequencer instance.</span>
+<span class="sd">    dh : :class:`.DowntimeHandler`</span>
+<span class="sd">        The downtime handler instance.</span>
 <span class="sd">    conf_comm : :class:`.ConfigurationCommunicator`</span>
 <span class="sd">        The configuration communicator instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -200,6 +203,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;kernel.Simulator&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sal</span> <span class="o">=</span> <span class="n">SalManager</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seq</span> <span class="o">=</span> <span class="n">Sequencer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">observing_site</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">survey</span><span class="o">.</span><span class="n">idle_delay</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dh</span> <span class="o">=</span> <span class="n">DowntimeHandler</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">conf_comm</span> <span class="o">=</span> <span class="n">ConfigurationCommunicator</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sun</span> <span class="o">=</span> <span class="n">Sun</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">obs_site_info</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
@@ -254,8 +258,8 @@
 <div class="viewcode-block" id="Simulator.get_night_boundaries"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.get_night_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_night_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate the set and rise times for night.&quot;</span>
 
-<span class="sd">        Return</span>
-<span class="sd">        ------</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
 <span class="sd">        tuple (float, float)</span>
 <span class="sd">            A tuple of the set and rise timestamp respectively.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -268,6 +272,17 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">set_timestamp</span><span class="p">,</span> <span class="n">rise_timestamp</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Simulator.get_target_from_scheduler"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.get_target_from_scheduler">[docs]</a>    <span class="k">def</span> <span class="nf">get_target_from_scheduler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get target from scheduler.</span>
+
+<span class="sd">        This function provides the mechanism for getting the target from the</span>
+<span class="sd">        Scheduler. Currently, a while loop is required to do this.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_scheduler</span><span class="p">:</span>
+            <span class="n">rcode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">getNextSample_targetTest</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rcode</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">num_exposures</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span></div>
+
 <div class="viewcode-block" id="Simulator.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform initialization steps.</span>
 
@@ -277,6 +292,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initializing simulation&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">observatory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">downtime</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">write_downtime_to_db</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">conf_comm</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">comm_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;timeHandler&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_subscribe_topic</span><span class="p">(</span><span class="s2">&quot;targetTest&quot;</span><span class="p">)</span>
@@ -327,11 +344,7 @@
                              <span class="s2">&quot;Observatory State: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">topic_strdict</span><span class="p">(</span><span class="n">observatory_state</span><span class="p">)))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">observatory_state</span><span class="p">)</span>
 
-                <span class="c1"># Get target from scheduler</span>
-                <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_scheduler</span><span class="p">:</span>
-                    <span class="n">rcode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">getNextSample_targetTest</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">rcode</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">num_exposures</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                        <span class="k">break</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_target_from_scheduler</span><span class="p">()</span>
 
                 <span class="n">observation</span><span class="p">,</span> <span class="n">slew_info</span><span class="p">,</span> <span class="n">exposure_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">observe_target</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
                                                                                 <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="p">)</span>

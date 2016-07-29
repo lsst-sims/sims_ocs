@@ -8,6 +8,7 @@ Subpackages
 
     lsst.sims.ocs.configuration
     lsst.sims.ocs.database
+    lsst.sims.ocs.downtime
     lsst.sims.ocs.kernel
     lsst.sims.ocs.observatory
     lsst.sims.ocs.sal

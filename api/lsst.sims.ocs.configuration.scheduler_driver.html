@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.proposal.galactic_exclusion module &mdash; Simulated OCS 0.3.0 documentation</title>
+  <title>lsst.sims.ocs.configuration.scheduler_driver module &mdash; Simulated OCS 0.3.0 documentation</title>
   
 
   
@@ -31,9 +31,9 @@
 
   
     <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../index.html"/>
-        <link rel="up" title="lsst.sims.ocs.configuration.proposal package" href="lsst.sims.ocs.configuration.proposal.html"/>
-        <link rel="next" title="lsst.sims.ocs.configuration.proposal.helpers module" href="lsst.sims.ocs.configuration.proposal.helpers.html"/>
-        <link rel="prev" title="lsst.sims.ocs.configuration.proposal.band_filter module" href="lsst.sims.ocs.configuration.proposal.band_filter.html"/> 
+        <link rel="up" title="lsst.sims.ocs.configuration package" href="lsst.sims.ocs.configuration.html"/>
+        <link rel="next" title="lsst.sims.ocs.configuration.science_proposals module" href="lsst.sims.ocs.configuration.science_proposals.html"/>
+        <link rel="prev" title="lsst.sims.ocs.configuration.observatory module" href="lsst.sims.ocs.configuration.observatory.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -88,18 +88,20 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="lsst.sims.ocs.html">lsst.sims.ocs package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="lsst.sims.ocs.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="lsst.sims.ocs.configuration.html#subpackages">Subpackages</a></li>
-<li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.configuration.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.configuration.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="lsst.sims.ocs.configuration.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.configuration.html#module-lsst.sims.ocs.configuration">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
@@ -145,13 +147,11 @@
       
           <li><a href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a> &raquo;</li>
       
-          <li><a href="lsst.sims.ocs.configuration.proposal.html">lsst.sims.ocs.configuration.proposal package</a> &raquo;</li>
-      
-    <li>lsst.sims.ocs.configuration.proposal.galactic_exclusion module</li>
+    <li>lsst.sims.ocs.configuration.scheduler_driver module</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/lsst.sims.ocs.configuration.proposal.galactic_exclusion.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/lsst.sims.ocs.configuration.scheduler_driver.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -161,36 +161,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-lsst.sims.ocs.configuration.proposal.galactic_exclusion">
-<span id="lsst-sims-ocs-configuration-proposal-galactic-exclusion-module"></span><h1>lsst.sims.ocs.configuration.proposal.galactic_exclusion module<a class="headerlink" href="#module-lsst.sims.ocs.configuration.proposal.galactic_exclusion" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-lsst.sims.ocs.configuration.scheduler_driver">
+<span id="lsst-sims-ocs-configuration-scheduler-driver-module"></span><h1>lsst.sims.ocs.configuration.scheduler_driver module<a class="headerlink" href="#module-lsst.sims.ocs.configuration.scheduler_driver" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion">
-<em class="property">class </em><code class="descclassname">lsst.sims.ocs.configuration.proposal.galactic_exclusion.</code><code class="descname">GalacticExclusion</code><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/proposal/galactic_exclusion.html#GalacticExclusion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver">
+<em class="property">class </em><code class="descclassname">lsst.sims.ocs.configuration.scheduler_driver.</code><code class="descname">SchedulerDriver</code><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/scheduler_driver.html#SchedulerDriver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">lsst.pex.config.config.Config</span></code></p>
-<p>Configuration of a galactic exclusion zone.</p>
+<p>Configuration of the LSST Scheduler&#8217;s Driver.</p>
 <dl class="method">
-<dt id="lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion.setDefaults">
-<code class="descname">setDefaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/proposal/galactic_exclusion.html#GalacticExclusion.setDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion.setDefaults" title="Permalink to this definition">¶</a></dt>
-<dd><p>Default specification for galactic exclusion zone.</p>
+<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.setDefaults">
+<code class="descname">setDefaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/scheduler_driver.html#SchedulerDriver.setDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.setDefaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set defaults for the LSST Scheduler&#8217;s Driver.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion.peak_l">
-<code class="descname">peak_l</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion.peak_l" title="Permalink to this definition">¶</a></dt>
-<dd><p>The half width in galactic latitude (units=degrees) at the galactic longitude of 0.</p>
+<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.coadd_values">
+<code class="descname">coadd_values</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.coadd_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.night_boundary">
+<code class="descname">night_boundary</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.night_boundary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solar altitude (degrees) when it is considered night.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion.taper_b">
-<code class="descname">taper_b</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion.taper_b" title="Permalink to this definition">¶</a></dt>
-<dd><p>The galactic longitude (units=degrees) where taper_l is in effect.</p>
-</dd></dl>
+<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_bmax">
+<code class="descname">timebonus_bmax</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_bmax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion.taper_l">
-<code class="descname">taper_l</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion.taper_l" title="Permalink to this definition">¶</a></dt>
-<dd><p>The half width in galactic latitude (units=degrees) at the galactic longitude specified by taper_b.</p>
-</dd></dl>
+<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_slope">
+<code class="descname">timebonus_slope</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_slope" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_tmax">
+<code class="descname">timebonus_tmax</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_tmax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -203,10 +211,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="lsst.sims.ocs.configuration.proposal.helpers.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.configuration.proposal.helpers module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="lsst.sims.ocs.configuration.science_proposals.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.configuration.science_proposals module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="lsst.sims.ocs.configuration.proposal.band_filter.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.proposal.band_filter module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="lsst.sims.ocs.configuration.observatory.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.observatory module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

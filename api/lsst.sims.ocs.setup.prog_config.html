@@ -88,6 +88,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 </ul>
 <ul class="current">
@@ -95,6 +96,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="lsst.sims.ocs.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
@@ -169,8 +171,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>conf_file</strong> (<em>Optional[str]</em>) &#8211; The name of the configuration file. Default is opsim4.</li>
-<li><strong>conf_dir</strong> (<em>Optional[str]</em>) &#8211; The directory location of the configuration file. Default is $HOME/.config</li>
+<li><strong>conf_file</strong> (<em>str, optional</em>) &#8211; The name of the configuration file. Default is opsim4.</li>
+<li><strong>conf_dir</strong> (<em>str, optional</em>) &#8211; The directory location of the configuration file. Default is $HOME/.config</li>
 </ul>
 </td>
 </tr>
@@ -188,7 +190,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>options</strong> (<em>argparse.Namespace</em>) &#8211; The options from ArgumentParser</li>
-<li><strong>conf_dir</strong> (<em>Optional[str]</em>) &#8211; A directory for saving the configuration file in. Default is $HOME/.config/opsim4.</li>
+<li><strong>conf_dir</strong> (<em>str, optional</em>) &#8211; A directory for saving the configuration file in. Default is $HOME/.config/opsim4.</li>
 </ul>
 </td>
 </tr>

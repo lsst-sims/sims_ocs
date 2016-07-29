@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.proposal.galactic_exclusion &mdash; Simulated OCS 0.3.0 documentation</title>
+  <title>lsst.sims.ocs.configuration.proposal.sky_constraints &mdash; Simulated OCS 0.3.0 documentation</title>
   
 
   
@@ -86,6 +86,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../history.html">History</a></li>
 </ul>
 <ul>
@@ -122,7 +123,7 @@
       
           <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
       
-    <li>lsst.sims.ocs.configuration.proposal.galactic_exclusion</li>
+    <li>lsst.sims.ocs.configuration.proposal.sky_constraints</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -134,27 +135,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for lsst.sims.ocs.configuration.proposal.galactic_exclusion</h1><div class="highlight"><pre>
+  <h1>Source code for lsst.sims.ocs.configuration.proposal.sky_constraints</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GalacticExclusion&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SkyConstraints&quot;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="GalacticExclusion"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.galactic_exclusion.html#lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion">[docs]</a><span class="k">class</span> <span class="nc">GalacticExclusion</span><span class="p">(</span><span class="n">pexConfig</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Configuration of a galactic exclusion zone.</span>
+<div class="viewcode-block" id="SkyConstraints"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.sky_constraints.html#lsst.sims.ocs.configuration.proposal.sky_constraints.SkyConstraints">[docs]</a><span class="k">class</span> <span class="nc">SkyConstraints</span><span class="p">(</span><span class="n">pexConfig</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Configuration for a proposal&#39;s sky constraints.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">taper_l</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The half width in galactic latitude (units=degrees) at the galactic longitude &#39;</span>
-                              <span class="s1">&#39;specified by taper_b.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-    <span class="n">taper_b</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The galactic longitude (units=degrees) where taper_l is in effect.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-    <span class="n">peak_l</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The half width in galactic latitude (units=degrees) at the galactic longitude &#39;</span>
-                             <span class="s1">&#39;of 0.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">max_airmass</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The maximum airmass allowed for any field.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
 
-<div class="viewcode-block" id="GalacticExclusion.setDefaults"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.galactic_exclusion.html#lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Default specification for galactic exclusion zone.</span>
+<div class="viewcode-block" id="SkyConstraints.setDefaults"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.sky_constraints.html#lsst.sims.ocs.configuration.proposal.sky_constraints.SkyConstraints.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Default specification for sky constarints.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">taper_l</span> <span class="o">=</span> <span class="mf">2.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">taper_b</span> <span class="o">=</span> <span class="mf">180.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">peak_l</span> <span class="o">=</span> <span class="mf">20.0</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_airmass</span> <span class="o">=</span> <span class="mf">2.5</span></div></div>
 </pre></div>
 
            </div>

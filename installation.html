@@ -91,17 +91,15 @@
 <li class="toctree-l3"><a class="reference internal" href="#build-scheduler-topic-library">Build Scheduler Topic Library</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#scheduler-installation">Scheduler Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#socs-installation">SOCS Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#scheduler-and-socs-source-code">Scheduler and SOCS Source Code</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#conda-installation">Conda Installation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#lsst-stack-installation">LSST Stack Installation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#socs-setup">SOCS Setup</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#database-setup">Database Setup</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
 </ul>
 <ul>
@@ -154,37 +152,23 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The current installation is not for the faint of heart as it requires multiple repositories and a mixture of environments. It also only works on a RHEL 7 type environment.</p>
+<p class="last">The current installation requires multiple repositories and a mixture of environments. It also only works on a Linux environment. It has been tested on a RHEL 7 type environment.</p>
 </div>
 <div class="section" id="general-installation-notes">
 <h2>General Installation Notes<a class="headerlink" href="#general-installation-notes" title="Permalink to this headline">¶</a></h2>
-<p>Due to the heavy use of repositiories for this installation, the instructions will assume you have created a <code class="docutils literal"><span class="pre">git</span></code> directory in your <code class="docutils literal"><span class="pre">$HOME</span></code> directory. This will be referenced as <code class="docutils literal"><span class="pre">gitdir</span></code>. The individual repository installation instructions will give further advice on directory names. This is intended to make the usage &#8220;easier&#8221;. Also, all instructions are based around using the code, not developing it.</p>
+<p>Due to the heavy use of repositories for this installation, the instructions will assume you have created a <code class="docutils literal"><span class="pre">git</span></code> directory in your <code class="docutils literal"><span class="pre">$HOME</span></code> directory. This will be referenced as <code class="docutils literal"><span class="pre">gitdir</span></code>. The individual repository installation instructions will give further advice on directory names. This is intended to make the usage &#8220;easier&#8221;. Also, all instructions are based around using the code, not developing it.</p>
 </div>
 <div class="section" id="sal-installation">
 <h2>SAL Installation<a class="headerlink" href="#sal-installation" title="Permalink to this headline">¶</a></h2>
 <p>The SAL (Software Abstraction Layer) is a wrapper around the DDS layer and provides binding to Python. This requires the OpenSplice and SAL repositories from Telescope and Site. Inside the <code class="docutils literal"><span class="pre">gitdir</span></code> create a directory called <code class="docutils literal"><span class="pre">ts</span></code>. Go into this directory and run the following:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>git clone https://stash.lsstcorp.org/scm/ts/ts_opensplice.git
-git clone https://stash.lsstcorp.org/scm/ts/ts_sal.git
+<div class="highlight-python"><div class="highlight"><pre><span></span>git clone https://github.com/lsst-ts/ts_opensplice.git
+git clone https://github.com/lsst-ts/ts_sal.git
 </pre></div>
 </div>
+<p>In the SAL clone, there is a user guide that will be referenced in the following documentation. Its location is <code class="docutils literal"><span class="pre">gitdir/ts/ts_sal/SAL_User_Guide.pdf</span></code> and will be referred to as <code class="docutils literal"><span class="pre">SUG</span></code>.</p>
 <div class="section" id="build-scheduler-topic-library">
 <h3>Build Scheduler Topic Library<a class="headerlink" href="#build-scheduler-topic-library" title="Permalink to this headline">¶</a></h3>
-<p>There are prerequisites that need to be installed to build the topic library. They can be installed via the <code class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span></code> command. They are:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>g++
-make
-cmake
-ncurses-libs
-xterm
-xorg-x11-fonts-misc
-java-1.7.0-openjdk-devel
-boost-python
-boost-python-devel
-maven
-python-devel
-swig
-tk-devel
-</pre></div>
-</div>
+<p>There are prerequisites that need to be installed to build the topic library. They can be found in the <em>Introduction</em> section of the <code class="docutils literal"><span class="pre">SUG</span></code> and must be installed before continuing.</p>
 <p>Create a <code class="docutils literal"><span class="pre">$HOME/dds</span></code> directory and copy the <code class="docutils literal"><span class="pre">gitdir/ts/ts_sal/setup.env</span></code> to it. Also, create a <code class="docutils literal"><span class="pre">$HOME/dds/lib</span></code> directory for later. The following variables need to be edited in <code class="docutils literal"><span class="pre">setup.env</span></code> to reflect your setup:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span>export LSST_SDK_INSTALL=$HOME/git/ts/ts_sal
 export OSPL_HOME=$HOME/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
@@ -207,69 +191,82 @@ salgenerator scheduler sal python
 cp scheduler/cpp/libsacpp_scheduler_types.so $HOME/dds/lib
 </pre></div>
 </div>
-<p>There are firewall rules that need to be applied in order for the DDS communications to work directly. Please see a developer for these.</p>
+<p>There are firewall rules that need to be applied in order for the DDS communications to work directly. They can be found in the <em>Installation</em> section of the <code class="docutils literal"><span class="pre">SUG</span></code> and need to be applied before running the SOCS/Scheduler system.</p>
 </div>
 </div>
-<div class="section" id="scheduler-installation">
-<h2>Scheduler Installation<a class="headerlink" href="#scheduler-installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="scheduler-and-socs-source-code">
+<h2>Scheduler and SOCS Source Code<a class="headerlink" href="#scheduler-and-socs-source-code" title="Permalink to this headline">¶</a></h2>
 <p>The Scheduler repository should also be cloned to <code class="docutils literal"><span class="pre">gitdir/ts</span></code> via the following:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>git clone https://stash.lsstcorp.org/scm/ts/ts_scheduler.git
+<div class="highlight-python"><div class="highlight"><pre><span></span>git clone https://github.com/lsst-ts/ts_scheduler.git
 </pre></div>
 </div>
-</div>
-<div class="section" id="socs-installation">
-<h2>SOCS Installation<a class="headerlink" href="#socs-installation" title="Permalink to this headline">¶</a></h2>
 <p>The SOCS repository should be cloned into the <code class="docutils literal"><span class="pre">gitdir</span></code>. Create a directory there called <code class="docutils literal"><span class="pre">lsst-sims</span></code>, go into that and run the following:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span>git clone https://github.com/lsst-sims/sims_ocs.git
 </pre></div>
 </div>
-<p>The SOCS installation requires a set of Python modules. It is recommended to install a clean version of Python via a mechanism like
-<a class="reference external" href="http://conda.pydata.org/miniconda.html">Miniconda</a>. A configuration module is also necessary from the LSST Stack, so this will need to be setup as well.</p>
 <div class="section" id="conda-installation">
 <h3>Conda Installation<a class="headerlink" href="#conda-installation" title="Permalink to this headline">¶</a></h3>
-<p>Install miniconda from the above link. It is assumed that the <code class="docutils literal"><span class="pre">bin</span></code> directory from the installation will make it into the <code class="docutils literal"><span class="pre">$PATH</span></code> somehow. This is one of the few places where the user gets to choose how to do this. Next, create a Conda environment and activate it:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>conda create -n opsim4_py2 python=2
-source activate opsim4_py2
+<p>The SOCS and Scheduler installation require a set of Python modules. It is recommended to install a clean version of Python via a mechanism like
+<a class="reference external" href="http://conda.pydata.org/miniconda.html">Miniconda</a>. A configuration module is also necessary from the LSST Stack for SOCS, so this will need to be setup as well. Going forward, all the prerequisites will be installed via the conda mechanism.</p>
+<p>Install miniconda from the above link. It is assumed that the <code class="docutils literal"><span class="pre">bin</span></code> directory from the installation will make it into the <code class="docutils literal"><span class="pre">$PATH</span></code> somehow. This is one of the few places where the user gets to choose how to do this. After the installation, it&#8217;s a good idea to update it, so do the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>conda update conda
 </pre></div>
 </div>
-</div>
-<div class="section" id="lsst-stack-installation">
-<h3>LSST Stack Installation<a class="headerlink" href="#lsst-stack-installation" title="Permalink to this headline">¶</a></h3>
-<p>To install the LSST Stack (this really is only a skeleton setup and not the full stack!), do the following:</p>
-<blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>mkdir -p $HOME/lsst
-<span class="nb">cd</span> $HOME/lsst
-curl -O https://sw.lsstcorp.org/eupspkg/newinstall.sh
-<span class="c1"># script below will ask some questions. Answer no to the python since we are using</span>
-<span class="c1"># the miniconda installation.</span>
-bash newinstall.sh
-<span class="nb">source</span> loadLSST.bash
+<p>Next, create a Conda environment and activate it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>conda create -n opsim4 python=2
+source activate opsim4
 </pre></div>
 </div>
-</div></blockquote>
-<p>Once this is completed, install the necessary configuration module:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>eups distrib install pex-config
+<p>Next, add the LSST Conda package channel by doing the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>conda config --add channels http://conda.lsst.codes/stack
 </pre></div>
 </div>
+<p>In order to run the Operations Simulator (SOCS/Scheduler), the following need to be installed:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>conda install lsst-sims-skybrightness lsst-pex-config enum34 pytz mysql-python requests sqlalchemy
+</pre></div>
 </div>
-<div class="section" id="socs-setup">
-<h3>SOCS Setup<a class="headerlink" href="#socs-setup" title="Permalink to this headline">¶</a></h3>
-<p>Once the above is completed, you will need to install the Python modules from <code class="docutils literal"><span class="pre">gitdir/lsst-sims/sims_ocs/requirements.txt</span></code>. Not all the modules are avaiable via <code class="docutils literal"><span class="pre">conda</span> <span class="pre">install</span></code> so you&#8217;ll have to resort to <code class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span></code> when necessary. With all the modules installed, do the following (while in <code class="docutils literal"><span class="pre">gitdir/lsst-sims/sims_ocs</span></code>):</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>eups declare -r . -t $USER sims_ocs
+<p>If one wishes to develop the code, being able to run the unit tests, check style compliance and generate the documentation is a must. To do this, these packages need to be installed:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>conda install mock sphinx sphinx_rtd_theme flake8 coverage
+</pre></div>
+</div>
+<p>There is one package that is required for the documentation but is not available via the conda packaging system. To get this package, do:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pip install rst
+</pre></div>
+</div>
+<p>Once the above is complete, setup the environment by doing:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>source eups-setups.sh
+</pre></div>
+</div>
+<p><strong>NOTE</strong>: If you are using CSH, you&#8217;ll need the full path to the appropriate setup file (<code class="docutils literal"><span class="pre">eups-setups.csh</span></code>). To get this, execute the following command and a helpful message will tell you where to look:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">eups</span>
+</pre></div>
+</div>
+<p>With the environment setup, we need to declare and setup the SOCS and Scheduler packages so they can be used. Declare the Scheduler:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>cd gitdir/ts/ts_scheduler
+eups declare ts_scheduler -r . -t $USER
+</pre></div>
+</div>
+<p>To declare and setup SOCS, do:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>cd gitdir/lsst-sims/sims_ocs
+eups declare sims_ocs -r . -t $USER
 setup sims_ocs -t $USER
 python setup.py develop
 </pre></div>
 </div>
-<p>The last setup is necessary even if you aren&#8217;t developing the code. It creates the version information module for the code.</p>
+<p><strong>NOTE</strong>: The declaration steps only need to be done once. After that, when returning to the same conda environment, do:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>source eups-setups.sh
+setup sims_ocs -t $USER
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="database-setup">
-<h2>Database Setup<a class="headerlink" href="#database-setup" title="Permalink to this headline">¶</a></h2>
-<p>SOCS provides two mechanisms for simulation information storage: MySQL or SQLite. A script, <code class="docutils literal"><span class="pre">manage_db</span></code> has been create to help setup the necessary simulation related items for either case. In the case of MySQL, it is assumed that a running instance is already present and you have a <code class="docutils literal"><span class="pre">.my.cnf</span></code> file in <code class="docutils literal"><span class="pre">$HOME</span></code> that contains the connection information for a non-privileged user. It&#8217;s also assumed you know the root password to the database as this will be required during setup. To see the options available:</p>
+<span id="installation-database"></span><h2>Database Setup<a class="headerlink" href="#database-setup" title="Permalink to this headline">¶</a></h2>
+<p>SOCS provides two mechanisms for simulation information storage: MySQL or SQLite. A script, <code class="docutils literal"><span class="pre">manage_db</span></code> has been created to help setup the necessary simulation related items for either case. In the case of MySQL, it is assumed that a running instance is already present and you have a <code class="docutils literal"><span class="pre">.my.cnf</span></code> file in <code class="docutils literal"><span class="pre">$HOME</span></code> that contains the connection information for a non-privileged user. It&#8217;s also assumed you know the root password to the database as this will be required during setup. To see the options available:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">manage_db</span> <span class="o">-</span><span class="n">h</span>
 </pre></div>
 </div>
-<p>The installation will cover a SQLite storage option. The following assumes a <code class="docutils literal"><span class="pre">$HOME/run_local</span></code> directory with <code class="docutils literal"><span class="pre">log</span></code> and <code class="docutils literal"><span class="pre">output</span></code> sub-directories are already available. To create the SQLite setup, run the following:</p>
+<p>The installation will cover a SQLite storage option. The following assumes a <code class="docutils literal"><span class="pre">$HOME/run_local</span></code> directory with an <code class="docutils literal"><span class="pre">output</span></code> sub-directory already available. To create the SQLite setup, run the following:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span>manage_db -c --type=sqlite --save-dir=$HOME/run_local/output
 </pre></div>
 </div>

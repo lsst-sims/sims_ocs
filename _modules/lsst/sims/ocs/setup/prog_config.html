@@ -86,6 +86,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../history.html">History</a></li>
 </ul>
 <ul>
@@ -153,7 +154,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    options : argparse.Namespace</span>
 <span class="sd">        The options from ArgumentParser</span>
-<span class="sd">    conf_dir : Optional[str]</span>
+<span class="sd">    conf_dir : str, optional</span>
 <span class="sd">        A directory for saving the configuration file in. Default is $HOME/.config/opsim4.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">SafeConfigParser</span><span class="p">()</span>
@@ -176,9 +177,9 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    conf_file : Optional[str]</span>
+<span class="sd">    conf_file : str, optional</span>
 <span class="sd">        The name of the configuration file. Default is opsim4.</span>
-<span class="sd">    conf_dir : Optional[str]</span>
+<span class="sd">    conf_dir : str, optional</span>
 <span class="sd">        The directory location of the configuration file. Default is $HOME/.config</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">conf_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>

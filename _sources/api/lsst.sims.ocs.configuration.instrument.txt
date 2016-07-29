@@ -9,6 +9,7 @@ Submodules
    lsst.sims.ocs.configuration.instrument.camera
    lsst.sims.ocs.configuration.instrument.dome
    lsst.sims.ocs.configuration.instrument.obs_variation
+   lsst.sims.ocs.configuration.instrument.optics_loop_corr
    lsst.sims.ocs.configuration.instrument.park
    lsst.sims.ocs.configuration.instrument.rotator
    lsst.sims.ocs.configuration.instrument.slew

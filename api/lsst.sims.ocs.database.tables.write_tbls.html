@@ -88,6 +88,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 </ul>
 <ul class="current">
@@ -100,6 +101,7 @@
 <li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.database.html#module-lsst.sims.ocs.database">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
@@ -217,6 +219,28 @@ A dictionary of the topic data.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>data</strong> (<em>SALPY_scheduler.observationTestC</em>) &#8211; The SAL observation topic instance.</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211;
+A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_scheduled_downtime">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_scheduled_downtime</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_scheduled_downtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_scheduled_downtime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the ScheduledDowntime table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>tuple</em>) &#8211; The instance containing the scheduled downtime information</li>
 <li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
 </ul>
 </td>
@@ -371,6 +395,28 @@ A dictionary of the topic data.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>data</strong> (<em>SALPY_scheduler.targetTestC</em>) &#8211; The SAL target topic instance.</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211;
+A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_unscheduled_downtime">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_unscheduled_downtime</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_unscheduled_downtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_unscheduled_downtime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the UnscheduledDowntime table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>tuple</em>) &#8211; The instance containing the unscheduled downtime information</li>
 <li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
 </ul>
 </td>

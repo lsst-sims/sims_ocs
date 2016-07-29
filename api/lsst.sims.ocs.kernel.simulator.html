@@ -88,6 +88,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 </ul>
 <ul class="current">
@@ -95,6 +96,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="lsst.sims.ocs.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="lsst.sims.ocs.kernel.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.kernel.html#module-lsst.sims.ocs.kernel">Module contents</a></li>
@@ -223,6 +225,13 @@
 </dd></dl>
 
 <dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.dh">
+<code class="descname">dh</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.dh" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler" title="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler"><code class="xref py py-class docutils literal"><span class="pre">DowntimeHandler</span></code></a></p>
+<p>The downtime handler instance.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.conf_comm">
 <code class="descname">conf_comm</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.conf_comm" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference internal" href="lsst.sims.ocs.configuration.conf_comm.html#lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator" title="lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator"><code class="xref py py-class docutils literal"><span class="pre">ConfigurationCommunicator</span></code></a></p>
@@ -263,6 +272,14 @@ A tuple of the set and rise timestamp respectively.</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.get_target_from_scheduler">
+<code class="descname">get_target_from_scheduler</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.get_target_from_scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.get_target_from_scheduler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get target from scheduler.</p>
+<p>This function provides the mechanism for getting the target from the
+Scheduler. Currently, a while loop is required to do this.</p>
 </dd></dl>
 
 <dl class="method">

@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.science.galactic_plane module
+=========================================================
+
+.. automodule:: lsst.sims.ocs.configuration.science.galactic_plane
+    :members:
+    :undoc-members:
+    :show-inheritance:

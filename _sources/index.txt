@@ -10,6 +10,7 @@ Table of Contents
 
    installation
    usage
+   database
    history
 
 Class Documentation

@@ -86,6 +86,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
 </ul>
 <ul>
@@ -163,6 +164,16 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="api/lsst.sims.ocs.downtime.scheduled_downtime.html#lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime.__call__">__call__() (lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.__call__">(lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime method)</a>
+  </dt>
+
+      </dl></dd>
+      
   <dt><a href="api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.__getattr__">__getattr__() (lsst.sims.ocs.observatory.main_observatory.MainObservatory method)</a>
   </dt>
 
@@ -220,6 +231,16 @@
       </dl></dd>
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/lsst.sims.ocs.downtime.scheduled_downtime.html#lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime.__len__">__len__() (lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.__len__">(lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime method)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="api/lsst.sims.ocs.configuration.field.html#lsst.sims.ocs.configuration.field.Field.__repr__">__repr__() (lsst.sims.ocs.configuration.field.Field method)</a>
   </dt>
@@ -400,6 +421,10 @@
   <dt><a href="api/lsst.sims.ocs.configuration.proposal.band_filter.html#lsst.sims.ocs.configuration.proposal.band_filter.BandFilter">BandFilter (class in lsst.sims.ocs.configuration.proposal.band_filter)</a>
   </dt>
 
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.selection.html#lsst.sims.ocs.configuration.proposal.selection.Selection.bounds_limit">bounds_limit (lsst.sims.ocs.configuration.proposal.selection.Selection attribute)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
@@ -425,11 +450,23 @@
   </dt>
 
       
+  <dt><a href="api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.CATASTROPHIC_EVENT">CATASTROPHIC_EVENT (lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime attribute)</a>
+  </dt>
+
+      
   <dt><a href="api/lsst.sims.ocs.observatory.variational_model.html#lsst.sims.ocs.observatory.variational_model.VariationalModel.change_speeds_and_accelerations">change_speeds_and_accelerations() (lsst.sims.ocs.observatory.variational_model.VariationalModel method)</a>
   </dt>
 
       
   <dt><a href="api/lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase.clear_data">clear_data() (lsst.sims.ocs.database.socs_db.SocsDatabase method)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.scheduler_driver.html#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.coadd_values">coadd_values (lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_region.html#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.combiners">combiners (lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion attribute)</a>
   </dt>
 
       
@@ -474,14 +511,18 @@
   <dt><a href="api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_observation_exposures">create_observation_exposures() (in module lsst.sims.ocs.database.tables.base_tbls)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_observation_history">create_observation_history() (in module lsst.sims.ocs.database.tables.base_tbls)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api/lsst.sims.ocs.setup.parser.html#lsst.sims.ocs.setup.parser.create_parser">create_parser() (in module lsst.sims.ocs.setup.parser)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_scheduled_downtime">create_scheduled_downtime() (in module lsst.sims.ocs.database.tables.base_tbls)</a>
   </dt>
 
       
@@ -517,6 +558,10 @@
   </dt>
 
       
+  <dt><a href="api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_unscheduled_downtime">create_unscheduled_downtime() (in module lsst.sims.ocs.database.tables.base_tbls)</a>
+  </dt>
+
+      
   <dt><a href="api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.current_dt">current_dt (lsst.sims.ocs.kernel.time_handler.TimeHandler attribute)</a>
   </dt>
 
@@ -525,11 +570,19 @@
   </dt>
 
       
+  <dt><a href="api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.current_scheduled">current_scheduled (lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler attribute)</a>
+  </dt>
+
+      
   <dt><a href="api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.current_timestamp">current_timestamp (lsst.sims.ocs.kernel.time_handler.TimeHandler attribute)</a>
   </dt>
 
       
   <dt><a href="api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.current_timestring">current_timestring (lsst.sims.ocs.kernel.time_handler.TimeHandler attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.current_unscheduled">current_unscheduled (lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler attribute)</a>
   </dt>
 
   </dl></td>
@@ -563,7 +616,7 @@
   </dt>
 
       
-  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_region.html#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.dec_window">dec_window (lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion attribute)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_exclusion.html#lsst.sims.ocs.configuration.proposal.sky_exclusion.SkyExclusion.dec_window">dec_window (lsst.sims.ocs.configuration.proposal.sky_exclusion.SkyExclusion attribute)</a>
   </dt>
 
       
@@ -575,15 +628,19 @@
   </dt>
 
       
-  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_region.html#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.delta_lst">delta_lst (lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion attribute)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.html#lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.SkyNightlyBounds.delta_lst">delta_lst (lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.SkyNightlyBounds attribute)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.dh">dh (lsst.sims.ocs.kernel.simulator.Simulator attribute)</a>
+  </dt>
+
       
   <dt><a href="api/lsst.sims.ocs.configuration.instrument.dome.html#lsst.sims.ocs.configuration.instrument.dome.Dome">Dome (class in lsst.sims.ocs.configuration.instrument.dome)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api/lsst.sims.ocs.configuration.observatory.html#lsst.sims.ocs.configuration.observatory.Observatory.dome">dome (lsst.sims.ocs.configuration.observatory.Observatory attribute)</a>
   </dt>
@@ -614,6 +671,18 @@
 
       
   <dt><a href="api/lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewMaxSpeeds.domeAzSpeed">domeAzSpeed (lsst.sims.ocs.observatory.slew_information.SlewMaxSpeeds attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.downtime.html#lsst.sims.ocs.configuration.downtime.Downtime">Downtime (class in lsst.sims.ocs.configuration.downtime)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.downtime">downtime (lsst.sims.ocs.configuration.sim_config.SimulationConfig attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler">DowntimeHandler (class in lsst.sims.ocs.kernel.downtime_handler)</a>
   </dt>
 
       
@@ -774,7 +843,15 @@
 
       <dd><dl>
         
-  <dt><a href="api/lsst.sims.ocs.configuration.science.universal_weak.html#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.filters">(lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak attribute)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.science.galactic_plane.html#lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane.filters">(lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.south_celestial_pole.html#lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole.filters">(lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.weak_lensing.html#lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing.filters">(lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing attribute)</a>
   </dt>
 
       </dl></dd>
@@ -831,11 +908,7 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_region.html#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.galactic_exclusion">galactic_exclusion (lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion attribute)</a>
-  </dt>
-
-      
-  <dt><a href="api/lsst.sims.ocs.configuration.proposal.galactic_exclusion.html#lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion">GalacticExclusion (class in lsst.sims.ocs.configuration.proposal.galactic_exclusion)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.science.galactic_plane.html#lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane">GalacticPlane (class in lsst.sims.ocs.configuration.science.galactic_plane)</a>
   </dt>
 
       
@@ -851,6 +924,10 @@
   </dt>
 
       
+  <dt><a href="api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.get_downtime">get_downtime() (lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler method)</a>
+  </dt>
+
+      
   <dt><a href="api/lsst.sims.ocs.utilities.session_info.html#lsst.sims.ocs.utilities.session_info.get_hostname">get_hostname() (in module lsst.sims.ocs.utilities.session_info)</a>
   </dt>
 
@@ -862,18 +939,26 @@
   <dt><a href="api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.get_observatory_state">get_observatory_state() (lsst.sims.ocs.kernel.sequencer.Sequencer method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.get_slew_activities">get_slew_activities() (lsst.sims.ocs.observatory.main_observatory.MainObservatory method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.get_slew_state">get_slew_state() (lsst.sims.ocs.observatory.main_observatory.MainObservatory method)</a>
   </dt>
 
       
   <dt><a href="api/lsst.sims.ocs.configuration.instrument.slew.html#lsst.sims.ocs.configuration.instrument.slew.Slew.get_string_rep">get_string_rep() (lsst.sims.ocs.configuration.instrument.slew.Slew method)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.get_target_from_scheduler">get_target_from_scheduler() (lsst.sims.ocs.kernel.simulator.Simulator method)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.sal.sal_manager.html#lsst.sims.ocs.sal.sal_manager.SalManager.get_topic">get_topic() (lsst.sims.ocs.sal.sal_manager.SalManager method)</a>
   </dt>
 
       
@@ -938,6 +1023,18 @@
 
       <dd><dl>
         
+  <dt><a href="api/lsst.sims.ocs.downtime.scheduled_downtime.html#lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime.initialize">(lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime method)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.initialize">(lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime method)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.initialize">(lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler method)</a>
+  </dt>
+
+        
   <dt><a href="api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.initialize">(lsst.sims.ocs.kernel.sequencer.Sequencer method)</a>
   </dt>
 
@@ -950,6 +1047,10 @@
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.INTERMEDIATE_EVENT">INTERMEDIATE_EVENT (lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime attribute)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -962,10 +1063,6 @@
 
       
   <dt><a href="api/lsst.sims.ocs.configuration.obs_site.html#lsst.sims.ocs.configuration.obs_site.ObservingSite.latitude_rad">latitude_rad (lsst.sims.ocs.configuration.obs_site.ObservingSite attribute)</a>
-  </dt>
-
-      
-  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_region.html#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.limit_selections">limit_selections (lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion attribute)</a>
   </dt>
 
       
@@ -1009,6 +1106,10 @@
   </dt>
 
       <dd><dl>
+        
+  <dt><a href="api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.log">(lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler attribute)</a>
+  </dt>
+
         
   <dt><a href="api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.log">(lsst.sims.ocs.kernel.sequencer.Sequencer attribute)</a>
   </dt>
@@ -1059,6 +1160,10 @@
   </dt>
 
       
+  <dt><a href="api/lsst.sims.ocs.configuration.downtime.html#module-lsst.sims.ocs.configuration.downtime">lsst.sims.ocs.configuration.downtime (module)</a>
+  </dt>
+
+      
   <dt><a href="api/lsst.sims.ocs.configuration.field.html#module-lsst.sims.ocs.configuration.field">lsst.sims.ocs.configuration.field (module)</a>
   </dt>
 
@@ -1080,6 +1185,10 @@
 
       
   <dt><a href="api/lsst.sims.ocs.configuration.instrument.obs_variation.html#module-lsst.sims.ocs.configuration.instrument.obs_variation">lsst.sims.ocs.configuration.instrument.obs_variation (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.instrument.optics_loop_corr.html#module-lsst.sims.ocs.configuration.instrument.optics_loop_corr">lsst.sims.ocs.configuration.instrument.optics_loop_corr (module)</a>
   </dt>
 
       
@@ -1119,15 +1228,9 @@
   </dt>
 
       
-  <dt><a href="api/lsst.sims.ocs.configuration.proposal.galactic_exclusion.html#module-lsst.sims.ocs.configuration.proposal.galactic_exclusion">lsst.sims.ocs.configuration.proposal.galactic_exclusion (module)</a>
-  </dt>
-
-      
   <dt><a href="api/lsst.sims.ocs.configuration.proposal.helpers.html#module-lsst.sims.ocs.configuration.proposal.helpers">lsst.sims.ocs.configuration.proposal.helpers (module)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api/lsst.sims.ocs.configuration.proposal.scheduling.html#module-lsst.sims.ocs.configuration.proposal.scheduling">lsst.sims.ocs.configuration.proposal.scheduling (module)</a>
   </dt>
@@ -1137,7 +1240,25 @@
   </dt>
 
       
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_constraints.html#module-lsst.sims.ocs.configuration.proposal.sky_constraints">lsst.sims.ocs.configuration.proposal.sky_constraints (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_exclusion.html#module-lsst.sims.ocs.configuration.proposal.sky_exclusion">lsst.sims.ocs.configuration.proposal.sky_exclusion (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.html#module-lsst.sims.ocs.configuration.proposal.sky_nightly_bounds">lsst.sims.ocs.configuration.proposal.sky_nightly_bounds (module)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
   <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_region.html#module-lsst.sims.ocs.configuration.proposal.sky_region">lsst.sims.ocs.configuration.proposal.sky_region (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.scheduler_driver.html#module-lsst.sims.ocs.configuration.scheduler_driver">lsst.sims.ocs.configuration.scheduler_driver (module)</a>
   </dt>
 
       
@@ -1145,7 +1266,15 @@
   </dt>
 
       
-  <dt><a href="api/lsst.sims.ocs.configuration.science.universal_weak.html#module-lsst.sims.ocs.configuration.science.universal_weak">lsst.sims.ocs.configuration.science.universal_weak (module)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.science.galactic_plane.html#module-lsst.sims.ocs.configuration.science.galactic_plane">lsst.sims.ocs.configuration.science.galactic_plane (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.science.south_celestial_pole.html#module-lsst.sims.ocs.configuration.science.south_celestial_pole">lsst.sims.ocs.configuration.science.south_celestial_pole (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.science.weak_lensing.html#module-lsst.sims.ocs.configuration.science.weak_lensing">lsst.sims.ocs.configuration.science.weak_lensing (module)</a>
   </dt>
 
       
@@ -1181,7 +1310,23 @@
   </dt>
 
       
+  <dt><a href="api/lsst.sims.ocs.downtime.html#module-lsst.sims.ocs.downtime">lsst.sims.ocs.downtime (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.downtime.scheduled_downtime.html#module-lsst.sims.ocs.downtime.scheduled_downtime">lsst.sims.ocs.downtime.scheduled_downtime (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.downtime.unscheduled_downtime.html#module-lsst.sims.ocs.downtime.unscheduled_downtime">lsst.sims.ocs.downtime.unscheduled_downtime (module)</a>
+  </dt>
+
+      
   <dt><a href="api/lsst.sims.ocs.kernel.html#module-lsst.sims.ocs.kernel">lsst.sims.ocs.kernel (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.kernel.downtime_handler.html#module-lsst.sims.ocs.kernel.downtime_handler">lsst.sims.ocs.kernel.downtime_handler (module)</a>
   </dt>
 
       
@@ -1275,6 +1420,14 @@
   </dt>
 
       
+  <dt><a href="api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.MAJOR_EVENT">MAJOR_EVENT (lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_constraints.html#lsst.sims.ocs.configuration.proposal.sky_constraints.SkyConstraints.max_airmass">max_airmass (lsst.sims.ocs.configuration.proposal.sky_constraints.SkyConstraints attribute)</a>
+  </dt>
+
+      
   <dt><a href="api/lsst.sims.ocs.configuration.proposal.scheduling.html#lsst.sims.ocs.configuration.proposal.scheduling.Scheduling.max_num_targets">max_num_targets (lsst.sims.ocs.configuration.proposal.scheduling.Scheduling attribute)</a>
   </dt>
 
@@ -1302,6 +1455,10 @@
 
       
   <dt><a href="api/lsst.sims.ocs.configuration.proposal.selection.html#lsst.sims.ocs.configuration.proposal.selection.Selection.minimum_limit">minimum_limit (lsst.sims.ocs.configuration.proposal.selection.Selection attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.MINOR_EVENT">MINOR_EVENT (lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime attribute)</a>
   </dt>
 
       
@@ -1340,7 +1497,15 @@
   </dt>
 
         
-  <dt><a href="api/lsst.sims.ocs.configuration.science.universal_weak.html#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.name">(lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak attribute)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.science.galactic_plane.html#lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane.name">(lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.south_celestial_pole.html#lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole.name">(lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.weak_lensing.html#lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing.name">(lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing attribute)</a>
   </dt>
 
       </dl></dd>
@@ -1348,10 +1513,14 @@
   <dt><a href="api/lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase.new_session">new_session() (lsst.sims.ocs.database.socs_db.SocsDatabase method)</a>
   </dt>
 
+      
+  <dt><a href="api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.next_midnight_timestamp">next_midnight_timestamp (lsst.sims.ocs.kernel.time_handler.TimeHandler attribute)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.next_midnight_timestamp">next_midnight_timestamp (lsst.sims.ocs.kernel.time_handler.TimeHandler attribute)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.scheduler_driver.html#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.night_boundary">night_boundary (lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver attribute)</a>
   </dt>
 
       
@@ -1392,12 +1561,12 @@
   <dt><a href="api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.observe">observe() (lsst.sims.ocs.observatory.main_observatory.MainObservatory method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.observe_target">observe_target() (lsst.sims.ocs.kernel.sequencer.Sequencer method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.observing_site">observing_site (lsst.sims.ocs.configuration.sim_config.SimulationConfig attribute)</a>
   </dt>
@@ -1425,6 +1594,14 @@
   </dt>
 
       
+  <dt><a href="api/lsst.sims.ocs.configuration.observatory.html#lsst.sims.ocs.configuration.observatory.Observatory.optics_loop_corr">optics_loop_corr (lsst.sims.ocs.configuration.observatory.Observatory attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.instrument.optics_loop_corr.html#lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr">OpticsLoopCorr (class in lsst.sims.ocs.configuration.instrument.optics_loop_corr)</a>
+  </dt>
+
+      
   <dt><a href="api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.opts">opts (lsst.sims.ocs.kernel.simulator.Simulator attribute)</a>
   </dt>
 
@@ -1448,10 +1625,6 @@
 
       
   <dt><a href="api/lsst.sims.ocs.configuration.observatory.html#lsst.sims.ocs.configuration.observatory.Observatory.park">park (lsst.sims.ocs.configuration.observatory.Observatory attribute)</a>
-  </dt>
-
-      
-  <dt><a href="api/lsst.sims.ocs.configuration.proposal.galactic_exclusion.html#lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion.peak_l">peak_l (lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion attribute)</a>
   </dt>
 
       
@@ -1551,7 +1724,7 @@
   </dt>
 
       
-  <dt><a href="api/lsst.sims.ocs.configuration.obs_site.html#lsst.sims.ocs.configuration.obs_site.ObservingSite.relativeHumidity">relativeHumidity (lsst.sims.ocs.configuration.obs_site.ObservingSite attribute)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.obs_site.html#lsst.sims.ocs.configuration.obs_site.ObservingSite.relative_humidity">relative_humidity (lsst.sims.ocs.configuration.obs_site.ObservingSite attribute)</a>
   </dt>
 
       
@@ -1625,6 +1798,30 @@
 
       </dl></dd>
       
+  <dt><a href="api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.sched_driver">sched_driver (lsst.sims.ocs.configuration.sim_config.SimulationConfig attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.scheduled">scheduled (lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.downtime.html#lsst.sims.ocs.configuration.downtime.Downtime.scheduled_downtime_db">scheduled_downtime_db (lsst.sims.ocs.configuration.downtime.Downtime attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.downtime.scheduled_downtime.html#lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime.SCHEDULED_DOWNTIME_DB">SCHEDULED_DOWNTIME_DB (lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.downtime.scheduled_downtime.html#lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime">ScheduledDowntime (class in lsst.sims.ocs.downtime.scheduled_downtime)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.scheduler_driver.html#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver">SchedulerDriver (class in lsst.sims.ocs.configuration.scheduler_driver)</a>
+  </dt>
+
+      
   <dt><a href="api/lsst.sims.ocs.configuration.proposal.scheduling.html#lsst.sims.ocs.configuration.proposal.scheduling.Scheduling">Scheduling (class in lsst.sims.ocs.configuration.proposal.scheduling)</a>
   </dt>
 
@@ -1634,7 +1831,15 @@
 
       <dd><dl>
         
-  <dt><a href="api/lsst.sims.ocs.configuration.science.universal_weak.html#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.scheduling">(lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak attribute)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.science.galactic_plane.html#lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane.scheduling">(lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.south_celestial_pole.html#lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole.scheduling">(lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.weak_lensing.html#lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing.scheduling">(lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing attribute)</a>
   </dt>
 
       </dl></dd>
@@ -1650,6 +1855,16 @@
   <dt><a href="api/lsst.sims.ocs.configuration.proposal.selection.html#lsst.sims.ocs.configuration.proposal.selection.Selection">Selection (class in lsst.sims.ocs.configuration.proposal.selection)</a>
   </dt>
 
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_exclusion.html#lsst.sims.ocs.configuration.proposal.sky_exclusion.SkyExclusion.selections">selections (lsst.sims.ocs.configuration.proposal.sky_exclusion.SkyExclusion attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_region.html#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.selections">(lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion attribute)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.seq">seq (lsst.sims.ocs.kernel.simulator.Simulator attribute)</a>
   </dt>
@@ -1679,7 +1894,7 @@
   </dt>
 
       
-  <dt><a href="api/lsst.sims.ocs.configuration.instrument.slew.html#lsst.sims.ocs.configuration.instrument.slew.Slew.set_array">set_array() (lsst.sims.ocs.configuration.instrument.slew.Slew method)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.instrument.optics_loop_corr.html#lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.set_array">set_array() (lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr method)</a>
   </dt>
 
       
@@ -1699,16 +1914,24 @@
   </dt>
 
       
-  <dt><a href="api/lsst.sims.ocs.configuration.instrument.camera.html#lsst.sims.ocs.configuration.instrument.camera.Camera.setDefaults">setDefaults() (lsst.sims.ocs.configuration.instrument.camera.Camera method)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.downtime.html#lsst.sims.ocs.configuration.downtime.Downtime.setDefaults">setDefaults() (lsst.sims.ocs.configuration.downtime.Downtime method)</a>
   </dt>
 
       <dd><dl>
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.instrument.camera.html#lsst.sims.ocs.configuration.instrument.camera.Camera.setDefaults">(lsst.sims.ocs.configuration.instrument.camera.Camera method)</a>
+  </dt>
+
         
   <dt><a href="api/lsst.sims.ocs.configuration.instrument.dome.html#lsst.sims.ocs.configuration.instrument.dome.Dome.setDefaults">(lsst.sims.ocs.configuration.instrument.dome.Dome method)</a>
   </dt>
 
         
   <dt><a href="api/lsst.sims.ocs.configuration.instrument.obs_variation.html#lsst.sims.ocs.configuration.instrument.obs_variation.ObservatoryVariation.setDefaults">(lsst.sims.ocs.configuration.instrument.obs_variation.ObservatoryVariation method)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.instrument.optics_loop_corr.html#lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.setDefaults">(lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr method)</a>
   </dt>
 
         
@@ -1740,10 +1963,6 @@
   </dt>
 
         
-  <dt><a href="api/lsst.sims.ocs.configuration.proposal.galactic_exclusion.html#lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion.setDefaults">(lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion method)</a>
-  </dt>
-
-        
   <dt><a href="api/lsst.sims.ocs.configuration.proposal.scheduling.html#lsst.sims.ocs.configuration.proposal.scheduling.Scheduling.setDefaults">(lsst.sims.ocs.configuration.proposal.scheduling.Scheduling method)</a>
   </dt>
 
@@ -1752,11 +1971,35 @@
   </dt>
 
         
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_constraints.html#lsst.sims.ocs.configuration.proposal.sky_constraints.SkyConstraints.setDefaults">(lsst.sims.ocs.configuration.proposal.sky_constraints.SkyConstraints method)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_exclusion.html#lsst.sims.ocs.configuration.proposal.sky_exclusion.SkyExclusion.setDefaults">(lsst.sims.ocs.configuration.proposal.sky_exclusion.SkyExclusion method)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.html#lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.SkyNightlyBounds.setDefaults">(lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.SkyNightlyBounds method)</a>
+  </dt>
+
+        
   <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_region.html#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.setDefaults">(lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion method)</a>
   </dt>
 
         
-  <dt><a href="api/lsst.sims.ocs.configuration.science.universal_weak.html#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.setDefaults">(lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak method)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.scheduler_driver.html#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.setDefaults">(lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver method)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.galactic_plane.html#lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane.setDefaults">(lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane method)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.south_celestial_pole.html#lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole.setDefaults">(lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole method)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.weak_lensing.html#lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing.setDefaults">(lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing method)</a>
   </dt>
 
         
@@ -1793,15 +2036,89 @@
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.area_distribution.html#lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution.sky_constraints">sky_constraints (lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.galactic_plane.html#lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane.sky_constraints">(lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.south_celestial_pole.html#lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole.sky_constraints">(lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.weak_lensing.html#lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing.sky_constraints">(lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.area_distribution.html#lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution.sky_exclusion">sky_exclusion (lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.galactic_plane.html#lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane.sky_exclusion">(lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.south_celestial_pole.html#lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole.sky_exclusion">(lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.weak_lensing.html#lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing.sky_exclusion">(lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.area_distribution.html#lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution.sky_nightly_bounds">sky_nightly_bounds (lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.galactic_plane.html#lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane.sky_nightly_bounds">(lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.south_celestial_pole.html#lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole.sky_nightly_bounds">(lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.weak_lensing.html#lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing.sky_nightly_bounds">(lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
   <dt><a href="api/lsst.sims.ocs.configuration.proposal.area_distribution.html#lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution.sky_region">sky_region (lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="api/lsst.sims.ocs.configuration.science.universal_weak.html#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.sky_region">(lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak attribute)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.science.galactic_plane.html#lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane.sky_region">(lsst.sims.ocs.configuration.science.galactic_plane.GalacticPlane attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.south_celestial_pole.html#lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole.sky_region">(lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole attribute)</a>
+  </dt>
+
+        
+  <dt><a href="api/lsst.sims.ocs.configuration.science.weak_lensing.html#lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing.sky_region">(lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing attribute)</a>
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_constraints.html#lsst.sims.ocs.configuration.proposal.sky_constraints.SkyConstraints">SkyConstraints (class in lsst.sims.ocs.configuration.proposal.sky_constraints)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_exclusion.html#lsst.sims.ocs.configuration.proposal.sky_exclusion.SkyExclusion">SkyExclusion (class in lsst.sims.ocs.configuration.proposal.sky_exclusion)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.html#lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.SkyNightlyBounds">SkyNightlyBounds (class in lsst.sims.ocs.configuration.proposal.sky_nightly_bounds)</a>
+  </dt>
+
       
   <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_region.html#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion">SkyRegion (class in lsst.sims.ocs.configuration.proposal.sky_region)</a>
   </dt>
@@ -1881,6 +2198,10 @@
   </dt>
 
       
+  <dt><a href="api/lsst.sims.ocs.configuration.science.south_celestial_pole.html#lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole">SouthCelestialPole (class in lsst.sims.ocs.configuration.science.south_celestial_pole)</a>
+  </dt>
+
+      
   <dt><a href="api/lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase.sqlite_save_path">sqlite_save_path (lsst.sims.ocs.database.socs_db.SocsDatabase attribute)</a>
   </dt>
 
@@ -1925,14 +2246,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="api/lsst.sims.ocs.configuration.proposal.galactic_exclusion.html#lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion.taper_b">taper_b (lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion attribute)</a>
-  </dt>
-
-      
-  <dt><a href="api/lsst.sims.ocs.configuration.proposal.galactic_exclusion.html#lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion.taper_l">taper_l (lsst.sims.ocs.configuration.proposal.galactic_exclusion.GalacticExclusion attribute)</a>
-  </dt>
-
-      
   <dt><a href="api/lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewState.targetDec">targetDec (lsst.sims.ocs.observatory.slew_information.SlewState attribute)</a>
   </dt>
 
@@ -1953,15 +2266,15 @@
   </dt>
 
       
-  <dt><a href="api/lsst.sims.ocs.configuration.instrument.slew.html#lsst.sims.ocs.configuration.instrument.slew.Slew.tel_optics_cl_alt_limit">tel_optics_cl_alt_limit (lsst.sims.ocs.configuration.instrument.slew.Slew attribute)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.instrument.optics_loop_corr.html#lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.tel_optics_cl_alt_limit">tel_optics_cl_alt_limit (lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr attribute)</a>
   </dt>
 
       
-  <dt><a href="api/lsst.sims.ocs.configuration.instrument.slew.html#lsst.sims.ocs.configuration.instrument.slew.Slew.tel_optics_cl_delay">tel_optics_cl_delay (lsst.sims.ocs.configuration.instrument.slew.Slew attribute)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.instrument.optics_loop_corr.html#lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.tel_optics_cl_delay">tel_optics_cl_delay (lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr attribute)</a>
   </dt>
 
       
-  <dt><a href="api/lsst.sims.ocs.configuration.instrument.slew.html#lsst.sims.ocs.configuration.instrument.slew.Slew.tel_optics_ol_slope">tel_optics_ol_slope (lsst.sims.ocs.configuration.instrument.slew.Slew attribute)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.instrument.optics_loop_corr.html#lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.tel_optics_ol_slope">tel_optics_ol_slope (lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr attribute)</a>
   </dt>
 
       
@@ -1984,8 +2297,6 @@
   <dt><a href="api/lsst.sims.ocs.configuration.instrument.telescope.html#lsst.sims.ocs.configuration.instrument.telescope.Telescope">Telescope (class in lsst.sims.ocs.configuration.instrument.telescope)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api/lsst.sims.ocs.configuration.observatory.html#lsst.sims.ocs.configuration.observatory.Observatory.telescope">telescope (lsst.sims.ocs.configuration.observatory.Observatory attribute)</a>
   </dt>
@@ -1998,6 +2309,8 @@
   <dt><a href="api/lsst.sims.ocs.configuration.instrument.park.html#lsst.sims.ocs.configuration.instrument.park.Park.telescope_azimuth">telescope_azimuth (lsst.sims.ocs.configuration.instrument.park.Park attribute)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api/lsst.sims.ocs.configuration.instrument.obs_variation.html#lsst.sims.ocs.configuration.instrument.obs_variation.ObservatoryVariation.telescope_change">telescope_change (lsst.sims.ocs.configuration.instrument.obs_variation.ObservatoryVariation attribute)</a>
   </dt>
@@ -2015,11 +2328,27 @@
   </dt>
 
       
+  <dt><a href="api/lsst.sims.ocs.configuration.scheduler_driver.html#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_bmax">timebonus_bmax (lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.scheduler_driver.html#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_slope">timebonus_slope (lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.scheduler_driver.html#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_tmax">timebonus_tmax (lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver attribute)</a>
+  </dt>
+
+      
   <dt><a href="api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler">TimeHandler (class in lsst.sims.ocs.kernel.time_handler)</a>
   </dt>
 
       
   <dt><a href="api/lsst.sims.ocs.sal.topic_utilities.html#lsst.sims.ocs.sal.topic_utilities.topic_strdict">topic_strdict() (in module lsst.sims.ocs.sal.topic_utilities)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.total_downtime">total_downtime (lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime attribute)</a>
   </dt>
 
       
@@ -2039,7 +2368,7 @@
   </dt>
 
       
-  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_region.html#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.twilight_boundary">twilight_boundary (lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion attribute)</a>
+  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.html#lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.SkyNightlyBounds.twilight_boundary">twilight_boundary (lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.SkyNightlyBounds attribute)</a>
   </dt>
 
   </dl></td>
@@ -2049,9 +2378,23 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="api/lsst.sims.ocs.configuration.science.universal_weak.html#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak">UniversalWeak (class in lsst.sims.ocs.configuration.science.universal_weak)</a>
+  <dt><a href="api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.unscheduled">unscheduled (lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler attribute)</a>
   </dt>
 
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.downtime.html#lsst.sims.ocs.configuration.downtime.Downtime.unscheduled_downtime_random_seed">unscheduled_downtime_random_seed (lsst.sims.ocs.configuration.downtime.Downtime attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.configuration.downtime.html#lsst.sims.ocs.configuration.downtime.Downtime.unscheduled_downtime_use_random_seed">unscheduled_downtime_use_random_seed (lsst.sims.ocs.configuration.downtime.Downtime attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime">UnscheduledDowntime (class in lsst.sims.ocs.downtime.unscheduled_downtime)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api/lsst.sims.ocs.setup.tracking.html#lsst.sims.ocs.setup.tracking.Tracking.update_session">update_session() (lsst.sims.ocs.setup.tracking.Tracking method)</a>
   </dt>
@@ -2060,14 +2403,8 @@
   <dt><a href="api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.update_time">update_time() (lsst.sims.ocs.kernel.time_handler.TimeHandler method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api/lsst.sims.ocs.setup.tracking.html#lsst.sims.ocs.setup.tracking.Tracking.update_url">update_url (lsst.sims.ocs.setup.tracking.Tracking attribute)</a>
-  </dt>
-
-      
-  <dt><a href="api/lsst.sims.ocs.configuration.proposal.sky_region.html#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.use_galactic_exclusion">use_galactic_exclusion (lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion attribute)</a>
   </dt>
 
   </dl></td>
@@ -2099,7 +2436,15 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="api/lsst.sims.ocs.configuration.science.weak_lensing.html#lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing">WeakLensing (class in lsst.sims.ocs.configuration.science.weak_lensing)</a>
+  </dt>
+
+      
   <dt><a href="api/lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase.write">write() (lsst.sims.ocs.database.socs_db.SocsDatabase method)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.write_downtime_to_db">write_downtime_to_db() (lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler method)</a>
   </dt>
 
       
@@ -2119,15 +2464,19 @@
   </dt>
 
       
-  <dt><a href="api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_slew_activities">write_slew_activities() (in module lsst.sims.ocs.database.tables.write_tbls)</a>
+  <dt><a href="api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_scheduled_downtime">write_scheduled_downtime() (in module lsst.sims.ocs.database.tables.write_tbls)</a>
   </dt>
 
       
-  <dt><a href="api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_slew_final_state">write_slew_final_state() (in module lsst.sims.ocs.database.tables.write_tbls)</a>
+  <dt><a href="api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_slew_activities">write_slew_activities() (in module lsst.sims.ocs.database.tables.write_tbls)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_slew_final_state">write_slew_final_state() (in module lsst.sims.ocs.database.tables.write_tbls)</a>
+  </dt>
+
       
   <dt><a href="api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_slew_history">write_slew_history() (in module lsst.sims.ocs.database.tables.write_tbls)</a>
   </dt>
@@ -2150,6 +2499,10 @@
 
       
   <dt><a href="api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_target_history">write_target_history() (in module lsst.sims.ocs.database.tables.write_tbls)</a>
+  </dt>
+
+      
+  <dt><a href="api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_unscheduled_downtime">write_unscheduled_downtime() (in module lsst.sims.ocs.database.tables.write_tbls)</a>
   </dt>
 
   </dl></td>

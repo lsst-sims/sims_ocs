@@ -86,6 +86,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../history.html">History</a></li>
 </ul>
 <ul>
@@ -143,16 +144,6 @@
     <span class="sd">&quot;&quot;&quot;Configuration of the LSST Slew.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">tel_optics_ol_slope</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Delay factor for Open Loop optics correction &#39;</span>
-                                          <span class="s1">&#39;(units=seconds/(degrees in ALT slew)&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-
-    <span class="c1"># Table of delay factors for Closed Loop optics correction according to the ALT slew range.</span>
-    <span class="n">tel_optics_cl_alt_limit</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ListField</span><span class="p">(</span><span class="s1">&#39;Altitude (units=degrees) limits for the delay ranges.&#39;</span><span class="p">,</span>
-                                                  <span class="nb">float</span><span class="p">)</span>
-
-    <span class="n">tel_optics_cl_delay</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ListField</span><span class="p">(</span><span class="s1">&#39;Time delay (units=seconds) for the corresponding ALT slew &#39;</span>
-                                              <span class="s1">&#39;range in the Closed Loop optics correction.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-
     <span class="c1"># Dependencies between the slew activities.</span>
     <span class="c1"># For each activity there is a list of prerequisites activities, that must be previously completed.</span>
     <span class="c1"># The Readout corresponds to the previous observation, that&#39;s why it doesn&#39;t have prerequisites and it is</span>
@@ -179,9 +170,6 @@
 <div class="viewcode-block" id="Slew.setDefaults"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.instrument.slew.html#lsst.sims.ocs.configuration.instrument.slew.Slew.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set defaults for the LSST Slew.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tel_optics_ol_slope</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mf">3.5</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tel_optics_cl_alt_limit</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">9.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tel_optics_cl_delay</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">prereq_domalt</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prereq_domaz</span> <span class="o">=</span> <span class="p">[]</span>
@@ -200,21 +188,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">prereq_ins_optics</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prereq_guider_pos</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prereq_guider_adq</span> <span class="o">=</span> <span class="p">[]</span></div>
-
-<div class="viewcode-block" id="Slew.set_array"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.instrument.slew.html#lsst.sims.ocs.configuration.instrument.slew.Slew.set_array">[docs]</a>    <span class="k">def</span> <span class="nf">set_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conf</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set a DDS topic array parameter.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        conf : SALPY_scheduler.scheduler_slewConfigC</span>
-<span class="sd">            The slew configuration instance.</span>
-<span class="sd">        param : str</span>
-<span class="sd">            The name of the topic parameter to fill.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">array</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
-        <span class="n">local_param</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">local_param</span><span class="p">):</span>
-            <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span></div>
 
 <div class="viewcode-block" id="Slew.get_string_rep"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.instrument.slew.html#lsst.sims.ocs.configuration.instrument.slew.Slew.get_string_rep">[docs]</a>    <span class="k">def</span> <span class="nf">get_string_rep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A string representation of a string list parameter.</span>

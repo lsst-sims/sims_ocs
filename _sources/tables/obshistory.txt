@@ -1,0 +1,43 @@
+.. _database-tables-obshistory:
+
+==========
+ObsHistory
+==========
+
+This table keeps a record of each visit made by the observatory during a simulated survey. Multiple proposals can be associated with a single visit leading to duplicate entries in this table.
+
+.. list-table:: 
+    :header-rows: 1
+
+    * -  Column
+      -  Description
+    * -  observationId
+      -  Numeric identifier for an observation entry.
+    * -  Session_sessionId
+      -  The simulation run session Id.
+    * -  night
+      -  The night in the survey for the observation. Starts from 1.
+    * -  observationStartTime
+      -  The UTC start time for the observation (units=seconds). This occurs after the slew but before the first exposure.
+    * -  observationStartMJD
+      -  The Modified Julian Date at observation start (units=seconds).
+    * -  observationStartLST
+      -  The Local Sidereal Time at observation start (units=degrees)
+    * -  TargetHistory_targetId
+      -  Numeric identifier that relates to an entry in the TargetHistory entry.
+    * -  Field_fieldId
+      -  Numeric identifier that relates to an entry in the Field table.
+    * -  filter
+      -  The one character name for the band filter.
+    * -  ra
+      -  The Right Ascension of the observation (units=degrees).
+    * -  dec
+      -  The Declination of the observation (units=degrees).
+    * -  angle
+      -  The Position Angle of the observation (units=degrees).
+    * -  numExposures
+      -  The number of exposures taken for the observation.
+    * -  visitTime
+      -  The total time for the observation (units=seconds) including exposure, shutter and readout time.
+    * -  visitExposureTime
+      -  The sum of all the exposure times for the observation (units=seconds). No shutter and readout time included.

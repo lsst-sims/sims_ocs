@@ -86,6 +86,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../history.html">History</a></li>
 </ul>
 <ul>
@@ -141,7 +142,7 @@
 
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration</span> <span class="kn">import</span> <span class="n">load_config</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.instrument</span> <span class="kn">import</span> <span class="n">Camera</span><span class="p">,</span> <span class="n">Dome</span><span class="p">,</span> <span class="n">Park</span><span class="p">,</span> <span class="n">ObservatoryVariation</span>
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.instrument</span> <span class="kn">import</span> <span class="n">Rotator</span><span class="p">,</span> <span class="n">Slew</span><span class="p">,</span> <span class="n">Telescope</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.instrument</span> <span class="kn">import</span> <span class="n">OpticsLoopCorr</span><span class="p">,</span> <span class="n">Rotator</span><span class="p">,</span> <span class="n">Slew</span><span class="p">,</span> <span class="n">Telescope</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Observatory&quot;</span><span class="p">]</span>
 
@@ -154,6 +155,7 @@
     <span class="n">rotator</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST rotator configuration.&quot;</span><span class="p">,</span> <span class="n">Rotator</span><span class="p">)</span>
     <span class="n">camera</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST camera configuration.&quot;</span><span class="p">,</span> <span class="n">Camera</span><span class="p">)</span>
     <span class="n">slew</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST slew configuration.&quot;</span><span class="p">,</span> <span class="n">Slew</span><span class="p">)</span>
+    <span class="n">optics_loop_corr</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST optics loop corrections.&quot;</span><span class="p">,</span> <span class="n">OpticsLoopCorr</span><span class="p">)</span>
     <span class="n">park</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST observatory park position configuration.&quot;</span><span class="p">,</span> <span class="n">Park</span><span class="p">)</span>
     <span class="n">obs_var</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The observatory variational model configuration&quot;</span><span class="p">,</span> <span class="n">ObservatoryVariation</span><span class="p">)</span>
 
@@ -175,6 +177,7 @@
         <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotator</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
         <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
         <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slew</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
+        <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optics_loop_corr</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
         <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">park</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
         <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_var</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span></div>
 
@@ -191,6 +194,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rotator</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;rotator.py&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;camera.py&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;slew.py&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optics_loop_corr</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;optics_loop_corr.py&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">park</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;park.py&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">obs_var</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;obs_variation.py&quot;</span><span class="p">))</span></div></div>
 </pre></div>

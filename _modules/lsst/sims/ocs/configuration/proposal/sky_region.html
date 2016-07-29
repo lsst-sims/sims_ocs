@@ -86,6 +86,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../history.html">History</a></li>
 </ul>
 <ul>
@@ -137,7 +138,7 @@
   <h1>Source code for lsst.sims.ocs.configuration.proposal.sky_region</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
 
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">GalacticExclusion</span><span class="p">,</span> <span class="n">Selection</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">Selection</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SkyRegion&quot;</span><span class="p">]</span>
 
@@ -145,27 +146,16 @@
     <span class="sd">&quot;&quot;&quot;Configuration for a proposal&#39;s sky region of interest.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">twilight_boundary</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The sun altitude (units=degrees) for twilight consideration.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-
-    <span class="n">delta_lst</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;LST extent (units=degrees) before sunset LST (-) and after sunrise LST (+) &#39;</span>
-                                <span class="s1">&#39;for providing a region of the sky to select.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-    <span class="n">dec_window</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Angle (units=degrees) around the observing site</span><span class="se">\&#39;</span><span class="s1">s latitude for which to &#39;</span>
-                                 <span class="s1">&#39;create a Declination window for field selection.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-
-    <span class="n">limit_selections</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigDictField</span><span class="p">(</span><span class="s1">&#39;A list of type selections for sky region determination.&#39;</span><span class="p">,</span>
-                                                 <span class="nb">str</span><span class="p">,</span> <span class="n">Selection</span><span class="p">)</span>
-
-    <span class="n">use_galactic_exclusion</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Use the galactic exclusion zone when selection fields.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
-    <span class="n">galactic_exclusion</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s1">&#39;Parameters for setting a galactic exclusion zone.&#39;</span><span class="p">,</span>
-                                               <span class="n">GalacticExclusion</span><span class="p">)</span>
+    <span class="n">selections</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigDictField</span><span class="p">(</span><span class="s1">&#39;A list of type selections for sky region determination.&#39;</span><span class="p">,</span>
+                                           <span class="nb">int</span><span class="p">,</span> <span class="n">Selection</span><span class="p">)</span>
+    <span class="n">combiners</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ListField</span><span class="p">(</span><span class="s1">&#39;A list of logical operations [and, or] that combine the region &#39;</span>
+                                    <span class="s1">&#39;selections. Must be one less than the number of selections. If &#39;</span>
+                                    <span class="s1">&#39;only one region, the list is left empty.&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SkyRegion.setDefaults"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.sky_region.html#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Default specification for a sky region.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">twilight_boundary</span> <span class="o">=</span> <span class="o">-</span><span class="mf">12.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">delta_lst</span> <span class="o">=</span> <span class="mf">30.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dec_window</span> <span class="o">=</span> <span class="mf">90.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">use_galactic_exclusion</span> <span class="o">=</span> <span class="bp">False</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">combiners</span> <span class="o">=</span> <span class="p">[]</span></div></div>
 </pre></div>
 
            </div>

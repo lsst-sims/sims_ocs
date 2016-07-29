@@ -88,6 +88,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 </ul>
 <ul class="current">
@@ -100,6 +101,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
@@ -188,24 +190,6 @@
 <dt id="lsst.sims.ocs.configuration.instrument.slew.Slew.setDefaults">
 <code class="descname">setDefaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/instrument/slew.html#Slew.setDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.slew.Slew.setDefaults" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set defaults for the LSST Slew.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lsst.sims.ocs.configuration.instrument.slew.Slew.set_array">
-<code class="descname">set_array</code><span class="sig-paren">(</span><em>conf</em>, <em>param</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/instrument/slew.html#Slew.set_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.slew.Slew.set_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set a DDS topic array parameter.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>conf</strong> (<em>SALPY_scheduler.scheduler_slewConfigC</em>) &#8211; The slew configuration instance.</li>
-<li><strong>param</strong> (<em>str</em>) &#8211; The name of the topic parameter to fill.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -302,24 +286,6 @@
 <dt id="lsst.sims.ocs.configuration.instrument.slew.Slew.prereq_telsettle">
 <code class="descname">prereq_telsettle</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.slew.Slew.prereq_telsettle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prerequisite list for telescope settle time.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.instrument.slew.Slew.tel_optics_cl_alt_limit">
-<code class="descname">tel_optics_cl_alt_limit</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.slew.Slew.tel_optics_cl_alt_limit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Altitude (units=degrees) limits for the delay ranges.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.instrument.slew.Slew.tel_optics_cl_delay">
-<code class="descname">tel_optics_cl_delay</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.slew.Slew.tel_optics_cl_delay" title="Permalink to this definition">¶</a></dt>
-<dd><p>Time delay (units=seconds) for the corresponding ALT slew range in the Closed Loop optics correction.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.instrument.slew.Slew.tel_optics_ol_slope">
-<code class="descname">tel_optics_ol_slope</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.slew.Slew.tel_optics_ol_slope" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delay factor for Open Loop optics correction (units=seconds/(degrees in ALT slew)</p>
 </dd></dl>
 
 </dd></dl>

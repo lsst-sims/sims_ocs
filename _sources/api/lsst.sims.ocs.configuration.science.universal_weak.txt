@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.science.universal_weak module
-=========================================================
-
-.. automodule:: lsst.sims.ocs.configuration.science.universal_weak
-    :members:
-    :undoc-members:
-    :show-inheritance:

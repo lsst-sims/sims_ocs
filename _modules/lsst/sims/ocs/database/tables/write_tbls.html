@@ -86,6 +86,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../history.html">History</a></li>
 </ul>
 <ul>
@@ -137,9 +138,10 @@
   <h1>Source code for lsst.sims.ocs.database.tables.write_tbls</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">collections</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;write_field&quot;</span><span class="p">,</span> <span class="s2">&quot;write_observation_exposures&quot;</span><span class="p">,</span> <span class="s2">&quot;write_observation_history&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_activities&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;write_slew_history&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_final_state&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_initial_state&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_maxspeeds&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;write_target_exposures&quot;</span><span class="p">,</span> <span class="s2">&quot;write_target_history&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;write_field&quot;</span><span class="p">,</span> <span class="s2">&quot;write_observation_exposures&quot;</span><span class="p">,</span> <span class="s2">&quot;write_observation_history&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;write_scheduled_downtime&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_activities&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_history&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;write_slew_final_state&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_initial_state&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_maxspeeds&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;write_target_exposures&quot;</span><span class="p">,</span> <span class="s2">&quot;write_target_history&quot;</span><span class="p">,</span> <span class="s2">&quot;write_unscheduled_downtime&quot;</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">ordered_dict_from_namedtuple</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a namedtuple to an OrderedDict.</span>
@@ -148,7 +150,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    data : collections.namedtuple</span>
 <span class="sd">        The data to convert.</span>
-<span class="sd">    sid : int (Optional)</span>
+<span class="sd">    sid : int, optional</span>
 <span class="sd">        The current session ID.</span>
 
 <span class="sd">    Returns</span>
@@ -236,6 +238,29 @@
         <span class="p">(</span><span class="s1">&#39;numExposures&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">num_exposures</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;visitTime&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">visit_time</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;visitExposureTime&#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">([</span><span class="n">data</span><span class="o">.</span><span class="n">exposure_times</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">num_exposures</span><span class="p">)]))</span>
+    <span class="p">])</span>
+    <span class="k">return</span> <span class="n">values</span></div>
+
+<div class="viewcode-block" id="write_scheduled_downtime"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_scheduled_downtime">[docs]</a><span class="k">def</span> <span class="nf">write_scheduled_downtime</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the ScheduledDowntime table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : tuple</span>
+<span class="sd">        The instance containing the scheduled downtime information</span>
+<span class="sd">    sid : int</span>
+<span class="sd">        The current session ID.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    collections.OrderedDict</span>
+<span class="sd">        A dictionary of the topic data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
+        <span class="p">(</span><span class="s1">&#39;night&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s1">&#39;Session_sessionId&#39;</span><span class="p">,</span> <span class="n">sid</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;duration&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s1">&#39;activity&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
     <span class="p">])</span>
     <span class="k">return</span> <span class="n">values</span></div>
 
@@ -366,6 +391,29 @@
         <span class="p">(</span><span class="s1">&#39;angle&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">angle</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;numExposures&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">num_exposures</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;requestedExpTime&#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">([</span><span class="n">data</span><span class="o">.</span><span class="n">exposure_times</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">num_exposures</span><span class="p">)]))</span>
+    <span class="p">])</span>
+    <span class="k">return</span> <span class="n">values</span></div>
+
+<div class="viewcode-block" id="write_unscheduled_downtime"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_unscheduled_downtime">[docs]</a><span class="k">def</span> <span class="nf">write_unscheduled_downtime</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the UnscheduledDowntime table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : tuple</span>
+<span class="sd">        The instance containing the unscheduled downtime information</span>
+<span class="sd">    sid : int</span>
+<span class="sd">        The current session ID.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    collections.OrderedDict</span>
+<span class="sd">        A dictionary of the topic data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
+        <span class="p">(</span><span class="s1">&#39;night&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s1">&#39;Session_sessionId&#39;</span><span class="p">,</span> <span class="n">sid</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;duration&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s1">&#39;activity&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
     <span class="p">])</span>
     <span class="k">return</span> <span class="n">values</span></div>
 </pre></div>

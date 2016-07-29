@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.science.universal_weak module &mdash; Simulated OCS 0.3.0 documentation</title>
+  <title>lsst.sims.ocs.configuration.proposal.sky_constraints module &mdash; Simulated OCS 0.3.0 documentation</title>
   
 
   
@@ -31,9 +31,9 @@
 
   
     <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../index.html"/>
-        <link rel="up" title="lsst.sims.ocs.configuration.science package" href="lsst.sims.ocs.configuration.science.html"/>
-        <link rel="next" title="lsst.sims.ocs.configuration.conf_comm module" href="lsst.sims.ocs.configuration.conf_comm.html"/>
-        <link rel="prev" title="lsst.sims.ocs.configuration.science package" href="lsst.sims.ocs.configuration.science.html"/> 
+        <link rel="up" title="lsst.sims.ocs.configuration.proposal package" href="lsst.sims.ocs.configuration.proposal.html"/>
+        <link rel="next" title="lsst.sims.ocs.configuration.proposal.sky_exclusion module" href="lsst.sims.ocs.configuration.proposal.sky_exclusion.html"/>
+        <link rel="prev" title="lsst.sims.ocs.configuration.proposal.selection module" href="lsst.sims.ocs.configuration.proposal.selection.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -88,6 +88,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 </ul>
 <ul class="current">
@@ -100,6 +101,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
@@ -145,13 +147,13 @@
       
           <li><a href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a> &raquo;</li>
       
-          <li><a href="lsst.sims.ocs.configuration.science.html">lsst.sims.ocs.configuration.science package</a> &raquo;</li>
+          <li><a href="lsst.sims.ocs.configuration.proposal.html">lsst.sims.ocs.configuration.proposal package</a> &raquo;</li>
       
-    <li>lsst.sims.ocs.configuration.science.universal_weak module</li>
+    <li>lsst.sims.ocs.configuration.proposal.sky_constraints module</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/lsst.sims.ocs.configuration.science.universal_weak.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/lsst.sims.ocs.configuration.proposal.sky_constraints.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -161,41 +163,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-lsst.sims.ocs.configuration.science.universal_weak">
-<span id="lsst-sims-ocs-configuration-science-universal-weak-module"></span><h1>lsst.sims.ocs.configuration.science.universal_weak module<a class="headerlink" href="#module-lsst.sims.ocs.configuration.science.universal_weak" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-lsst.sims.ocs.configuration.proposal.sky_constraints">
+<span id="lsst-sims-ocs-configuration-proposal-sky-constraints-module"></span><h1>lsst.sims.ocs.configuration.proposal.sky_constraints module<a class="headerlink" href="#module-lsst.sims.ocs.configuration.proposal.sky_constraints" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak">
-<em class="property">class </em><code class="descclassname">lsst.sims.ocs.configuration.science.universal_weak.</code><code class="descname">UniversalWeak</code><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/science/universal_weak.html#UniversalWeak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="lsst.sims.ocs.configuration.proposal.area_distribution.html#lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution" title="lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution"><code class="xref py py-class docutils literal"><span class="pre">lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution</span></code></a></p>
-<p>This class sets the parameters for specifying the Universal Weak proposal.</p>
+<dt id="lsst.sims.ocs.configuration.proposal.sky_constraints.SkyConstraints">
+<em class="property">class </em><code class="descclassname">lsst.sims.ocs.configuration.proposal.sky_constraints.</code><code class="descname">SkyConstraints</code><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/proposal/sky_constraints.html#SkyConstraints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sky_constraints.SkyConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">lsst.pex.config.config.Config</span></code></p>
+<p>Configuration for a proposal&#8217;s sky constraints.</p>
 <dl class="method">
-<dt id="lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.setDefaults">
-<code class="descname">setDefaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/science/universal_weak.html#UniversalWeak.setDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.setDefaults" title="Permalink to this definition">¶</a></dt>
-<dd><p>Setup all the proposal information.</p>
+<dt id="lsst.sims.ocs.configuration.proposal.sky_constraints.SkyConstraints.setDefaults">
+<code class="descname">setDefaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/proposal/sky_constraints.html#SkyConstraints.setDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sky_constraints.SkyConstraints.setDefaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default specification for sky constarints.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.filters">
-<code class="descname">filters</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.filters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Filter configuration for the proposal.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.name">
-<code class="descname">name</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name for the proposal.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.scheduling">
-<code class="descname">scheduling</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.scheduling" title="Permalink to this definition">¶</a></dt>
-<dd><p>Scheduling configuration for the proposal.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.sky_region">
-<code class="descname">sky_region</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.sky_region" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sky selection region for the proposal.</p>
+<dt id="lsst.sims.ocs.configuration.proposal.sky_constraints.SkyConstraints.max_airmass">
+<code class="descname">max_airmass</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sky_constraints.SkyConstraints.max_airmass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum airmass allowed for any field.</p>
 </dd></dl>
 
 </dd></dl>
@@ -209,10 +193,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="lsst.sims.ocs.configuration.conf_comm.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.configuration.conf_comm module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="lsst.sims.ocs.configuration.proposal.sky_exclusion.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.configuration.proposal.sky_exclusion module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="lsst.sims.ocs.configuration.science.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.science package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="lsst.sims.ocs.configuration.proposal.selection.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.proposal.selection module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

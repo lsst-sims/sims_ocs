@@ -86,6 +86,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../history.html">History</a></li>
 </ul>
 <ul>
@@ -139,7 +140,8 @@
 
 <span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
 
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration</span> <span class="kn">import</span> <span class="n">load_config</span><span class="p">,</span> <span class="n">Observatory</span><span class="p">,</span> <span class="n">ObservingSite</span><span class="p">,</span> <span class="n">ScienceProposals</span><span class="p">,</span> <span class="n">Survey</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration</span> <span class="kn">import</span> <span class="n">Downtime</span><span class="p">,</span> <span class="n">load_config</span><span class="p">,</span> <span class="n">Observatory</span><span class="p">,</span> <span class="n">ObservingSite</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration</span> <span class="kn">import</span> <span class="n">SchedulerDriver</span><span class="p">,</span> <span class="n">ScienceProposals</span><span class="p">,</span> <span class="n">Survey</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SimulationConfig&quot;</span><span class="p">]</span>
 
@@ -152,6 +154,8 @@
     <span class="n">science</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The science proposal configuration.&quot;</span><span class="p">,</span> <span class="n">ScienceProposals</span><span class="p">)</span>
     <span class="n">observing_site</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The observing site configuration.&quot;</span><span class="p">,</span> <span class="n">ObservingSite</span><span class="p">)</span>
     <span class="n">observatory</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST observatory configuration.&quot;</span><span class="p">,</span> <span class="n">Observatory</span><span class="p">)</span>
+    <span class="n">downtime</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST downtime configuration.&quot;</span><span class="p">,</span> <span class="n">Downtime</span><span class="p">)</span>
+    <span class="n">sched_driver</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST Scheduler driver configuration.&quot;</span><span class="p">,</span> <span class="n">SchedulerDriver</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SimulationConfig.setDefaults"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set defaults for the survey simulation.</span>
@@ -187,7 +191,9 @@
             <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">survey</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_files</span><span class="p">)</span>
             <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observing_site</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_files</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_files</span><span class="p">)</span>
+            <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">downtime</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
+            <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sched_driver</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SimulationConfig.load_proposals"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.load_proposals">[docs]</a>    <span class="k">def</span> <span class="nf">load_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Tell the science proposals to load their configuration.</span>
@@ -205,7 +211,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">survey</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;survey.py&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">save_as</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;observing_site.py&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">save_as</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">save_as</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">downtime</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;downtime.py&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;sched_driver.py&quot;</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>

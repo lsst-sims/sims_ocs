@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.downtime module
+===========================================
+
+.. automodule:: lsst.sims.ocs.configuration.downtime
+    :members:
+    :undoc-members:
+    :show-inheritance:

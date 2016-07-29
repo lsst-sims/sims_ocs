@@ -31,7 +31,7 @@
 
   
     <link rel="top" title="Simulated OCS 0.3.0 documentation" href="index.html"/>
-        <link rel="next" title="History" href="history.html"/>
+        <link rel="next" title="Survey Database" href="database.html"/>
         <link rel="prev" title="Installation" href="installation.html"/> 
 
   
@@ -87,6 +87,7 @@
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
 </ul>
 <ul>
@@ -137,35 +138,30 @@
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<p>The Operations Simulator consists of running the SOCS and Scheduler. Currently, they are separate scripts that must be started separately. Due to the nature of the setup, a wrapper script is recommended when launching both processes. If you have followed the installation recommendations, a highly recommended example is below.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>    #!/bin/bash
-    export LSST_DDS_DOMAIN=SOCS
-export NDDS_DISCOVERY_PEERS=shmem://
+<p>The Operations Simulator consists of running the SOCS and Scheduler. Due to the nature of the setup, a wrapper script is recommended when launching the SOCS driver script. If you have followed the installation recommendations, a highly recommended example is below.</p>
+<div class="code bash highlight-python"><div class="highlight"><pre><span></span>#!/bin/bash
+export LSST_DDS_DOMAIN=MyDomain
+export NDDS_DISCOVERY_PEERS=builtin.shmem://
 
-    export OPENSPLICE_LOC=${HOME}/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
-    export OSPL_URI=file://${OPENSPLICE_LOC}/etc/config/ospl.xml
+export OPENSPLICE_LOC=${HOME}/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
+export OSPL_URI=file://${OPENSPLICE_LOC}/etc/config/ospl.xml
 
-    export SCHED_TOPIC_LIB=${HOME}/dds/lib
-    export SCHED_CODE=${HOME}/git/ts/ts_scheduler
+export SCHED_TOPIC_LIB=${HOME}/dds/lib
 
-    export LD_LIBRARY_PATH=${OPENSPLICE_LOC}/lib:${SCHED_TOPIC_LIB}:${LD_LIBRARY_PATH}
-    export PYTHONPATH=${SCHED_TOPIC_LIB}:${SCHED_CODE}:${PYTHONPATH}
+export LD_LIBRARY_PATH=${OPENSPLICE_LOC}/lib:${SCHED_TOPIC_LIB}:${LD_LIBRARY_PATH}
+export PYTHONPATH=${SCHED_TOPIC_LIB}:${PYTHONPATH}
 
-    $@
+$@
 </pre></div>
 </div>
-<p>The LSST_DDS_DOMAIN is important so that messages from other instances using DDS do not pollute the currently running process. It needs to be a unique name within the user&#8217;s network environment.</p>
-<p>The following instructions will refer to this wrapper script as <code class="docutils literal"><span class="pre">drun</span></code>.</p>
-<p>To run the Scheduler, go to the <code class="docutils literal"><span class="pre">gitdir/ts/ts_scheduler/ts_scheduler</span></code> directory and run the following:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>drun python scheduler.py
-</pre></div>
-</div>
-<p>The SOCS driver can be run from anywhere if the setup from the installation instructions were followed. We&#8217;ll assume that you are running from <code class="docutils literal"><span class="pre">$HOME/run_local</span></code>. To invoke a basic instance of SOCS, do the following:</p>
+<p>The <code class="docutils literal"><span class="pre">LSST_DDS_DOMAIN</span></code> is important so that messages from other instances using DDS do not pollute the currently running process. It needs to be a unique name within the user&#8217;s network environment. The following instructions will refer to this wrapper script as <code class="docutils literal"><span class="pre">drun</span></code>.</p>
+<p>The SOCS driver can be run from anywhere if the setup from the installation instructions were followed. We&#8217;ll assume that you are running from <code class="docutils literal"><span class="pre">$HOME/run_local</span></code>. In this directory, it is recommended to have <code class="docutils literal"><span class="pre">config</span></code> and <code class="docutils literal"><span class="pre">log</span></code> sub-directories available. This will be helpful in containing all of the various outputs when running multiple simulations. To invoke a basic instance of SOCS, do the following:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span>drun opsim4 -l $PWD/log -c &quot;Running a one year sim.&quot; -v
 </pre></div>
 </div>
-<p>This will run a one year simulation while passing messages between SOCS and the Scheduler via SAL/DDS. Further options are available to the driver script and can be acertained by the following:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>drun opsim -h
+<p>This will run a one year simulation while passing messages between SOCS and the Scheduler via SAL/DDS. The SOCS driver script launches a central process for log messages coming from the SOCS and Scheduler drivers. It then launches the Scheduler driver.</p>
+<p>Further options are available to the driver script and can be ascertained by the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>drun opsim4 -h
 </pre></div>
 </div>
 </div>
@@ -177,7 +173,7 @@ export NDDS_DISCOVERY_PEERS=shmem://
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="history.html" class="btn btn-neutral float-right" title="History" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="database.html" class="btn btn-neutral float-right" title="Survey Database" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>

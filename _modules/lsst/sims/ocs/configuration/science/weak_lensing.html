@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.science.universal_weak &mdash; Simulated OCS 0.3.0 documentation</title>
+  <title>lsst.sims.ocs.configuration.science.weak_lensing &mdash; Simulated OCS 0.3.0 documentation</title>
   
 
   
@@ -86,6 +86,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../history.html">History</a></li>
 </ul>
 <ul>
@@ -122,7 +123,7 @@
       
           <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
       
-    <li>lsst.sims.ocs.configuration.science.universal_weak</li>
+    <li>lsst.sims.ocs.configuration.science.weak_lensing</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -134,45 +135,71 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for lsst.sims.ocs.configuration.science.universal_weak</h1><div class="highlight"><pre>
+  <h1>Source code for lsst.sims.ocs.configuration.science.weak_lensing</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
 
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">AreaDistribution</span><span class="p">,</span> <span class="n">BandFilter</span><span class="p">,</span> <span class="n">Selection</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">area_dist_prop_reg</span><span class="p">,</span> <span class="n">SELECTION_LIMIT_TYPES</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;UniversalWeak&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;WeakLensing&quot;</span><span class="p">]</span>
 
-<span class="nd">@pexConfig.registerConfig</span><span class="p">(</span><span class="s2">&quot;UniversalWeak&quot;</span><span class="p">,</span> <span class="n">area_dist_prop_reg</span><span class="p">,</span> <span class="n">AreaDistribution</span><span class="p">)</span>
-<div class="viewcode-block" id="UniversalWeak"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.science.universal_weak.html#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak">[docs]</a><span class="k">class</span> <span class="nc">UniversalWeak</span><span class="p">(</span><span class="n">AreaDistribution</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This class sets the parameters for specifying the Universal Weak proposal.</span>
+<span class="nd">@pexConfig.registerConfig</span><span class="p">(</span><span class="s2">&quot;WeakLensing&quot;</span><span class="p">,</span> <span class="n">area_dist_prop_reg</span><span class="p">,</span> <span class="n">AreaDistribution</span><span class="p">)</span>
+<div class="viewcode-block" id="WeakLensing"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.science.weak_lensing.html#lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing">[docs]</a><span class="k">class</span> <span class="nc">WeakLensing</span><span class="p">(</span><span class="n">AreaDistribution</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class sets the parameters for specifying the Weak Lensing proposal.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="UniversalWeak.setDefaults"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.science.universal_weak.html#lsst.sims.ocs.configuration.science.universal_weak.UniversalWeak.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="WeakLensing.setDefaults"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.science.weak_lensing.html#lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Setup all the proposal information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;UniversalWeak&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;WeakLensing&quot;</span>
 
         <span class="c1"># -------------------------</span>
         <span class="c1"># Sky Region specifications</span>
         <span class="c1"># -------------------------</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">twilight_boundary</span> <span class="o">=</span> <span class="o">-</span><span class="mf">12.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">delta_lst</span> <span class="o">=</span> <span class="mf">60.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">dec_window</span> <span class="o">=</span> <span class="mf">90.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">use_galactic_exclusion</span> <span class="o">=</span> <span class="bp">False</span>
-
-        <span class="c1"># RA Band - All Sky</span>
-        <span class="n">ra_limit</span> <span class="o">=</span> <span class="n">Selection</span><span class="p">()</span>
-        <span class="n">ra_limit</span><span class="o">.</span><span class="n">limit_type</span> <span class="o">=</span> <span class="n">SELECTION_LIMIT_TYPES</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">ra_limit</span><span class="o">.</span><span class="n">minimum_limit</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="n">ra_limit</span><span class="o">.</span><span class="n">maximum_limit</span> <span class="o">=</span> <span class="mf">360.0</span>
 
         <span class="c1"># Dec Band</span>
         <span class="n">dec_limit</span> <span class="o">=</span> <span class="n">Selection</span><span class="p">()</span>
         <span class="n">dec_limit</span><span class="o">.</span><span class="n">limit_type</span> <span class="o">=</span> <span class="n">SELECTION_LIMIT_TYPES</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">dec_limit</span><span class="o">.</span><span class="n">minimum_limit</span> <span class="o">=</span> <span class="o">-</span><span class="mf">60.0</span>
-        <span class="n">dec_limit</span><span class="o">.</span><span class="n">maximum_limit</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">dec_limit</span><span class="o">.</span><span class="n">minimum_limit</span> <span class="o">=</span> <span class="o">-</span><span class="mf">62.5</span>
+        <span class="n">dec_limit</span><span class="o">.</span><span class="n">maximum_limit</span> <span class="o">=</span> <span class="mf">2.8</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">limit_selections</span> <span class="o">=</span> <span class="p">{</span><span class="n">ra_limit</span><span class="o">.</span><span class="n">limit_type</span><span class="p">:</span> <span class="n">ra_limit</span><span class="p">,</span> <span class="n">dec_limit</span><span class="o">.</span><span class="n">limit_type</span><span class="p">:</span> <span class="n">dec_limit</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">selections</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">dec_limit</span><span class="p">}</span>
+
+        <span class="c1"># -----------------------------</span>
+        <span class="c1"># Sky Exclusion specifications</span>
+        <span class="c1"># -----------------------------</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_exclusion</span><span class="o">.</span><span class="n">dec_window</span> <span class="o">=</span> <span class="mf">90.0</span>
+
+        <span class="c1"># Galactic Plane</span>
+        <span class="n">gal_plane</span> <span class="o">=</span> <span class="n">Selection</span><span class="p">()</span>
+        <span class="n">gal_plane</span><span class="o">.</span><span class="n">limit_type</span> <span class="o">=</span> <span class="n">SELECTION_LIMIT_TYPES</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+        <span class="n">gal_plane</span><span class="o">.</span><span class="n">minimum_limit</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">gal_plane</span><span class="o">.</span><span class="n">maximum_limit</span> <span class="o">=</span> <span class="mf">10.0</span>
+        <span class="n">gal_plane</span><span class="o">.</span><span class="n">bounds_limit</span> <span class="o">=</span> <span class="mf">90.0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_exclusion</span><span class="o">.</span><span class="n">selections</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">gal_plane</span><span class="p">}</span>
+
+        <span class="c1"># ---------------------------------</span>
+        <span class="c1"># Sky Nightly Bounds specifications</span>
+        <span class="c1"># ---------------------------------</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_nightly_bounds</span><span class="o">.</span><span class="n">twilight_boundary</span> <span class="o">=</span> <span class="o">-</span><span class="mf">12.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_nightly_bounds</span><span class="o">.</span><span class="n">delta_lst</span> <span class="o">=</span> <span class="mf">60.0</span>
+
+        <span class="c1"># ------------------------------</span>
+        <span class="c1"># Sky Constraints specifications</span>
+        <span class="c1"># ------------------------------</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_constraints</span><span class="o">.</span><span class="n">max_airmass</span> <span class="o">=</span> <span class="mf">2.5</span>
+
+        <span class="c1"># ----------------------</span>
+        <span class="c1"># Scheduling information</span>
+        <span class="c1"># ----------------------</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">max_num_targets</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">accept_serendipity</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">accept_consecutive_visits</span> <span class="o">=</span> <span class="bp">False</span>
 
         <span class="c1"># --------------------------</span>
         <span class="c1"># Band Filter specifications</span>
@@ -231,15 +258,7 @@
                         <span class="n">r_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">r_filter</span><span class="p">,</span>
                         <span class="n">i_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">i_filter</span><span class="p">,</span>
                         <span class="n">z_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">z_filter</span><span class="p">,</span>
-                        <span class="n">y_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">y_filter</span><span class="p">}</span>
-
-        <span class="c1"># ----------------------</span>
-        <span class="c1"># Scheduling information</span>
-        <span class="c1"># ----------------------</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">max_num_targets</span> <span class="o">=</span> <span class="mi">100</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">accept_serendipity</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">accept_consecutive_visits</span> <span class="o">=</span> <span class="bp">False</span></div></div>
+                        <span class="n">y_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">y_filter</span><span class="p">}</span></div></div>
 </pre></div>
 
            </div>

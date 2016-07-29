@@ -86,6 +86,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../history.html">History</a></li>
 </ul>
 <ul>
@@ -170,6 +171,25 @@
 <span class="sd">        This function shuts down the Scheduler SAL manager.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">salShutdown</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SalManager.get_topic"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.sal.sal_manager.html#lsst.sims.ocs.sal.sal_manager.SalManager.get_topic">[docs]</a>    <span class="k">def</span> <span class="nf">get_topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_short_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the given topic.</span>
+
+<span class="sd">        This function retrieves the associated data structure for the topic.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        topic_short_name : str</span>
+<span class="sd">            The part of the topic name minus the scheduler prefix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        SALPY_scheduler.&lt;topic_short_name&gt;C</span>
+<span class="sd">            The telemetry data structure associated with the topic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">topic_name</span> <span class="o">=</span> <span class="s2">&quot;scheduler_{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">topic_short_name</span><span class="p">)</span>
+        <span class="n">topic</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">SALPY_scheduler</span><span class="p">,</span> <span class="s2">&quot;{}C&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">topic_name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">topic</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="SalManager.set_publish_topic"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.sal.sal_manager.html#lsst.sims.ocs.sal.sal_manager.SalManager.set_publish_topic">[docs]</a>    <span class="k">def</span> <span class="nf">set_publish_topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_short_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the given topic for publishing.</span>

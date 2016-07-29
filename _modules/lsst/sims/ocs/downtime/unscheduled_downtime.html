@@ -1,0 +1,314 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.sims.ocs.downtime.unscheduled_downtime &mdash; Simulated OCS 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../../index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../../../../../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../database.html">Survey Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../history.html">History</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/lsst.sims.ocs.html">lsst.sims.ocs package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.downtime.unscheduled_downtime</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lsst.sims.ocs.downtime.unscheduled_downtime</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.setup</span> <span class="kn">import</span> <span class="n">LoggingLevel</span>
+
+<div class="viewcode-block" id="UnscheduledDowntime"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime">[docs]</a><span class="k">class</span> <span class="nc">UnscheduledDowntime</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Handle creating the unscheduled downtime information.</span>
+
+<span class="sd">    This class handles the unscheduled downtime information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">MINOR_EVENT</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0137</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;minor event&quot;</span><span class="p">)</span>
+    <span class="n">INTERMEDIATE_EVENT</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.00548</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;intermediate event&quot;</span><span class="p">)</span>
+    <span class="n">MAJOR_EVENT</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.00137</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;major event&quot;</span><span class="p">)</span>
+    <span class="n">CATASTROPHIC_EVENT</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.000274</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="s2">&quot;catastrophic event&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">1640995200</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">downtimes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;downtime.UnscheduledDowntime&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="UnscheduledDowntime.__call__"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the top downtime.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">downtimes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span></div>
+
+<div class="viewcode-block" id="UnscheduledDowntime.__len__"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.__len__">[docs]</a>    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return number of scheduled downtimes.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">downtimes</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">total_downtime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the total downtime (units=days).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">downtimes</span><span class="p">])</span>
+
+<div class="viewcode-block" id="UnscheduledDowntime.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_random_seed</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">survey_length</span><span class="o">=</span><span class="mi">7300</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure the set of unscheduled downtimes.</span>
+
+<span class="sd">        This function creates the unscheduled downtimes based on a set of probabilities</span>
+<span class="sd">        of the downtime type occurance. A default seed is used to produce the same set of</span>
+<span class="sd">        downtimes, but a randomized seed can be requested.</span>
+
+<span class="sd">        The random downtime is calculated using the following probabilities:</span>
+
+<span class="sd">        minor event</span>
+<span class="sd">            remainder of night and next day = 5/365 days e.g. power supply failure</span>
+<span class="sd">        intermediate</span>
+<span class="sd">            3 nights = 2/365 days e.g. repair filter mechanism, rotator, hexapod, or shutter</span>
+<span class="sd">        major event</span>
+<span class="sd">            7 nights = 1/2*365 days</span>
+<span class="sd">        catastrophic event</span>
+<span class="sd">            14 nights = 1/3650 days e.g. replace a raft</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        use_random_seed : bool, optional</span>
+<span class="sd">            Flag to set the seed based on the current time. Default is to used fixed seed.</span>
+<span class="sd">        random_seed : int, optional</span>
+<span class="sd">            Provide an alternate random seed. Only works when use_random_seed is True.</span>
+<span class="sd">        survey_length : int, optional</span>
+<span class="sd">            The length of the survey in days. Default is the length of a 20 year survey.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">use_random_seed</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">random_seed</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">random_seed</span>
+
+        <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+
+        <span class="n">nights</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">nights</span> <span class="o">&lt;</span> <span class="n">survey_length</span><span class="p">:</span>
+            <span class="n">prob</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">prob</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">CATASTROPHIC_EVENT</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">downtimes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">CATASTROPHIC_EVENT</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">CATASTROPHIC_EVENT</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                <span class="n">nights</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CATASTROPHIC_EVENT</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">prob</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">prob</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">MAJOR_EVENT</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">downtimes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MAJOR_EVENT</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">MAJOR_EVENT</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                    <span class="n">nights</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MAJOR_EVENT</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">prob</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">prob</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">INTERMEDIATE_EVENT</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">downtimes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">INTERMEDIATE_EVENT</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                               <span class="bp">self</span><span class="o">.</span><span class="n">INTERMEDIATE_EVENT</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                        <span class="n">nights</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">INTERMEDIATE_EVENT</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                        <span class="k">continue</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">prob</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">prob</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">MINOR_EVENT</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">downtimes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MINOR_EVENT</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">MINOR_EVENT</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="n">nights</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">WORDY</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                     <span class="s2">&quot;Total unscheduled downtime: {} days in {} days.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_downtime</span><span class="p">,</span>
+                                                                              <span class="n">survey_length</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

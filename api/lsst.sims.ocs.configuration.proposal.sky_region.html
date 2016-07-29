@@ -33,7 +33,7 @@
     <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.configuration.proposal package" href="lsst.sims.ocs.configuration.proposal.html"/>
         <link rel="next" title="lsst.sims.ocs.configuration.science package" href="lsst.sims.ocs.configuration.science.html"/>
-        <link rel="prev" title="lsst.sims.ocs.configuration.proposal.selection module" href="lsst.sims.ocs.configuration.proposal.selection.html"/> 
+        <link rel="prev" title="lsst.sims.ocs.configuration.proposal.sky_nightly_bounds module" href="lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -88,6 +88,7 @@
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database.html">Survey Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 </ul>
 <ul class="current">
@@ -100,6 +101,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
@@ -175,39 +177,15 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.dec_window">
-<code class="descname">dec_window</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.dec_window" title="Permalink to this definition">¶</a></dt>
-<dd><p>Angle (units=degrees) around the observing site&#8217;s latitude for which to create a Declination window for field selection.</p>
+<dt id="lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.combiners">
+<code class="descname">combiners</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.combiners" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of logical operations [and, or] that combine the region selections. Must be one less than the number of selections. If only one region, the list is left empty.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.delta_lst">
-<code class="descname">delta_lst</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.delta_lst" title="Permalink to this definition">¶</a></dt>
-<dd><p>LST extent (units=degrees) before sunset LST (-) and after sunrise LST (+) for providing a region of the sky to select.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.galactic_exclusion">
-<code class="descname">galactic_exclusion</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.galactic_exclusion" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parameters for setting a galactic exclusion zone.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.limit_selections">
-<code class="descname">limit_selections</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.limit_selections" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.selections">
+<code class="descname">selections</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.selections" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of type selections for sky region determination.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.twilight_boundary">
-<code class="descname">twilight_boundary</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.twilight_boundary" title="Permalink to this definition">¶</a></dt>
-<dd><p>The sun altitude (units=degrees) for twilight consideration.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.use_galactic_exclusion">
-<code class="descname">use_galactic_exclusion</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sky_region.SkyRegion.use_galactic_exclusion" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use the galactic exclusion zone when selection fields.</p>
 </dd></dl>
 
 </dd></dl>
@@ -224,7 +202,7 @@
         <a href="lsst.sims.ocs.configuration.science.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.configuration.science package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="lsst.sims.ocs.configuration.proposal.selection.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.proposal.selection module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="lsst.sims.ocs.configuration.proposal.sky_nightly_bounds.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.proposal.sky_nightly_bounds module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
