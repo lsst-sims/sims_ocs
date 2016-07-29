@@ -134,6 +134,17 @@ class Simulator(object):
 
         return (set_timestamp, rise_timestamp)
 
+    def get_target_from_scheduler(self):
+        """Get target from scheduler.
+
+        This function provides the mechanism for getting the target from the
+        Scheduler. Currently, a while loop is required to do this.
+        """
+        while self.wait_for_scheduler:
+            rcode = self.sal.manager.getNextSample_targetTest(self.target)
+            if rcode == 0 and self.target.num_exposures != 0:
+                break
+
     def initialize(self):
         """Perform initialization steps.
 
@@ -195,11 +206,7 @@ class Simulator(object):
                              "Observatory State: {}".format(topic_strdict(observatory_state)))
                 self.sal.put(observatory_state)
 
-                # Get target from scheduler
-                while self.wait_for_scheduler:
-                    rcode = self.sal.manager.getNextSample_targetTest(self.target)
-                    if rcode == 0 and self.target.num_exposures != 0:
-                        break
+                self.get_target_from_scheduler()
 
                 observation, slew_info, exposure_info = self.seq.observe_target(self.target,
                                                                                 self.time_handler)
