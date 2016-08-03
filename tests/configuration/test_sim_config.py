@@ -108,3 +108,17 @@ class SimulationConfigTest(unittest.TestCase):
         self.sim_config.load_proposals()
         self.assertEqual(len(self.sim_config.science.area_dist_props.names), NUM_AREA_DIST_PROPS)
         self.assertEqual(len(self.sim_config.science.area_dist_props.active), NUM_AREA_DIST_PROPS)
+
+    def test_load_specifc_proposals(self):
+        self.sim_config.survey.ad_proposals = "GalacticPlane,SouthCelestialPole"
+        self.sim_config.load_proposals()
+        self.assertEqual(len(self.sim_config.science.area_dist_props.names), 2)
+        self.assertEqual(len(self.sim_config.science.area_dist_props.active), 2)
+
+    def test_load_no_proposals(self):
+        self.sim_config.survey.ad_proposals = ""
+        self.sim_config.load_proposals()
+        with self.assertRaises(TypeError):
+            self.assertEqual(len(self.sim_config.science.area_dist_props.names), 0)
+        with self.assertRaises(TypeError):
+            self.assertEqual(len(self.sim_config.science.area_dist_props.active), 0)

@@ -16,6 +16,17 @@ class ScienceProposals(pexConfig.Config):
 
     area_dist_props = area_dist_prop_reg.makeField('The list of area distribution proposals.', multi=True)
 
+    @property
+    def ad_proposals(self):
+        """Listing of available area distribution proposals.
+
+        Returns
+        -------
+        str
+            Comma-delimited list of available area distribution proposals.
+        """
+        return ",".join(sorted(self.area_dist_props.registry.keys()))
+
     def load(self, config_files):
         """Load the configuration override files.
 
@@ -27,29 +38,40 @@ class ScienceProposals(pexConfig.Config):
         for prop in self.area_dist_props.values():
             load_config(prop, config_files)
 
-    def load_proposals(self):
-        """Load proposals from configuration.science module.
+    def load_proposals(self, proposals):
+        """Load given proposals.
+
+        This function loads the propsals requested from the function argument.
+        The argument is a dictionary with two keys: AD or TD and a comma-delimited
+        list of proposal names associated with each key.
+
+        Parameters
+        ----------
+        proposals : dict[str: str]
+            The set of proposals to load.
         """
 
-        AREA_DIST = "AreaDistribution"
-        proposal_dict = collections.defaultdict(list)
+        # AREA_DIST = "AreaDistribution"
+        # proposal_dict = collections.defaultdict(list)
 
-        proposal_module = "lsst.sims.ocs.configuration.science"
-        module = importlib.import_module(proposal_module)
-        names = dir(module)
-        for name in names:
-            cls = load_class(proposal_module + "." + name)
-            try:
-                key = None
-                if issubclass(cls, AreaDistribution):
-                    key = AREA_DIST
-                if key is not None:
-                    proposal_dict[key].append(cls.__name__)
-            except TypeError:
-                # Don't care about things that aren't classes.
-                pass
+        # proposal_module = "lsst.sims.ocs.configuration.science"
+        # module = importlib.import_module(proposal_module)
+        # names = dir(module)
+        # for name in names:
+        #     cls = load_class(proposal_module + "." + name)
+        #     try:
+        #         key = None
+        #         if issubclass(cls, AreaDistribution):
+        #             key = AREA_DIST
+        #         if key is not None:
+        #             proposal_dict[key].append(cls.__name__)
+        #     except TypeError:
+        #         # Don't care about things that aren't classes.
+        #         pass
 
-        self.area_dist_props.names = proposal_dict[AREA_DIST]
+        # self.area_dist_props.names = proposal_dict[AREA_DIST]
+        if proposals["AD"] != "":
+            self.area_dist_props.names = [prop for prop in proposals["AD"].split(',')]
 
     def save_as(self, save_dir=''):
         """Save the configuration objects to separate files.

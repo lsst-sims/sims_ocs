@@ -6,6 +6,7 @@ from .downtime import *
 from .field import *
 from .helpers import *
 from .obs_site import *
+from .science import *
 from .science_proposals import *
 from .survey import *
 from .observatory import *

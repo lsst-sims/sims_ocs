@@ -60,7 +60,7 @@ class SimulationConfig(pexConfig.Config):
     def load_proposals(self):
         """Tell the science proposals to load their configuration.
         """
-        self.science.load_proposals()
+        self.science.load_proposals({"AD": self.survey.ad_proposals})
 
     def save(self, save_dir=''):
         """Save the configuration objects to separate files.
