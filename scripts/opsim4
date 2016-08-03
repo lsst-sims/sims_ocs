@@ -53,8 +53,9 @@ def main(args):
         start_time = datetime.now()
 
         configuration = SimulationConfig()
-        configuration.load_proposals()
         configuration.load(args.config)
+        configuration.load_proposals()
+        logger.info("{} proposals active.".format(configuration.num_proposals))
         configuration.validate()
 
         sch_exe = os.path.join(os.path.dirname(ts_scheduler.schedulerMain.__file__), "scheduler.py")

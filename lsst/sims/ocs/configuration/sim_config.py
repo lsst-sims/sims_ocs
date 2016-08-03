@@ -4,6 +4,7 @@ import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration import Downtime, load_config, Observatory, ObservingSite
 from lsst.sims.ocs.configuration import SchedulerDriver, ScienceProposals, Survey
+from lsst.sims.ocs.utilities import expand_path
 
 __all__ = ["SimulationConfig"]
 
@@ -24,6 +25,19 @@ class SimulationConfig(pexConfig.Config):
         """
         pass
 
+    @property
+    def num_proposals(self):
+        """The total number of active proposals.
+
+        Returns
+        -------
+        int
+        """
+        num_props = 0
+        if self.science.area_dist_props.names is not None:
+            num_props += len(self.science.area_dist_props.names)
+        return num_props
+
     def load(self, ifiles):
         """Load and apply configuration override files.
 
@@ -40,6 +54,7 @@ class SimulationConfig(pexConfig.Config):
             return
         config_files = []
         for ifile in ifiles:
+            ifile = expand_path(ifile)
             if os.path.isdir(ifile):
                 dfiles = os.listdir(ifile)
                 for dfile in dfiles:

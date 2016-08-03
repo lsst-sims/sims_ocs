@@ -82,4 +82,5 @@ class ScienceProposals(pexConfig.Config):
             The directory in which to save the configuration files.
         """
         for prop_name, prop in self.area_dist_props.items():
-            prop.save(os.path.join(save_dir, prop_name.lower() + "_prop.py"))
+            if prop_name in self.area_dist_props.names:
+                prop.save(os.path.join(save_dir, prop_name.lower() + "_prop.py"))

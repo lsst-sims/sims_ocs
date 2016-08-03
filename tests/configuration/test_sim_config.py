@@ -94,6 +94,8 @@ class SimulationConfigTest(unittest.TestCase):
         # The real configurations can get very expensive to save, so we're just testing that the
         # correct number of executions and blank files are created. The extra 1 is due
         # to the downtime config not needing to be sent via conf_comm.
+        self.sim_config.load_proposals()
+        self.assertEqual(len(self.sim_config.science.area_dist_props.active), NUM_AREA_DIST_PROPS)
         expected_calls = CONFIG_COMM_PUT_CALLS + NUM_AREA_DIST_PROPS + 1
         save_files = ["save_conf{}.py".format(i + 1) for i in range(expected_calls)]
         mock_pexconfig_save.side_effect = [save_file(f, self.config_save_dir) for f in save_files]
@@ -106,6 +108,7 @@ class SimulationConfigTest(unittest.TestCase):
             self.assertEqual(len(self.sim_config.science.area_dist_props.names), NUM_AREA_DIST_PROPS)
 
         self.sim_config.load_proposals()
+        self.assertEqual(self.sim_config.num_proposals, NUM_AREA_DIST_PROPS)
         self.assertEqual(len(self.sim_config.science.area_dist_props.names), NUM_AREA_DIST_PROPS)
         self.assertEqual(len(self.sim_config.science.area_dist_props.active), NUM_AREA_DIST_PROPS)
 
@@ -118,6 +121,7 @@ class SimulationConfigTest(unittest.TestCase):
     def test_load_no_proposals(self):
         self.sim_config.survey.ad_proposals = ""
         self.sim_config.load_proposals()
+        self.assertEqual(self.sim_config.num_proposals, 0)
         with self.assertRaises(TypeError):
             self.assertEqual(len(self.sim_config.science.area_dist_props.names), 0)
         with self.assertRaises(TypeError):
