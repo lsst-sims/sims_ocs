@@ -172,6 +172,7 @@ class Simulator(object):
         if self.wait_for_scheduler:
             self.log.info("Retrieving fields from Scheduler")
             field_set = set()
+            fields_from_dds = 0
             end_fields = False
             while True:
                 rcode = self.sal.manager.getNextSample_field(self.field)
@@ -186,8 +187,10 @@ class Simulator(object):
                         continue
                 field_set.add((self.field.ID, self.field.fov, self.field.ra, self.field.dec,
                                self.field.gl, self.field.gb, self.field.el, self.field.eb))
+                fields_from_dds += 1
                 time.sleep(0.00001)
 
+            self.log.info("DDS retrieved {} field messages.".format(fields_from_dds))
             self.field_list = [write_field(field, self.db.session_id) for field in sorted(field_set)]
             self.log.info("{} fields retrieved".format(len(self.field_list)))
             self.log.log(LoggingLevel.EXTENSIVE.value, "{}".format(self.field_list))
