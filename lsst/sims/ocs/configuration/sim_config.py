@@ -61,6 +61,8 @@ class SimulationConfig(pexConfig.Config):
                     full_dfile = os.path.join(ifile, dfile)
                     if os.path.isfile(full_dfile):
                         config_files.append(full_dfile)
+                    if os.path.isdir(full_dfile):
+                        self.survey.alt_proposal_dir = full_dfile
             else:
                 config_files.append(ifile)
 
@@ -75,7 +77,8 @@ class SimulationConfig(pexConfig.Config):
     def load_proposals(self):
         """Tell the science proposals to load their configuration.
         """
-        self.science.load_proposals({"AD": self.survey.ad_proposals})
+        self.science.load_proposals({"AD": self.survey.ad_proposals},
+                                    alternate_proposals=self.survey.alt_proposal_dir)
 
     def save(self, save_dir=''):
         """Save the configuration objects to separate files.

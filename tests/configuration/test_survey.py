@@ -15,3 +15,4 @@ class SurveyTest(unittest.TestCase):
         self.assertEqual(self.survey.duration, 1.0)
         self.assertEqual(self.survey.idle_delay, 60.0)
         self.assertEqual(self.survey.ad_proposals, AREA_DIST_PROPS)
+        self.assertIsNone(self.survey.alt_proposal_dir)

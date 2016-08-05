@@ -22,7 +22,11 @@ from lsst.sims.ocs.utilities import expand_path
 
 def stop_programs(lpid, spid):
     if spid is not None:
-        os.waitpid(spid, 0)
+        try:
+            os.waitpid(spid, 0)
+        except OSError:
+            # Scheduler PID is no longer present.
+            pass
     if lpid is not None:
         os.kill(lpid, signal.SIGKILL)
 
