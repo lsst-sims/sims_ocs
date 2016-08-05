@@ -24,6 +24,8 @@ field_topic.gb = 45.0
 field_topic.el = 60.0
 field_topic.eb = -60.0
 
+field_tuple = (1, 0.5, 30.0, -30.0, -45.0, 45.0, 60.0, -60.0)
+
 observation_topic = SALPY_scheduler.scheduler_observationTestC()
 observation_topic.observationID = 5
 observation_topic.targetID = 10

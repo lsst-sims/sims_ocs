@@ -51,15 +51,15 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(len(fields.indexes), 4)
 
     def test_write_field_table(self):
-        field_topic = topic_helpers.field_topic
+        field_topic = topic_helpers.field_tuple
 
         result = tbls.write_field(field_topic, 1000)
         fields = tbls.create_field(self.metadata)
         self.check_ordered_dict_to_table(result, fields)
-        self.assertEqual(result['fieldId'], field_topic.ID)
-        self.assertEqual(result['ra'], field_topic.ra)
-        self.assertEqual(result['gb'], field_topic.gb)
-        self.assertEqual(result['el'], field_topic.el)
+        self.assertEqual(result['fieldId'], field_topic[0])
+        self.assertEqual(result['ra'], field_topic[2])
+        self.assertEqual(result['gb'], field_topic[5])
+        self.assertEqual(result['el'], field_topic[6])
 
     def test_create_observation_history_table(self):
         obs_hist = tbls.create_observation_history(self.metadata)

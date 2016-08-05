@@ -29,8 +29,8 @@ def write_field(data, sid):
 
     Parameters
     ----------
-    data : SALPY_scheduler.fieldC
-        The SAL target topic instance.
+    data : tuple
+        The set of information from a field.
     sid : int
         The current session ID.
 
@@ -40,16 +40,17 @@ def write_field(data, sid):
         A dictionary of the topic data.
     """
     values = collections.OrderedDict([
-        ('fieldId', data.ID),
+        ('fieldId', data[0]),
         ('Session_sessionId', sid),
-        ('fov', data.fov),
-        ('ra', data.ra),
-        ('dec', data.dec),
-        ('gl', data.gl),
-        ('gb', data.gb),
-        ('el', data.el),
-        ('eb', data.eb)
+        ('fov', data[1]),
+        ('ra', data[2]),
+        ('dec', data[3]),
+        ('gl', data[4]),
+        ('gb', data[5]),
+        ('el', data[6]),
+        ('eb', data[7])
     ])
+
     return values
 
 def write_observation_exposures(data, sid):

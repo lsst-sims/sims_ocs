@@ -171,7 +171,7 @@ class Simulator(object):
         # Get fields from scheduler
         if self.wait_for_scheduler:
             self.log.info("Retrieving fields from Scheduler")
-            self.field_list = []
+            field_set = set()
             end_fields = False
             while True:
                 rcode = self.sal.manager.getNextSample_field(self.field)
@@ -184,8 +184,11 @@ class Simulator(object):
                     else:
                         end_fields = True
                         continue
-                self.field_list.append(write_field(self.field, self.db.session_id))
+                field_set.add((self.field.ID, self.field.fov, self.field.ra, self.field.dec,
+                               self.field.gl, self.field.gb, self.field.el, self.field.eb))
                 time.sleep(0.00001)
+
+            self.field_list = [write_field(field, self.db.session_id) for field in sorted(field_set)]
             self.log.info("{} fields retrieved".format(len(self.field_list)))
             self.log.log(LoggingLevel.EXTENSIVE.value, "{}".format(self.field_list))
             self.db.write_table("field", self.field_list)
