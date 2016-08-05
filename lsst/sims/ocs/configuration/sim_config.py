@@ -4,6 +4,7 @@ import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration import Downtime, load_config, Observatory, ObservingSite
 from lsst.sims.ocs.configuration import SchedulerDriver, ScienceProposals, Survey
+from lsst.sims.ocs.utilities import expand_path
 
 __all__ = ["SimulationConfig"]
 
@@ -24,6 +25,19 @@ class SimulationConfig(pexConfig.Config):
         """
         pass
 
+    @property
+    def num_proposals(self):
+        """The total number of active proposals.
+
+        Returns
+        -------
+        int
+        """
+        num_props = 0
+        if self.science.area_dist_props.names is not None:
+            num_props += len(self.science.area_dist_props.names)
+        return num_props
+
     def load(self, ifiles):
         """Load and apply configuration override files.
 
@@ -40,12 +54,15 @@ class SimulationConfig(pexConfig.Config):
             return
         config_files = []
         for ifile in ifiles:
+            ifile = expand_path(ifile)
             if os.path.isdir(ifile):
                 dfiles = os.listdir(ifile)
                 for dfile in dfiles:
                     full_dfile = os.path.join(ifile, dfile)
                     if os.path.isfile(full_dfile):
                         config_files.append(full_dfile)
+                    if os.path.isdir(full_dfile):
+                        self.survey.alt_proposal_dir = full_dfile
             else:
                 config_files.append(ifile)
 
@@ -60,7 +77,8 @@ class SimulationConfig(pexConfig.Config):
     def load_proposals(self):
         """Tell the science proposals to load their configuration.
         """
-        self.science.load_proposals()
+        self.science.load_proposals({"AD": self.survey.ad_proposals},
+                                    alternate_proposals=self.survey.alt_proposal_dir)
 
     def save(self, save_dir=''):
         """Save the configuration objects to separate files.

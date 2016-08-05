@@ -1,12 +1,11 @@
-import collections
 import importlib
 import os
+import sys
 
 import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration import load_config
-from lsst.sims.ocs.configuration.proposal import area_dist_prop_reg, load_class
-from lsst.sims.ocs.configuration.proposal import AreaDistribution
+from lsst.sims.ocs.configuration.proposal import area_dist_prop_reg
 
 __all__ = ["ScienceProposals"]
 
@@ -15,6 +14,17 @@ class ScienceProposals(pexConfig.Config):
     """
 
     area_dist_props = area_dist_prop_reg.makeField('The list of area distribution proposals.', multi=True)
+
+    @property
+    def ad_proposals(self):
+        """Listing of available area distribution proposals.
+
+        Returns
+        -------
+        str
+            Comma-delimited list of available area distribution proposals.
+        """
+        return ",".join(sorted(self.area_dist_props.registry.keys()))
 
     def load(self, config_files):
         """Load the configuration override files.
@@ -27,29 +37,43 @@ class ScienceProposals(pexConfig.Config):
         for prop in self.area_dist_props.values():
             load_config(prop, config_files)
 
-    def load_proposals(self):
-        """Load proposals from configuration.science module.
+    def load_proposals(self, proposals, alternate_proposals=None):
+        """Load given proposals.
+
+        This function loads the propsals requested from the function argument.
+        The argument is a dictionary with two keys: AD or TD and a comma-delimited
+        list of proposal names associated with each key.
+
+        Parameters
+        ----------
+        proposals : dict[str: str]
+            The set of proposals to load.
+        alternate_proposals : str
+            A directory location containing alternate proposals to load.
         """
+        # Listing of all the things related to a proposal but not including the
+        # actual class name,
+        proposal_related = ['AreaDistribution', 'BandFilter', 'SELECTION_LIMIT_TYPES',
+                            'Selection', 'area_dist_prop_reg', 'pexConfig']
+        if alternate_proposals is not None:
+            sys.path.append(alternate_proposals)
+            prop_files = os.listdir(alternate_proposals)
+            for prop_file in prop_files:
+                if ".pyc" in prop_file:
+                    continue
+                prop_mod = prop_file.split('.')[0]
+                module = importlib.import_module(prop_mod)
+                all_names = [x for x in dir(module) if not x.startswith("__")]
+                if "AreaDistribution" in all_names:
+                    key = "AD"
+                prop_name = [x for x in all_names if x not in proposal_related][0]
+                if proposals[key] != "":
+                    proposals[key] += ",{}".format(prop_name)
+                else:
+                    proposals[key] = prop_name
 
-        AREA_DIST = "AreaDistribution"
-        proposal_dict = collections.defaultdict(list)
-
-        proposal_module = "lsst.sims.ocs.configuration.science"
-        module = importlib.import_module(proposal_module)
-        names = dir(module)
-        for name in names:
-            cls = load_class(proposal_module + "." + name)
-            try:
-                key = None
-                if issubclass(cls, AreaDistribution):
-                    key = AREA_DIST
-                if key is not None:
-                    proposal_dict[key].append(cls.__name__)
-            except TypeError:
-                # Don't care about things that aren't classes.
-                pass
-
-        self.area_dist_props.names = proposal_dict[AREA_DIST]
+        if proposals["AD"] != "":
+            self.area_dist_props.names = [prop for prop in proposals["AD"].split(',')]
 
     def save_as(self, save_dir=''):
         """Save the configuration objects to separate files.
@@ -60,4 +84,5 @@ class ScienceProposals(pexConfig.Config):
             The directory in which to save the configuration files.
         """
         for prop_name, prop in self.area_dist_props.items():
-            prop.save(os.path.join(save_dir, prop_name.lower() + "_prop.py"))
+            if prop_name in self.area_dist_props.names:
+                prop.save(os.path.join(save_dir, prop_name.lower() + "_prop.py"))

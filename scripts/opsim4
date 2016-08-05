@@ -21,77 +21,88 @@ from lsst.sims.ocs.setup import read_file_config, set_log_levels, Tracking
 from lsst.sims.ocs.utilities import expand_path
 
 def stop_programs(lpid, spid):
-    os.waitpid(spid, 0)
-    os.kill(lpid, signal.SIGKILL)
+    if spid is not None:
+        try:
+            os.waitpid(spid, 0)
+        except OSError:
+            # Scheduler PID is no longer present.
+            pass
+    if lpid is not None:
+        os.kill(lpid, signal.SIGKILL)
 
 def main(args):
-    db = SocsDatabase(args.db_type, mysql_config_path=args.mysql_config_path,
-                      sqlite_save_path=args.sqlite_save_dir)
-
-    session_id = db.new_session(args.startup_comment)
-    args.session_id = session_id
-
-    log_file = generate_logfile_path(args.log_path, args.session_id)
-    console_detail, file_detail = set_log_levels(args.verbose)
-    configure_logging(console_detail, file_detail)
-    log_pid = sp.Popen(["central_logger", "--filename={}".format(log_file),
-                        "--level={}".format(file_detail)]).pid
-
-    tracking = Tracking(args.session_id, args.session_code, args.startup_comment)
-    if args.track_session:
-        if args.tracking_db is not None:
-            tracking.opsim_tracking_url = args.tracking_db
-        tracking.track_session()
-
-    logger = logging.getLogger("opsim4")
-
-    start_time = datetime.now()
-
-    configuration = SimulationConfig()
-    configuration.load_proposals()
-    configuration.load(args.config)
-    configuration.validate()
-
-    sch_exe = os.path.join(os.path.dirname(ts_scheduler.schedulerMain.__file__), "scheduler.py")
-    sch_cmd = [sch_exe, "-s", "--console-format=Scheduler: %(message)s"]
-    sch_cmd.extend(["-v" for i in xrange(args.verbose)])
-    if args.profile:
-        sch_cmd.append("--profile")
-
-    logger.debug("Scheduler Command: {}".format(sch_cmd))
-    sched_pid = sp.Popen(sch_cmd).pid
-
-    sim = Simulator(args, configuration, db)
-    sim.initialize()
+    log_pid = None
+    sched_pid = None
     try:
-        sim.run()
-    except:
-        logger.error("An exception was thrown, stopping programs first.")
-        stop_programs(log_pid, sched_pid)
-        logger.error("Simulation was not completed correctly.")
-        raise
+        db = SocsDatabase(args.db_type, mysql_config_path=args.mysql_config_path,
+                          sqlite_save_path=args.sqlite_save_dir)
+
+        session_id = db.new_session(args.startup_comment)
+        args.session_id = session_id
+
+        log_file = generate_logfile_path(args.log_path, args.session_id)
+        console_detail, file_detail = set_log_levels(args.verbose)
+        configure_logging(console_detail, file_detail)
+        log_pid = sp.Popen(["central_logger", "--filename={}".format(log_file),
+                            "--level={}".format(file_detail)]).pid
+
+        tracking = Tracking(args.session_id, args.session_code, args.startup_comment)
+        if args.track_session:
+            if args.tracking_db is not None:
+                tracking.opsim_tracking_url = args.tracking_db
+            tracking.track_session()
+
+        logger = logging.getLogger("opsim4")
+
+        start_time = datetime.now()
+
+        configuration = SimulationConfig()
+        configuration.load(args.config)
+        configuration.load_proposals()
+        logger.info("{} proposals active.".format(configuration.num_proposals))
+        configuration.validate()
+
+        sch_exe = os.path.join(os.path.dirname(ts_scheduler.schedulerMain.__file__), "scheduler.py")
+        sch_cmd = [sch_exe, "-s", "--console-format=Scheduler: %(message)s"]
+        sch_cmd.extend(["-v" for i in xrange(args.verbose)])
+        if args.profile:
+            sch_cmd.append("--profile")
+
+        logger.debug("Scheduler Command: {}".format(sch_cmd))
+        sched_pid = sp.Popen(sch_cmd).pid
+
+        sim = Simulator(args, configuration, db)
+        sim.initialize()
+        try:
+            sim.run()
+        except:
+            logger.error("An exception was thrown, stopping programs first.")
+            stop_programs(log_pid, sched_pid)
+            logger.error("Simulation was not completed correctly.")
+            raise
+        finally:
+            sim.finalize()
+
+        if args.save_config:
+            config_dir = "config_{}".format(args.session_id)
+            if args.config_save_dir == '':
+                args.config_save_dir = config_dir
+            else:
+                args.config_save_dir = expand_path(os.path.join(args.config_save_dir, config_dir))
+                if not os.path.exists(args.config_save_dir):
+                    os.mkdir(args.config_save_dir)
+            configuration.save(args.config_save_dir)
+            logger.info("Finished saving survey configuration")
+
+        end_time = datetime.now()
+        run_time = (end_time - start_time).total_seconds()
+        logger.info("Total running time = {:.2f} seconds".format(run_time))
+        if args.track_session:
+            tracking.update_session("Simulation finished successfully in {:.2f} seconds".format(run_time))
+
+        logger.info("Waiting for Scheduler to finish.")
     finally:
-        sim.finalize()
-
-    if args.save_config:
-        config_dir = "config_{}".format(args.session_id)
-        if args.config_save_dir == '':
-            args.config_save_dir = config_dir
-        else:
-            args.config_save_dir = expand_path(os.path.join(args.config_save_dir, config_dir))
-            if not os.path.exists(args.config_save_dir):
-                os.mkdir(args.config_save_dir)
-        configuration.save(args.config_save_dir)
-        logger.info("Finished saving survey configuration")
-
-    end_time = datetime.now()
-    run_time = (end_time - start_time).total_seconds()
-    logger.info("Total running time = {:.2f} seconds".format(run_time))
-    if args.track_session:
-        tracking.update_session("Simulation finished successfully in {:.2f} seconds".format(run_time))
-
-    logger.info("Waiting for Scheduler to finish.")
-    stop_programs(log_pid, sched_pid)
+        stop_programs(log_pid, sched_pid)
 
 if __name__ == "__main__":
     parser = create_parser()

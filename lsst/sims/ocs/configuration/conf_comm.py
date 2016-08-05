@@ -209,8 +209,9 @@ class ConfigurationCommunicator(object):
         self.sal.put(self.olc_conf)
         self.sal.put(self.park_conf)
         num_proposals = 1
-        for ad_config in self.config.science.area_dist_props.values():
+        for ad_config in self.config.science.area_dist_props.active:
             ad_topic = ad_config.set_topic(self.sal.get_topic("areaDistPropConfig"))
             ad_topic.prop_id = num_proposals
             self.sal.put(ad_topic)
             num_proposals += 1
+        self.log.info("Sent configuration for {} area distribution proposals.".format(num_proposals - 1))

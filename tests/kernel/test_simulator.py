@@ -37,6 +37,7 @@ class SimulatorTest(unittest.TestCase):
         self.options.no_scheduler = True
 
         self.configuration = SimulationConfig()
+        self.configuration.load_proposals()
 
         self.sim = Simulator(self.options, self.configuration, self.mock_socs_db)
 
