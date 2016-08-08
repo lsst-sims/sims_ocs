@@ -45,6 +45,7 @@ class AreaDistribution(pexConfig.Config):
                 limit_types.append(v.limit_type)
                 topic.region_minimums[i] = v.minimum_limit
                 topic.region_maximums[i] = v.maximum_limit
+                topic.region_bounds[i] = v.bounds_limit
             topic.region_types = ','.join(limit_types)
 
         topic.region_combiners = ','.join(self.sky_region.combiners)
@@ -58,6 +59,7 @@ class AreaDistribution(pexConfig.Config):
                 limit_types.append(v.limit_type)
                 topic.exclusion_minimums[i] = v.minimum_limit
                 topic.exclusion_maximums[i] = v.maximum_limit
+                topic.exclusion_bounds[i] = v.bounds_limit
             topic.exclusion_types = ','.join(limit_types)
 
         topic.num_filters = len(self.filters) if self.filters is not None else 0
@@ -74,7 +76,7 @@ class AreaDistribution(pexConfig.Config):
                 for exposure in v.exposures:
                     topic.exposures[exp_index] = exposure
                     exp_index += 1
-            topic.filter_name = ','.join(filter_names)
+            topic.filter_names = ','.join(filter_names)
 
         topic.max_num_targets = self.scheduling.max_num_targets
         topic.accept_serendipity = self.scheduling.accept_serendipity

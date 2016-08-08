@@ -3,6 +3,23 @@ import lsst.pex.config as pexConfig
 __all__ = ["Selection", "SELECTION_LIMIT_TYPES"]
 
 SELECTION_LIMIT_TYPES = ["RA", "Dec", "GL", "GB", "EL", "EB", "GP"]
+"""Selection types for sky regions and sky exclusions.
+
+RA
+    right-ascension
+Dec
+    declination
+GL
+    galactic longitude
+GB
+    galactic latitude
+EL
+    ecliptic longitude
+EB
+    ecliptic latitude
+GP
+    galactic plane
+"""
 
 class Selection(pexConfig.Config):
     """Select fields via limits.
