@@ -5,6 +5,7 @@ from lsst.sims.ocs.configuration.proposal import AreaDistribution
 from SALPY_scheduler import scheduler_areaDistPropConfigC
 
 from tests.configuration.proposal.test_proposal import TestProposal
+from tests.configuration.proposal.test_proposal2 import TestProposal2
 
 class AreaDistributionTest(unittest.TestCase):
 
@@ -41,3 +42,12 @@ class AreaDistributionTest(unittest.TestCase):
         self.assertEqual(out_topic.exclusion_bounds[0], 90.0)
         self.assertEqual(out_topic.num_filters, 6)
         self.assertEqual(len(out_topic.filter_names.split(',')), 6)
+
+    def test_another_specific_set_topic(self):
+        ad = TestProposal2()
+        in_topic = scheduler_areaDistPropConfigC()
+        out_topic = ad.set_topic(in_topic)
+        self.assertEqual(out_topic.name, "TestProposal2")
+        self.assertEqual(out_topic.num_region_selections, 2)
+        self.assertEqual(out_topic.num_exclusion_selections, 0)
+        self.assertEqual(out_topic.num_filters, 3)

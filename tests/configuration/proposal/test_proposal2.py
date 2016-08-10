@@ -1,14 +1,14 @@
 from lsst.sims.ocs.configuration.proposal import AreaDistribution, BandFilter, Selection
 from lsst.sims.ocs.configuration.proposal import SELECTION_LIMIT_TYPES
 
-class TestProposal(AreaDistribution):
+class TestProposal2(AreaDistribution):
     """This class sets the parameters for specifying a test proposal.
     """
 
     def setDefaults(self):
         """Setup all the proposal information.
         """
-        self.name = "TestProposal"
+        self.name = "TestProposal2"
 
         # -------------------------
         # Sky Region specifications
@@ -37,15 +37,6 @@ class TestProposal(AreaDistribution):
 
         self.sky_exclusion.dec_window = 90.0
 
-        # Galactic Plane
-        gal_plane = Selection()
-        gal_plane.limit_type = SELECTION_LIMIT_TYPES[6]
-        gal_plane.minimum_limit = 0.0
-        gal_plane.maximum_limit = 10.0
-        gal_plane.bounds_limit = 90.0
-
-        self.sky_exclusion.selections = {0: gal_plane}
-
         # ---------------------------------
         # Sky Nightly Bounds specifications
         # ---------------------------------
@@ -71,14 +62,6 @@ class TestProposal(AreaDistribution):
         # Band Filter specifications
         # --------------------------
 
-        u_filter = BandFilter()
-        u_filter.name = 'u'
-        u_filter.num_visits = 75
-        u_filter.bright_limit = 21.3
-        u_filter.dark_limit = 30.0
-        u_filter.max_seeing = 1.5
-        u_filter.exposures = [15.0, 15.0]
-
         g_filter = BandFilter()
         g_filter.name = 'g'
         g_filter.num_visits = 105
@@ -103,25 +86,6 @@ class TestProposal(AreaDistribution):
         i_filter.max_seeing = 1.5
         i_filter.exposures = [15.0, 15.0]
 
-        z_filter = BandFilter()
-        z_filter.name = 'z'
-        z_filter.num_visits = 210
-        z_filter.bright_limit = 17.0
-        z_filter.dark_limit = 21.0
-        z_filter.max_seeing = 1.5
-        z_filter.exposures = [15.0, 15.0]
-
-        y_filter = BandFilter()
-        y_filter.name = 'y'
-        y_filter.num_visits = 210
-        y_filter.bright_limit = 16.5
-        y_filter.dark_limit = 21.0
-        y_filter.max_seeing = 1.5
-        y_filter.exposures = [15.0, 15.0]
-
-        self.filters = {u_filter.name: u_filter,
-                        g_filter.name: g_filter,
+        self.filters = {g_filter.name: g_filter,
                         r_filter.name: r_filter,
-                        i_filter.name: i_filter,
-                        z_filter.name: z_filter,
-                        y_filter.name: y_filter}
+                        i_filter.name: i_filter}
