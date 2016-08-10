@@ -28,8 +28,10 @@ class AreaDistributionTest(unittest.TestCase):
     def test_specific_set_topic(self):
         ad = TestProposal()
         in_topic = scheduler_areaDistPropConfigC()
+        self.assertTrue(hasattr(in_topic, "max_airmass"))
         out_topic = ad.set_topic(in_topic)
         self.assertEqual(out_topic.name, "TestProposal")
+        self.assertEqual(out_topic.max_airmass, 2.5)
         self.assertEqual(out_topic.num_region_selections, 2)
         self.assertEqual(out_topic.region_types.split(',')[1], "RA")
         self.assertTrue(math.isnan(out_topic.region_bounds[1]))
