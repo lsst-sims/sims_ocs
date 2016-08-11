@@ -76,6 +76,7 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(mock_salmanager_final.call_count, 1)
 
     def short_run(self, wait_for_sched):
+        self.mock_socs_db.session_id = mock.Mock(return_value=1001)
         # Setup for 1 night and 9 visits
         self.num_nights = 1
         self.num_visits = 9

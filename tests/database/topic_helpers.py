@@ -1,6 +1,7 @@
 #import collections
 
 import SALPY_scheduler
+import lsst.sims.ocs.kernel
 import lsst.sims.ocs.observatory
 
 target = SALPY_scheduler.scheduler_targetTestC()
@@ -83,3 +84,5 @@ exposure_coll3 = lsst.sims.ocs.observatory.ObsExposure(exposureId=1, exposureNum
 
 exposure_coll4 = lsst.sims.ocs.observatory.ObsExposure(exposureId=1, exposureNum=2, exposureTime=15.0,
                                                        exposureStartTime=2922.2, ObsHistory_observationId=3)
+
+prop_info = lsst.sims.ocs.kernel.ProposalInfo(propId=1, propName="TestProposal", propType="AreaDistribution")

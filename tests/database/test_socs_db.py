@@ -34,6 +34,7 @@ class SocsDatabaseMySqlTest(unittest.TestCase):
         self.assertTrue(hasattr(self.db, "observation_exposures"))
         self.assertTrue(hasattr(self.db, "scheduled_downtime"))
         self.assertTrue(hasattr(self.db, "unscheduled_downtime"))
+        self.assertTrue(hasattr(self.db, "proposal"))
 
     @mock.patch("sqlalchemy.MetaData.create_all")
     def test_database_creation(self, mock_create_all):

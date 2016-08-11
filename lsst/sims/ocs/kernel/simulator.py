@@ -5,8 +5,8 @@ import time
 from ts_scheduler.sky_model import Sun
 
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
-from lsst.sims.ocs.database.tables import write_field
-from lsst.sims.ocs.kernel import DowntimeHandler, Sequencer, TimeHandler
+from lsst.sims.ocs.database.tables import write_field, write_proposal
+from lsst.sims.ocs.kernel import DowntimeHandler, ProposalInfo, Sequencer, TimeHandler
 from lsst.sims.ocs.kernel.time_handler import DAYS_IN_YEAR, SECONDS_IN_HOUR
 from lsst.sims.ocs.sal import SalManager, topic_strdict
 from lsst.sims.ocs.setup import LoggingLevel
@@ -167,6 +167,7 @@ class Simulator(object):
         self.log.info("Starting simulation")
 
         self.conf_comm.run()
+        self.save_proposal_information()
 
         # Get fields from scheduler
         if self.wait_for_scheduler:
@@ -241,3 +242,14 @@ class Simulator(object):
                             self.db.append_data(exposure_type, exposure)
 
             self._end_night()
+
+    def save_proposal_information(self):
+        """Save the active proposal information to the DB.
+        """
+        proposals = []
+        num_proposals = 1
+        for ad_config in self.conf.science.area_dist_props.active:
+            proposals.append(write_proposal(ProposalInfo(num_proposals, ad_config.name, "AreaDistribution"),
+                                            self.db.session_id))
+            num_proposals += 1
+        self.db.write_table("proposal", proposals)

@@ -2,7 +2,7 @@ from sqlalchemy import Column, Float, Index, Integer, String, Table
 from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event, ForeignKeyConstraint
 
-__all__ = ["create_field", "create_observation_exposures", "create_observation_history",
+__all__ = ["create_field", "create_observation_exposures", "create_observation_history", "create_proposal",
            "create_scheduled_downtime", "create_session", "create_slew_activities", "create_slew_final_state",
            "create_slew_history", "create_slew_initial_state", "create_slew_maxspeeds",
            "create_target_exposures", "create_target_history", "create_unscheduled_downtime"]
@@ -192,10 +192,41 @@ def create_observation_history(metadata):
 
     return table
 
+def create_proposal(metadata):
+    """Create the Proposal table.
+
+    This function creates the Proposal table for listing the active proposals.
+
+    Table Description:
+
+    This table records all of the active science proposals.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The Proposal table object.
+    """
+    table = Table("Proposal", metadata,
+                  Column("propId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The numeric identifier for the particular proposal."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("propName", String, nullable=False, doc="The name of the science proposal."),
+                  Column("propType", String, nullable=False, doc="The type of the science proposal."))
+
+    Index("fk_Proposal_Session1", table.c.Session_sessionId)
+
+    return table
+
 def create_scheduled_downtime(metadata):
     """Create the ScheduledDowntime table.
 
-    This function creates the ScheduledDowntime table for list the scheduled
+    This function creates the ScheduledDowntime table for listing the scheduled
     downtime during the survey.
 
     Table Description:

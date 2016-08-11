@@ -1,6 +1,6 @@
 import collections
 
-__all__ = ["write_field", "write_observation_exposures", "write_observation_history",
+__all__ = ["write_field", "write_observation_exposures", "write_observation_history", "write_proposal",
            "write_scheduled_downtime", "write_slew_activities", "write_slew_history",
            "write_slew_final_state", "write_slew_initial_state", "write_slew_maxspeeds",
            "write_target_exposures", "write_target_history", "write_unscheduled_downtime"]
@@ -103,6 +103,23 @@ def write_observation_history(data, sid):
         ('visitExposureTime', sum([data.exposure_times[i] for i in range(data.num_exposures)]))
     ])
     return values
+
+def write_proposal(data, sid):
+    """Create a dictionary of data for the Proposal table.
+
+    Parameters
+    ----------
+    data : tuple
+        The instance containing the proposal information
+    sid : int
+        The current session ID.
+
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the topic data.
+    """
+    return ordered_dict_from_namedtuple(data, sid=sid)
 
 def write_scheduled_downtime(data, sid):
     """Create a dictionary of data for the ScheduledDowntime table.
