@@ -253,7 +253,15 @@ def write_target_history(data, sid):
         ('filter', data.filter),
         ('angle', data.angle),
         ('numExposures', data.num_exposures),
-        ('requestedExpTime', sum([data.exposure_times[i] for i in range(data.num_exposures)]))
+        ('requestedExpTime', sum([data.exposure_times[i] for i in range(data.num_exposures)])),
+        ('requestTime', data.request_time),
+        ('airmass', data.airmass),
+        ('skyBrightness', data.sky_brightness),
+        ('need', data.need),
+        ('slewTime', data.slew_time),
+        ('costBonus', data.cost_bonus),
+        ('rank', data.rank),
+        ('numRequestingProps', data.num_proposals)
     ])
     return values
 

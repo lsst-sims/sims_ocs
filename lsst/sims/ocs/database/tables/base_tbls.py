@@ -556,6 +556,9 @@ def create_target_history(metadata):
                          doc="Numeric identifier that relates to an entry in the Field table."),
                   Column("filter", String(1), nullable=False,
                          doc="Band filter requested by the target."),
+                  Column("requestTime", Float, nullable=False,
+                         doc="The UTC time (units=seconds) when all of the associated information (airmass "
+                             "etc.) was calculated for the target."),
                   Column("ra", Float, nullable=False,
                          doc="Right Ascension of the requested target (units=degrees)."),
                   Column("dec", Float, nullable=False,
@@ -565,7 +568,22 @@ def create_target_history(metadata):
                   Column("numExposures", Integer, nullable=False,
                          doc="Number of exposures for the requested target."),
                   Column("requestedExpTime", Float, nullable=False,
-                         doc="The total duration of all requested exposures (units=seconds)."))
+                         doc="The total duration of all requested exposures (units=seconds)."),
+                  Column("airmass", Float, nullable=False, doc="The airmass of the target."),
+                  Column("skyBrightness", Float, nullable=False,
+                         doc="The calculated skybrightness for the target."),
+                  Column("need", Float, nullable=False,
+                         doc="The current need of the target from all proposals."),
+                  Column("slewTime", Float, nullable=False,
+                         doc="The calculated slew time (units=seconds) for the target."),
+                  Column("costBonus", Float, nullable=False,
+                         doc="The calculated cost bonus (slew time) for the target."),
+                  Column("rank", Float, nullable=False,
+                         doc="The rank of the target for the associated proposal. If more than one "
+                             "proposal, this is a coadded value."),
+                  Column("numRequestingProps", Integer, nullable=False,
+                         doc="The total number of proposals requesting this target. More than one means the "
+                             "target was in each proposals winner's list."))
 
     Index("t_filter", table.c.filter)
     Index("fk_TargetHistory_Session1", table.c.Session_sessionId)

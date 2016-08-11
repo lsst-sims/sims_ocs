@@ -29,7 +29,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_target_history_table(self):
         targets = tbls.create_target_history(self.metadata)
-        self.assertEqual(len(targets.c), 9)
+        self.assertEqual(len(targets.c), 17)
         self.assertEqual(len(targets.indexes), 3)
 
     def test_write_target_history_table(self):
@@ -44,6 +44,9 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['filter'], target_topic.filter)
         self.assertEqual(result['dec'], target_topic.dec)
         self.assertEqual(result['requestedExpTime'], sum(target_topic.exposure_times))
+        self.assertEqual(result['airmass'], target_topic.airmass)
+        self.assertEqual(result['rank'], target_topic.rank)
+        self.assertEqual(result['numRequestingProps'], target_topic.num_proposals)
 
     def test_create_field_table(self):
         fields = tbls.create_field(self.metadata)
