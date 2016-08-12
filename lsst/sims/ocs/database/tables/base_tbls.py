@@ -3,7 +3,8 @@ from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event, ForeignKeyConstraint
 
 __all__ = ["create_field", "create_observation_exposures", "create_observation_history", "create_proposal",
-           "create_scheduled_downtime", "create_session", "create_slew_activities", "create_slew_final_state",
+           "create_proposal_history", "create_scheduled_downtime", "create_session", "create_slew_activities",
+           "create_slew_final_state",
            "create_slew_history", "create_slew_initial_state", "create_slew_maxspeeds",
            "create_target_exposures", "create_target_history", "create_unscheduled_downtime"]
 
@@ -220,6 +221,44 @@ def create_proposal(metadata):
                   Column("propType", String, nullable=False, doc="The type of the science proposal."))
 
     Index("fk_Proposal_Session1", table.c.Session_sessionId)
+
+    return table
+
+def create_proposal_history(metadata):
+    """Create the ProposalHistory table.
+
+    This function creates the ProposalHistory table for listing all proposals that are assigned to
+    a given observation.
+
+    Table Description:
+
+    This table records all of the proposals and proposal information for a given observation.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The ProposalHistory table object.
+    """
+    table = Table("ProposalHistory", metadata,
+                  Column("propHistId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The numeric identifier for the particular proposal history entry."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("Proposal_propId", Integer, nullable=False,
+                         doc="Numeric identifier that relates to an entry in the Prposal table."),
+                  Column("proposalValue", Float, nullable=False,
+                         doc="The value of the observation assigned by a particular proposal."),
+                  Column("ObsHistory_observationId", Integer, nullable=False,
+                         doc="Numeric identifier that relates to an entry in the ObsHistory table."),
+                  ForeignKeyConstraint(["ObsHistory_observationId"], ["ObsHistory.observationId"]),
+                  ForeignKeyConstraint(["Proposal_propId"], ["Proposal.propId"]))
+
+    Index("fk_ProposalHistory_ObsHistory1", table.c.ObsHistory_observationId, table.c.Session_sessionId)
 
     return table
 

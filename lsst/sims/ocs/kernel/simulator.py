@@ -6,7 +6,7 @@ from ts_scheduler.sky_model import Sun
 
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
 from lsst.sims.ocs.database.tables import write_field, write_proposal
-from lsst.sims.ocs.kernel import DowntimeHandler, ProposalInfo, Sequencer, TimeHandler
+from lsst.sims.ocs.kernel import DowntimeHandler, ProposalHistory, ProposalInfo, Sequencer, TimeHandler
 from lsst.sims.ocs.kernel.time_handler import DAYS_IN_YEAR, SECONDS_IN_HOUR
 from lsst.sims.ocs.sal import SalManager, topic_strdict
 from lsst.sims.ocs.setup import LoggingLevel
@@ -70,6 +70,7 @@ class Simulator(object):
         self.sun = Sun()
         self.obs_site_info = (self.conf.observing_site.longitude, self.conf.observing_site.latitude)
         self.wait_for_scheduler = not self.opts.no_scheduler
+        self.proposals_counted = 1
 
     @property
     def duration(self):
@@ -116,6 +117,20 @@ class Simulator(object):
         self.seq.finalize()
         self.sal.finalize()
         self.log.info("Ending simulation")
+
+    def gather_proposal_history(self, obsId):
+        """Gather the proposal history from the current target.
+
+        Parameters
+        ----------
+        obsId : int
+            The current observation identifier.
+        """
+        for i in xrange(self.target.num_proposals):
+            self.db.append_data("proposal_history", ProposalHistory(self.proposals_counted,
+                                                                    self.target.proposal_Ids[i],
+                                                                    self.target.proposal_values[i], obsId))
+            self.proposals_counted += 1
 
     def get_night_boundaries(self):
         """Calculate the set and rise times for night."
@@ -226,6 +241,7 @@ class Simulator(object):
                 if self.wait_for_scheduler and observation.targetId != -1:
                     self.db.append_data("target_history", self.target)
                     self.db.append_data("observation_history", observation)
+                    self.gather_proposal_history(observation.observationId)
                     for slew_type, slew_data in slew_info.items():
                         self.log.log(LoggingLevel.TRACE.value, "{}, {}".format(slew_type, type(slew_data)))
                         if isinstance(slew_data, list):

@@ -238,3 +238,19 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['propName'], pinfo[1])
         self.assertEqual(result['propType'], pinfo[2])
         self.assertEqual(result['Session_sessionId'], 1000)
+
+    def test_create_proposal_history_table(self):
+        prop_hist = tbls.create_proposal_history(self.metadata)
+        self.assertEqual(len(prop_hist.c), 5)
+        self.assertEqual(len(prop_hist.indexes), 1)
+
+    def test_write_proposal_history_table(self):
+        phist = topic_helpers.prop_hist
+        result = tbls.write_proposal_history(phist, 1001)
+        prop_hist = tbls.create_proposal_history(self.metadata)
+        self.check_ordered_dict_to_table(result, prop_hist)
+        self.assertEqual(result['propHistId'], phist[0])
+        self.assertEqual(result['Proposal_propId'], phist[1])
+        self.assertEqual(result['proposalValue'], phist[2])
+        self.assertEqual(result['ObsHistory_observationId'], phist[3])
+        self.assertEqual(result['Session_sessionId'], 1001)

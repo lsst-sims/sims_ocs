@@ -102,6 +102,7 @@ class SocsDatabase(object):
         self.scheduled_downtime = tables.create_scheduled_downtime(metadata)
         self.unscheduled_downtime = tables.create_unscheduled_downtime(metadata)
         self.proposal = tables.create_proposal(metadata)
+        self.proposal_history = tables.create_proposal_history(metadata)
 
     def _connect(self):
         """Create the database connection for MySQL.

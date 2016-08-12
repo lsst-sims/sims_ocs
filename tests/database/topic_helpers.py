@@ -86,3 +86,6 @@ exposure_coll4 = lsst.sims.ocs.observatory.ObsExposure(exposureId=1, exposureNum
                                                        exposureStartTime=2922.2, ObsHistory_observationId=3)
 
 prop_info = lsst.sims.ocs.kernel.ProposalInfo(propId=1, propName="TestProposal", propType="AreaDistribution")
+
+prop_hist = lsst.sims.ocs.kernel.ProposalHistory(propHistId=1, Proposal_propId=2, proposalValue=1.32,
+                                                 ObsHistory_observationId=10)
