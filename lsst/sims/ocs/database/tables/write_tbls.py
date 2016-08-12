@@ -296,7 +296,18 @@ def write_target_history(data, sid):
         ('slewTime', data.slew_time),
         ('costBonus', data.cost_bonus),
         ('rank', data.rank),
-        ('numRequestingProps', data.num_proposals)
+        ('numRequestingProps', data.num_proposals),
+        ('moonRA', data.moon_ra),
+        ('moonDec', data.moon_dec),
+        ('moonAlt', data.moon_alt),
+        ('moonAz', data.moon_az),
+        ('moonDistance', data.moon_distance),
+        ('moonPhase', data.moon_phase),
+        ('sunRA', data.sun_ra),
+        ('sunDec', data.sun_dec),
+        ('sunAlt', data.sun_alt),
+        ('sunAz', data.sun_az),
+        ('sunElong', data.sun_elong)
     ])
     return values
 

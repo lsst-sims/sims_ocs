@@ -24,6 +24,12 @@ target.slew_time = 4.75
 target.cost_bonus = 0.1
 target.rank = 0.013
 target.num_proposals = 2
+target.moon_ra = 65.0
+target.moon_dec = -10.0
+target.moon_alt = -30.0
+target.moon_az = 250.0
+target.moon_phase = 0.5
+target.moon_distance = 60.0
 
 field_topic = SALPY_scheduler.scheduler_fieldC()
 field_topic.ID = 1

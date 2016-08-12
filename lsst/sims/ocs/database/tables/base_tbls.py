@@ -653,7 +653,29 @@ def create_target_history(metadata):
                              "proposal, this is a coadded value."),
                   Column("numRequestingProps", Integer, nullable=False,
                          doc="The total number of proposals requesting this target. More than one means the "
-                             "target was in each proposals winner's list."))
+                             "target was in each proposals winner's list."),
+                  Column("moonRA", Float, nullable=False,
+                         doc="The right-ascension (units=degrees) of the moon."),
+                  Column("moonDec", Float, nullable=False,
+                         doc="The declination (units=degrees) of the moon."),
+                  Column("moonAlt", Float, nullable=False,
+                         doc="The altitude (units=degrees) of the moon."),
+                  Column("moonAz", Float, nullable=False,
+                         doc="The azimuth (units=degrees) of the moon."),
+                  Column("moonDistance", Float, nullable=False,
+                         doc="The distance (units=degrees) between the moon and the target."),
+                  Column("moonPhase", Float, nullable=False,
+                         doc="The phase of the moon."),
+                  Column("sunRA", Float, nullable=False,
+                         doc="The right-ascension (units=degrees) of the sun."),
+                  Column("sunDec", Float, nullable=False,
+                         doc="The declination (units=degrees) of the sun."),
+                  Column("sunAlt", Float, nullable=False,
+                         doc="The altitude (units=degrees) of the sun."),
+                  Column("sunAz", Float, nullable=False,
+                         doc="The azimuth (units=degrees) of the sun."),
+                  Column("sunElong", Float, nullable=False,
+                         doc="The elongation (units=degrees) of the sun."))
 
     Index("t_filter", table.c.filter)
     Index("fk_TargetHistory_Session1", table.c.Session_sessionId)
