@@ -9,4 +9,5 @@ ProposalInfo = collections.namedtuple("ProposalInfo", ["propId", "propName", "pr
 """Simple tuple for handling proposal history information.
 """
 ProposalHistory = collections.namedtuple("ProposalHistory", ["propHistId", "Proposal_propId", "proposalValue",
+                                                             "proposalNeed", "proposalBonus",
                                                              "ObsHistory_observationId"])

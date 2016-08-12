@@ -129,7 +129,10 @@ class Simulator(object):
         for i in xrange(self.target.num_proposals):
             self.db.append_data("proposal_history", ProposalHistory(self.proposals_counted,
                                                                     self.target.proposal_Ids[i],
-                                                                    self.target.proposal_values[i], obsId))
+                                                                    self.target.proposal_values[i],
+                                                                    self.target.proposal_needs[i],
+                                                                    self.target.proposal_bonuses[i],
+                                                                    obsId))
             self.proposals_counted += 1
 
     def get_night_boundaries(self):
@@ -167,6 +170,7 @@ class Simulator(object):
         gathering the necessary telemetry topics.
         """
         self.log.info("Initializing simulation")
+        self.log.info("Simulation Session Id = {}".format(self.db.session_id))
         self.sal.initialize()
         self.seq.initialize(self.sal, self.conf.observatory)
         self.dh.initialize(self.conf.downtime)

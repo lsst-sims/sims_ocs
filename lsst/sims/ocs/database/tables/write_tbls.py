@@ -292,7 +292,6 @@ def write_target_history(data, sid):
         ('requestTime', data.request_time),
         ('airmass', data.airmass),
         ('skyBrightness', data.sky_brightness),
-        ('need', data.need),
         ('slewTime', data.slew_time),
         ('costBonus', data.cost_bonus),
         ('rank', data.rank),
