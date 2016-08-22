@@ -76,7 +76,7 @@ def write_observation_history(data, sid):
 
     Parameters
     ----------
-    data : SALPY_scheduler.observationTestC
+    data : SALPY_scheduler.observationC
         The SAL observation topic instance.
     sid : int
         The current session ID.
@@ -269,7 +269,7 @@ def write_target_history(data, sid):
 
     Parameters
     ----------
-    data : SALPY_scheduler.targetTestC
+    data : SALPY_scheduler.targetC
         The SAL target topic instance.
     sid : int
         The current session ID.

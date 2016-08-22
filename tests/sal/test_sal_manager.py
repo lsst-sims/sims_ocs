@@ -43,7 +43,7 @@ class SalManagerTest(unittest.TestCase):
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetrySub")
     def test_setting_subscribe_topic(self, mock_sal_telemetry_sub):
         self.sal.initialize()
-        topic_name = "targetTest"
+        topic_name = "target"
         topic = self.sal.set_subscribe_topic(topic_name)
         self.assertIsNotNone(topic)
         self.assertEqual(topic.targetId, 0)

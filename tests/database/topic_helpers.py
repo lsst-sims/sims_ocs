@@ -4,7 +4,7 @@ import SALPY_scheduler
 import lsst.sims.ocs.kernel
 import lsst.sims.ocs.observatory
 
-target = SALPY_scheduler.scheduler_targetTestC()
+target = SALPY_scheduler.scheduler_targetC()
 target.targetId = 10
 target.fieldId = 300
 target.filter = "r"
@@ -43,7 +43,7 @@ field_topic.eb = -60.0
 
 field_tuple = (1, 0.5, 30.0, -30.0, -45.0, 45.0, 60.0, -60.0)
 
-observation_topic = SALPY_scheduler.scheduler_observationTestC()
+observation_topic = SALPY_scheduler.scheduler_observationC()
 observation_topic.observationID = 5
 observation_topic.targetID = 10
 observation_topic.night = 1

@@ -159,7 +159,7 @@ class Simulator(object):
         Scheduler. Currently, a while loop is required to do this.
         """
         while self.wait_for_scheduler:
-            rcode = self.sal.manager.getNextSample_targetTest(self.target)
+            rcode = self.sal.manager.getNextSample_target(self.target)
             if rcode == 0 and self.target.num_exposures != 0:
                 break
 
@@ -177,7 +177,7 @@ class Simulator(object):
         self.dh.write_downtime_to_db(self.db)
         self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
-        self.target = self.sal.set_subscribe_topic("targetTest")
+        self.target = self.sal.set_subscribe_topic("target")
         self.field = self.sal.set_subscribe_topic("field")
 
     def run(self):

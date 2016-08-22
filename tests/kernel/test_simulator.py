@@ -123,14 +123,14 @@ class SimulatorTest(unittest.TestCase):
         mock_ss.getNextSample_field = mock.MagicMock(return_value=0)
         self.sim.field.ID = -1
         # Targets
-        mock_ss.getNextSample_targetTest = mock.MagicMock(return_value=0)
+        mock_ss.getNextSample_target = mock.MagicMock(return_value=0)
         self.sim.target.num_exposures = 2
 
         self.sim.run()
 
         self.assertEqual(mock_salmanager_put.call_count, self.put_calls)
         self.assertEqual(mock_ss.getNextSample_field.call_count, 2)
-        self.assertEqual(mock_ss.getNextSample_targetTest.call_count, get_calls)
+        self.assertEqual(mock_ss.getNextSample_target.call_count, get_calls)
         self.assertEqual(self.sim.seq.targets_received, self.num_visits)
         self.assertEqual(self.sim.seq.observations_made, self.num_visits)
         self.assertEqual(self.mock_socs_db.clear_data.call_count, self.num_nights)
