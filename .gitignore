@@ -52,3 +52,6 @@ docs/table_descriptions.rst
 # Project
 version.py
 config_*
+
+# PyTest
+.cache

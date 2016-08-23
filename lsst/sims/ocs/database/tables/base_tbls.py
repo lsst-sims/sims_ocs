@@ -2,8 +2,9 @@ from sqlalchemy import Column, Float, Index, Integer, String, Table
 from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event, ForeignKeyConstraint
 
-__all__ = ["create_field", "create_observation_exposures", "create_observation_history",
-           "create_scheduled_downtime", "create_session", "create_slew_activities", "create_slew_final_state",
+__all__ = ["create_field", "create_observation_exposures", "create_observation_history", "create_proposal",
+           "create_proposal_history", "create_scheduled_downtime", "create_session", "create_slew_activities",
+           "create_slew_final_state",
            "create_slew_history", "create_slew_initial_state", "create_slew_maxspeeds",
            "create_target_exposures", "create_target_history", "create_unscheduled_downtime"]
 
@@ -192,10 +193,84 @@ def create_observation_history(metadata):
 
     return table
 
+def create_proposal(metadata):
+    """Create the Proposal table.
+
+    This function creates the Proposal table for listing the active proposals.
+
+    Table Description:
+
+    This table records all of the active science proposals.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The Proposal table object.
+    """
+    table = Table("Proposal", metadata,
+                  Column("propId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The numeric identifier for the particular proposal."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("propName", String, nullable=False, doc="The name of the science proposal."),
+                  Column("propType", String, nullable=False, doc="The type of the science proposal."))
+
+    Index("fk_Proposal_Session1", table.c.Session_sessionId)
+
+    return table
+
+def create_proposal_history(metadata):
+    """Create the ProposalHistory table.
+
+    This function creates the ProposalHistory table for listing all proposals that are assigned to
+    a given observation.
+
+    Table Description:
+
+    This table records all of the proposals and proposal information for a given observation.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The ProposalHistory table object.
+    """
+    table = Table("ProposalHistory", metadata,
+                  Column("propHistId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The numeric identifier for the particular proposal history entry."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("Proposal_propId", Integer, nullable=False,
+                         doc="Numeric identifier that relates to an entry in the Prposal table."),
+                  Column("proposalValue", Float, nullable=False,
+                         doc="The value (need + bonus) of the observation assigned by a particular "
+                             "proposal."),
+                  Column("proposalNeed", Float, nullable=False,
+                         doc="The need of the observation assigned by a particular proposal."),
+                  Column("proposalBonus", Float, nullable=False,
+                         doc="The bonus of the observation assigned by a particular proposal."),
+                  Column("ObsHistory_observationId", Integer, nullable=False,
+                         doc="Numeric identifier that relates to an entry in the ObsHistory table."),
+                  ForeignKeyConstraint(["ObsHistory_observationId"], ["ObsHistory.observationId"]),
+                  ForeignKeyConstraint(["Proposal_propId"], ["Proposal.propId"]))
+
+    Index("fk_ProposalHistory_ObsHistory1", table.c.ObsHistory_observationId, table.c.Session_sessionId)
+
+    return table
+
 def create_scheduled_downtime(metadata):
     """Create the ScheduledDowntime table.
 
-    This function creates the ScheduledDowntime table for list the scheduled
+    This function creates the ScheduledDowntime table for listing the scheduled
     downtime during the survey.
 
     Table Description:
@@ -556,6 +631,9 @@ def create_target_history(metadata):
                          doc="Numeric identifier that relates to an entry in the Field table."),
                   Column("filter", String(1), nullable=False,
                          doc="Band filter requested by the target."),
+                  Column("requestTime", Float, nullable=False,
+                         doc="The UTC time (units=seconds) when all of the associated information (airmass "
+                             "etc.) was calculated for the target."),
                   Column("ra", Float, nullable=False,
                          doc="Right Ascension of the requested target (units=degrees)."),
                   Column("dec", Float, nullable=False,
@@ -565,7 +643,42 @@ def create_target_history(metadata):
                   Column("numExposures", Integer, nullable=False,
                          doc="Number of exposures for the requested target."),
                   Column("requestedExpTime", Float, nullable=False,
-                         doc="The total duration of all requested exposures (units=seconds)."))
+                         doc="The total duration of all requested exposures (units=seconds)."),
+                  Column("airmass", Float, nullable=False, doc="The airmass of the target."),
+                  Column("skyBrightness", Float, nullable=False,
+                         doc="The calculated skybrightness for the target."),
+                  Column("slewTime", Float, nullable=False,
+                         doc="The calculated slew time (units=seconds) for the target."),
+                  Column("costBonus", Float, nullable=False,
+                         doc="The calculated cost bonus (slew time) for the target."),
+                  Column("rank", Float, nullable=False,
+                         doc="The rank of the target for the associated proposal. If more than one "
+                             "proposal, this is a coadded value."),
+                  Column("numRequestingProps", Integer, nullable=False,
+                         doc="The total number of proposals requesting this target. More than one means the "
+                             "target was in each proposals winner's list."),
+                  Column("moonRA", Float, nullable=False,
+                         doc="The right-ascension (units=degrees) of the moon."),
+                  Column("moonDec", Float, nullable=False,
+                         doc="The declination (units=degrees) of the moon."),
+                  Column("moonAlt", Float, nullable=False,
+                         doc="The altitude (units=degrees) of the moon."),
+                  Column("moonAz", Float, nullable=False,
+                         doc="The azimuth (units=degrees) of the moon."),
+                  Column("moonDistance", Float, nullable=False,
+                         doc="The distance (units=degrees) between the moon and the target."),
+                  Column("moonPhase", Float, nullable=False,
+                         doc="The phase of the moon."),
+                  Column("sunRA", Float, nullable=False,
+                         doc="The right-ascension (units=degrees) of the sun."),
+                  Column("sunDec", Float, nullable=False,
+                         doc="The declination (units=degrees) of the sun."),
+                  Column("sunAlt", Float, nullable=False,
+                         doc="The altitude (units=degrees) of the sun."),
+                  Column("sunAz", Float, nullable=False,
+                         doc="The azimuth (units=degrees) of the sun."),
+                  Column("sunElong", Float, nullable=False,
+                         doc="The elongation (units=degrees) of the sun."))
 
     Index("t_filter", table.c.filter)
     Index("fk_TargetHistory_Session1", table.c.Session_sessionId)

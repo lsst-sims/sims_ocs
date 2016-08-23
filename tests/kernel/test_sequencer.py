@@ -21,7 +21,7 @@ class SequencerTest(unittest.TestCase):
         self.seq.initialize(self.sal, Observatory())
 
     def create_objects(self):
-        target = self.sal.set_subscribe_topic("targetTest")
+        target = self.sal.set_subscribe_topic("target")
         # Set some meaningful information
         target.targetId = 10
         target.fieldId = 300

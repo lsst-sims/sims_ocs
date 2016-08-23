@@ -29,7 +29,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_target_history_table(self):
         targets = tbls.create_target_history(self.metadata)
-        self.assertEqual(len(targets.c), 9)
+        self.assertEqual(len(targets.c), 27)
         self.assertEqual(len(targets.indexes), 3)
 
     def test_write_target_history_table(self):
@@ -44,6 +44,11 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['filter'], target_topic.filter)
         self.assertEqual(result['dec'], target_topic.dec)
         self.assertEqual(result['requestedExpTime'], sum(target_topic.exposure_times))
+        self.assertEqual(result['airmass'], target_topic.airmass)
+        self.assertEqual(result['rank'], target_topic.rank)
+        self.assertEqual(result['numRequestingProps'], target_topic.num_proposals)
+        self.assertEqual(result['moonRA'], target_topic.moon_ra)
+        self.assertEqual(result['moonAz'], target_topic.moon_az)
 
     def test_create_field_table(self):
         fields = tbls.create_field(self.metadata)
@@ -220,3 +225,36 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['Session_sessionId'], 1000)
         self.assertEqual(result['duration'], usd[1])
         self.assertEqual(result['activity'], usd[2])
+
+    def test_create_proposal_table(self):
+        props = tbls.create_proposal(self.metadata)
+        self.assertEqual(len(props.c), 4)
+        self.assertEqual(len(props.indexes), 1)
+
+    def test_write_proposal_table(self):
+        pinfo = topic_helpers.prop_info
+        result = tbls.write_proposal(pinfo, 1000)
+        prop_info = tbls.create_proposal(self.metadata)
+        self.check_ordered_dict_to_table(result, prop_info)
+        self.assertEqual(result['propId'], pinfo[0])
+        self.assertEqual(result['propName'], pinfo[1])
+        self.assertEqual(result['propType'], pinfo[2])
+        self.assertEqual(result['Session_sessionId'], 1000)
+
+    def test_create_proposal_history_table(self):
+        prop_hist = tbls.create_proposal_history(self.metadata)
+        self.assertEqual(len(prop_hist.c), 7)
+        self.assertEqual(len(prop_hist.indexes), 1)
+
+    def test_write_proposal_history_table(self):
+        phist = topic_helpers.prop_hist
+        result = tbls.write_proposal_history(phist, 1001)
+        prop_hist = tbls.create_proposal_history(self.metadata)
+        self.check_ordered_dict_to_table(result, prop_hist)
+        self.assertEqual(result['propHistId'], phist[0])
+        self.assertEqual(result['Proposal_propId'], phist[1])
+        self.assertEqual(result['proposalValue'], phist[2])
+        self.assertEqual(result['proposalNeed'], phist[3])
+        self.assertEqual(result['proposalBonus'], phist[4])
+        self.assertEqual(result['ObsHistory_observationId'], phist[5])
+        self.assertEqual(result['Session_sessionId'], 1001)

@@ -2,7 +2,7 @@ import logging
 import math
 import unittest
 
-from SALPY_scheduler import scheduler_observationTestC
+from SALPY_scheduler import scheduler_observationC
 
 from lsst.sims.ocs.configuration import Observatory, ObservingSite
 from lsst.sims.ocs.kernel import TimeHandler
@@ -76,7 +76,7 @@ class MainObservatoryTest(unittest.TestCase):
     def test_observe(self):
         self.observatory_configure()
         target = topic_helpers.target
-        observation = scheduler_observationTestC()
+        observation = scheduler_observationC()
         # Make it so initial timestamp is 0
         time_handler = TimeHandler("1970-01-01")
         slew_info, exposures = self.observatory.observe(time_handler, target, observation)

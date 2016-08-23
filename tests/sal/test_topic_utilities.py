@@ -8,7 +8,7 @@ class TopicUtilitiesTest(unittest.TestCase):
 
     def test_topic_string_creation(self):
         output = topic_strdict(target)
-        self.assertEqual(output.keys()[0], "angle")
+        self.assertEqual(output.keys()[0], "airmass")
         self.assertEqual(output["targetId"], str(target.targetId))
         self.assertEqual(output["angle"], "{:.3f}".format(target.angle))
         self.assertEqual(output["exposure_times"], str(target.exposure_times))

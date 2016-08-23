@@ -1,18 +1,35 @@
 #import collections
 
 import SALPY_scheduler
+import lsst.sims.ocs.kernel
 import lsst.sims.ocs.observatory
 
-target = SALPY_scheduler.scheduler_targetTestC()
+target = SALPY_scheduler.scheduler_targetC()
 target.targetId = 10
 target.fieldId = 300
 target.filter = "r"
 target.ra = 1.000
 target.dec = -3.00
 target.angle = 0.5
+target.alt = 60.0
+target.az = 240.0
 target.num_exposures = 2
 target.exposure_times[0] = 15
 target.exposure_times[1] = 15
+target.request_time = 1640995200.0
+target.airmass = 1.4
+target.sky_brightness = 20.4
+target.need = 0.001
+target.slew_time = 4.75
+target.cost_bonus = 0.1
+target.rank = 0.013
+target.num_proposals = 2
+target.moon_ra = 65.0
+target.moon_dec = -10.0
+target.moon_alt = -30.0
+target.moon_az = 250.0
+target.moon_phase = 0.5
+target.moon_distance = 60.0
 
 field_topic = SALPY_scheduler.scheduler_fieldC()
 field_topic.ID = 1
@@ -26,7 +43,7 @@ field_topic.eb = -60.0
 
 field_tuple = (1, 0.5, 30.0, -30.0, -45.0, 45.0, 60.0, -60.0)
 
-observation_topic = SALPY_scheduler.scheduler_observationTestC()
+observation_topic = SALPY_scheduler.scheduler_observationC()
 observation_topic.observationID = 5
 observation_topic.targetID = 10
 observation_topic.night = 1
@@ -73,3 +90,9 @@ exposure_coll3 = lsst.sims.ocs.observatory.ObsExposure(exposureId=1, exposureNum
 
 exposure_coll4 = lsst.sims.ocs.observatory.ObsExposure(exposureId=1, exposureNum=2, exposureTime=15.0,
                                                        exposureStartTime=2922.2, ObsHistory_observationId=3)
+
+prop_info = lsst.sims.ocs.kernel.ProposalInfo(propId=1, propName="TestProposal", propType="AreaDistribution")
+
+prop_hist = lsst.sims.ocs.kernel.ProposalHistory(propHistId=1, Proposal_propId=2, proposalValue=1.32,
+                                                 proposalNeed=0.5, proposalBonus=0.82,
+                                                 ObsHistory_observationId=10)

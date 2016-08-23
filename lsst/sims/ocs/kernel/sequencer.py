@@ -17,7 +17,7 @@ class Sequencer(object):
         Counter for the number of targets received by the sequencer.
     observations_made : int
         Counter for the number of observations made by the sequencer.
-    observation : SALPY_scheduler.observationTestC
+    observation : SALPY_scheduler.observationC
         DDS topic instance for the observation information.
     log : logging.Logger
         The logging instance.
@@ -104,7 +104,7 @@ class Sequencer(object):
         obs_config : :class:`.Observatory`
             The instance of the observatory configuration.
         """
-        self.observation = sal.set_publish_topic("observationTest")
+        self.observation = sal.set_publish_topic("observation")
         self.observatory_state = sal.set_publish_topic("observatoryState")
         self.observatory_model.configure(obs_config)
 
@@ -132,14 +132,14 @@ class Sequencer(object):
 
         Parameters
         ----------
-        target : SALPY_scheduler.targetTestC
+        target : SALPY_scheduler.targetC
             A target telemetry topic containing the current target information.
         th : :class:`.TimeHandler`
             An instance of the simulation's TimeHandler.
 
         Returns
         -------
-        SALPY_scheduler.observationTestC
+        SALPY_scheduler.observationC
             An observation telemetry topic containing the observed target parameters.
         dict(:class:`.SlewHistory`, :class:`.SlewState`, :class:`.SlewState`, list[:class:`.SlewActivity`])
             A dictionanry of all the slew information from the visit.

@@ -5,8 +5,8 @@ import time
 from ts_scheduler.sky_model import Sun
 
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
-from lsst.sims.ocs.database.tables import write_field
-from lsst.sims.ocs.kernel import DowntimeHandler, Sequencer, TimeHandler
+from lsst.sims.ocs.database.tables import write_field, write_proposal
+from lsst.sims.ocs.kernel import DowntimeHandler, ProposalHistory, ProposalInfo, Sequencer, TimeHandler
 from lsst.sims.ocs.kernel.time_handler import DAYS_IN_YEAR, SECONDS_IN_HOUR
 from lsst.sims.ocs.sal import SalManager, topic_strdict
 from lsst.sims.ocs.setup import LoggingLevel
@@ -70,6 +70,7 @@ class Simulator(object):
         self.sun = Sun()
         self.obs_site_info = (self.conf.observing_site.longitude, self.conf.observing_site.latitude)
         self.wait_for_scheduler = not self.opts.no_scheduler
+        self.proposals_counted = 1
 
     @property
     def duration(self):
@@ -117,6 +118,23 @@ class Simulator(object):
         self.sal.finalize()
         self.log.info("Ending simulation")
 
+    def gather_proposal_history(self, obsId):
+        """Gather the proposal history from the current target.
+
+        Parameters
+        ----------
+        obsId : int
+            The current observation identifier.
+        """
+        for i in xrange(self.target.num_proposals):
+            self.db.append_data("proposal_history", ProposalHistory(self.proposals_counted,
+                                                                    self.target.proposal_Ids[i],
+                                                                    self.target.proposal_values[i],
+                                                                    self.target.proposal_needs[i],
+                                                                    self.target.proposal_bonuses[i],
+                                                                    obsId))
+            self.proposals_counted += 1
+
     def get_night_boundaries(self):
         """Calculate the set and rise times for night."
 
@@ -141,7 +159,7 @@ class Simulator(object):
         Scheduler. Currently, a while loop is required to do this.
         """
         while self.wait_for_scheduler:
-            rcode = self.sal.manager.getNextSample_targetTest(self.target)
+            rcode = self.sal.manager.getNextSample_target(self.target)
             if rcode == 0 and self.target.num_exposures != 0:
                 break
 
@@ -152,13 +170,14 @@ class Simulator(object):
         gathering the necessary telemetry topics.
         """
         self.log.info("Initializing simulation")
+        self.log.info("Simulation Session Id = {}".format(self.db.session_id))
         self.sal.initialize()
         self.seq.initialize(self.sal, self.conf.observatory)
         self.dh.initialize(self.conf.downtime)
         self.dh.write_downtime_to_db(self.db)
         self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
-        self.target = self.sal.set_subscribe_topic("targetTest")
+        self.target = self.sal.set_subscribe_topic("target")
         self.field = self.sal.set_subscribe_topic("field")
 
     def run(self):
@@ -167,6 +186,7 @@ class Simulator(object):
         self.log.info("Starting simulation")
 
         self.conf_comm.run()
+        self.save_proposal_information()
 
         # Get fields from scheduler
         if self.wait_for_scheduler:
@@ -225,6 +245,7 @@ class Simulator(object):
                 if self.wait_for_scheduler and observation.targetId != -1:
                     self.db.append_data("target_history", self.target)
                     self.db.append_data("observation_history", observation)
+                    self.gather_proposal_history(observation.observationId)
                     for slew_type, slew_data in slew_info.items():
                         self.log.log(LoggingLevel.TRACE.value, "{}, {}".format(slew_type, type(slew_data)))
                         if isinstance(slew_data, list):
@@ -241,3 +262,14 @@ class Simulator(object):
                             self.db.append_data(exposure_type, exposure)
 
             self._end_night()
+
+    def save_proposal_information(self):
+        """Save the active proposal information to the DB.
+        """
+        proposals = []
+        num_proposals = 1
+        for ad_config in self.conf.science.area_dist_props.active:
+            proposals.append(write_proposal(ProposalInfo(num_proposals, ad_config.name, "AreaDistribution"),
+                                            self.db.session_id))
+            num_proposals += 1
+        self.db.write_table("proposal", proposals)

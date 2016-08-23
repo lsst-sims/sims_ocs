@@ -85,7 +85,7 @@ class MainObservatory(object):
 
         Parameters
         ----------
-        target : SALPY_scheduler.targetTestC
+        target : SALPY_scheduler.targetC
             The Scheduler topic instance holding the target information.
 
         Returns
@@ -178,9 +178,9 @@ class MainObservatory(object):
         ----------
         time_handler : :class:`.TimeHandler`
             An instance of the simulation's TimeHandler.
-        target : SALPY_scheduler.targetTestC
+        target : SALPY_scheduler.targetC
             The Scheduler topic instance holding the target information.
-        observation : SALPY_scheduler.observationTestC
+        observation : SALPY_scheduler.observationC
             The Scheduler topic instance for recording the observation information.
 
         Returns
@@ -241,7 +241,7 @@ class MainObservatory(object):
 
         Parameters
         ----------
-        target : SALPY_scheduler.targetTestC
+        target : SALPY_scheduler.targetC
             The Scheduler topic instance holding the target information.
 
         Returns

@@ -65,6 +65,7 @@ class SimulatorTest(unittest.TestCase):
 
     @mock.patch("lsst.sims.ocs.kernel.sequencer.Sequencer.initialize")
     def test_initialization(self, mock_sequencer_init):
+        self.mock_socs_db.session_id = mock.Mock(return_value=1001)
         self.sim.initialize()
         self.assertEqual(self.mock_salmanager_pub_topic.call_count, 1 + CONFIG_COMM_PUT_CALLS)
         self.assertEqual(self.mock_salmanager_sub_topic.call_count, 2)
@@ -76,6 +77,7 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(mock_salmanager_final.call_count, 1)
 
     def short_run(self, wait_for_sched):
+        self.mock_socs_db.session_id = mock.Mock(return_value=1001)
         # Setup for 1 night and 9 visits
         self.num_nights = 1
         self.num_visits = 9
@@ -121,18 +123,18 @@ class SimulatorTest(unittest.TestCase):
         mock_ss.getNextSample_field = mock.MagicMock(return_value=0)
         self.sim.field.ID = -1
         # Targets
-        mock_ss.getNextSample_targetTest = mock.MagicMock(return_value=0)
+        mock_ss.getNextSample_target = mock.MagicMock(return_value=0)
         self.sim.target.num_exposures = 2
 
         self.sim.run()
 
         self.assertEqual(mock_salmanager_put.call_count, self.put_calls)
         self.assertEqual(mock_ss.getNextSample_field.call_count, 2)
-        self.assertEqual(mock_ss.getNextSample_targetTest.call_count, get_calls)
+        self.assertEqual(mock_ss.getNextSample_target.call_count, get_calls)
         self.assertEqual(self.sim.seq.targets_received, self.num_visits)
         self.assertEqual(self.sim.seq.observations_made, self.num_visits)
         self.assertEqual(self.mock_socs_db.clear_data.call_count, self.num_nights)
-        self.assertEqual(self.mock_socs_db.append_data.call_count, self.num_visits * 11)
+        self.assertEqual(self.mock_socs_db.append_data.call_count, self.num_visits * 12)
         self.assertEqual(self.mock_socs_db.write.call_count, self.num_nights)
 
     def test_get_night_boundaries(self):
