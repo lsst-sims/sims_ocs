@@ -1,3 +1,5 @@
+import os
+import sqlite3
 import unittest
 try:
     from unittest import mock
@@ -21,6 +23,27 @@ class TestSeeingModel(unittest.TestCase):
         self.seeing.initialize()
         self.assertEqual(self.seeing.seeing_values.size, self.num_original_values)
         self.assertEqual(self.seeing.seeing_dates.size, self.num_original_values)
+
+    def test_alternate_db(self):
+        seeing_dbfile = "alternate_seeing.db"
+
+        seeing_table = []
+        seeing_table.append("seeingId INTEGER PRIMARY KEY")
+        seeing_table.append("s_date INTEGER")
+        seeing_table.append("seeing DOUBLE")
+
+        with sqlite3.connect(seeing_dbfile) as conn:
+            cur = conn.cursor()
+            cur.execute("DROP TABLE IF EXISTS Seeing")
+            cur.execute("CREATE TABLE Seeing({})".format(",".join(seeing_table)))
+            cur.executemany("INSERT INTO Seeing VALUES(?, ?, ?)", [(1, 9997, 0.5), (2, 10342, 0.3)])
+            cur.close()
+
+        self.seeing.initialize(seeing_dbfile)
+        self.assertEqual(self.seeing.seeing_values.size, 2)
+        self.assertEqual(self.seeing.seeing_values[1], 0.3)
+
+        os.remove(seeing_dbfile)
 
     @mock.patch("lsst.sims.ocs.database.socs_db.SocsDatabase", spec=True)
     def test_database_write(self, mock_db):

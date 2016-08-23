@@ -20,11 +20,30 @@ class SeeingModel(object):
         self.seeing_dates = None
         self.seeing_values = None
 
-    def initialize(self):
+    def initialize(self, seeing_file=""):
         """Configure the seeing information.
-        """
 
-        self.seeing_db = os.path.join(os.path.dirname(__file__), self.SEEING_DB)
+        This function gets the appropriate database file and creates the seeing information
+        from it. The default behavior is to use the module stored database. However, an
+        alternate database file can be provided. The alternate database file needs to have a
+        table called *Seeing* with the following columns:
+
+        seeingId
+            int : A unique index for each seeing entry.
+        s_date
+            int : The time (units=seconds) since the start of the simulation for the seeing observation.
+        seeing
+            float : The FWHM of the atmospheric PSF (units=arcseconds).
+
+        Parameters
+        ----------
+        seeing_file : str, optional
+            The full path to an alternate seeing database.
+        """
+        if seeing_file != "":
+            self.seeing_db = seeing_file
+        else:
+            self.seeing_db = os.path.join(os.path.dirname(__file__), self.SEEING_DB)
 
         with sqlite3.connect(self.seeing_db) as conn:
             cur = conn.cursor()
