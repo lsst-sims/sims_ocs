@@ -1,7 +1,7 @@
 import collections
 
 __all__ = ["write_field", "write_observation_exposures", "write_observation_history", "write_proposal",
-           "write_proposal_history", "write_scheduled_downtime", "write_slew_activities",
+           "write_proposal_history", "write_scheduled_downtime", "write_seeing", "write_slew_activities",
            "write_slew_history",
            "write_slew_final_state", "write_slew_initial_state", "write_slew_maxspeeds",
            "write_target_exposures", "write_target_history", "write_unscheduled_downtime"]
@@ -160,6 +160,30 @@ def write_scheduled_downtime(data, sid):
         ('duration', data[1]),
         ('activity', data[2])
     ])
+    return values
+
+def write_seeing(data, sid):
+    """Create a dictionary of data for the Seeing table.
+
+    Parameters
+    ----------
+    data : tuple
+        The set of information from a seeing observation.
+    sid : int
+        The current session ID.
+
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the data.
+    """
+    values = collections.OrderedDict([
+        ('seeingId', data[0]),
+        ('Session_sessionId', sid),
+        ('s_date', data[1]),
+        ('seeing', data[2])
+    ])
+
     return values
 
 def write_slew_activities(data, sid):

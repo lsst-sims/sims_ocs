@@ -1,4 +1,8 @@
 import unittest
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 
 from lsst.sims.ocs.environment import SeeingModel
 
@@ -17,3 +21,9 @@ class TestSeeingModel(unittest.TestCase):
         self.seeing.initialize()
         self.assertEqual(self.seeing.seeing_values.size, self.num_original_values)
         self.assertEqual(self.seeing.seeing_dates.size, self.num_original_values)
+
+    @mock.patch("lsst.sims.ocs.database.socs_db.SocsDatabase", spec=True)
+    def test_database_write(self, mock_db):
+        self.seeing.initialize()
+        self.seeing.write_to_db(mock_db)
+        self.assertEqual(mock_db.write_table.call_count, 1)

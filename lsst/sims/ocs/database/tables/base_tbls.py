@@ -3,8 +3,8 @@ from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event, ForeignKeyConstraint
 
 __all__ = ["create_field", "create_observation_exposures", "create_observation_history", "create_proposal",
-           "create_proposal_history", "create_scheduled_downtime", "create_session", "create_slew_activities",
-           "create_slew_final_state",
+           "create_proposal_history", "create_scheduled_downtime", "create_seeing", "create_session",
+           "create_slew_activities", "create_slew_final_state",
            "create_slew_history", "create_slew_initial_state", "create_slew_maxspeeds",
            "create_target_exposures", "create_target_history", "create_unscheduled_downtime"]
 
@@ -289,6 +289,39 @@ def create_scheduled_downtime(metadata):
         The ScheduledDowntime table object.
     """
     return create_downtime("ScheduledDowntime", metadata)
+
+def create_seeing(metadata):
+    """Create the Seeing table.
+
+    This function creates the Seeing table containing the nominal seeing values for the simulation.
+
+    Table Description:
+
+    This table contains the seeing information from observations taken from Cerro Pachon for one year.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The Seeing table object.
+    """
+    table = Table("Seeing", metadata,
+                  Column("seeingId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The numeric identifier for the particular seeing entry."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("s_date", Integer, nullable=False,
+                         doc="The time (units=seconds) from the zero point of the seeing data."),
+                  Column("seeing", Float, nullable=False,
+                         doc="The FWHM of the atmospheric PSF (units=arcseconds)"))
+
+    Index("fk_Seeing_Session1", table.c.Session_sessionId)
+
+    return table
 
 def create_session(metadata, autoincrement=True):
     """Create Session table.

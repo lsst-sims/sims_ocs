@@ -96,3 +96,5 @@ prop_info = lsst.sims.ocs.kernel.ProposalInfo(propId=1, propName="TestProposal",
 prop_hist = lsst.sims.ocs.kernel.ProposalHistory(propHistId=1, Proposal_propId=2, proposalValue=1.32,
                                                  proposalNeed=0.5, proposalBonus=0.82,
                                                  ObsHistory_observationId=10)
+
+seeing_tuple = (102, 9997, 0.456)

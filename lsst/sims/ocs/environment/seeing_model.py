@@ -34,3 +34,16 @@ class SeeingModel(object):
             self.seeing_dates = numpy.hsplit(results, 2)[0].flatten()
             self.seeing_values = numpy.hsplit(results, 2)[1].flatten()
             cur.close()
+
+    def write_to_db(self, db):
+        """Write all the seeing information to the survey database.
+
+        Parameters
+        ----------
+        db : :class:`.SocsDatabase`
+            The instance of the survey database.
+        """
+        indicies = numpy.arange(1, self.seeing_dates.size + 1)
+        seeing = list(map(tuple, numpy.hstack((indicies, self.seeing_dates,
+                                               self.seeing_values)).reshape(-1, 3, order='F').tolist()))
+        db.write_table("seeing", seeing)

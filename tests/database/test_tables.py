@@ -258,3 +258,18 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['proposalBonus'], phist[4])
         self.assertEqual(result['ObsHistory_observationId'], phist[5])
         self.assertEqual(result['Session_sessionId'], 1001)
+
+    def test_create_seeing_table(self):
+        seeing = tbls.create_seeing(self.metadata)
+        self.assertEqual(len(seeing.c), 4)
+        self.assertEqual(len(seeing.indexes), 1)
+
+    def test_write_seeing_table(self):
+        see = topic_helpers.seeing_tuple
+        result = tbls.write_seeing(see, 1002)
+        seeing = tbls.create_seeing(self.metadata)
+        self.check_ordered_dict_to_table(result, seeing)
+        self.assertEqual(result['seeingId'], see[0])
+        self.assertEqual(result['Session_sessionId'], 1002)
+        self.assertEqual(result['s_date'], see[1])
+        self.assertEqual(result['seeing'], see[2])
