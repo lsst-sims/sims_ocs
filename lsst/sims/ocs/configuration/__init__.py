@@ -3,6 +3,7 @@ Module for classes that handle the configuration of the overall simulation.
 """
 from .conf_comm import *
 from .downtime import *
+from .environment import *
 from .field import *
 from .helpers import *
 from .obs_site import *
