@@ -83,6 +83,12 @@ class TimeHandler(object):
         midnight_dt += timedelta(**{"days": 1})
         return self._time_difference(midnight_dt)
 
+    @property
+    def time_since_start(self):
+        """float: The number of seconds since the start date.
+        """
+        return self._time_difference(self.current_dt, self.initial_dt)
+
     def update_time(self, time_increment, time_units):
         """Update the currently held timestamp.
 
