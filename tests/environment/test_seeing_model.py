@@ -24,6 +24,13 @@ class TestSeeingModel(unittest.TestCase):
         self.assertEqual(self.seeing.seeing_values.size, self.num_original_values)
         self.assertEqual(self.seeing.seeing_dates.size, self.num_original_values)
 
+    def test_get_seeing(self):
+        self.seeing.initialize()
+        self.assertEqual(self.seeing.get_seeing(75400), 0.859431982040405)
+        self.assertEqual(self.seeing.get_seeing(76700), 0.646009027957916)
+        self.assertEqual(self.seeing.get_seeing(63190400), 0.64860999584198)
+        self.assertEqual(self.seeing.get_seeing(189424900), 0.699440002441406)
+
     def test_alternate_db(self):
         seeing_dbfile = "alternate_seeing.db"
 

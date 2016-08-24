@@ -20,6 +20,24 @@ class SeeingModel(object):
         self.seeing_dates = None
         self.seeing_values = None
 
+    def get_seeing(self, delta_time):
+        """Get the seeing for the specified time.
+
+        Parameters
+        ----------
+        delta_time : int
+            The time (seconds) from the start of the simulation.
+
+        Returns
+        -------
+        float
+            The seeing (arcseconds) closest to the specified time.
+        """
+        date = delta_time % self.seeing_dates[-1]
+        date_delta = numpy.abs(self.seeing_dates - date)
+        idx = numpy.where(date_delta == numpy.min(date_delta))
+        return self.seeing_values[idx][0]
+
     def initialize(self, seeing_file=""):
         """Configure the seeing information.
 
