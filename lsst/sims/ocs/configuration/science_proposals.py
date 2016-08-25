@@ -21,10 +21,10 @@ class ScienceProposals(pexConfig.Config):
 
         Returns
         -------
-        str
-            Comma-delimited list of available area distribution proposals.
+        list[str]
+           The available area distribution proposals.
         """
-        return ",".join(sorted(self.area_dist_props.registry.keys()))
+        return sorted(self.area_dist_props.registry.keys())
 
     def load(self, config_files):
         """Load the configuration override files.
@@ -46,7 +46,7 @@ class ScienceProposals(pexConfig.Config):
 
         Parameters
         ----------
-        proposals : dict[str: str]
+        proposals : dict[str: list[str]]
             The set of proposals to load.
         alternate_proposals : str
             A directory location containing alternate proposals to load.
@@ -67,13 +67,13 @@ class ScienceProposals(pexConfig.Config):
                 if "AreaDistribution" in all_names:
                     key = "AD"
                 prop_name = [x for x in all_names if x not in proposal_related][0]
-                if proposals[key] != "":
-                    proposals[key] += ",{}".format(prop_name)
+                if len(proposals[key]):
+                    proposals[key].append(prop_name)
                 else:
-                    proposals[key] = prop_name
+                    proposals[key] = [prop_name]
 
-        if proposals["AD"] != "":
-            self.area_dist_props.names = [prop for prop in proposals["AD"].split(',')]
+        if len(proposals["AD"]):
+            self.area_dist_props.names = proposals["AD"]
 
     def save_as(self, save_dir=''):
         """Save the configuration objects to separate files.

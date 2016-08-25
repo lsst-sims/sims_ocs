@@ -9,4 +9,4 @@ NUM_AREA_DIST_PROPS = 3
 CONFIG_AREA_DIST_PROPS = NUM_AREA_DIST_PROPS - 1
 """Current list of all area distribution proposals.
 """
-AREA_DIST_PROPS = "GalacticPlane,SouthCelestialPole,WeakLensing"
+AREA_DIST_PROPS = ["GalacticPlane", "SouthCelestialPole", "WeakLensing"]

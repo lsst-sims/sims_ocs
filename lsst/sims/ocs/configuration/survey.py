@@ -11,7 +11,7 @@ class Survey(pexConfig.Config):
     duration = pexConfig.Field("The fractional duration (units=years) of the survey.", float)
     idle_delay = pexConfig.Field("The delay (units=seconds) to skip the simulation time forward when "
                                  "not receiving a target.", float)
-    ad_proposals = pexConfig.Field("The list of available area distribution proposals.", str)
+    ad_proposals = pexConfig.ListField("The list of available area distribution proposals.", str)
     alt_proposal_dir = pexConfig.Field("An alternative directory location for proposals.", str, optional=True)
 
     def setDefaults(self):
