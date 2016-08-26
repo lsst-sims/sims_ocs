@@ -12,6 +12,7 @@ class SeeingModel(object):
     """
 
     SEEING_DB = "seeing.db"
+    """Filename of the internal seeing observation database."""
 
     def __init__(self):
         """Initialize the class.

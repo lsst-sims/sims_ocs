@@ -12,6 +12,7 @@ class CloudModel(object):
     """
 
     CLOUD_DB = "cloud.db"
+    """Filename of the internal cloud observation database."""
 
     def __init__(self):
         """Initialize the class.
