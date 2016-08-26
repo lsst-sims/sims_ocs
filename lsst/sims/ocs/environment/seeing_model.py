@@ -2,6 +2,8 @@ import numpy
 import os
 import sqlite3
 
+from lsst.sims.ocs.database.tables import write_seeing
+
 __all__ = ["SeeingModel"]
 
 class SeeingModel(object):
@@ -82,6 +84,7 @@ class SeeingModel(object):
             The instance of the survey database.
         """
         indicies = numpy.arange(1, self.seeing_dates.size + 1)
-        seeing = list(map(tuple, numpy.hstack((indicies, self.seeing_dates,
-                                               self.seeing_values)).reshape(-1, 3, order='F').tolist()))
+        seeing_info = list(map(tuple, numpy.hstack((indicies, self.seeing_dates,
+                                                   self.seeing_values)).reshape(-1, 3, order='F').tolist()))
+        seeing = [write_seeing(si, db.session_id) for si in seeing_info]
         db.write_table("seeing", seeing)

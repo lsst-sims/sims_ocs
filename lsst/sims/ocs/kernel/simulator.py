@@ -6,6 +6,7 @@ from ts_scheduler.sky_model import Sun
 
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
 from lsst.sims.ocs.database.tables import write_field, write_proposal
+from lsst.sims.ocs.environment import CloudModel, SeeingModel
 from lsst.sims.ocs.kernel import DowntimeHandler, ProposalHistory, ProposalInfo, Sequencer, TimeHandler
 from lsst.sims.ocs.kernel.time_handler import DAYS_IN_YEAR, SECONDS_IN_HOUR
 from lsst.sims.ocs.sal import SalManager, topic_strdict
@@ -40,6 +41,10 @@ class Simulator(object):
         The downtime handler instance.
     conf_comm : :class:`.ConfigurationCommunicator`
         The configuration communicator instance.
+    cloud : :class:`.CloudModel`
+        The cloud model instance.
+    seeing : :class:`.SeeingModel`
+        The seeing model instance.
     """
 
     def __init__(self, options, configuration, database):
@@ -68,6 +73,8 @@ class Simulator(object):
         self.dh = DowntimeHandler()
         self.conf_comm = ConfigurationCommunicator()
         self.sun = Sun()
+        self.cloud = CloudModel()
+        self.seeing = SeeingModel()
         self.obs_site_info = (self.conf.observing_site.longitude, self.conf.observing_site.latitude)
         self.wait_for_scheduler = not self.opts.no_scheduler
         self.proposals_counted = 1
@@ -175,6 +182,10 @@ class Simulator(object):
         self.seq.initialize(self.sal, self.conf.observatory)
         self.dh.initialize(self.conf.downtime)
         self.dh.write_downtime_to_db(self.db)
+        self.cloud.initialize(self.conf.environment.cloud_db)
+        # self.cloud.write_to_db(self.db)
+        self.seeing.initialize(self.conf.environment.seeing_db)
+        # self.seeing.write_to_db(self.db)
         self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
         self.target = self.sal.set_subscribe_topic("target")
