@@ -8,8 +8,11 @@ class Environment(pexConfig.Config):
 
     seeing_db = pexConfig.Field('Alternate database file for the seeing. Must have same format as '
                                 'internal database.', str)
+    cloud_db = pexConfig.Field('Alternate database file for the seeing. Must have same format as '
+                               'internal database.', str)
 
     def setDefaults(self):
-        """Set defaults for the seeing anf cloud model configurations.
+        """Set defaults for the seeing and cloud model configurations.
         """
         self.seeing_db = ""
+        self.cloud_db = ""

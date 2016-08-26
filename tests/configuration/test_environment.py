@@ -9,3 +9,4 @@ class EnvironmentTest(unittest.TestCase):
 
     def test_basic_information_after_creation(self):
         self.assertEqual(self.environ.seeing_db, "")
+        self.assertEqual(self.environ.cloud_db, "")

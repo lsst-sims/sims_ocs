@@ -273,3 +273,18 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['Session_sessionId'], 1002)
         self.assertEqual(result['s_date'], see[1])
         self.assertEqual(result['seeing'], see[2])
+
+    def test_create_cloud_table(self):
+        cloud = tbls.create_cloud(self.metadata)
+        self.assertEqual(len(cloud.c), 4)
+        self.assertEqual(len(cloud.indexes), 1)
+
+    def test_write_cloud_table(self):
+        cld = topic_helpers.cloud_tuple
+        result = tbls.write_cloud(cld, 1002)
+        cloud = tbls.create_cloud(self.metadata)
+        self.check_ordered_dict_to_table(result, cloud)
+        self.assertEqual(result['cloudId'], cld[0])
+        self.assertEqual(result['Session_sessionId'], 1002)
+        self.assertEqual(result['c_date'], cld[1])
+        self.assertEqual(result['cloud'], cld[2])
