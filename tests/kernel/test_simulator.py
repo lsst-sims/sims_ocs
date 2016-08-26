@@ -67,7 +67,7 @@ class SimulatorTest(unittest.TestCase):
     def test_initialization(self, mock_sequencer_init):
         self.mock_socs_db.session_id = mock.Mock(return_value=1001)
         self.sim.initialize()
-        self.assertEqual(self.mock_salmanager_pub_topic.call_count, 1 + CONFIG_COMM_PUT_CALLS)
+        self.assertEqual(self.mock_salmanager_pub_topic.call_count, 3 + CONFIG_COMM_PUT_CALLS)
         self.assertEqual(self.mock_salmanager_sub_topic.call_count, 2)
         self.assertEqual(mock_sequencer_init.call_count, 1)
 
@@ -81,8 +81,8 @@ class SimulatorTest(unittest.TestCase):
         # Setup for 1 night and 9 visits
         self.num_nights = 1
         self.num_visits = 9
-        # Timestamp, observatory state and observation
-        self.put_calls = 3 * self.num_visits
+        # Timestamp, cloud, seeing, observatory state and observation
+        self.put_calls = 5 * self.num_visits
         self.config_comm_put_calls = 1
         self.put_calls += CONFIG_COMM_PUT_CALLS
         self.put_calls += CONFIG_AREA_DIST_PROPS
@@ -96,8 +96,8 @@ class SimulatorTest(unittest.TestCase):
         self.sim.seq.observatory_model.observation_exposure_list = [exposure_coll3, exposure_coll4]
         self.sim.seq.observatory_model.slew_activities_list = [slew_activity_coll]
         self.sim.dh.write_downtime_to_db = mock.Mock()
-        self.sim.cloud.write_to_db = mock.Mock()
-        self.sim.seeing.write_to_db = mock.Mock()
+        self.sim.cloud_model.write_to_db = mock.Mock()
+        self.sim.seeing_model.write_to_db = mock.Mock()
 
         self.assertEqual(self.sim.duration, 1.0)
 

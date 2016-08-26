@@ -6,7 +6,10 @@ try:
 except ImportError:
     import mock
 
+import SALPY_scheduler
+
 from lsst.sims.ocs.environment import SeeingModel
+from lsst.sims.ocs.kernel import TimeHandler
 
 class TestSeeingModel(unittest.TestCase):
 
@@ -51,6 +54,15 @@ class TestSeeingModel(unittest.TestCase):
         self.assertEqual(self.seeing.seeing_values[1], 0.3)
 
         os.remove(seeing_dbfile)
+
+    def test_topic_setting(self):
+        seeing_topic = SALPY_scheduler.scheduler_seeingC()
+        th = TimeHandler("2020-05-24")
+        th.update_time(8, "days")
+        self.seeing.initialize()
+        self.seeing.set_topic(th, seeing_topic)
+        self.assertEqual(seeing_topic.timestamp, 1590969600.0)
+        self.assertEqual(seeing_topic.seeing, 0.715884983539581)
 
     @mock.patch("lsst.sims.ocs.database.socs_db.SocsDatabase", spec=True)
     def xtest_database_write(self, mock_db):

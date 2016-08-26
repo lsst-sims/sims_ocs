@@ -75,6 +75,19 @@ class CloudModel(object):
             self.cloud_values = numpy.hsplit(results, 2)[1].flatten()
             cur.close()
 
+    def set_topic(self, th, topic):
+        """Set the cloud information into the topic.
+
+        Parameters
+        ----------
+        th : :class:`TimeHandler`
+            A time hadnling instance.
+        topic : SALPY_scheduler.scheduler_cloudC
+            An instance of the cloud topic.
+        """
+        topic.timestamp = th.current_timestamp
+        topic.cloud = self.get_cloud(th.time_since_start)
+
     def write_to_db(self, db):
         """Write all the cloud information to the survey database.
 

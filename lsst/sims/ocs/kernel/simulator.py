@@ -41,9 +41,9 @@ class Simulator(object):
         The downtime handler instance.
     conf_comm : :class:`.ConfigurationCommunicator`
         The configuration communicator instance.
-    cloud : :class:`.CloudModel`
+    cloud_model : :class:`.CloudModel`
         The cloud model instance.
-    seeing : :class:`.SeeingModel`
+    seeing_model : :class:`.SeeingModel`
         The seeing model instance.
     """
 
@@ -73,8 +73,8 @@ class Simulator(object):
         self.dh = DowntimeHandler()
         self.conf_comm = ConfigurationCommunicator()
         self.sun = Sun()
-        self.cloud = CloudModel()
-        self.seeing = SeeingModel()
+        self.cloud_model = CloudModel()
+        self.seeing_model = SeeingModel()
         self.obs_site_info = (self.conf.observing_site.longitude, self.conf.observing_site.latitude)
         self.wait_for_scheduler = not self.opts.no_scheduler
         self.proposals_counted = 1
@@ -182,14 +182,16 @@ class Simulator(object):
         self.seq.initialize(self.sal, self.conf.observatory)
         self.dh.initialize(self.conf.downtime)
         self.dh.write_downtime_to_db(self.db)
-        self.cloud.initialize(self.conf.environment.cloud_db)
-        # self.cloud.write_to_db(self.db)
-        self.seeing.initialize(self.conf.environment.seeing_db)
-        # self.seeing.write_to_db(self.db)
+        self.cloud_model.initialize(self.conf.environment.cloud_db)
+        # self.cloud_model.write_to_db(self.db)
+        self.seeing_model.initialize(self.conf.environment.seeing_db)
+        # self.seeing_model.write_to_db(self.db)
         self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
         self.target = self.sal.set_subscribe_topic("target")
         self.field = self.sal.set_subscribe_topic("field")
+        self.cloud = self.sal.set_publish_topic("cloud")
+        self.seeing = self.sal.set_publish_topic("seeing")
 
     def run(self):
         """Run the simulation.
@@ -242,6 +244,12 @@ class Simulator(object):
                 self.log.log(LoggingLevel.EXTENSIVE.value,
                              "Observatory State: {}".format(topic_strdict(observatory_state)))
                 self.sal.put(observatory_state)
+
+                self.cloud_model.set_topic(self.time_handler, self.cloud)
+                self.sal.put(self.cloud)
+
+                self.seeing_model.set_topic(self.time_handler, self.seeing)
+                self.sal.put(self.seeing)
 
                 self.get_target_from_scheduler()
 

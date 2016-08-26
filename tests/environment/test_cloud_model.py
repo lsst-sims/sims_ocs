@@ -6,7 +6,10 @@ try:
 except ImportError:
     import mock
 
+import SALPY_scheduler
+
 from lsst.sims.ocs.environment import CloudModel
+from lsst.sims.ocs.kernel import TimeHandler
 
 class TestCloudModel(unittest.TestCase):
 
@@ -51,6 +54,15 @@ class TestCloudModel(unittest.TestCase):
         self.assertEqual(self.cloud.cloud_values[1], 0.125)
 
         os.remove(cloud_dbfile)
+
+    def test_topic_setting(self):
+        cloud_topic = SALPY_scheduler.scheduler_cloudC()
+        th = TimeHandler("2020-05-24")
+        th.update_time(8, "days")
+        self.cloud.initialize()
+        self.cloud.set_topic(th, cloud_topic)
+        self.assertEqual(cloud_topic.timestamp, 1590969600.0)
+        self.assertEqual(cloud_topic.cloud, 0.5)
 
     @mock.patch("lsst.sims.ocs.database.socs_db.SocsDatabase", spec=True)
     def xtest_database_write(self, mock_db):

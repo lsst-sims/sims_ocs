@@ -75,6 +75,19 @@ class SeeingModel(object):
             self.seeing_values = numpy.hsplit(results, 2)[1].flatten()
             cur.close()
 
+    def set_topic(self, th, topic):
+        """Set the seeing information into the topic.
+
+        Parameters
+        ----------
+        th : :class:`TimeHandler`
+            A time hadnling instance.
+        topic : SALPY_scheduler.scheduler_seeingC
+            An instance of the seeing topic.
+        """
+        topic.timestamp = th.current_timestamp
+        topic.seeing = self.get_seeing(th.time_since_start)
+
     def write_to_db(self, db):
         """Write all the seeing information to the survey database.
 
