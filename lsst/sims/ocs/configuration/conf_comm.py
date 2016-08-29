@@ -51,6 +51,7 @@ class ConfigurationCommunicator(object):
         """
         self.sched_driver_conf = self.sal.set_publish_topic("driverConfig")
         self.sched_driver_conf.coadd_values = self.config.sched_driver.coadd_values
+        self.sched_driver_conf.time_balancing = self.config.sched_driver.time_balancing
         self.sched_driver_conf.timebonus_tmax = self.config.sched_driver.timebonus_tmax
         self.sched_driver_conf.timebonus_bmax = self.config.sched_driver.timebonus_bmax
         self.sched_driver_conf.timebonus_slope = self.config.sched_driver.timebonus_slope

@@ -9,6 +9,7 @@ class SchedulerDriverTest(unittest.TestCase):
 
     def test_basic_information_after_creation(self):
         self.assertTrue(self.sched_driver.coadd_values)
+        self.assertTrue(self.sched_driver.time_balancing)
         self.assertEqual(self.sched_driver.timebonus_tmax, 200.0)
         self.assertEqual(self.sched_driver.timebonus_bmax, 10.0)
         self.assertEqual(self.sched_driver.timebonus_slope, 2.26)
