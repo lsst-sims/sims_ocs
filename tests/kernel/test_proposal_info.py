@@ -14,11 +14,12 @@ class ProposalInformationTest(unittest.TestCase):
 class ProposalHistoryTest(unittest.TestCase):
 
     def test_proposal_history(self):
-        ph = ProposalHistory(1, 2, 1.32, 0.5, 0.82, 10)
-        self.assertEqual(len(ph._fields), 6)
+        ph = ProposalHistory(1, 2, 1.32, 0.5, 0.82, 0.2, 10)
+        self.assertEqual(len(ph._fields), 7)
         self.assertEqual(ph.propHistId, 1)
         self.assertEqual(ph.Proposal_propId, 2)
         self.assertEqual(ph.proposalValue, 1.32)
         self.assertEqual(ph.proposalNeed, 0.5)
         self.assertEqual(ph.proposalBonus, 0.82)
+        self.assertEqual(ph.proposalBoost, 0.2)
         self.assertEqual(ph.ObsHistory_observationId, 10)

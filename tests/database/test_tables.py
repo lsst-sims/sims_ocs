@@ -29,7 +29,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_target_history_table(self):
         targets = tbls.create_target_history(self.metadata)
-        self.assertEqual(len(targets.c), 27)
+        self.assertEqual(len(targets.c), 28)
         self.assertEqual(len(targets.indexes), 3)
 
     def test_write_target_history_table(self):
@@ -243,7 +243,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_proposal_history_table(self):
         prop_hist = tbls.create_proposal_history(self.metadata)
-        self.assertEqual(len(prop_hist.c), 7)
+        self.assertEqual(len(prop_hist.c), 8)
         self.assertEqual(len(prop_hist.indexes), 1)
 
     def test_write_proposal_history_table(self):
@@ -256,5 +256,6 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['proposalValue'], phist[2])
         self.assertEqual(result['proposalNeed'], phist[3])
         self.assertEqual(result['proposalBonus'], phist[4])
-        self.assertEqual(result['ObsHistory_observationId'], phist[5])
+        self.assertEqual(result['proposalBoost'], phist[5])
+        self.assertEqual(result['ObsHistory_observationId'], phist[6])
         self.assertEqual(result['Session_sessionId'], 1001)

@@ -132,6 +132,7 @@ class Simulator(object):
                                                                     self.target.proposal_values[i],
                                                                     self.target.proposal_needs[i],
                                                                     self.target.proposal_bonuses[i],
+                                                                    self.target.proposal_boosts[i],
                                                                     obsId))
             self.proposals_counted += 1
 
