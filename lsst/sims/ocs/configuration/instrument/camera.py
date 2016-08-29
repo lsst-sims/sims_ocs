@@ -12,6 +12,12 @@ class Camera(pexConfig.Config):
     # Filter parameters
     filter_mount_time = pexConfig.Field('Time (units=seconds) to mount a filter.', float)
     filter_change_time = pexConfig.Field('Time (units=seconds) to change a filter.', float)
+    filter_max_changes_burst_num = pexConfig.Field('Maximum number of filter changes in a night.', int)
+    filter_max_changes_burst_time = pexConfig.Field('Minimum time (units=seconds) between filter changes '
+                                                    'in a night.', float)
+    filter_max_changes_avg_num = pexConfig.Field('Maximum average number of filter changes per year.', int)
+    filter_max_changes_avg_time = pexConfig.Field('Maximum time (units=seconds) for the average number of '
+                                                  'filter changes.', float)
 
     filter_mounted = pexConfig.ListField('Initial state for the mounted filters. Empty positions must be '
                                          'filled with id="" no (filter).', str)
@@ -26,6 +32,10 @@ class Camera(pexConfig.Config):
         self.shutter_time = 1.0
         self.filter_mount_time = 8 * 3600.0
         self.filter_change_time = 120.0
+        self.filter_max_changes_burst_num = 1
+        self.filter_max_changes_burst_time = 0 * 60.0
+        self.filter_max_changes_avg_num = 3000
+        self.filter_max_changes_avg_time = 365.25 * 24.0 * 60.0 * 60.0
         self.filter_mounted = ['g', 'r', 'i', 'z', 'y']
         self.filter_pos = 'r'
         self.filter_removable = ['y', 'z']

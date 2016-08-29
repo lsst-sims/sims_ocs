@@ -122,6 +122,12 @@ class ConfigurationCommunicator(object):
         self.cam_conf.shutter_time = self.config.observatory.camera.shutter_time
         self.cam_conf.filter_mount_time = self.config.observatory.camera.filter_mount_time
         self.cam_conf.filter_change_time = self.config.observatory.camera.filter_change_time
+        self.cam_conf.filter_max_changes_burst_num = \
+            self.config.observatory.camera.filter_max_changes_burst_num
+        self.cam_conf.filter_max_changes_burst_time = \
+            self.config.observatory.camera.filter_max_changes_burst_time
+        self.cam_conf.filter_max_changes_avg_num = self.config.observatory.camera.filter_max_changes_avg_num
+        self.cam_conf.filter_max_changes_avg_time = self.config.observatory.camera.filter_max_changes_avg_time
         self.cam_conf.filter_mounted = self.config.observatory.camera.filter_mounted_str
         self.cam_conf.filter_pos = self.config.observatory.camera.filter_pos
         self.cam_conf.filter_removable = self.config.observatory.camera.filter_removable_str
