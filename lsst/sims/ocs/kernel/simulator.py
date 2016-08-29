@@ -219,6 +219,7 @@ class Simulator(object):
         self.log.debug("Duration = {}".format(self.duration))
         for night in xrange(1, int(self.duration) + 1):
             self._start_night(night)
+            self.comm_time.night = night
 
             while self.time_handler.current_timestamp < self.end_of_night:
 
