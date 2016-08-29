@@ -16,3 +16,8 @@ class SurveyTest(unittest.TestCase):
         self.assertEqual(self.survey.idle_delay, 60.0)
         self.assertListEqual(list(self.survey.ad_proposals), AREA_DIST_PROPS)
         self.assertIsNone(self.survey.alt_proposal_dir)
+        self.assertEqual(self.survey.full_duration, 3650.0)
+
+    def test_alternate_duration(self):
+        self.survey.duration = 4500.0
+        self.assertEqual(self.survey.full_duration, 4500.0)

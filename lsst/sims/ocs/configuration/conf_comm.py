@@ -44,9 +44,7 @@ class ConfigurationCommunicator(object):
         """Configure and send the Scheduler configuration topic.
         """
         self.sched_conf = self.sal.set_publish_topic("schedulerConfig")
-        log_file = ""
-
-        self.sched_conf.log_file = log_file
+        self.sched_conf.survey_duration = self.config.survey.full_duration
 
     def _configure_scheduler_driver(self):
         """Configure and the Scheduler Driver configuration topic.
