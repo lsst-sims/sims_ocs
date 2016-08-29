@@ -132,6 +132,7 @@ class Simulator(object):
                                                                     self.target.proposal_values[i],
                                                                     self.target.proposal_needs[i],
                                                                     self.target.proposal_bonuses[i],
+                                                                    self.target.proposal_boosts[i],
                                                                     obsId))
             self.proposals_counted += 1
 
@@ -219,6 +220,7 @@ class Simulator(object):
         self.log.debug("Duration = {}".format(self.duration))
         for night in xrange(1, int(self.duration) + 1):
             self._start_night(night)
+            self.comm_time.night = night
 
             while self.time_handler.current_timestamp < self.end_of_night:
 

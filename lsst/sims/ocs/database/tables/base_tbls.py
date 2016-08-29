@@ -258,6 +258,8 @@ def create_proposal_history(metadata):
                          doc="The need of the observation assigned by a particular proposal."),
                   Column("proposalBonus", Float, nullable=False,
                          doc="The bonus of the observation assigned by a particular proposal."),
+                  Column("proposalBoost", Float, nullable=False,
+                         doc="The time-balancing boost assigned by a particular proposal."),
                   Column("ObsHistory_observationId", Integer, nullable=False,
                          doc="Numeric identifier that relates to an entry in the ObsHistory table."),
                   ForeignKeyConstraint(["ObsHistory_observationId"], ["ObsHistory.observationId"]),
@@ -654,6 +656,8 @@ def create_target_history(metadata):
                   Column("rank", Float, nullable=False,
                          doc="The rank of the target for the associated proposal. If more than one "
                              "proposal, this is a coadded value."),
+                  Column("propBoost", Float, nullable=False,
+                         doc="The calculated time-balancing boost for the target."),
                   Column("numRequestingProps", Integer, nullable=False,
                          doc="The total number of proposals requesting this target. More than one means the "
                              "target was in each proposals winner's list."),

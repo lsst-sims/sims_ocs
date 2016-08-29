@@ -44,15 +44,14 @@ class ConfigurationCommunicator(object):
         """Configure and send the Scheduler configuration topic.
         """
         self.sched_conf = self.sal.set_publish_topic("schedulerConfig")
-        log_file = ""
-
-        self.sched_conf.log_file = log_file
+        self.sched_conf.survey_duration = self.config.survey.full_duration
 
     def _configure_scheduler_driver(self):
         """Configure and the Scheduler Driver configuration topic.
         """
         self.sched_driver_conf = self.sal.set_publish_topic("driverConfig")
         self.sched_driver_conf.coadd_values = self.config.sched_driver.coadd_values
+        self.sched_driver_conf.time_balancing = self.config.sched_driver.time_balancing
         self.sched_driver_conf.timebonus_tmax = self.config.sched_driver.timebonus_tmax
         self.sched_driver_conf.timebonus_bmax = self.config.sched_driver.timebonus_bmax
         self.sched_driver_conf.timebonus_slope = self.config.sched_driver.timebonus_slope
@@ -124,6 +123,12 @@ class ConfigurationCommunicator(object):
         self.cam_conf.shutter_time = self.config.observatory.camera.shutter_time
         self.cam_conf.filter_mount_time = self.config.observatory.camera.filter_mount_time
         self.cam_conf.filter_change_time = self.config.observatory.camera.filter_change_time
+        self.cam_conf.filter_max_changes_burst_num = \
+            self.config.observatory.camera.filter_max_changes_burst_num
+        self.cam_conf.filter_max_changes_burst_time = \
+            self.config.observatory.camera.filter_max_changes_burst_time
+        self.cam_conf.filter_max_changes_avg_num = self.config.observatory.camera.filter_max_changes_avg_num
+        self.cam_conf.filter_max_changes_avg_time = self.config.observatory.camera.filter_max_changes_avg_time
         self.cam_conf.filter_mounted = self.config.observatory.camera.filter_mounted_str
         self.cam_conf.filter_pos = self.config.observatory.camera.filter_pos
         self.cam_conf.filter_removable = self.config.observatory.camera.filter_removable_str

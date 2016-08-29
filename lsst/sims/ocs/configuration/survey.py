@@ -1,6 +1,7 @@
 import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration import ScienceProposals
+from lsst.sims.ocs.kernel.time_handler import BASELINE_SURVEY_DURATION
 
 __all__ = ["Survey"]
 
@@ -22,3 +23,16 @@ class Survey(pexConfig.Config):
         self.idle_delay = 60.0
         sci_prop = ScienceProposals()
         self.ad_proposals = sci_prop.ad_proposals
+
+    @property
+    def full_duration(self):
+        """The full duration of the survey.
+
+        Returns
+        -------
+        double
+        """
+        if self.duration > BASELINE_SURVEY_DURATION:
+            return self.duration
+        else:
+            return BASELINE_SURVEY_DURATION
