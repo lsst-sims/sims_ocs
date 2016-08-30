@@ -7,9 +7,9 @@ from ts_scheduler.sky_model import Sun
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
 from lsst.sims.ocs.database.tables import write_field, write_proposal
 from lsst.sims.ocs.kernel import DowntimeHandler, ProposalHistory, ProposalInfo, Sequencer, TimeHandler
-from lsst.sims.ocs.kernel.time_handler import DAYS_IN_YEAR, SECONDS_IN_HOUR
 from lsst.sims.ocs.sal import SalManager, topic_strdict
 from lsst.sims.ocs.setup import LoggingLevel
+from lsst.sims.ocs.utilities.constants import DAYS_IN_YEAR, SECONDS_IN_HOUR
 
 __all__ = ["Simulator"]
 

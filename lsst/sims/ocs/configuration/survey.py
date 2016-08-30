@@ -1,7 +1,7 @@
 import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration import ScienceProposals
-from lsst.sims.ocs.kernel.time_handler import BASELINE_SURVEY_DURATION
+from lsst.sims.ocs.utilities.constants import BASELINE_SURVEY_DURATION
 
 __all__ = ["Survey"]
 

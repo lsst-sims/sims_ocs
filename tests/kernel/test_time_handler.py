@@ -3,6 +3,7 @@ import unittest
 
 import lsst.sims.ocs.kernel.time_handler as th
 from lsst.sims.ocs.kernel.time_handler import TimeHandler
+from lsst.sims.ocs.utilities.constants import SECONDS_IN_DAY
 
 class TimeHandlerTest(unittest.TestCase):
 
@@ -49,11 +50,11 @@ class TimeHandlerTest(unittest.TestCase):
 
     def test_time_span_less_than_time_elapsed(self):
         self.th.update_time(10, "days")
-        self.assertFalse(self.th.has_time_elapsed(9 * th.SECONDS_IN_DAY))
+        self.assertFalse(self.th.has_time_elapsed(9 * SECONDS_IN_DAY))
 
     def test_time_span_is_greater_than_time_elapsed(self):
         self.th.update_time(10, "days")
-        self.assertTrue(self.th.has_time_elapsed(11 * th.SECONDS_IN_DAY))
+        self.assertTrue(self.th.has_time_elapsed(11 * SECONDS_IN_DAY))
 
     def test_future_timestring(self):
         self.assertEqual(self.th.future_timestring(19.0, "hours"), "2020-05-24T19:00:00")
