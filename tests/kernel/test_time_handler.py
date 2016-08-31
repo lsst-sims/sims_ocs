@@ -82,3 +82,7 @@ class TimeHandlerTest(unittest.TestCase):
         truth_datetime = datetime(2020, 5, 28, 15)
         self.assertEqual(self.th.future_datetime(39, "hours", timestamp=alternate_timestamp),
                          truth_datetime)
+
+    def test_time_since_start(self):
+            self.th.update_time(10, "days")
+            self.assertEqual(self.th.time_since_start, 864000)
