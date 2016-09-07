@@ -68,7 +68,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_observation_history_table(self):
         obs_hist = tbls.create_observation_history(self.metadata)
-        self.assertEqual(len(obs_hist.c), 15)
+        self.assertEqual(len(obs_hist.c), 30)
         self.assertEqual(len(obs_hist.indexes), 4)
 
     def test_write_observation_history_table(self):
@@ -88,8 +88,14 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['Field_fieldId'], obs_topic.fieldId)
         self.assertEqual(result['filter'], obs_topic.filter)
         self.assertEqual(result['dec'], obs_topic.dec)
-        self.assertEqual(result['visitTime'], 34.0)
+        self.assertEqual(result['altitude'], obs_topic.altitude)
+        self.assertEqual(result['visitTime'], obs_topic.visit_time)
         self.assertEqual(result['visitExposureTime'], sum(obs_topic.exposure_times))
+        self.assertEqual(result['skyBrightness'], obs_topic.sky_brightness)
+        self.assertEqual(result['moonRA'], obs_topic.moon_ra)
+        self.assertEqual(result['moonAz'], obs_topic.moon_az)
+        self.assertEqual(result['sunDec'], obs_topic.sun_dec)
+        self.assertEqual(result['sunAlt'], obs_topic.sun_alt)
 
     def test_create_slew_history_table(self):
         slew_hist = tbls.create_slew_history(self.metadata)

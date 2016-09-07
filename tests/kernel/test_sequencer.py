@@ -44,7 +44,10 @@ class SequencerTest(unittest.TestCase):
         mas.get_sky_brightness.return_value = {'u': [16.0], 'g': [17.0], 'r': [18.0],
                                                'i': [19.0], 'z': [20.0], 'y': [21.0]}
         mas.get_target_information.return_value = {'airmass': [1.1], 'alts': [0.5], 'azs': [0.5]}
-        mas.get_moon_sun_info.return_value = {'moonPhase': 0.3}
+        mas.get_moon_sun_info.return_value = {'moonRA': 30.0, 'moonDec': 10.0, 'moonAlt': -2.0,
+                                              'moonAz': 135.0, 'moonPhase': 0.3, 'moonDist': 80.0,
+                                              'sunRA': 310.0, 'sunDec': 5.0, 'sunAlt': -24.0, 'sunAz': 285.0,
+                                              'sunEclipLon': 150.0}
 
     def test_basic_information_after_creation(self):
         self.assertEqual(self.seq.observations_made, 0)
