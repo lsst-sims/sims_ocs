@@ -39,6 +39,13 @@ class SequencerTest(unittest.TestCase):
 
         return target, time_handler
 
+    def set_values_for_sky_model(self):
+        mas = self.mock_astro_sky.return_value
+        mas.get_sky_brightness.return_value = {'u': [16.0], 'g': [17.0], 'r': [18.0],
+                                               'i': [19.0], 'z': [20.0], 'y': [21.0]}
+        mas.get_target_information.return_value = {'airmass': [1.1], 'alts': [0.5], 'azs': [0.5]}
+        mas.get_moon_sun_info.return_value = {'moonPhase': 0.3}
+
     def test_basic_information_after_creation(self):
         self.assertEqual(self.seq.observations_made, 0)
         self.assertEqual(self.seq.targets_received, 0)
@@ -70,10 +77,7 @@ class SequencerTest(unittest.TestCase):
     def test_observe_target(self, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
         self.initialize_sequencer()
         target, time_handler = self.create_objects()
-        mas = self.mock_astro_sky.return_value
-        mas.get_sky_brightness.return_value = {'u': [16.0], 'g': [17.0], 'r': [18.0],
-                                               'i': [19.0], 'z': [20.0], 'y': [21.0]}
-        mas.get_moon_sun_info.return_value = {'moonPhase': 0.3}
+        self.set_values_for_sky_model()
 
         observation, slew, exposures = self.seq.observe_target(target, time_handler)
 
@@ -93,6 +97,7 @@ class SequencerTest(unittest.TestCase):
     def test_end_of_night(self, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
         self.initialize_sequencer()
         target, time_handler = self.create_objects()
+        self.set_values_for_sky_model()
 
         # Don't care about outputs
         self.seq.observe_target(target, time_handler)
