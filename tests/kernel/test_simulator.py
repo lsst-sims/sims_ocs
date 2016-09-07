@@ -29,6 +29,9 @@ class SimulatorTest(unittest.TestCase):
         patcher3 = mock.patch("lsst.sims.ocs.database.socs_db.SocsDatabase", spec=True)
         self.addCleanup(patcher3.stop)
         self.mock_socs_db = patcher3.start()
+        patcher4 = mock.patch("lsst.sims.ocs.kernel.sequencer.AstronomicalSkyModel", spec=True)
+        self.addCleanup(patcher4.stop)
+        self.mock_astro_sky = patcher4.start()
 
         import collections
 

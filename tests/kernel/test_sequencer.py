@@ -13,6 +13,10 @@ from lsst.sims.ocs.sal.sal_manager import SalManager
 class SequencerTest(unittest.TestCase):
 
     def setUp(self):
+        patcher1 = mock.patch("lsst.sims.ocs.kernel.sequencer.AstronomicalSkyModel", spec=True)
+        self.addCleanup(patcher1.stop)
+        self.mock_astro_sky = patcher1.start()
+
         self.seq = Sequencer(ObservingSite(), Survey().idle_delay)
 
     def initialize_sequencer(self):
@@ -41,7 +45,9 @@ class SequencerTest(unittest.TestCase):
         self.assertIsNone(self.seq.observation)
         self.assertIsNotNone(self.seq.observatory_model)
         self.assertIsNone(self.seq.observatory_state)
+        self.assertIsNotNone(self.seq.observatory_location)
         self.assertEqual(self.seq.targets_missed, 0)
+        self.assertIsNotNone(self.seq.sky_model)
 
     @mock.patch("lsst.sims.ocs.observatory.main_observatory.MainObservatory.configure")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
@@ -64,11 +70,17 @@ class SequencerTest(unittest.TestCase):
     def test_observe_target(self, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
         self.initialize_sequencer()
         target, time_handler = self.create_objects()
+        mas = self.mock_astro_sky.return_value
+        mas.get_sky_brightness.return_value = {'u': [16.0], 'g': [17.0], 'r': [18.0],
+                                               'i': [19.0], 'z': [20.0], 'y': [21.0]}
+        mas.get_moon_sun_info.return_value = {'moonPhase': 0.3}
 
         observation, slew, exposures = self.seq.observe_target(target, time_handler)
 
         self.assertEqual(observation.observation_start_time, time_handler.initial_timestamp + 140.0)
         self.assertEqual(observation.targetId, target.targetId)
+        self.assertEqual(observation.sky_brightness, 19.0)
+        self.assertEqual(observation.moon_phase, 0.3)
         self.assertEqual(self.seq.targets_received, 1)
         self.assertEqual(self.seq.observations_made, 1)
         self.assertEqual(self.seq.targets_missed, 0)
