@@ -1,6 +1,6 @@
 setupRequired(python)
 setupRequired(pex_config)
-setupRequired(sims_skybrightness)
+setupRequired(sims_skybrightness_pre)
 setupRequired(sims_utils)
 setupRequired(ts_scheduler)
 
