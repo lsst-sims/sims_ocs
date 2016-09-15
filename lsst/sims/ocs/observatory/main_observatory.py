@@ -293,3 +293,30 @@ class MainObservatory(object):
         if self.variational_model.active:
             new_obs_config = self.variational_model.modify_parameters(night, duration)
             self.model.configure(new_obs_config)
+
+    def swap_filter(self, filter_to_unmount):
+        """Perform a filter swap.
+
+        This function takes a requested filter to unmount and checks it against the list
+        of removable filters. If it is not on the list, no filter swap is performed. If it
+        is on the list, a filter swap is performed.
+
+        Parameters
+        ----------
+        filter_to_unmount : str
+            The filter requested for unmounting.
+        """
+        if filter_to_unmount not in self.model.params.Filter_RemovableList:
+            self.log.info("Filter swap not performed as requested filter {} "
+                          "is not in removable list.".format(filter_to_unmount))
+            return
+
+        mindex = self.model.currentState.mountedfilters.index(filter_to_unmount)
+        self.model.currentState.mountedfilters.insert(mindex, self.model.currentState.unmountedfilters[0])
+        self.model.currentState.mountedfilters.remove(filter_to_unmount)
+
+        rindex = self.model.params.Filter_RemovableList.index(filter_to_unmount)
+        self.model.params.Filter_RemovableList.insert(rindex, self.model.currentState.unmountedfilters[0])
+        self.model.params.Filter_RemovableList.remove(filter_to_unmount)
+
+        self.model.currentState.unmountedfilters[0] = filter_to_unmount

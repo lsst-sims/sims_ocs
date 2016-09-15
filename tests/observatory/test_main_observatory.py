@@ -129,3 +129,29 @@ class MainObservatoryTest(unittest.TestCase):
         target = topic_helpers.target
         slew_time = self.observatory.slew(target)
         self.assertAlmostEqual(slew_time[0], 89.68809171544446, delta=1.0e-3)
+
+    def test_swap_filter(self):
+        self.observatory_configure()
+        current_mounted_filters = ['g', 'r', 'i', 'z', 'y']
+        current_unmounted_filters = ['u']
+        self.assertListEqual(self.observatory.currentState.mountedfilters, current_mounted_filters)
+        self.assertListEqual(self.observatory.currentState.unmountedfilters, current_unmounted_filters)
+        swapped_mounted_filters = ['g', 'r', 'i', 'z', 'u']
+        swapped_unmounted_filters = ['y']
+        swapped_removable_filters = ['u', 'z']
+        self.observatory.swap_filter('y')
+        self.assertListEqual(self.observatory.currentState.mountedfilters, swapped_mounted_filters)
+        self.assertListEqual(self.observatory.currentState.unmountedfilters, swapped_unmounted_filters)
+        self.assertListEqual(self.observatory.params.Filter_RemovableList, swapped_removable_filters)
+
+    def test_swap_nonremovable_filter(self):
+        self.observatory_configure()
+        current_mounted_filters = ['g', 'r', 'i', 'z', 'y']
+        current_unmounted_filters = ['u']
+        self.assertListEqual(self.observatory.currentState.mountedfilters, current_mounted_filters)
+        self.assertListEqual(self.observatory.currentState.unmountedfilters, current_unmounted_filters)
+        swapped_mounted_filters = ['g', 'r', 'i', 'z', 'y']
+        swapped_unmounted_filters = ['u']
+        self.observatory.swap_filter('g')
+        self.assertListEqual(self.observatory.currentState.mountedfilters, swapped_mounted_filters)
+        self.assertListEqual(self.observatory.currentState.unmountedfilters, swapped_unmounted_filters)
