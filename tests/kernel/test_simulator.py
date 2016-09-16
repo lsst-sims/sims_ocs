@@ -68,7 +68,7 @@ class SimulatorTest(unittest.TestCase):
         self.mock_socs_db.session_id = mock.Mock(return_value=1001)
         self.sim.initialize()
         self.assertEqual(self.mock_salmanager_pub_topic.call_count, 3 + CONFIG_COMM_PUT_CALLS)
-        self.assertEqual(self.mock_salmanager_sub_topic.call_count, 2)
+        self.assertEqual(self.mock_salmanager_sub_topic.call_count, 3)
         self.assertEqual(mock_sequencer_init.call_count, 1)
 
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.finalize")
@@ -81,8 +81,9 @@ class SimulatorTest(unittest.TestCase):
         # Setup for 1 night and 9 visits
         self.num_nights = 1
         self.num_visits = 9
-        # Timestamp, cloud, seeing, observatory state and observation
-        self.put_calls = 5 * self.num_visits
+        # Timestamp, cloud, seeing, observatory state and observation per visit
+        # Timestamp per day
+        self.put_calls = 5 * self.num_visits + self.num_nights
         self.config_comm_put_calls = 1
         self.put_calls += CONFIG_COMM_PUT_CALLS
         self.put_calls += CONFIG_AREA_DIST_PROPS
@@ -127,17 +128,48 @@ class SimulatorTest(unittest.TestCase):
         # Targets
         mock_ss.getNextSample_target = mock.MagicMock(return_value=0)
         self.sim.target.num_exposures = 2
+        # Filter Swap
+        mock_ss.getNextSample_filterSwap = mock.MagicMock(return_value=0)
+        self.sim.filter_swap.filter_to_unmount = 'u'
 
         self.sim.run()
 
         self.assertEqual(mock_salmanager_put.call_count, self.put_calls)
         self.assertEqual(mock_ss.getNextSample_field.call_count, 2)
         self.assertEqual(mock_ss.getNextSample_target.call_count, get_calls)
+        self.assertEqual(mock_ss.getNextSample_filterSwap.call_count, 1)
         self.assertEqual(self.sim.seq.targets_received, self.num_visits)
         self.assertEqual(self.sim.seq.observations_made, self.num_visits)
         self.assertEqual(self.mock_socs_db.clear_data.call_count, self.num_nights)
         self.assertEqual(self.mock_socs_db.append_data.call_count, self.num_visits * 12)
         self.assertEqual(self.mock_socs_db.write.call_count, self.num_nights)
+
+    @mock.patch("SALPY_scheduler.SAL_scheduler")
+    @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.put")
+    def test_run_with_scheduler_and_filter_swap(self, mock_salmanager_put, mock_salscheduler):
+        self.short_run(True)
+
+        self.sim.initialize()
+        # Need to make Scheduler wait break conditions work.
+        mock_ss = mock_salscheduler()
+        # Fields
+        mock_ss.getNextSample_field = mock.MagicMock(return_value=0)
+        self.sim.field.ID = -1
+        # Targets
+        mock_ss.getNextSample_target = mock.MagicMock(return_value=0)
+        self.sim.target.num_exposures = 2
+        # Filter Swap
+        mock_ss.getNextSample_filterSwap = mock.MagicMock(return_value=0)
+        self.sim.filter_swap.need_swap = True
+        self.sim.filter_swap.filter_to_unmount = 'u'
+
+        self.sim.seq.start_of_day = mock.MagicMock(return_value=None)
+
+        self.sim.run()
+
+        self.assertTrue(mock_ss.getNextSample_filterSwap.called)
+        self.assertTrue(self.sim.seq.start_of_day.called)
+        self.sim.seq.start_of_day.assert_called_once_with('u')
 
     def test_get_night_boundaries(self):
         self.check_night_boundary_tuple(1641084532.843324, 1641113113.755558)
