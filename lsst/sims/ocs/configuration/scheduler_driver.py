@@ -13,6 +13,11 @@ class SchedulerDriver(pexConfig.Config):
     timebonus_bmax = pexConfig.Field("", float)
     timebonus_slope = pexConfig.Field("", float)
     night_boundary = pexConfig.Field('Solar altitude (degrees) when it is considered night.', float)
+    ignore_sky_brightness = pexConfig.Field('Flag to ignore sky brightness limits when rejecting targets.',
+                                            bool)
+    ignore_airmass = pexConfig.Field('Flag to ignore airmass limits when rejecting targets.', bool)
+    ignore_clouds = pexConfig.Field('Flag to ignore cloud limits when rejecting targets.', bool)
+    ignore_seeing = pexConfig.Field('Flag to ignore seeing limits when rejecting targets.', bool)
 
     def setDefaults(self):
         """Set defaults for the LSST Scheduler's Driver.
@@ -23,3 +28,7 @@ class SchedulerDriver(pexConfig.Config):
         self.timebonus_bmax = 10.0
         self.timebonus_slope = 2.26
         self.night_boundary = -12.0
+        self.ignore_sky_brightness = False
+        self.ignore_airmass = False
+        self.ignore_clouds = False
+        self.ignore_seeing = False
