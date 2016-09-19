@@ -147,3 +147,12 @@ class SequencerTest(unittest.TestCase):
         self.assertEqual(self.seq.targets_missed, 1)
         self.assertIsNone(slew)
         self.assertIsNone(exposures)
+
+    @mock.patch("logging.Logger.log")
+    @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetrySub")
+    @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
+    @mock.patch("lsst.sims.ocs.observatory.main_observatory.MainObservatory.swap_filter")
+    def test_start_of_day(self, mock_obs_sf, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
+        self.initialize_sequencer()
+        self.seq.start_of_day('u')
+        self.assertTrue(mock_obs_sf.called)

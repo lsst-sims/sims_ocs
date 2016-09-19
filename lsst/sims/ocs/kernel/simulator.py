@@ -193,6 +193,7 @@ class Simulator(object):
         self.field = self.sal.set_subscribe_topic("field")
         self.cloud = self.sal.set_publish_topic("cloud")
         self.seeing = self.sal.set_publish_topic("seeing")
+        self.filter_swap = self.sal.set_subscribe_topic("filterSwap")
 
     def run(self):
         """Run the simulation.
@@ -283,6 +284,7 @@ class Simulator(object):
                             self.db.append_data(exposure_type, exposure)
 
             self._end_night()
+            self.start_day()
 
     def save_proposal_information(self):
         """Save the active proposal information to the DB.
@@ -294,3 +296,30 @@ class Simulator(object):
                                             self.db.session_id))
             num_proposals += 1
         self.db.write_table("proposal", proposals)
+
+    def start_day(self):
+        """Perform actions at the start of day.
+
+        This function performs all actions at the start of day. This involves:
+
+        * Sending a timestamp to the Scheduler
+        * Checking if the Scheduler requests a filter swap
+        * Peforming the filter swap if requested
+        """
+        self.comm_time.timestamp = self.time_handler.current_timestamp
+        self.log.log(LoggingLevel.EXTENSIVE.value,
+                     "Daytime Timestamp sent: {}".format(self.time_handler.current_timestring))
+        self.sal.put(self.comm_time)
+
+        lastconfigtime = time.time()
+        while self.wait_for_scheduler:
+            rcode = self.sal.manager.getNextSample_filterSwap(self.filter_swap)
+            if rcode == 0 and self.filter_swap.filter_to_unmount != '':
+                break
+            else:
+                tf = time.time()
+                if (tf - lastconfigtime) > 5.0:
+                    break
+
+        if self.wait_for_scheduler and self.filter_swap.need_swap:
+            self.seq.start_of_day(self.filter_swap.filter_to_unmount)

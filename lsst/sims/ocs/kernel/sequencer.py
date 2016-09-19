@@ -162,6 +162,16 @@ class Sequencer(object):
 
         return self.observation, slew_info, exposure_info
 
+    def start_of_day(self, filter_to_unmount):
+        """Perform start of day functions.
+
+        Parameters
+        ----------
+        filter_to_unmount : str
+            The filter requested for unmounting.
+        """
+        self.observatory_model.swap_filter(filter_to_unmount)
+
     def start_of_night(self, night, duration):
         """Perform start of night functions.
 
