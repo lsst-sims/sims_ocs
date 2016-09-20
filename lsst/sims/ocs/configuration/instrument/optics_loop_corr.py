@@ -7,7 +7,7 @@ class OpticsLoopCorr(pexConfig.Config):
     """
 
     tel_optics_ol_slope = pexConfig.Field('Delay factor for Open Loop optics correction '
-                                          '(units=seconds/(degrees in ALT slew)', float)
+                                          '(units=seconds/degrees in ALT slew)', float)
 
     # Table of delay factors for Closed Loop optics correction according to the ALT slew range.
     tel_optics_cl_alt_limit = pexConfig.ListField('Altitude (units=degrees) limits for the delay ranges.',
