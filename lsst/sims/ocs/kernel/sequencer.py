@@ -1,7 +1,10 @@
 import logging
+import numpy
 
 from lsst.sims.ocs.observatory import MainObservatory
 from lsst.sims.ocs.setup import LoggingLevel
+from ts_scheduler.observatoryModel import ObservatoryLocation
+from ts_scheduler.sky_model import AstronomicalSkyModel
 
 __all__ = ["Sequencer"]
 
@@ -15,10 +18,18 @@ class Sequencer(object):
     ----------
     targets_received : int
         Counter for the number of targets received by the sequencer.
+    targets_missed : int
+        Counter for the number of targets that were actually observed due to scheduler rejection.
     observations_made : int
         Counter for the number of observations made by the sequencer.
     observation : SALPY_scheduler.observationC
         DDS topic instance for the observation information.
+    observatory_model : :class:`.MainObservatory`
+        Instance of the SOCS observatory model.
+    observatory_state : SALPY_scheduler.observatoryStateC
+        DDS topic instance for the observatory state information.
+    idle_delay : float
+        Time (units=seconds) to wait when a missed target is received.
     log : logging.Logger
         The logging instance.
     """
@@ -37,9 +48,13 @@ class Sequencer(object):
         self.targets_missed = 0
         self.observation = None
         self.observatory_model = MainObservatory(obs_site_config)
+        self.observatory_location = ObservatoryLocation(obs_site_config.latitude_rad,
+                                                        obs_site_config.longitude_rad,
+                                                        obs_site_config.height)
         self.observatory_state = None
         self.log = logging.getLogger("kernel.Sequencer")
         self.idle_delay = (idle_delay, "seconds")
+        self.sky_model = AstronomicalSkyModel(self.observatory_location)
 
     @property
     def observations_made(self):
@@ -107,6 +122,7 @@ class Sequencer(object):
         self.observation = sal.set_publish_topic("observation")
         self.observatory_state = sal.set_publish_topic("observatoryState")
         self.observatory_model.configure(obs_config)
+        #self.sky_model = AstronomicalSkyModel(self.observatory_location)
 
     def finalize(self):
         """Perform finalization steps.
@@ -151,6 +167,29 @@ class Sequencer(object):
             self.targets_received += 1
 
             slew_info, exposure_info = self.observatory_model.observe(th, target, self.observation)
+            self.sky_model.update(self.observation.observation_start_time)
+            sky_mags = self.sky_model.get_sky_brightness(numpy.radians(numpy.array([self.observation.ra])),
+                                                         numpy.radians(numpy.array([self.observation.dec])))
+
+            attrs = self.sky_model.get_target_information()
+            msi = self.sky_model.get_moon_sun_info(numpy.radians(self.observation.ra),
+                                                   numpy.radians(self.observation.dec))
+
+            self.observation.sky_brightness = sky_mags[self.observation.filter][0]
+            self.observation.airmass = attrs["airmass"][0]
+            self.observation.altitude = numpy.degrees(attrs["alts"][0])
+            self.observation.azimuth = numpy.degrees(attrs["azs"][0])
+            self.observation.moon_ra = numpy.degrees(msi["moonRA"])
+            self.observation.moon_dec = numpy.degrees(msi["moonDec"])
+            self.observation.moon_alt = numpy.degrees(msi["moonAlt"])
+            self.observation.moon_az = numpy.degrees(msi["moonAz"])
+            self.observation.moon_phase = msi["moonPhase"]
+            self.observation.moon_distance = numpy.degrees(msi["moonDist"])
+            self.observation.sun_alt = numpy.degrees(msi["sunAlt"])
+            self.observation.sun_az = numpy.degrees(msi["sunAz"])
+            self.observation.sun_ra = numpy.degrees(msi["sunRA"])
+            self.observation.sun_dec = numpy.degrees(msi["sunDec"])
+            self.observation.sun_elong = numpy.degrees(msi["sunEclipLon"])
         else:
             self.log.log(LoggingLevel.EXTENSIVE.value, "No target received!")
             self.observation.observationId = target.targetId

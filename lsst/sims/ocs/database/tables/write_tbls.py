@@ -123,9 +123,24 @@ def write_observation_history(data, sid):
         ('dec', data.dec),
         ('filter', data.filter),
         ('angle', data.angle),
+        ('altitude', data.altitude),
+        ('azimuth', data.azimuth),
         ('numExposures', data.num_exposures),
         ('visitTime', data.visit_time),
-        ('visitExposureTime', sum([data.exposure_times[i] for i in range(data.num_exposures)]))
+        ('visitExposureTime', sum([data.exposure_times[i] for i in range(data.num_exposures)])),
+        ('airmass', data.airmass),
+        ('skyBrightness', data.sky_brightness),
+        ('moonRA', data.moon_ra),
+        ('moonDec', data.moon_dec),
+        ('moonAlt', data.moon_alt),
+        ('moonAz', data.moon_az),
+        ('moonDistance', data.moon_distance),
+        ('moonPhase', data.moon_phase),
+        ('sunRA', data.sun_ra),
+        ('sunDec', data.sun_dec),
+        ('sunAlt', data.sun_alt),
+        ('sunAz', data.sun_az),
+        ('sunElong', data.sun_elong)
     ])
     return values
 

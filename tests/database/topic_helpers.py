@@ -56,10 +56,25 @@ observation_topic.filter = "r"
 observation_topic.ra = 1.000
 observation_topic.dec = -3.00
 observation_topic.angle = 0.5
+observation_topic.altitude = 60.0
+observation_topic.azimuth = 240.0
 observation_topic.num_exposures = 2
 observation_topic.exposure_times[0] = 15
 observation_topic.exposure_times[1] = 15
 observation_topic.visit_time = 34.0
+observation_topic.airmass = 1.4
+observation_topic.sky_brightness = 20.4
+observation_topic.moon_ra = 65.0
+observation_topic.moon_dec = -10.0
+observation_topic.moon_alt = -30.0
+observation_topic.moon_az = 250.0
+observation_topic.moon_phase = 0.5
+observation_topic.moon_distance = 60.0
+observation_topic.sun_ra = 245.0
+observation_topic.sun_dec = 0.0
+observation_topic.sun_alt = -10.0
+observation_topic.sun_az = 250.0
+observation_topic.sun_elong = 250.0
 
 slew_history_coll = lsst.sims.ocs.observatory.SlewHistory(slewCount=1, startDate=2922, endDate=2925,
                                                           slewTime=6.0, slewDistance=1.0,
