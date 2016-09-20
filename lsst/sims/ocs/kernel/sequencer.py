@@ -170,28 +170,32 @@ class Sequencer(object):
 
             slew_info, exposure_info = self.observatory_model.observe(th, target, self.observation)
             self.sky_model.update(self.observation.observation_start_time)
-            sky_mags = self.sky_model.get_sky_brightness(numpy.radians(numpy.array([self.observation.ra])),
-                                                         numpy.radians(numpy.array([self.observation.dec])))
+            sky_mags = self.sky_model.get_sky_brightness([target.fieldId])
+            airmass = self.sky_model.get_airmass([target.fieldId])
 
-            attrs = self.sky_model.get_target_information()
-            msi = self.sky_model.get_moon_sun_info(numpy.radians(self.observation.ra),
-                                                   numpy.radians(self.observation.dec))
+            # sky_mags = self.sky_model.get_sky_brightness(numpy.radians(numpy.array([self.observation.ra])),
+            #                                              numpy.radians(numpy.array([self.observation.dec])))
+
+            # attrs = self.sky_model.get_target_information()
+            # msi = self.sky_model.get_moon_sun_info(numpy.radians(self.observation.ra),
+            #                                        numpy.radians(self.observation.dec))
 
             self.observation.sky_brightness = sky_mags[self.observation.filter][0]
-            self.observation.airmass = attrs["airmass"][0]
-            self.observation.altitude = numpy.degrees(attrs["alts"][0])
-            self.observation.azimuth = numpy.degrees(attrs["azs"][0])
-            self.observation.moon_ra = numpy.degrees(msi["moonRA"])
-            self.observation.moon_dec = numpy.degrees(msi["moonDec"])
-            self.observation.moon_alt = numpy.degrees(msi["moonAlt"])
-            self.observation.moon_az = numpy.degrees(msi["moonAz"])
-            self.observation.moon_phase = msi["moonPhase"]
-            self.observation.moon_distance = numpy.degrees(msi["moonDist"])
-            self.observation.sun_alt = numpy.degrees(msi["sunAlt"])
-            self.observation.sun_az = numpy.degrees(msi["sunAz"])
-            self.observation.sun_ra = numpy.degrees(msi["sunRA"])
-            self.observation.sun_dec = numpy.degrees(msi["sunDec"])
-            self.observation.solar_elong = numpy.degrees(msi["solarElong"])
+            self.observation.airmass = airmass[0]
+            # self.observation.airmass = attrs["airmass"][0]
+            # self.observation.altitude = numpy.degrees(attrs["alts"][0])
+            # self.observation.azimuth = numpy.degrees(attrs["azs"][0])
+            # self.observation.moon_ra = numpy.degrees(msi["moonRA"])
+            # self.observation.moon_dec = numpy.degrees(msi["moonDec"])
+            # self.observation.moon_alt = numpy.degrees(msi["moonAlt"])
+            # self.observation.moon_az = numpy.degrees(msi["moonAz"])
+            # self.observation.moon_phase = msi["moonPhase"]
+            # self.observation.moon_distance = numpy.degrees(msi["moonDist"])
+            # self.observation.sun_alt = numpy.degrees(msi["sunAlt"])
+            # self.observation.sun_az = numpy.degrees(msi["sunAz"])
+            # self.observation.sun_ra = numpy.degrees(msi["sunRA"])
+            # self.observation.sun_dec = numpy.degrees(msi["sunDec"])
+            # self.observation.sun_elong = numpy.degrees(msi["solarElong"])
         else:
             self.log.log(LoggingLevel.EXTENSIVE.value, "No target received!")
             self.observation.observationId = target.targetId
