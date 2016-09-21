@@ -78,7 +78,7 @@ Next, create a Conda environment and activate it::
 
 Next, add the LSST Conda package channel by doing the following::
 
-    conda config --add channels http://conda.lsst.codes/stack
+    conda config --add channels http://conda.lsst.codes/sims
 
 In order to run the Operations Simulator (SOCS/Scheduler), the following need to be installed::
 
@@ -103,19 +103,19 @@ Once the above is complete, setup the environment by doing::
 With the environment setup, we need to declare and setup the SOCS and Scheduler packages so they can be used. Declare the Scheduler::
 
 	cd gitdir/ts/ts_scheduler
-	eups declare ts_scheduler -r . -t $USER
+	eups declare ts_scheduler git -r . -c
 
 To declare and setup SOCS, do::
 
 	cd gitdir/lsst-sims/sims_ocs
-	eups declare sims_ocs -r . -t $USER
-	setup sims_ocs -t $USER
+	eups declare sims_ocs git -r . -c
+	setup sims_ocs
 	python setup.py develop
 
 **NOTE**: The declaration steps only need to be done once. After that, when returning to the same conda environment, do::
 
 	source eups-setups.sh
-	setup sims_ocs -t $USER
+	setup sims_ocs
 
 .. _installation-database:
 
