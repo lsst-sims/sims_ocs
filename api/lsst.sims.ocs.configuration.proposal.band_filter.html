@@ -102,6 +102,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.environment.html">lsst.sims.ocs.environment package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
@@ -135,7 +136,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -170,6 +171,13 @@
 <em class="property">class </em><code class="descclassname">lsst.sims.ocs.configuration.proposal.band_filter.</code><code class="descname">BandFilter</code><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/proposal/band_filter.html#BandFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.band_filter.BandFilter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">lsst.pex.config.config.Config</span></code></p>
 <p>Configuration for a proposal filter.</p>
+<p>!Allocate a new Config object.</p>
+<p>In order to ensure that all Config object are always in a proper
+state when handed to users or to derived Config classes, some
+attributes are handled at allocation time rather than at initialization</p>
+<p>This ensures that even if a derived Config class implements __init__,
+the author does not need to be concerned about when or even if he
+should call the base Config.__init__</p>
 <dl class="method">
 <dt id="lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.setDefaults">
 <code class="descname">setDefaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/proposal/band_filter.html#BandFilter.setDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.setDefaults" title="Permalink to this definition">¶</a></dt>

@@ -102,6 +102,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.environment.html">lsst.sims.ocs.environment package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
@@ -135,7 +136,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -166,6 +167,25 @@
   <div class="section" id="module-lsst.sims.ocs.database.tables.base_tbls">
 <span id="lsst-sims-ocs-database-tables-base-tbls-module"></span><h1>lsst.sims.ocs.database.tables.base_tbls module<a class="headerlink" href="#module-lsst.sims.ocs.database.tables.base_tbls" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_cloud">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_cloud</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_cloud"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_cloud" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the Cloud table.</p>
+<p>This function creates the Cloud table containing the nominal cloud values for the simulation.</p>
+<p>Table Description:</p>
+<p>This table contains the cloud information from observations taken from Cerro Tololo for ten years.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The Cloud table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="lsst.sims.ocs.database.tables.base_tbls.create_field">
 <code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_field</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Field table.</p>
@@ -183,8 +203,7 @@ published electronically at <a class="reference external" href="http://NeilSloan
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
-The Field table object.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The Field table object.</td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +216,7 @@ The Field table object.</td>
 <p>This function creates the ObsExposures table from the observation exposures.</p>
 <p>Table Description:</p>
 <p>This table contains all of the individual exposure information for each visit in the
-<a class="reference internal" href="../tables/obshistory.html#database-tables-obshistory"><span>ObsHistory</span></a> table. The number of exposures in a visit is determined
+<a class="reference internal" href="../tables/obshistory.html#database-tables-obshistory"><span class="std std-ref">ObsHistory</span></a> table. The number of exposures in a visit is determined
 by the visit target&#8217;s exposure cadence.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -205,8 +224,7 @@ by the visit target&#8217;s exposure cadence.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
-The ObsExposure table object.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The ObsExposure table object.</td>
 </tr>
 </tbody>
 </table>
@@ -228,8 +246,46 @@ this table.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
-The ObsHistory table object.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The ObsHistory table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_proposal">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_proposal</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_proposal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_proposal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the Proposal table.</p>
+<p>This function creates the Proposal table for listing the active proposals.</p>
+<p>Table Description:</p>
+<p>This table records all of the active science proposals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The Proposal table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_proposal_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_proposal_history</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_proposal_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_proposal_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the ProposalHistory table.</p>
+<p>This function creates the ProposalHistory table for listing all proposals that are assigned to
+a given observation.</p>
+<p>Table Description:</p>
+<p>This table records all of the proposals and proposal information for a given observation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The ProposalHistory table object.</td>
 </tr>
 </tbody>
 </table>
@@ -239,7 +295,7 @@ The ObsHistory table object.</td>
 <dt id="lsst.sims.ocs.database.tables.base_tbls.create_scheduled_downtime">
 <code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_scheduled_downtime</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_scheduled_downtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_scheduled_downtime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the ScheduledDowntime table.</p>
-<p>This function creates the ScheduledDowntime table for list the scheduled
+<p>This function creates the ScheduledDowntime table for listing the scheduled
 downtime during the survey.</p>
 <p>Table Description:</p>
 <p>This table records all of the scheduled downtime for the entire survey (plus an extra 10 years). The
@@ -250,8 +306,26 @@ actual downtime used in the simulation maybe different depending on the length o
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
-The ScheduledDowntime table object.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The ScheduledDowntime table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_seeing">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_seeing</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_seeing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_seeing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the Seeing table.</p>
+<p>This function creates the Seeing table containing the nominal seeing values for the simulation.</p>
+<p>Table Description:</p>
+<p>This table contains the seeing information from observations taken from Cerro Pachon for one year.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The Seeing table object.</td>
 </tr>
 </tbody>
 </table>
@@ -276,8 +350,7 @@ runs are identified by the combination of the hostname and session Id: <em>sessi
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>sqlalchemy.Table</em> &#8211;
-The Session table object.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>sqlalchemy.Table</em> &#8211; The Session table object.</p>
 </td>
 </tr>
 </tbody>
@@ -291,15 +364,14 @@ The Session table object.</p>
 <p>This function creates the SlewActivities table for tracking the activities during a slew.</p>
 <p>Table Description:</p>
 <p>This table contains all the activities for a given visit&#8217;s slew. The <em>SlewHistory_slewCount</em> column
-points to a given slew in the <a class="reference internal" href="../tables/slewhistory.html#database-tables-slewhistory"><span>SlewHistory</span></a> table.</p>
+points to a given slew in the <a class="reference internal" href="../tables/slewhistory.html#database-tables-slewhistory"><span class="std std-ref">SlewHistory</span></a> table.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
-The SlewActivities table object.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The SlewActivities table object.</td>
 </tr>
 </tbody>
 </table>
@@ -313,15 +385,14 @@ The SlewActivities table object.</td>
 <p>Table Description:</p>
 <p>This table contains all of the final state information from a given visit&#8217;s slew. The state
 information is collected after the slew has completed, but before the visit activity has started.
-The <em>SlewHistory_slewCount</em> column points to a given slew in the <a class="reference internal" href="../tables/slewhistory.html#database-tables-slewhistory"><span>SlewHistory</span></a> table.</p>
+The <em>SlewHistory_slewCount</em> column points to a given slew in the <a class="reference internal" href="../tables/slewhistory.html#database-tables-slewhistory"><span class="std std-ref">SlewHistory</span></a> table.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
-The SlewFinalState table object.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The SlewFinalState table object.</td>
 </tr>
 </tbody>
 </table>
@@ -341,8 +412,7 @@ performed by the observatory.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
-The SlewHistory table object.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The SlewHistory table object.</td>
 </tr>
 </tbody>
 </table>
@@ -356,15 +426,14 @@ The SlewHistory table object.</td>
 <p>Table Description:</p>
 <p>This table contains all of the initial state information from a given visit&#8217;s slew. The state
 information is collected before the slew to the given target has started. The <em>SlewHistory_slewCount</em>
-column points to a given slew in the <a class="reference internal" href="../tables/slewhistory.html#database-tables-slewhistory"><span>SlewHistory</span></a> table.</p>
+column points to a given slew in the <a class="reference internal" href="../tables/slewhistory.html#database-tables-slewhistory"><span class="std std-ref">SlewHistory</span></a> table.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
-The SlewInitialState table object.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The SlewInitialState table object.</td>
 </tr>
 </tbody>
 </table>
@@ -379,15 +448,14 @@ achieved during a slew.</p>
 <p>Table Description:</p>
 <p>This table contains all of the maximum speeds obtained by the telescope, dome and rotator
 during a given visit&#8217;s slew. The <em>SlewHistory_slewCount</em> column points to a given slew in
-the <a class="reference internal" href="../tables/slewhistory.html#database-tables-slewhistory"><span>SlewHistory</span></a> table.</p>
+the <a class="reference internal" href="../tables/slewhistory.html#database-tables-slewhistory"><span class="std std-ref">SlewHistory</span></a> table.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
-The SlewMaxSpeeds table object.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The SlewMaxSpeeds table object.</td>
 </tr>
 </tbody>
 </table>
@@ -400,7 +468,7 @@ The SlewMaxSpeeds table object.</td>
 <p>This function creates the TargetExposures table from the target exposures.</p>
 <p>Table Description:</p>
 <p>This table contains all of the individual exposure information for each target in the
-<a class="reference internal" href="../tables/targethistory.html#database-tables-targethistory"><span>TargetHistory</span></a> table. The number of exposures for a target is determined
+<a class="reference internal" href="../tables/targethistory.html#database-tables-targethistory"><span class="std std-ref">TargetHistory</span></a> table. The number of exposures for a target is determined
 by the requesting proposal&#8217;s exposure cadence.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -408,8 +476,7 @@ by the requesting proposal&#8217;s exposure cadence.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
-The Target Exposure table object.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The Target Exposure table object.</td>
 </tr>
 </tbody>
 </table>
@@ -429,8 +496,7 @@ the Scheduler in the simulation run.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
-The TargetHistory table object.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The TargetHistory table object.</td>
 </tr>
 </tbody>
 </table>
@@ -451,8 +517,7 @@ actual downtime used in the simulation maybe different depending on the length o
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211;
-The UnscheduledDowntime table object.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The UnscheduledDowntime table object.</td>
 </tr>
 </tbody>
 </table>

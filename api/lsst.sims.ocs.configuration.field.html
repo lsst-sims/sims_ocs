@@ -33,7 +33,7 @@
     <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.configuration package" href="lsst.sims.ocs.configuration.html"/>
         <link rel="next" title="lsst.sims.ocs.configuration.helpers module" href="lsst.sims.ocs.configuration.helpers.html"/>
-        <link rel="prev" title="lsst.sims.ocs.configuration.downtime module" href="lsst.sims.ocs.configuration.downtime.html"/> 
+        <link rel="prev" title="lsst.sims.ocs.configuration.environment module" href="lsst.sims.ocs.configuration.environment.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -102,6 +102,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.environment.html">lsst.sims.ocs.environment package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
@@ -135,7 +136,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -174,57 +175,49 @@ values in radians.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.fid">
 <code class="descname">fid</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.fid" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em></p>
-<p>The field&#8217;s ID.</p>
+<dd><p><em>int</em> &#8211; The field&#8217;s ID.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.fov">
 <code class="descname">fov</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.fov" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em></p>
-<p>The field&#8217;s field-of-view.</p>
+<dd><p><em>float</em> &#8211; The field&#8217;s field-of-view.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.ra">
 <code class="descname">ra</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.ra" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em></p>
-<p>The field&#8217;s right ascension.</p>
+<dd><p><em>float</em> &#8211; The field&#8217;s right ascension.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.dec">
 <code class="descname">dec</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.dec" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em></p>
-<p>The field&#8217;s declination.</p>
+<dd><p><em>float</em> &#8211; The field&#8217;s declination.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.gl">
 <code class="descname">gl</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.gl" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em></p>
-<p>The field&#8217;s galactic latitude.</p>
+<dd><p><em>float</em> &#8211; The field&#8217;s galactic latitude.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.gb">
 <code class="descname">gb</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.gb" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em></p>
-<p>The field&#8217;s galactic longitude.</p>
+<dd><p><em>float</em> &#8211; The field&#8217;s galactic longitude.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.el">
 <code class="descname">el</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.el" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em></p>
-<p>The field&#8217;s ecliptic latitude.</p>
+<dd><p><em>float</em> &#8211; The field&#8217;s ecliptic latitude.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.eb">
 <code class="descname">eb</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.eb" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em></p>
-<p>The field&#8217;s ecliptic longitude.</p>
+<dd><p><em>float</em> &#8211; The field&#8217;s ecliptic longitude.</p>
 </dd></dl>
 
 <p>Initialize the class.</p>
@@ -281,43 +274,43 @@ values in radians.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.dec_rad">
 <code class="descname">dec_rad</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.dec_rad" title="Permalink to this definition">¶</a></dt>
-<dd><p>float: Declination in radians.</p>
+<dd><p><em>float</em> &#8211; Declination in radians.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.eb_rad">
 <code class="descname">eb_rad</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.eb_rad" title="Permalink to this definition">¶</a></dt>
-<dd><p>float: Ecliptic longitude in radians.</p>
+<dd><p><em>float</em> &#8211; Ecliptic longitude in radians.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.el_rad">
 <code class="descname">el_rad</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.el_rad" title="Permalink to this definition">¶</a></dt>
-<dd><p>float: Ecliptic latitude in radians.</p>
+<dd><p><em>float</em> &#8211; Ecliptic latitude in radians.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.fov_rad">
 <code class="descname">fov_rad</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.fov_rad" title="Permalink to this definition">¶</a></dt>
-<dd><p>float: Field-of-view in radians.</p>
+<dd><p><em>float</em> &#8211; Field-of-view in radians.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.gb_rad">
 <code class="descname">gb_rad</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.gb_rad" title="Permalink to this definition">¶</a></dt>
-<dd><p>float: Galactic longitude in radians.</p>
+<dd><p><em>float</em> &#8211; Galactic longitude in radians.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.gl_rad">
 <code class="descname">gl_rad</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.gl_rad" title="Permalink to this definition">¶</a></dt>
-<dd><p>float: Galactic latitude in radians.</p>
+<dd><p><em>float</em> &#8211; Galactic latitude in radians.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.field.Field.ra_rad">
 <code class="descname">ra_rad</code><a class="headerlink" href="#lsst.sims.ocs.configuration.field.Field.ra_rad" title="Permalink to this definition">¶</a></dt>
-<dd><p>float: Right ascension in radians.</p>
+<dd><p><em>float</em> &#8211; Right ascension in radians.</p>
 </dd></dl>
 
 </dd></dl>
@@ -334,7 +327,7 @@ values in radians.</p>
         <a href="lsst.sims.ocs.configuration.helpers.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.configuration.helpers module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="lsst.sims.ocs.configuration.downtime.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.downtime module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="lsst.sims.ocs.configuration.environment.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.environment module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

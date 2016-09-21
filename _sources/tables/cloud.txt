@@ -1,0 +1,21 @@
+.. _database-tables-cloud:
+
+=====
+Cloud
+=====
+
+This table contains the cloud information from observations taken from Cerro Tololo for ten years.
+
+.. list-table:: 
+    :header-rows: 1
+
+    * -  Column
+      -  Description
+    * -  cloudId
+      -  The numeric identifier for the particular cloud entry.
+    * -  Session_sessionId
+      -  The simulation run session Id.
+    * -  c_date
+      -  The time (units=seconds) from the zero point of the cloud data.
+    * -  cloud
+      -  The cloud coverage in 8th on the sky.

@@ -102,6 +102,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.environment.html">lsst.sims.ocs.environment package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
@@ -135,7 +136,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -174,57 +175,49 @@ database and individual database files for each run session of the simulation.</
 <dl class="attribute">
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.db_name">
 <code class="descname">db_name</code><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.db_name" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em></p>
-<p>The name of the database. Applies to MySQL only.</p>
+<dd><p><em>str</em> &#8211; The name of the database. Applies to MySQL only.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.db_dialect">
 <code class="descname">db_dialect</code><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.db_dialect" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em></p>
-<p>The flavor of the database to use. Options: mysql or sqlite.</p>
+<dd><p><em>str</em> &#8211; The flavor of the database to use. Options: mysql or sqlite.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.metadata">
 <code class="descname">metadata</code><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>sqlalchemy.MetaData</em></p>
-<p>The instance for holding the relevant tables.</p>
+<dd><p><em>sqlalchemy.MetaData</em> &#8211; The instance for holding the relevant tables.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.engine">
 <code class="descname">engine</code><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.engine" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>sqlalchemy.engine.Engine</em></p>
-<p>The instance of the database engine.</p>
+<dd><p><em>sqlalchemy.engine.Engine</em> &#8211; The instance of the database engine.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.mysql_config_path">
 <code class="descname">mysql_config_path</code><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.mysql_config_path" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em></p>
-<p>An alternate path for the .my.cnf configuration file for MySQL.</p>
+<dd><p><em>str</em> &#8211; An alternate path for the .my.cnf configuration file for MySQL.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.sqlite_save_path">
 <code class="descname">sqlite_save_path</code><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.sqlite_save_path" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em></p>
-<p>A path to save all resulting database files for SQLite.</p>
+<dd><p><em>str</em> &#8211; A path to save all resulting database files for SQLite.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.session_engine">
 <code class="descname">session_engine</code><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.session_engine" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>sqlalchemy.engine.Engine</em></p>
-<p>The session specific instance of the database engine. SQLite only.</p>
+<dd><p><em>sqlalchemy.engine.Engine</em> &#8211; The session specific instance of the database engine. SQLite only.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.session_metadata">
 <code class="descname">session_metadata</code><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.session_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>sqlalchemy.MetaData</em></p>
-<p>The instance for holding the session specific tables. SQLite only.</p>
+<dd><p><em>sqlalchemy.MetaData</em> &#8211; The instance for holding the session specific tables. SQLite only.</p>
 </dd></dl>
 
 <p>Initialize the class.</p>
@@ -299,8 +292,7 @@ the session IDs commensurate with MySQL.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>run_comment</strong> (<em>str</em>) &#8211; The startup comment for the simulation run.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>int</em> &#8211;
-The session ID for this simulation run.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>int</em> &#8211; The session ID for this simulation run.</td>
 </tr>
 </tbody>
 </table>
@@ -333,7 +325,7 @@ The session ID for this simulation run.</td>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.SQLITE_SESSION_OFFSET">
 <code class="descname">SQLITE_SESSION_OFFSET</code><em class="property"> = 999</em><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.SQLITE_SESSION_OFFSET" title="Permalink to this definition">¶</a></dt>
-<dd><p>int: Adjustment so starting session ID is 1000 like MySQL.</p>
+<dd><p><em>int</em> &#8211; Adjustment so starting session ID is 1000 like MySQL.</p>
 </dd></dl>
 
 </dd></dl>

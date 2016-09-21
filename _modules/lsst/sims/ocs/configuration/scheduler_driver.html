@@ -144,20 +144,32 @@
     <span class="sd">&quot;&quot;&quot;Configuration of the LSST Scheduler&#39;s Driver.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">coadd_values</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">coadd_values</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to determine if two identical field/filter targets have their &#39;</span>
+                                   <span class="s1">&#39;ranks added and then considered as one target.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">time_balancing</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to detemine if cross-proposal time-balancing is used.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="n">timebonus_tmax</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
     <span class="n">timebonus_bmax</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
     <span class="n">timebonus_slope</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-    <span class="n">night_boundary</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s2">&quot;Solar altitude (degrees) when it is considered night.&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">night_boundary</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Solar altitude (degrees) when it is considered night.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">ignore_sky_brightness</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to ignore sky brightness limits when rejecting targets.&#39;</span><span class="p">,</span>
+                                            <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">ignore_airmass</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to ignore airmass limits when rejecting targets.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">ignore_clouds</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to ignore cloud limits when rejecting targets.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">ignore_seeing</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to ignore seeing limits when rejecting targets.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SchedulerDriver.setDefaults"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.scheduler_driver.html#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set defaults for the LSST Scheduler&#39;s Driver.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">coadd_values</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_balancing</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timebonus_tmax</span> <span class="o">=</span> <span class="mf">200.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timebonus_bmax</span> <span class="o">=</span> <span class="mf">10.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timebonus_slope</span> <span class="o">=</span> <span class="mf">2.26</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">night_boundary</span> <span class="o">=</span> <span class="o">-</span><span class="mf">12.0</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">night_boundary</span> <span class="o">=</span> <span class="o">-</span><span class="mf">12.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_sky_brightness</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_airmass</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_clouds</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_seeing</span> <span class="o">=</span> <span class="bp">False</span></div></div>
 </pre></div>
 
            </div>

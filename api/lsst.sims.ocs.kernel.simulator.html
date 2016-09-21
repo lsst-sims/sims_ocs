@@ -97,6 +97,7 @@
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.environment.html">lsst.sims.ocs.environment package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="lsst.sims.ocs.kernel.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.kernel.html#module-lsst.sims.ocs.kernel">Module contents</a></li>
@@ -134,7 +135,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -171,71 +172,73 @@
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.opts">
 <code class="descname">opts</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.opts" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>argparse.Namespace</em></p>
-<p>The options returned by the ArgumentParser instance.</p>
+<dd><p><em>argparse.Namespace</em> &#8211; The options returned by the ArgumentParser instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.conf">
 <code class="descname">conf</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.conf" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig" title="lsst.sims.ocs.configuration.sim_config.SimulationConfig"><code class="xref py py-class docutils literal"><span class="pre">SimulationConfig</span></code></a></p>
-<p>The simulation configuration instance.</p>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig" title="lsst.sims.ocs.configuration.sim_config.SimulationConfig"><code class="xref py py-class docutils literal"><span class="pre">SimulationConfig</span></code></a> &#8211; The simulation configuration instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.db">
 <code class="descname">db</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.db" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase" title="lsst.sims.ocs.database.socs_db.SocsDatabase"><code class="xref py py-class docutils literal"><span class="pre">SocsDatabase</span></code></a></p>
-<p>The simulation database instance.</p>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase" title="lsst.sims.ocs.database.socs_db.SocsDatabase"><code class="xref py py-class docutils literal"><span class="pre">SocsDatabase</span></code></a> &#8211; The simulation database instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.fractional_duration">
 <code class="descname">fractional_duration</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.fractional_duration" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em></p>
-<p>The length in years for the simulated survey.</p>
+<dd><p><em>float</em> &#8211; The length in years for the simulated survey.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.time_handler">
 <code class="descname">time_handler</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.time_handler" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler" title="lsst.sims.ocs.kernel.time_handler.TimeHandler"><code class="xref py py-class docutils literal"><span class="pre">TimeHandler</span></code></a></p>
-<p>The simulation time handling instance.</p>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler" title="lsst.sims.ocs.kernel.time_handler.TimeHandler"><code class="xref py py-class docutils literal"><span class="pre">TimeHandler</span></code></a> &#8211; The simulation time handling instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.log">
 <code class="descname">log</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.log" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>logging.Logger</em></p>
-<p>The logging instance.</p>
+<dd><p><em>logging.Logger</em> &#8211; The logging instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.sal">
 <code class="descname">sal</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.sal" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="lsst.sims.ocs.sal.sal_manager.html#lsst.sims.ocs.sal.sal_manager.SalManager" title="lsst.sims.ocs.sal.sal_manager.SalManager"><code class="xref py py-class docutils literal"><span class="pre">SalManager</span></code></a></p>
-<p>The instance that manages interactions with the SAL.</p>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.sal.sal_manager.html#lsst.sims.ocs.sal.sal_manager.SalManager" title="lsst.sims.ocs.sal.sal_manager.SalManager"><code class="xref py py-class docutils literal"><span class="pre">SalManager</span></code></a> &#8211; The instance that manages interactions with the SAL.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.seq">
 <code class="descname">seq</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.seq" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer" title="lsst.sims.ocs.kernel.sequencer.Sequencer"><code class="xref py py-class docutils literal"><span class="pre">Sequencer</span></code></a></p>
-<p>The sequencer instance.</p>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer" title="lsst.sims.ocs.kernel.sequencer.Sequencer"><code class="xref py py-class docutils literal"><span class="pre">Sequencer</span></code></a> &#8211; The sequencer instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.dh">
 <code class="descname">dh</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.dh" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler" title="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler"><code class="xref py py-class docutils literal"><span class="pre">DowntimeHandler</span></code></a></p>
-<p>The downtime handler instance.</p>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler" title="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler"><code class="xref py py-class docutils literal"><span class="pre">DowntimeHandler</span></code></a> &#8211; The downtime handler instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.conf_comm">
 <code class="descname">conf_comm</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.conf_comm" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="lsst.sims.ocs.configuration.conf_comm.html#lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator" title="lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator"><code class="xref py py-class docutils literal"><span class="pre">ConfigurationCommunicator</span></code></a></p>
-<p>The configuration communicator instance.</p>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.configuration.conf_comm.html#lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator" title="lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator"><code class="xref py py-class docutils literal"><span class="pre">ConfigurationCommunicator</span></code></a> &#8211; The configuration communicator instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.cloud_model">
+<code class="descname">cloud_model</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.cloud_model" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.environment.cloud_model.html#lsst.sims.ocs.environment.cloud_model.CloudModel" title="lsst.sims.ocs.environment.cloud_model.CloudModel"><code class="xref py py-class docutils literal"><span class="pre">CloudModel</span></code></a> &#8211; The cloud model instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.seeing_model">
+<code class="descname">seeing_model</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.seeing_model" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.environment.seeing_model.html#lsst.sims.ocs.environment.seeing_model.SeeingModel" title="lsst.sims.ocs.environment.seeing_model.SeeingModel"><code class="xref py py-class docutils literal"><span class="pre">SeeingModel</span></code></a> &#8211; The seeing model instance.</p>
 </dd></dl>
 
 <p>Initialize the class.</p>
@@ -260,6 +263,20 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.gather_proposal_history">
+<code class="descname">gather_proposal_history</code><span class="sig-paren">(</span><em>obsId</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.gather_proposal_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.gather_proposal_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gather the proposal history from the current target.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>obsId</strong> (<em>int</em>) &#8211; The current observation identifier.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.get_night_boundaries">
 <code class="descname">get_night_boundaries</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.get_night_boundaries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.get_night_boundaries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the set and rise times for night.&#8221;</p>
@@ -267,8 +284,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>tuple (float, float)</em> &#8211;
-A tuple of the set and rise timestamp respectively.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>tuple (float, float)</em> &#8211; A tuple of the set and rise timestamp respectively.</td>
 </tr>
 </tbody>
 </table>
@@ -296,10 +312,28 @@ gathering the necessary telemetry topics.</p>
 <dd><p>Run the simulation.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.save_proposal_information">
+<code class="descname">save_proposal_information</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.save_proposal_information"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.save_proposal_information" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the active proposal information to the DB.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.start_day">
+<code class="descname">start_day</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.start_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.start_day" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform actions at the start of day.</p>
+<p>This function performs all actions at the start of day. This involves:</p>
+<ul class="simple">
+<li>Sending a timestamp to the Scheduler</li>
+<li>Checking if the Scheduler requests a filter swap</li>
+<li>Peforming the filter swap if requested</li>
+</ul>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.duration">
 <code class="descname">duration</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.duration" title="Permalink to this definition">¶</a></dt>
-<dd><p>int: The duration of the simulation in days.</p>
+<dd><p><em>int</em> &#8211; The duration of the simulation in days.</p>
 </dd></dl>
 
 </dd></dl>

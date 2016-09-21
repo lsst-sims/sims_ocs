@@ -137,9 +137,12 @@
             
   <h1>Source code for lsst.sims.ocs.kernel.sequencer</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
 
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.observatory</span> <span class="kn">import</span> <span class="n">MainObservatory</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.setup</span> <span class="kn">import</span> <span class="n">LoggingLevel</span>
+<span class="kn">from</span> <span class="nn">ts_scheduler.observatoryModel</span> <span class="kn">import</span> <span class="n">ObservatoryLocation</span>
+<span class="kn">from</span> <span class="nn">ts_scheduler.sky_model</span> <span class="kn">import</span> <span class="n">AstronomicalSkyModel</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Sequencer&quot;</span><span class="p">]</span>
 
@@ -153,10 +156,18 @@
 <span class="sd">    ----------</span>
 <span class="sd">    targets_received : int</span>
 <span class="sd">        Counter for the number of targets received by the sequencer.</span>
+<span class="sd">    targets_missed : int</span>
+<span class="sd">        Counter for the number of targets that were actually observed due to scheduler rejection.</span>
 <span class="sd">    observations_made : int</span>
 <span class="sd">        Counter for the number of observations made by the sequencer.</span>
-<span class="sd">    observation : SALPY_scheduler.observationTestC</span>
+<span class="sd">    observation : SALPY_scheduler.observationC</span>
 <span class="sd">        DDS topic instance for the observation information.</span>
+<span class="sd">    observatory_model : :class:`.MainObservatory`</span>
+<span class="sd">        Instance of the SOCS observatory model.</span>
+<span class="sd">    observatory_state : SALPY_scheduler.observatoryStateC</span>
+<span class="sd">        DDS topic instance for the observatory state information.</span>
+<span class="sd">    idle_delay : float</span>
+<span class="sd">        Time (units=seconds) to wait when a missed target is received.</span>
 <span class="sd">    log : logging.Logger</span>
 <span class="sd">        The logging instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -175,9 +186,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">targets_missed</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observation</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observatory_model</span> <span class="o">=</span> <span class="n">MainObservatory</span><span class="p">(</span><span class="n">obs_site_config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observatory_location</span> <span class="o">=</span> <span class="n">ObservatoryLocation</span><span class="p">(</span><span class="n">obs_site_config</span><span class="o">.</span><span class="n">latitude_rad</span><span class="p">,</span>
+                                                        <span class="n">obs_site_config</span><span class="o">.</span><span class="n">longitude_rad</span><span class="p">,</span>
+                                                        <span class="n">obs_site_config</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observatory_state</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;kernel.Sequencer&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">idle_delay</span> <span class="o">=</span> <span class="p">(</span><span class="n">idle_delay</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_model</span> <span class="o">=</span> <span class="n">AstronomicalSkyModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observatory_location</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">observations_made</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -242,9 +257,10 @@
 <span class="sd">        obs_config : :class:`.Observatory`</span>
 <span class="sd">            The instance of the observatory configuration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">observation</span> <span class="o">=</span> <span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;observationTest&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation</span> <span class="o">=</span> <span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;observation&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observatory_state</span> <span class="o">=</span> <span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;observatoryState&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observatory_model</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">obs_config</span><span class="p">)</span></div>
+        <span class="c1">#self.sky_model = AstronomicalSkyModel(self.observatory_location)</span>
 
 <div class="viewcode-block" id="Sequencer.finalize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.finalize">[docs]</a>    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform finalization steps.</span>
@@ -270,14 +286,14 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        target : SALPY_scheduler.targetTestC</span>
+<span class="sd">        target : SALPY_scheduler.targetC</span>
 <span class="sd">            A target telemetry topic containing the current target information.</span>
 <span class="sd">        th : :class:`.TimeHandler`</span>
 <span class="sd">            An instance of the simulation&#39;s TimeHandler.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        SALPY_scheduler.observationTestC</span>
+<span class="sd">        SALPY_scheduler.observationC</span>
 <span class="sd">            An observation telemetry topic containing the observed target parameters.</span>
 <span class="sd">        dict(:class:`.SlewHistory`, :class:`.SlewState`, :class:`.SlewState`, list[:class:`.SlewActivity`])</span>
 <span class="sd">            A dictionanry of all the slew information from the visit.</span>
@@ -289,6 +305,29 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">targets_received</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="n">slew_info</span><span class="p">,</span> <span class="n">exposure_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">observatory_model</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">th</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sky_model</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">observation_start_time</span><span class="p">)</span>
+            <span class="n">sky_mags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_model</span><span class="o">.</span><span class="n">get_sky_brightness</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">ra</span><span class="p">])),</span>
+                                                         <span class="n">numpy</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">dec</span><span class="p">])))</span>
+
+            <span class="n">attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_model</span><span class="o">.</span><span class="n">get_target_information</span><span class="p">()</span>
+            <span class="n">msi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_model</span><span class="o">.</span><span class="n">get_moon_sun_info</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">ra</span><span class="p">),</span>
+                                                   <span class="n">numpy</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">dec</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">sky_brightness</span> <span class="o">=</span> <span class="n">sky_mags</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">filter</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">airmass</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;airmass&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">altitude</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;alts&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">azimuth</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;azs&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">moon_ra</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;moonRA&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">moon_dec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;moonDec&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">moon_alt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;moonAlt&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">moon_az</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;moonAz&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">moon_phase</span> <span class="o">=</span> <span class="n">msi</span><span class="p">[</span><span class="s2">&quot;moonPhase&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">moon_distance</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;moonDist&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">sun_alt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;sunAlt&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">sun_az</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;sunAz&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">sun_ra</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;sunRA&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">sun_dec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;sunDec&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">sun_elong</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;sunEclipLon&quot;</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;No target received!&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">observationId</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">targetId</span>
@@ -299,6 +338,16 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">targets_missed</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="p">,</span> <span class="n">slew_info</span><span class="p">,</span> <span class="n">exposure_info</span></div>
+
+<div class="viewcode-block" id="Sequencer.start_of_day"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.start_of_day">[docs]</a>    <span class="k">def</span> <span class="nf">start_of_day</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_to_unmount</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform start of day functions.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filter_to_unmount : str</span>
+<span class="sd">            The filter requested for unmounting.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observatory_model</span><span class="o">.</span><span class="n">swap_filter</span><span class="p">(</span><span class="n">filter_to_unmount</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Sequencer.start_of_night"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.start_of_night">[docs]</a>    <span class="k">def</span> <span class="nf">start_of_night</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">night</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform start of night functions.</span>

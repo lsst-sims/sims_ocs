@@ -97,6 +97,7 @@
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.environment.html">lsst.sims.ocs.environment package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
@@ -134,7 +135,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -172,43 +173,37 @@ information to record the simulation session to the tracking database.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.session_id">
 <code class="descname">session_id</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.session_id" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em></p>
-<p>The simulation session ID tag.</p>
+<dd><p><em>int</em> &#8211; The simulation session ID tag.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.session_type">
 <code class="descname">session_type</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.session_type" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em></p>
-<p>The simulation session type code.</p>
+<dd><p><em>str</em> &#8211; The simulation session type code.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.startup_comment">
 <code class="descname">startup_comment</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.startup_comment" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em></p>
-<p>The startup comment with the associated simulation session.</p>
+<dd><p><em>str</em> &#8211; The startup comment with the associated simulation session.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.log">
 <code class="descname">log</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.log" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>logging.Logger</em></p>
-<p>The logging instance.</p>
+<dd><p><em>logging.Logger</em> &#8211; The logging instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.opsim_tracking_url">
 <code class="descname">opsim_tracking_url</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.opsim_tracking_url" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em></p>
-<p>The URL for the Operations Simulator tracking database.</p>
+<dd><p><em>str</em> &#8211; The URL for the Operations Simulator tracking database.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.session_type_codes">
 <code class="descname">session_type_codes</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.session_type_codes" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict[str, int]</em></p>
-<p>The mapping of session type codes to integer values.</p>
+<dd><p><em>dict[str, int]</em> &#8211; The mapping of session type codes to integer values.</p>
 </dd></dl>
 
 <p>Initialize the class.</p>
@@ -251,13 +246,13 @@ may be used to indicate a simulation failure.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.tracking_url">
 <code class="descname">tracking_url</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.tracking_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>str: The URL for the tracking call.</p>
+<dd><p><em>str</em> &#8211; The URL for the tracking call.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.update_url">
 <code class="descname">update_url</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.update_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>str: The URL for the update call.</p>
+<dd><p><em>str</em> &#8211; The URL for the update call.</p>
 </dd></dl>
 
 </dd></dl>

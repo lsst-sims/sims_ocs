@@ -239,6 +239,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">observation_exposures</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_observation_exposures</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scheduled_downtime</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_scheduled_downtime</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unscheduled_downtime</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_unscheduled_downtime</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_proposal</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proposal_history</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">create_proposal_history</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="c1"># self.seeing = tables.create_seeing(metadata)</span>
+        <span class="c1"># self.cloud = tables.create_cloud(metadata)</span>
 
     <span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create the database connection for MySQL.</span>

@@ -97,6 +97,7 @@
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.environment.html">lsst.sims.ocs.environment package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="lsst.sims.ocs.kernel.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.kernel.html#module-lsst.sims.ocs.kernel">Module contents</a></li>
@@ -134,7 +135,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -170,22 +171,19 @@
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler._unix_start">
 <code class="descname">_unix_start</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler._unix_start" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>datetime.datetime</em></p>
-<p>Holder for the start of the UNIX epoch</p>
+<dd><p><em>datetime.datetime</em> &#8211; Holder for the start of the UNIX epoch</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.initial_dt">
 <code class="descname">initial_dt</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.initial_dt" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>datetime.datetime</em></p>
-<p>The date/time of the simulation start.</p>
+<dd><p><em>datetime.datetime</em> &#8211; The date/time of the simulation start.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.current_dt">
 <code class="descname">current_dt</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.current_dt" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>datetime.datetime</em></p>
-<p>The current simulation date/time.</p>
+<dd><p><em>datetime.datetime</em> &#8211; The current simulation date/time.</p>
 </dd></dl>
 
 <p>Initialize the class.</p>
@@ -215,8 +213,7 @@ be applied to that instead. This function does not update the internal timestamp
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>datetime.datetime</em> &#8211;
-The datetime object for the future date/time.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>datetime.datetime</em> &#8211; The datetime object for the future date/time.</p>
 </td>
 </tr>
 </tbody>
@@ -240,8 +237,7 @@ and returns the UNIX timestamp for that date/time. It does not update the intern
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>float</em> &#8211;
-The future UNIX timestamp.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>float</em> &#8211; The future UNIX timestamp.</p>
 </td>
 </tr>
 </tbody>
@@ -266,8 +262,7 @@ timestamp.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str</em> &#8211;
-The future date/time in ISO-8601.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str</em> &#8211; The future date/time in ISO-8601.</p>
 </td>
 </tr>
 </tbody>
@@ -287,8 +282,7 @@ is greater than or equal the elapsed time and false if less than the elapsed tim
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time_span</strong> (<em>float</em>) &#8211; The requested time span in seconds.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>bool</em> &#8211;
-True if the time elapsed is greater or False if less than the time span.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>bool</em> &#8211; True if the time elapsed is greater or False if less than the time span.</td>
 </tr>
 </tbody>
 </table>
@@ -317,31 +311,37 @@ units.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.current_midnight_timestamp">
 <code class="descname">current_midnight_timestamp</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.current_midnight_timestamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>float: Return the UNIX timestamp of midnight for the current date.</p>
+<dd><p><em>float</em> &#8211; Return the UNIX timestamp of midnight for the current date.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.current_timestamp">
 <code class="descname">current_timestamp</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.current_timestamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>float: Return the UNIX timestamp for the current date/time.</p>
+<dd><p><em>float</em> &#8211; Return the UNIX timestamp for the current date/time.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.current_timestring">
 <code class="descname">current_timestring</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.current_timestring" title="Permalink to this definition">¶</a></dt>
-<dd><p>str: Return the ISO-8601 representation of the current date/time.</p>
+<dd><p><em>str</em> &#8211; Return the ISO-8601 representation of the current date/time.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.initial_timestamp">
 <code class="descname">initial_timestamp</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.initial_timestamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>float: Return the UNIX timestamp for the initial date/time.</p>
+<dd><p><em>float</em> &#8211; Return the UNIX timestamp for the initial date/time.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.next_midnight_timestamp">
 <code class="descname">next_midnight_timestamp</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.next_midnight_timestamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>float: Return the UNIX timestamp of midnight for the next day after current date.</p>
+<dd><p><em>float</em> &#8211; Return the UNIX timestamp of midnight for the next day after current date.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.time_since_start">
+<code class="descname">time_since_start</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.time_since_start" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>float</em> &#8211; The number of seconds since the start date.</p>
 </dd></dl>
 
 </dd></dl>

@@ -17,6 +17,7 @@ Submodules
 
    lsst.sims.ocs.configuration.conf_comm
    lsst.sims.ocs.configuration.downtime
+   lsst.sims.ocs.configuration.environment
    lsst.sims.ocs.configuration.field
    lsst.sims.ocs.configuration.helpers
    lsst.sims.ocs.configuration.obs_site

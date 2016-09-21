@@ -19,6 +19,8 @@ This table keeps a record of the information from the requested targets during a
       -  Numeric identifier that relates to an entry in the Field table.
     * -  filter
       -  Band filter requested by the target.
+    * -  requestTime
+      -  The UTC time (units=seconds) when all of the associated information (airmass etc.) was calculated for the target.
     * -  ra
       -  Right Ascension of the requested target (units=degrees).
     * -  dec
@@ -29,3 +31,39 @@ This table keeps a record of the information from the requested targets during a
       -  Number of exposures for the requested target.
     * -  requestedExpTime
       -  The total duration of all requested exposures (units=seconds).
+    * -  airmass
+      -  The airmass of the target.
+    * -  skyBrightness
+      -  The calculated skybrightness for the target.
+    * -  slewTime
+      -  The calculated slew time (units=seconds) for the target.
+    * -  costBonus
+      -  The calculated cost bonus (slew time) for the target.
+    * -  rank
+      -  The rank of the target for the associated proposal. If more than one proposal, this is a coadded value.
+    * -  propBoost
+      -  The calculated time-balancing boost for the target.
+    * -  numRequestingProps
+      -  The total number of proposals requesting this target. More than one means the target was in each proposals winner's list.
+    * -  moonRA
+      -  The right-ascension (units=degrees) of the moon.
+    * -  moonDec
+      -  The declination (units=degrees) of the moon.
+    * -  moonAlt
+      -  The altitude (units=degrees) of the moon.
+    * -  moonAz
+      -  The azimuth (units=degrees) of the moon.
+    * -  moonDistance
+      -  The distance (units=degrees) between the moon and the target.
+    * -  moonPhase
+      -  The phase of the moon.
+    * -  sunRA
+      -  The right-ascension (units=degrees) of the sun.
+    * -  sunDec
+      -  The declination (units=degrees) of the sun.
+    * -  sunAlt
+      -  The altitude (units=degrees) of the sun.
+    * -  sunAz
+      -  The azimuth (units=degrees) of the sun.
+    * -  sunElong
+      -  The elongation (units=degrees) of the sun.

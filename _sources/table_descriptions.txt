@@ -5,13 +5,21 @@ Database Tables
 .. toctree::
    :maxdepth: 2
 
+   tables/cloud
+
    tables/field
 
    tables/obsexposures
 
    tables/obshistory
 
+   tables/proposal
+
+   tables/proposalhistory
+
    tables/scheduleddowntime
+
+   tables/seeing
 
    tables/session
 

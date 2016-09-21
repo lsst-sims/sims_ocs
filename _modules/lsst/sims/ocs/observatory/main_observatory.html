@@ -223,7 +223,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        target : SALPY_scheduler.targetTestC</span>
+<span class="sd">        target : SALPY_scheduler.targetC</span>
 <span class="sd">            The Scheduler topic instance holding the target information.</span>
 
 <span class="sd">        Returns</span>
@@ -316,9 +316,9 @@
 <span class="sd">        ----------</span>
 <span class="sd">        time_handler : :class:`.TimeHandler`</span>
 <span class="sd">            An instance of the simulation&#39;s TimeHandler.</span>
-<span class="sd">        target : SALPY_scheduler.targetTestC</span>
+<span class="sd">        target : SALPY_scheduler.targetC</span>
 <span class="sd">            The Scheduler topic instance holding the target information.</span>
-<span class="sd">        observation : SALPY_scheduler.observationTestC</span>
+<span class="sd">        observation : SALPY_scheduler.observationC</span>
 <span class="sd">            The Scheduler topic instance for recording the observation information.</span>
 
 <span class="sd">        Returns</span>
@@ -379,7 +379,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        target : SALPY_scheduler.targetTestC</span>
+<span class="sd">        target : SALPY_scheduler.targetC</span>
 <span class="sd">            The Scheduler topic instance holding the target information.</span>
 
 <span class="sd">        Returns</span>
@@ -430,7 +430,34 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">variational_model</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
             <span class="n">new_obs_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variational_model</span><span class="o">.</span><span class="n">modify_parameters</span><span class="p">(</span><span class="n">night</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">new_obs_config</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">new_obs_config</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MainObservatory.swap_filter"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.swap_filter">[docs]</a>    <span class="k">def</span> <span class="nf">swap_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_to_unmount</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform a filter swap.</span>
+
+<span class="sd">        This function takes a requested filter to unmount and checks it against the list</span>
+<span class="sd">        of removable filters. If it is not on the list, no filter swap is performed. If it</span>
+<span class="sd">        is on the list, a filter swap is performed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filter_to_unmount : str</span>
+<span class="sd">            The filter requested for unmounting.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">filter_to_unmount</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">Filter_RemovableList</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Filter swap not performed as requested filter {} &quot;</span>
+                          <span class="s2">&quot;is not in removable list.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filter_to_unmount</span><span class="p">))</span>
+            <span class="k">return</span>
+
+        <span class="n">mindex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">currentState</span><span class="o">.</span><span class="n">mountedfilters</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">filter_to_unmount</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">currentState</span><span class="o">.</span><span class="n">mountedfilters</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">mindex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">currentState</span><span class="o">.</span><span class="n">unmountedfilters</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">currentState</span><span class="o">.</span><span class="n">mountedfilters</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filter_to_unmount</span><span class="p">)</span>
+
+        <span class="n">rindex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">Filter_RemovableList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">filter_to_unmount</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">Filter_RemovableList</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">rindex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">currentState</span><span class="o">.</span><span class="n">unmountedfilters</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">Filter_RemovableList</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filter_to_unmount</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">currentState</span><span class="o">.</span><span class="n">unmountedfilters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_to_unmount</span></div></div>
 </pre></div>
 
            </div>

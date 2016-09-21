@@ -115,7 +115,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -165,20 +165,77 @@
 <tr class="row-odd"><td>filter</td>
 <td>Band filter requested by the target.</td>
 </tr>
-<tr class="row-even"><td>ra</td>
+<tr class="row-even"><td>requestTime</td>
+<td>The UTC time (units=seconds) when all of the associated information (airmass etc.) was calculated for the target.</td>
+</tr>
+<tr class="row-odd"><td>ra</td>
 <td>Right Ascension of the requested target (units=degrees).</td>
 </tr>
-<tr class="row-odd"><td>dec</td>
+<tr class="row-even"><td>dec</td>
 <td>Declination of the requested target (units=degrees).</td>
 </tr>
-<tr class="row-even"><td>angle</td>
+<tr class="row-odd"><td>angle</td>
 <td>Difference between parallactic angle and rotator angle (units=degrees).</td>
 </tr>
-<tr class="row-odd"><td>numExposures</td>
+<tr class="row-even"><td>numExposures</td>
 <td>Number of exposures for the requested target.</td>
 </tr>
-<tr class="row-even"><td>requestedExpTime</td>
+<tr class="row-odd"><td>requestedExpTime</td>
 <td>The total duration of all requested exposures (units=seconds).</td>
+</tr>
+<tr class="row-even"><td>airmass</td>
+<td>The airmass of the target.</td>
+</tr>
+<tr class="row-odd"><td>skyBrightness</td>
+<td>The calculated skybrightness for the target.</td>
+</tr>
+<tr class="row-even"><td>slewTime</td>
+<td>The calculated slew time (units=seconds) for the target.</td>
+</tr>
+<tr class="row-odd"><td>costBonus</td>
+<td>The calculated cost bonus (slew time) for the target.</td>
+</tr>
+<tr class="row-even"><td>rank</td>
+<td>The rank of the target for the associated proposal. If more than one proposal, this is a coadded value.</td>
+</tr>
+<tr class="row-odd"><td>propBoost</td>
+<td>The calculated time-balancing boost for the target.</td>
+</tr>
+<tr class="row-even"><td>numRequestingProps</td>
+<td>The total number of proposals requesting this target. More than one means the target was in each proposals winner&#8217;s list.</td>
+</tr>
+<tr class="row-odd"><td>moonRA</td>
+<td>The right-ascension (units=degrees) of the moon.</td>
+</tr>
+<tr class="row-even"><td>moonDec</td>
+<td>The declination (units=degrees) of the moon.</td>
+</tr>
+<tr class="row-odd"><td>moonAlt</td>
+<td>The altitude (units=degrees) of the moon.</td>
+</tr>
+<tr class="row-even"><td>moonAz</td>
+<td>The azimuth (units=degrees) of the moon.</td>
+</tr>
+<tr class="row-odd"><td>moonDistance</td>
+<td>The distance (units=degrees) between the moon and the target.</td>
+</tr>
+<tr class="row-even"><td>moonPhase</td>
+<td>The phase of the moon.</td>
+</tr>
+<tr class="row-odd"><td>sunRA</td>
+<td>The right-ascension (units=degrees) of the sun.</td>
+</tr>
+<tr class="row-even"><td>sunDec</td>
+<td>The declination (units=degrees) of the sun.</td>
+</tr>
+<tr class="row-odd"><td>sunAlt</td>
+<td>The altitude (units=degrees) of the sun.</td>
+</tr>
+<tr class="row-even"><td>sunAz</td>
+<td>The azimuth (units=degrees) of the sun.</td>
+</tr>
+<tr class="row-odd"><td>sunElong</td>
+<td>The elongation (units=degrees) of the sun.</td>
 </tr>
 </tbody>
 </table>

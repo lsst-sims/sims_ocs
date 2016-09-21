@@ -102,6 +102,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.environment.html">lsst.sims.ocs.environment package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
@@ -135,7 +136,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -170,6 +171,13 @@
 <em class="property">class </em><code class="descclassname">lsst.sims.ocs.configuration.instrument.camera.</code><code class="descname">Camera</code><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/instrument/camera.html#Camera"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.camera.Camera" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">lsst.pex.config.config.Config</span></code></p>
 <p>Configuration of the LSST Camera.</p>
+<p>!Allocate a new Config object.</p>
+<p>In order to ensure that all Config object are always in a proper
+state when handed to users or to derived Config classes, some
+attributes are handled at allocation time rather than at initialization</p>
+<p>This ensures that even if a derived Config class implements __init__,
+the author does not need to be concerned about when or even if he
+should call the base Config.__init__</p>
 <dl class="method">
 <dt id="lsst.sims.ocs.configuration.instrument.camera.Camera.setDefaults">
 <code class="descname">setDefaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/instrument/camera.html#Camera.setDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.camera.Camera.setDefaults" title="Permalink to this definition">¶</a></dt>
@@ -180,6 +188,30 @@
 <dt id="lsst.sims.ocs.configuration.instrument.camera.Camera.filter_change_time">
 <code class="descname">filter_change_time</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.camera.Camera.filter_change_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Time (units=seconds) to change a filter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.instrument.camera.Camera.filter_max_changes_avg_num">
+<code class="descname">filter_max_changes_avg_num</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.camera.Camera.filter_max_changes_avg_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum average number of filter changes per year.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.instrument.camera.Camera.filter_max_changes_avg_time">
+<code class="descname">filter_max_changes_avg_time</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.camera.Camera.filter_max_changes_avg_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum time (units=seconds) for the average number of filter changes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.instrument.camera.Camera.filter_max_changes_burst_num">
+<code class="descname">filter_max_changes_burst_num</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.camera.Camera.filter_max_changes_burst_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum number of filter changes in a night.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.instrument.camera.Camera.filter_max_changes_burst_time">
+<code class="descname">filter_max_changes_burst_time</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.camera.Camera.filter_max_changes_burst_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum time (units=seconds) between filter changes in a night.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -197,7 +229,7 @@
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.instrument.camera.Camera.filter_mounted_str">
 <code class="descname">filter_mounted_str</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.camera.Camera.filter_mounted_str" title="Permalink to this definition">¶</a></dt>
-<dd><p>str: The list of mounted filters.</p>
+<dd><p><em>str</em> &#8211; The list of mounted filters.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -215,7 +247,7 @@
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.instrument.camera.Camera.filter_removable_str">
 <code class="descname">filter_removable_str</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.camera.Camera.filter_removable_str" title="Permalink to this definition">¶</a></dt>
-<dd><p>str: The list of filters that can be removed.</p>
+<dd><p><em>str</em> &#8211; The list of filters that can be removed.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -227,7 +259,7 @@
 <dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.instrument.camera.Camera.filter_unmounted_str">
 <code class="descname">filter_unmounted_str</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.camera.Camera.filter_unmounted_str" title="Permalink to this definition">¶</a></dt>
-<dd><p>str: The list of unmounted filters.</p>
+<dd><p><em>str</em> &#8211; The list of unmounted filters.</p>
 </dd></dl>
 
 <dl class="attribute">

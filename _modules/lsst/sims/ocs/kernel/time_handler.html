@@ -139,12 +139,6 @@
 <span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
 
-<span class="n">SECONDS_IN_HOUR</span> <span class="o">=</span> <span class="mf">60.0</span> <span class="o">*</span> <span class="mf">60.0</span>
-<span class="n">HOURS_IN_DAY</span> <span class="o">=</span> <span class="mf">24.0</span>
-<span class="n">SECONDS_IN_DAY</span> <span class="o">=</span> <span class="n">HOURS_IN_DAY</span> <span class="o">*</span> <span class="n">SECONDS_IN_HOUR</span>
-<span class="n">DAYS_IN_YEAR</span> <span class="o">=</span> <span class="mf">365.0</span>
-<span class="n">SECONDS_IN_YEAR</span> <span class="o">=</span> <span class="n">DAYS_IN_YEAR</span> <span class="o">*</span> <span class="n">SECONDS_IN_DAY</span>
-
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TimeHandler&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="TimeHandler"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler">[docs]</a><span class="k">class</span> <span class="nc">TimeHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -220,6 +214,12 @@
         <span class="n">midnight_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
         <span class="n">midnight_dt</span> <span class="o">+=</span> <span class="n">timedelta</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s2">&quot;days&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="n">midnight_dt</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">time_since_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;float: The number of seconds since the start date.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_dt</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TimeHandler.update_time"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.update_time">[docs]</a>    <span class="k">def</span> <span class="nf">update_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the currently held timestamp.</span>

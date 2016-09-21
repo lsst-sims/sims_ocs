@@ -102,6 +102,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.environment.html">lsst.sims.ocs.environment package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
@@ -135,7 +136,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -170,6 +171,13 @@
 <em class="property">class </em><code class="descclassname">lsst.sims.ocs.configuration.science.south_celestial_pole.</code><code class="descname">SouthCelestialPole</code><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/science/south_celestial_pole.html#SouthCelestialPole"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="lsst.sims.ocs.configuration.proposal.area_distribution.html#lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution" title="lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution"><code class="xref py py-class docutils literal"><span class="pre">lsst.sims.ocs.configuration.proposal.area_distribution.AreaDistribution</span></code></a></p>
 <p>This class sets the parameters for specifying the South Celestial Pole proposal.</p>
+<p>!Allocate a new Config object.</p>
+<p>In order to ensure that all Config object are always in a proper
+state when handed to users or to derived Config classes, some
+attributes are handled at allocation time rather than at initialization</p>
+<p>This ensures that even if a derived Config class implements __init__,
+the author does not need to be concerned about when or even if he
+should call the base Config.__init__</p>
 <dl class="method">
 <dt id="lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole.setDefaults">
 <code class="descname">setDefaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/science/south_celestial_pole.html#SouthCelestialPole.setDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole.setDefaults" title="Permalink to this definition">¶</a></dt>

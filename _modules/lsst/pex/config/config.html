@@ -700,6 +700,8 @@
                         <span class="s2">&quot; appears to use &#39;root&#39; instead of &#39;config&#39;; trying with &#39;root&#39;&quot;</span><span class="p">)</span>
                     <span class="n">local</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;root&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="p">}</span>
                     <span class="k">exec</span> <span class="n">stream</span> <span class="ow">in</span> <span class="p">{},</span> <span class="n">local</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_imports</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">importer</span><span class="o">.</span><span class="n">getModules</span><span class="p">())</span>
 

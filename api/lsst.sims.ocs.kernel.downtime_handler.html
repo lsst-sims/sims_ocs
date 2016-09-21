@@ -32,7 +32,7 @@
   
     <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.kernel package" href="lsst.sims.ocs.kernel.html"/>
-        <link rel="next" title="lsst.sims.ocs.kernel.sequencer module" href="lsst.sims.ocs.kernel.sequencer.html"/>
+        <link rel="next" title="lsst.sims.ocs.kernel.proposal_info module" href="lsst.sims.ocs.kernel.proposal_info.html"/>
         <link rel="prev" title="lsst.sims.ocs.kernel package" href="lsst.sims.ocs.kernel.html"/> 
 
   
@@ -97,6 +97,7 @@
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.environment.html">lsst.sims.ocs.environment package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="lsst.sims.ocs.kernel.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.kernel.html#module-lsst.sims.ocs.kernel">Module contents</a></li>
@@ -134,7 +135,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -172,36 +173,31 @@ downtime information.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.scheduled">
 <code class="descname">scheduled</code><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.scheduled" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="lsst.sims.ocs.downtime.scheduled_downtime.html#lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime" title="lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime"><code class="xref py py-class docutils literal"><span class="pre">ScheduledDowntime</span></code></a></p>
-<p>The scheduled downtime information instance.</p>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.downtime.scheduled_downtime.html#lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime" title="lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime"><code class="xref py py-class docutils literal"><span class="pre">ScheduledDowntime</span></code></a> &#8211; The scheduled downtime information instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.unscheduled">
 <code class="descname">unscheduled</code><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.unscheduled" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime" title="lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime"><code class="xref py py-class docutils literal"><span class="pre">UnscheduledDowntime</span></code></a></p>
-<p>The unscheduled downtime information instance.</p>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime" title="lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime"><code class="xref py py-class docutils literal"><span class="pre">UnscheduledDowntime</span></code></a> &#8211; The unscheduled downtime information instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.current_scheduled">
 <code class="descname">current_scheduled</code><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.current_scheduled" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>tuple or None</em></p>
-<p>The set of current scheduled downtime information.</p>
+<dd><p><em>tuple or None</em> &#8211; The set of current scheduled downtime information.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.current_unscheduled">
 <code class="descname">current_unscheduled</code><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.current_unscheduled" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>tuple or None</em></p>
-<p>The set of current unscheduled downtime information.</p>
+<dd><p><em>tuple or None</em> &#8211; The set of current unscheduled downtime information.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.log">
 <code class="descname">log</code><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.log" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>Logger</em></p>
-<p>The handle for the logger.</p>
+<dd><p><em>Logger</em> &#8211; The handle for the logger.</p>
 </dd></dl>
 
 <p>Initialize the class.</p>
@@ -216,8 +212,7 @@ downtime information.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>night</strong> (<em>int</em>) &#8211; The night to check the downtime information for.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>int</em> &#8211;
-The number of downtime nights.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>int</em> &#8211; The number of downtime nights.</td>
 </tr>
 </tbody>
 </table>
@@ -262,7 +257,7 @@ The number of downtime nights.</td>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="lsst.sims.ocs.kernel.sequencer.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.kernel.sequencer module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="lsst.sims.ocs.kernel.proposal_info.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.kernel.proposal_info module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="lsst.sims.ocs.kernel.html" class="btn btn-neutral" title="lsst.sims.ocs.kernel package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>

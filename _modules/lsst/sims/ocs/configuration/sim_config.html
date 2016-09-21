@@ -140,8 +140,9 @@
 
 <span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
 
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration</span> <span class="kn">import</span> <span class="n">Downtime</span><span class="p">,</span> <span class="n">load_config</span><span class="p">,</span> <span class="n">Observatory</span><span class="p">,</span> <span class="n">ObservingSite</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration</span> <span class="kn">import</span> <span class="n">Downtime</span><span class="p">,</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">load_config</span><span class="p">,</span> <span class="n">Observatory</span><span class="p">,</span> <span class="n">ObservingSite</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration</span> <span class="kn">import</span> <span class="n">SchedulerDriver</span><span class="p">,</span> <span class="n">ScienceProposals</span><span class="p">,</span> <span class="n">Survey</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.utilities</span> <span class="kn">import</span> <span class="n">expand_path</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SimulationConfig&quot;</span><span class="p">]</span>
 
@@ -156,11 +157,25 @@
     <span class="n">observatory</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST observatory configuration.&quot;</span><span class="p">,</span> <span class="n">Observatory</span><span class="p">)</span>
     <span class="n">downtime</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST downtime configuration.&quot;</span><span class="p">,</span> <span class="n">Downtime</span><span class="p">)</span>
     <span class="n">sched_driver</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The LSST Scheduler driver configuration.&quot;</span><span class="p">,</span> <span class="n">SchedulerDriver</span><span class="p">)</span>
+    <span class="n">environment</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s2">&quot;The environmental configuration.&quot;</span><span class="p">,</span> <span class="n">Environment</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SimulationConfig.setDefaults"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set defaults for the survey simulation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The total number of active proposals.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_props</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">area_dist_props</span><span class="o">.</span><span class="n">names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">num_props</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">area_dist_props</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">num_props</span>
 
 <div class="viewcode-block" id="SimulationConfig.load"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifiles</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Load and apply configuration override files.</span>
@@ -178,12 +193,15 @@
             <span class="k">return</span>
         <span class="n">config_files</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">ifile</span> <span class="ow">in</span> <span class="n">ifiles</span><span class="p">:</span>
+            <span class="n">ifile</span> <span class="o">=</span> <span class="n">expand_path</span><span class="p">(</span><span class="n">ifile</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">ifile</span><span class="p">):</span>
                 <span class="n">dfiles</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">ifile</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">dfile</span> <span class="ow">in</span> <span class="n">dfiles</span><span class="p">:</span>
                     <span class="n">full_dfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ifile</span><span class="p">,</span> <span class="n">dfile</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">full_dfile</span><span class="p">):</span>
                         <span class="n">config_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">full_dfile</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">full_dfile</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">survey</span><span class="o">.</span><span class="n">alt_proposal_dir</span> <span class="o">=</span> <span class="n">full_dfile</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">config_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ifile</span><span class="p">)</span>
 
@@ -193,12 +211,14 @@
             <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observing_site</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_files</span><span class="p">)</span>
             <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">downtime</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
-            <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sched_driver</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span></div>
+            <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sched_driver</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
+            <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SimulationConfig.load_proposals"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.load_proposals">[docs]</a>    <span class="k">def</span> <span class="nf">load_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Tell the science proposals to load their configuration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">load_proposals</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">load_proposals</span><span class="p">({</span><span class="s2">&quot;AD&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">survey</span><span class="o">.</span><span class="n">ad_proposals</span><span class="p">},</span>
+                                    <span class="n">alternate_proposals</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">survey</span><span class="o">.</span><span class="n">alt_proposal_dir</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SimulationConfig.save"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the configuration objects to separate files.</span>
@@ -213,7 +233,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;observing_site.py&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">save_as</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">downtime</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;downtime.py&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;sched_driver.py&quot;</span><span class="p">))</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;sched_driver.py&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;environment.py&quot;</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>
