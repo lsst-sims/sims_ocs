@@ -142,7 +142,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.observatory.swap_filter('y')
         self.assertListEqual(self.observatory.currentState.mountedfilters, swapped_mounted_filters)
         self.assertListEqual(self.observatory.currentState.unmountedfilters, swapped_unmounted_filters)
-        self.assertListEqual(self.observatory.params.Filter_RemovableList, swapped_removable_filters)
+        self.assertListEqual(self.observatory.params.filter_removable_list, swapped_removable_filters)
 
     def test_swap_nonremovable_filter(self):
         self.observatory_configure()

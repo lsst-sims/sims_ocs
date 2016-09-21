@@ -306,7 +306,7 @@ class MainObservatory(object):
         filter_to_unmount : str
             The filter requested for unmounting.
         """
-        if filter_to_unmount not in self.model.params.Filter_RemovableList:
+        if filter_to_unmount not in self.model.params.filter_removable_list:
             self.log.info("Filter swap not performed as requested filter {} "
                           "is not in removable list.".format(filter_to_unmount))
             return
@@ -315,8 +315,8 @@ class MainObservatory(object):
         self.model.currentState.mountedfilters.insert(mindex, self.model.currentState.unmountedfilters[0])
         self.model.currentState.mountedfilters.remove(filter_to_unmount)
 
-        rindex = self.model.params.Filter_RemovableList.index(filter_to_unmount)
-        self.model.params.Filter_RemovableList.insert(rindex, self.model.currentState.unmountedfilters[0])
-        self.model.params.Filter_RemovableList.remove(filter_to_unmount)
+        rindex = self.model.params.filter_removable_list.index(filter_to_unmount)
+        self.model.params.filter_removable_list.insert(rindex, self.model.currentState.unmountedfilters[0])
+        self.model.params.filter_removable_list.remove(filter_to_unmount)
 
         self.model.currentState.unmountedfilters[0] = filter_to_unmount
