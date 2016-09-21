@@ -64,7 +64,7 @@ docs:
 
 gh-pages:
 	git checkout gh-pages
-	rm -rf api build _modules _sources _static
+	rm -rf api build _modules _sources _static tables
 	git checkout master $(GH_PAGES_SOURCES)
 	git reset HEAD
 	python setup.py develop
