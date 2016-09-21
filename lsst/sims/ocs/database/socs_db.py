@@ -1,10 +1,10 @@
 import collections
 from datetime import datetime
 import logging
-import os
-
 import MySQLdb as mysql
-from sqlalchemy import create_engine, MetaData
+import numpy
+import os
+from sqlalchemy import create_engine, MetaData, exc
 
 from lsst.sims.ocs.setup import LoggingLevel
 import tables
@@ -245,10 +245,25 @@ class SocsDatabase(object):
         conn = self._get_conn()
 
         for table_name, table_data in self.data_list.items():
-            self.log.log(LoggingLevel.EXTENSIVE.value, "Writing {} data into DB.".format(table_name))
-            self.log.log(LoggingLevel.EXTENSIVE.value, "Length of data: {}".format(len(table_data)))
-            tbl = getattr(self, table_name)
-            conn.execute(tbl.insert(), table_data)
+            try:
+                self.log.log(LoggingLevel.EXTENSIVE.value, "Writing {} data into DB.".format(table_name))
+                self.log.log(LoggingLevel.EXTENSIVE.value, "Length of data: {}".format(len(table_data)))
+                tbl = getattr(self, table_name)
+                conn.execute(tbl.insert(), table_data)
+            except exc.IntegrityError:
+                self.log.fatal("Database insertion failed for {}!".format(table_name))
+                output = collections.defaultdict(list)
+                for values in table_data:
+                    for k, v in values.items():
+                        output[k].append(v)
+
+                for k, v in output.items():
+                    output[k] = numpy.array(v)
+
+                filename = "{}.npz".format(table_name)
+                numpy.savez(open(filename, 'w'), **output)
+                self.log.fatal("Dumping information into {}".format(filename))
+                raise
 
     def write_table(self, table_name, table_data):
         """Collect information for the provided table.
