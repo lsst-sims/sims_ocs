@@ -192,7 +192,6 @@ class Simulator(object):
         self.log.debug("Duration = {}".format(self.duration))
         for night in xrange(1, int(self.duration) + 1):
             self.start_night(night)
-            self.comm_time.night = night
 
             while self.time_handler.current_timestamp < self.end_of_night:
 
@@ -292,6 +291,7 @@ class Simulator(object):
         """
         self.log.info("Night {}".format(night))
         self.seq.start_night(night, self.duration)
+        self.comm_time.night = night
 
         self.seq.sky_model.update(self.time_handler.current_timestamp)
         (set_timestamp,
