@@ -164,10 +164,30 @@ class SimulatorTest(unittest.TestCase):
         self.sim.filter_swap.need_swap = True
         self.sim.filter_swap.filter_to_unmount = 'u'
 
-        self.sim.seq.start_of_day = mock.MagicMock(return_value=None)
+        self.sim.seq.start_day = mock.MagicMock(return_value=None)
 
         self.sim.run()
 
         self.assertTrue(mock_ss.getNextSample_filterSwap.called)
-        self.assertTrue(self.sim.seq.start_of_day.called)
-        self.sim.seq.start_of_day.assert_called_once_with('u')
+        self.assertTrue(self.sim.seq.start_day.called)
+        self.sim.seq.start_day.assert_called_once_with('u')
+
+    @mock.patch("SALPY_scheduler.SAL_scheduler")
+    @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.put")
+    def test_run_with_scheduler_and_downtime(self, mock_salmanager_put, mock_salscheduler):
+        self.short_run(True)
+
+        self.sim.initialize()
+        # Need to make Scheduler wait break conditions work.
+        mock_ss = mock_salscheduler()
+        # Fields
+        mock_ss.getNextSample_field = mock.MagicMock(return_value=0)
+        self.sim.field.ID = -1
+
+        self.sim.seq.start_day = mock.MagicMock(return_value=None)
+
+        self.sim.run()
+
+        self.assertEqual(self.sim.seq.start_day.call_count, self.num_nights)
+        self.assertEqual(mock_ss.getNextSample_target.call_count, 0)
+        self.assertEqual(self.mock_socs_db.write.call_count, 0)

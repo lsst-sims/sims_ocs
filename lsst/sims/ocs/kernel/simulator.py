@@ -85,40 +85,11 @@ class Simulator(object):
         """
         return round(self.fractional_duration * DAYS_IN_YEAR)
 
-    def _end_night(self):
+    def end_night(self):
         """Perform actions at the end of the night.
         """
         self.db.write()
-        self.seq.end_of_night()
-
-    def _start_night(self, night):
-        """Perform actions at the start of the night.
-
-        Parameters
-        ----------
-        night : int
-            The current night.
-        """
-        self.log.info("Night {}".format(night))
-        self.seq.start_of_night(night, self.duration)
-
-        self.seq.sky_model.update(self.time_handler.current_timestamp)
-        (set_timestamp,
-         rise_timestamp) = self.seq.sky_model.get_night_boundaries(self.conf.sched_driver.night_boundary)
-
-        delta = math.fabs(self.time_handler.current_timestamp - set_timestamp)
-        self.log.debug("Delta to start of night: {}".format(delta))
-        self.time_handler.update_time(delta, "seconds")
-
-        self.log.debug("Start of night {} at {} ({})".format(night, self.time_handler.current_timestring,
-                                                             self.time_handler.current_timestamp))
-
-        self.end_of_night = rise_timestamp
-
-        end_of_night_str = self.time_handler.future_timestring(0, "seconds", timestamp=self.end_of_night)
-        self.log.debug("End of night {} at {} ({})".format(night, end_of_night_str, self.end_of_night))
-
-        self.db.clear_data()
+        self.seq.end_night()
 
     def finalize(self):
         """Perform finalization steps.
@@ -220,7 +191,7 @@ class Simulator(object):
 
         self.log.debug("Duration = {}".format(self.duration))
         for night in xrange(1, int(self.duration) + 1):
-            self._start_night(night)
+            self.start_night(night)
             self.comm_time.night = night
 
             while self.time_handler.current_timestamp < self.end_of_night:
@@ -270,7 +241,7 @@ class Simulator(object):
                         for exposure in exposure_info[exposure_type]:
                             self.db.append_data(exposure_type, exposure)
 
-            self._end_night()
+            self.end_night()
             self.start_day()
 
     def save_proposal_information(self):
@@ -309,4 +280,31 @@ class Simulator(object):
                     break
 
         if self.wait_for_scheduler and self.filter_swap.need_swap:
-            self.seq.start_of_day(self.filter_swap.filter_to_unmount)
+            self.seq.start_day(self.filter_swap.filter_to_unmount)
+
+    def start_night(self, night):
+        """Perform actions at the start of the night.
+
+        Parameters
+        ----------
+        night : int
+            The current night.
+        """
+        self.log.info("Night {}".format(night))
+        self.seq.start_night(night, self.duration)
+
+        self.seq.sky_model.update(self.time_handler.current_timestamp)
+        (set_timestamp,
+         rise_timestamp) = self.seq.sky_model.get_night_boundaries(self.conf.sched_driver.night_boundary)
+
+        delta = math.fabs(self.time_handler.current_timestamp - set_timestamp)
+        self.time_handler.update_time(delta, "seconds")
+
+        self.log.debug("Start of night {} at {}".format(night, self.time_handler.current_timestring))
+
+        self.end_of_night = rise_timestamp
+
+        end_of_night_str = self.time_handler.future_timestring(0, "seconds", timestamp=self.end_of_night)
+        self.log.debug("End of night {} at {}".format(night, end_of_night_str))
+
+        self.db.clear_data()
