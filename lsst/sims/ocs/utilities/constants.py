@@ -1,4 +1,6 @@
-SECONDS_IN_HOUR = 60.0 * 60.0
+SECONDS_IN_MINUTE = 60.0
+"""Number of seconds in one minute"""
+SECONDS_IN_HOUR = SECONDS_IN_MINUTE * SECONDS_IN_MINUTE
 """Number of seconds in one hour"""
 HOURS_IN_DAY = 24.0
 """Number of hours in one day"""
