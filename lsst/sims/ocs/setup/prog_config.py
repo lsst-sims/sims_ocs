@@ -26,6 +26,8 @@ def write_file_config(options, conf_dir=None):
     parser.add_section(options.type)
     if options.type == "sqlite":
         parser.set(options.type, "save_directory", options.save_dir)
+        if options.session_id_start is not None:
+            parser.set(options.type, "session_id_start", options.session_id_start)
     if options.type == "mysql" and options.config_path is not None:
         parser.set(options.type, "config_path", options.config_path)
 

@@ -24,8 +24,6 @@ def create_parser():
                         "years.")
     parser.add_argument("--no-sched", dest="no_scheduler", action="store_true",
                         help="Flag to make program not wait for Scheduler.")
-    parser.add_argument("-s", "--session-id", dest="session_id", default="1000",
-                        help="Temporary flag to set a session ID.")
     parser.add_argument("--profile", dest="profile", action="store_true", help="Run the profiler on SOCS and"
                         "Scheduler code.")
 
@@ -47,6 +45,8 @@ def create_parser():
     sqlite_group = parser.add_argument_group("sqlite", " ".join(sqlite_group_descr))
     sqlite_group.add_argument("--sqlite-save-dir", dest="sqlite_save_dir", help="A directory to save the "
                               "SQLite session tracking database.")
+    sqlite_group.add_argument("-s", "--session-id-start", dest="session_id_start",
+                              help="Set a new value for the starting session ID.")
 
     tracking_group_descr = ["This group of arguments controls the tracking of the simulation session."]
     track_grp = parser.add_argument_group("tracking", " ".join(tracking_group_descr))

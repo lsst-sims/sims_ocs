@@ -37,9 +37,11 @@ class SocsDatabase(object):
         The session specific instance of the database engine. SQLite only.
     session_metadata : sqlalchemy.MetaData
         The instance for holding the session specific tables. SQLite only.
+    session_start : int
+        A new starting session Id for counting new simulations.
     """
 
-    def __init__(self, dialect="mysql", mysql_config_path=None, sqlite_save_path=None):
+    def __init__(self, dialect="mysql", mysql_config_path=None, sqlite_save_path=None, session_id_start=None):
         """Initialize the class.
 
         Parameters
@@ -50,12 +52,14 @@ class SocsDatabase(object):
             An alternate path for the .my.cnf configuration file for MySQL.
         sqlite_save_path : str
             A path to save all resulting database files for SQLite.
+        session_id_start : int
+            A new starting session Id for counting new simulations.
         """
         self.db_name = "SocsDB"
         self.log = logging.getLogger("database.SocsDatabase")
         self.db_dialect = dialect
         self.session_id = -1
-        self.session_start = 1000
+        self.session_start = session_id_start if session_id_start is not None else 1000
         self.metadata = MetaData()
         self.engine = None
         self.mysql_config_path = mysql_config_path
@@ -66,7 +70,7 @@ class SocsDatabase(object):
         self.session_metadata = MetaData()
 
         if self.db_dialect == "mysql":
-            self._create_tables()
+            self._create_tables(session_id_start=self.session_start)
             self.engine = self._make_engine()
         if self.db_dialect == "sqlite":
             self.session_tracking = tables.create_session(self.metadata, autoincrement=False)
@@ -76,17 +80,21 @@ class SocsDatabase(object):
         # Parameter for holding data lists
         self.data_list = collections.defaultdict(list)
 
-    def _create_tables(self, metadata=None, use_autoincrement=True):
+    def _create_tables(self, metadata=None, use_autoincrement=True, session_id_start=1000):
         """Create all the relevant tables.
 
         Parameters
         ----------
+        metadata : sqlalchemy.MetaData
+            The instance for holding the relevant tables.
         use_autoincrement: bool
             A flag to set auto increment behavior on the Session table.
+        session_id_start : int
+            A new starting session Id for counting new simulations.
         """
         if metadata is None:
             metadata = self.metadata
-        self.session = tables.create_session(metadata, use_autoincrement)
+        self.session = tables.create_session(metadata, use_autoincrement, session_id_start)
         self.field = tables.create_field(metadata)
         self.target_history = tables.create_target_history(metadata)
         self.observation_history = tables.create_observation_history(metadata)

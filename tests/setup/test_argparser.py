@@ -16,7 +16,6 @@ class ArgParserTest(unittest.TestCase):
     def test_behavior_with_no_args(self):
         args = self.parser.parse_args([])
         self.assertEqual(args.frac_duration, -1)
-        self.assertEqual(args.session_id, "1000")
         self.assertEqual(args.verbose, 0)
         self.assertFalse(args.no_scheduler)
         self.assertIsNone(args.config)
@@ -28,6 +27,7 @@ class ArgParserTest(unittest.TestCase):
         self.assertEqual(args.db_type, "mysql")
         self.assertIsNone(args.mysql_config_path)
         self.assertIsNone(args.sqlite_save_dir)
+        self.assertIsNone(args.session_id_start)
         self.assertFalse(args.profile)
 
     def test_fractional_duration_flag(self):
@@ -45,10 +45,6 @@ class ArgParserTest(unittest.TestCase):
     def test_config_as_file_list(self):
         args = self.parser.parse_args(["--config", "conf1.py", "conf2.py", "conf3.py"])
         self.assertEqual(len(args.config), 3)
-
-    def test_session_id(self):
-        args = self.parser.parse_args(["-s", "1100"])
-        self.assertEqual(args.session_id, "1100")
 
     def test_config_files_with_other_option(self):
         args = self.parser.parse_args(["--config", "conf1.py", "conf2.py", "-v"])
@@ -96,6 +92,10 @@ class ArgParserTest(unittest.TestCase):
         save_dir = "/path/to/save"
         args = self.parser.parse_args(["--sqlite-save-dir", save_dir])
         self.assertEqual(args.sqlite_save_dir, save_dir)
+
+    def test_session_id_start(self):
+        args = self.parser.parse_args(["-s", "1100"])
+        self.assertEqual(args.session_id_start, "1100")
 
     def test_profile(self):
         args = self.parser.parse_args(["--profile"])
