@@ -279,8 +279,8 @@ def create_proposal(metadata):
                          doc="The numeric identifier for the particular proposal."),
                   Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
                          doc="The simulation run session Id."),
-                  Column("propName", String, nullable=False, doc="The name of the science proposal."),
-                  Column("propType", String, nullable=False, doc="The type of the science proposal."))
+                  Column("propName", String(50), nullable=False, doc="The name of the science proposal."),
+                  Column("propType", String(50), nullable=False, doc="The type of the science proposal."))
 
     Index("fk_Proposal_Session1", table.c.Session_sessionId)
 

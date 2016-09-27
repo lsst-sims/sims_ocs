@@ -4,7 +4,7 @@ import logging
 import MySQLdb as mysql
 import numpy
 import os
-from sqlalchemy import create_engine, MetaData, exc
+from sqlalchemy import create_engine, desc, exc, MetaData
 
 from lsst.sims.ocs.setup import LoggingLevel
 import tables
@@ -39,9 +39,6 @@ class SocsDatabase(object):
         The instance for holding the session specific tables. SQLite only.
     """
 
-    SQLITE_SESSION_OFFSET = 999
-    """int: Adjustment so starting session ID is 1000 like MySQL."""
-
     def __init__(self, dialect="mysql", mysql_config_path=None, sqlite_save_path=None):
         """Initialize the class.
 
@@ -58,6 +55,7 @@ class SocsDatabase(object):
         self.log = logging.getLogger("database.SocsDatabase")
         self.db_dialect = dialect
         self.session_id = -1
+        self.session_start = 1000
         self.metadata = MetaData()
         self.engine = None
         self.mysql_config_path = mysql_config_path
@@ -71,7 +69,7 @@ class SocsDatabase(object):
             self._create_tables()
             self.engine = self._make_engine()
         if self.db_dialect == "sqlite":
-            self.session_tracking = tables.create_session(self.metadata)
+            self.session_tracking = tables.create_session(self.metadata, autoincrement=False)
             sqlite_session_tracking_db = "{}_sessions.db".format(get_hostname())
             self.engine = self._make_engine(sqlite_session_tracking_db)
 
@@ -178,29 +176,38 @@ class SocsDatabase(object):
         user = get_user()
         version = get_version()
         date = datetime.utcnow()
+
         if self.db_dialect == "mysql":
             date = date.strftime("%Y-%m-%d %H:%M:%S")
-
-        if self.db_dialect == "mysql":
-            s = self.session
-        if self.db_dialect == "sqlite":
-            s = self.session_tracking
-        insert = s.insert()
-        conn = self.engine.connect()
-        result = conn.execute(insert, sessionUser=user, sessionHost=hostname, sessionDate=date,
-                              version=version, runComment=run_comment)
-
-        self.session_id = result.lastrowid
+            insert = self.session.insert()
+            conn = self.engine.connect()
+            result = conn.execute(insert, sessionUser=user, sessionHost=hostname, sessionDate=date,
+                                  version=version, runComment=run_comment)
+            self.session_id = result.lastrowid
 
         if self.db_dialect == "sqlite":
-            self.session_id += self.SQLITE_SESSION_OFFSET
+            # Get the session ID from the tracking file unless it was just created.
+            conn = self.engine.connect()
+            select = self.session_tracking.select().order_by(desc(self.session_tracking.c.sessionId)).limit(1)
+            result = conn.execute(select)
+            row = result.fetchone()
+            try:
+                self.session_id = int(row[0]) + 1
+            except TypeError:
+                self.session_id = self.session_start
+
+            insert = self.session_tracking.insert()
+            result = conn.execute(insert, sessionId=self.session_id, sessionUser=user, sessionHost=hostname,
+                                  sessionDate=date, version=version, runComment=run_comment)
+
+            # Create the database for the given session ID.
             sqlite_session_db = "{}_{}.db".format(get_hostname(), self.session_id)
             self.session_engine = self._make_engine(sqlite_session_db)
             self._create_tables(self.session_metadata, use_autoincrement=False)
             self.session_metadata.create_all(self.session_engine)
             insert = self.session.insert()
             conn = self.session_engine.connect()
-            result = conn.execute(insert, session_ID=self.session_id, sessionUser=user, sessionHost=hostname,
+            result = conn.execute(insert, sessionId=self.session_id, sessionUser=user, sessionHost=hostname,
                                   sessionDate=date, version=version, runComment=run_comment)
 
         return self.session_id
