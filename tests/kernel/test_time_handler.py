@@ -1,7 +1,6 @@
 from datetime import datetime
 import unittest
 
-import lsst.sims.ocs.kernel.time_handler as th
 from lsst.sims.ocs.kernel.time_handler import TimeHandler
 from lsst.sims.ocs.utilities.constants import SECONDS_IN_DAY
 
