@@ -98,7 +98,7 @@ class Sequencer(object):
         self.observatory_state.tracking = obs_current_state.tracking
         self.observatory_state.telescope_altitude = obs_current_state.telalt
         self.observatory_state.telescope_azimuth = obs_current_state.telaz
-        self.observatory_state.telescope_rot = obs_current_state.telrot
+        self.observatory_state.telescope_rotator = obs_current_state.telrot
         self.observatory_state.dome_altitude = obs_current_state.domalt
         self.observatory_state.dome_azimuth = obs_current_state.domaz
         self.observatory_state.filter_position = obs_current_state.filter
