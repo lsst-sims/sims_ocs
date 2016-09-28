@@ -251,7 +251,7 @@ class SocsDatabase(object):
                 tbl = getattr(self, table_name)
                 conn.execute(tbl.insert(), table_data)
             except exc.IntegrityError:
-                self.log.fatal("Database insertion failed for {}!".format(table_name))
+                self.log.error("Database insertion failed for {}!".format(table_name))
                 output = collections.defaultdict(list)
                 for values in table_data:
                     for k, v in values.items():
@@ -260,9 +260,9 @@ class SocsDatabase(object):
                 for k, v in output.items():
                     output[k] = numpy.array(v)
 
-                filename = "{}.npz".format(table_name)
+                filename = "{}_{}.npz".format(table_name, self.session_id)
                 numpy.savez(open(filename, 'w'), **output)
-                self.log.fatal("Dumping information into {}".format(filename))
+                self.log.error("Dumping information into {}".format(filename))
                 raise
 
     def write_table(self, table_name, table_data):

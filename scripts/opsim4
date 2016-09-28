@@ -79,12 +79,13 @@ def main(args):
         try:
             sim.run()
         except:
-            logger.error("An exception was thrown, stopping programs first.")
-            stop_programs(log_pid, sched_pid)
+            logger.error("An exception was thrown!")
+            sim.finalize()
             logger.error("Simulation was not completed correctly.")
+            logger.error("", exc_info=True)
             raise
         finally:
-            sim.finalize()
+            stop_programs(log_pid, sched_pid)
 
         if args.save_config:
             config_dir = "config_{}".format(args.session_id)
@@ -106,6 +107,7 @@ def main(args):
         logger.info("Waiting for Scheduler to finish.")
     finally:
         stop_programs(log_pid, sched_pid)
+
 
 if __name__ == "__main__":
     parser = create_parser()
