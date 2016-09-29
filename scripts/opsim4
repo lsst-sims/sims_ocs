@@ -87,6 +87,8 @@ def main(args):
         finally:
             stop_programs(log_pid, sched_pid)
 
+        sim.finalize()
+
         if args.save_config:
             config_dir = "config_{}".format(args.session_id)
             if args.config_save_dir == '':
