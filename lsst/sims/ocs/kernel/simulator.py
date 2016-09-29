@@ -102,7 +102,9 @@ class Simulator(object):
         self.log.info("Night {}".format(night))
         self.seq.start_of_night(night, self.duration)
 
-        (set_timestamp, rise_timestamp) = self.get_night_boundaries()
+        self.seq.sky_model.update(self.time_handler.current_timestamp)
+        (set_timestamp,
+         rise_timestamp) = self.seq.sky_model.get_night_boundaries(self.conf.sched_driver.night_boundary)
 
         delta = math.fabs(self.time_handler.current_timestamp - set_timestamp)
         self.time_handler.update_time(delta, "seconds")
@@ -142,23 +144,6 @@ class Simulator(object):
                                                                     self.target.proposal_boosts[i],
                                                                     obsId))
             self.proposals_counted += 1
-
-    def get_night_boundaries(self):
-        """Calculate the set and rise times for night."
-
-        Returns
-        -------
-        tuple (float, float)
-            A tuple of the set and rise timestamp respectively.
-        """
-        current_midnight_timestamp = self.time_handler.current_midnight_timestamp
-        (_, set_naut_twi) = self.sun.nautical_twilight(current_midnight_timestamp, *self.obs_site_info)
-        set_timestamp = current_midnight_timestamp + (set_naut_twi * SECONDS_IN_HOUR)
-        next_midnight_timestamp = self.time_handler.next_midnight_timestamp
-        (rise_naut_twi_next, _) = self.sun.nautical_twilight(next_midnight_timestamp, *self.obs_site_info)
-        rise_timestamp = next_midnight_timestamp + (rise_naut_twi_next * SECONDS_IN_HOUR)
-
-        return (set_timestamp, rise_timestamp)
 
     def get_target_from_scheduler(self):
         """Get target from scheduler.

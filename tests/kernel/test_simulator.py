@@ -47,11 +47,6 @@ class SimulatorTest(unittest.TestCase):
     def update_timestamp(self, timestamp):
         self.sim.time_handler.current_dt = datetime.utcfromtimestamp(timestamp)
 
-    def check_night_boundary_tuple(self, truth_set_timestamp, truth_rise_timestamp):
-        (set_timestamp, rise_timestamp) = self.sim.get_night_boundaries()
-        self.assertAlmostEqual(set_timestamp, truth_set_timestamp, delta=self.time_tolerance)
-        self.assertAlmostEqual(rise_timestamp, truth_rise_timestamp, delta=self.time_tolerance)
-
     def test_basic_information_after_creation(self):
         self.assertEqual(self.sim.duration, 183.0)
         self.assertEqual(self.sim.time_handler.initial_timestamp, self.starting_timestamp)
@@ -92,8 +87,8 @@ class SimulatorTest(unittest.TestCase):
         self.put_calls += CONFIG_AREA_DIST_PROPS
         self.sim.fractional_duration = 1 / 365
         self.sim.wait_for_scheduler = wait_for_sched
-        self.sim.get_night_boundaries = mock.MagicMock(return_value=(self.starting_timestamp,
-                                                                     self.starting_timestamp + 360.0))
+        self.mock_astro_sky.return_value.get_night_boundaries.return_value = \
+            (self.starting_timestamp, self.starting_timestamp + 360.0)
         self.sim.seq.observatory_model.slew = mock.Mock(return_value=((6.0, "seconds")))
         self.sim.seq.observatory_model.calculate_visit_time = mock.Mock(return_value=((34.0, "seconds")))
         self.sim.seq.observatory_model.target_exposure_list = [exposure_coll1, exposure_coll2]
@@ -173,27 +168,3 @@ class SimulatorTest(unittest.TestCase):
         self.assertTrue(mock_ss.getNextSample_filterSwap.called)
         self.assertTrue(self.sim.seq.start_of_day.called)
         self.sim.seq.start_of_day.assert_called_once_with('u')
-
-    def test_get_night_boundaries(self):
-        self.check_night_boundary_tuple(1641084532.843324, 1641113113.755558)
-        # 2022/02/01
-        self.update_timestamp(1643673600)
-        self.check_night_boundary_tuple(1643762299.348505, 1643793352.557206)
-        # 2022/03/08
-        self.update_timestamp(1646697600)
-        self.check_night_boundary_tuple(1646784061.294245, 1646819228.784648)
-        # 2022/07/02
-        self.update_timestamp(1656720000)
-        self.check_night_boundary_tuple(1656802219.515093, 1656845034.696892)
-        # 2022/10/17
-        self.update_timestamp(1665964800)
-        self.check_night_boundary_tuple(1666050479.261601, 1666084046.869362)
-        # 2025/04/01
-        self.update_timestamp(1743465600)
-        self.check_night_boundary_tuple(1743550264.401366, 1743588178.165652)
-        # 2027/06/21
-        self.update_timestamp(1813536000)
-        self.check_night_boundary_tuple(1813618020.702736, 1813660969.989451)
-        # 2031/09/20
-        self.update_timestamp(1947628800)
-        self.check_night_boundary_tuple(1947713387.331446, 1947750106.804758)
