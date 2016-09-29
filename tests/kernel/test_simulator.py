@@ -199,27 +199,3 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(self.sim.dh.get_downtime.call_count, self.num_nights)
         self.assertEqual(mock_ss.getNextSample_target.call_count, 0)
         self.assertEqual(self.sim.seq.start_day.call_count, 0)
-
-    def test_get_night_boundaries(self):
-        self.check_night_boundary_tuple(1641084532.843324, 1641113113.755558)
-        # 2022/02/01
-        self.update_timestamp(1643673600)
-        self.check_night_boundary_tuple(1643762299.348505, 1643793352.557206)
-        # 2022/03/08
-        self.update_timestamp(1646697600)
-        self.check_night_boundary_tuple(1646784061.294245, 1646819228.784648)
-        # 2022/07/02
-        self.update_timestamp(1656720000)
-        self.check_night_boundary_tuple(1656802219.515093, 1656845034.696892)
-        # 2022/10/17
-        self.update_timestamp(1665964800)
-        self.check_night_boundary_tuple(1666050479.261601, 1666084046.869362)
-        # 2025/04/01
-        self.update_timestamp(1743465600)
-        self.check_night_boundary_tuple(1743550264.401366, 1743588178.165652)
-        # 2027/06/21
-        self.update_timestamp(1813536000)
-        self.check_night_boundary_tuple(1813618020.702736, 1813660969.989451)
-        # 2031/09/20
-        self.update_timestamp(1947628800)
-        self.check_night_boundary_tuple(1947713387.331446, 1947750106.804758)
