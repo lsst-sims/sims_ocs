@@ -21,6 +21,8 @@ This table keeps a record of the information from the requested targets during a
       -  Band filter requested by the target.
     * -  requestTime
       -  The UTC time (units=seconds) when all of the associated information (airmass etc.) was calculated for the target.
+    * -  requestMJD
+      -  The Modified Julian Date (units=seconds) when all of the associated information (airmass etc.) was calculated for the target.
     * -  ra
       -  Right Ascension of the requested target (units=degrees).
     * -  dec
