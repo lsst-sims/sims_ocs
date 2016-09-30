@@ -188,7 +188,7 @@ class SimulatorTest(unittest.TestCase):
         self.sim.target.num_exposures = 2
         # Filter swap
         mock_ss.getNextSample_filterSwap = mock.MagicMock(return_value=0)
-        self.sim.filter_swap.filter_to_unmount = 'u'
+        self.sim.filter_swap.filter_to_unmount = 'z'
         self.sim.filter_swap.need_swap = False
 
         self.sim.dh.get_downtime = mock.Mock(return_value=1)

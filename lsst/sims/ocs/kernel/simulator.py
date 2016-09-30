@@ -10,7 +10,7 @@ from lsst.sims.ocs.environment import CloudModel, SeeingModel
 from lsst.sims.ocs.kernel import DowntimeHandler, ProposalHistory, ProposalInfo, Sequencer, TimeHandler
 from lsst.sims.ocs.sal import SalManager, topic_strdict
 from lsst.sims.ocs.setup import LoggingLevel
-from lsst.sims.ocs.utilities.constants import DAYS_IN_YEAR
+from lsst.sims.ocs.utilities.constants import DAYS_IN_YEAR, SECONDS_IN_MINUTE
 
 __all__ = ["Simulator"]
 
@@ -308,3 +308,16 @@ class Simulator(object):
         self.log.debug("End of night {} at {}".format(night, end_of_night_str))
 
         self.db.clear_data()
+
+        down_days = self.dh.get_downtime(night)
+        if down_days:
+            self.comm_time.is_down = True
+            self.comm_time.down_duration = down_days
+            self.log.log(LoggingLevel.EXTENSIVE.value,
+                         "Timestamp sent: {}".format(self.time_handler.current_timestring))
+            self.sal.put(self.comm_time)
+            delta = math.fabs(self.time_handler.current_timestamp - self.end_of_night) + SECONDS_IN_MINUTE
+            self.time_handler.update_time(delta, "seconds")
+        else:
+            self.comm_time.is_down = False
+            self.comm_time.down_duration = down_days
