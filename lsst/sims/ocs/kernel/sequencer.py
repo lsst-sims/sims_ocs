@@ -166,6 +166,9 @@ class Sequencer(object):
             self.log.log(LoggingLevel.EXTENSIVE.value, "Received target {}".format(target.targetId))
             self.targets_received += 1
 
+            self.sky_model.update(target.request_time)
+            target.request_mjd = self.sky_model.date_profile.mjd
+
             slew_info, exposure_info = self.observatory_model.observe(th, target, self.observation)
             self.sky_model.update(self.observation.observation_start_time)
             sky_mags = self.sky_model.get_sky_brightness(numpy.radians(numpy.array([self.observation.ra])),

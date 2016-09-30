@@ -353,6 +353,7 @@ def write_target_history(data, sid):
         ('numExposures', data.num_exposures),
         ('requestedExpTime', sum([data.exposure_times[i] for i in range(data.num_exposures)])),
         ('requestTime', data.request_time),
+        ('requestMJD', data.request_mjd),
         ('airmass', data.airmass),
         ('skyBrightness', data.sky_brightness),
         ('slewTime', data.slew_time),

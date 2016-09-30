@@ -76,6 +76,9 @@ class SimulatorTest(unittest.TestCase):
 
     def short_run(self, wait_for_sched):
         self.mock_socs_db.session_id = mock.Mock(return_value=1001)
+        mock_dateprofile = mock.Mock()
+        mock_dateprofile.mjd = mock.Mock(return_value=59280.1)
+        self.mock_astro_sky.return_value.date_profile = mock_dateprofile
         # Setup for 1 night and 9 visits
         self.num_nights = 1
         self.num_visits = 9

@@ -29,7 +29,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_target_history_table(self):
         targets = tbls.create_target_history(self.metadata)
-        self.assertEqual(len(targets.c), 28)
+        self.assertEqual(len(targets.c), 29)
         self.assertEqual(len(targets.indexes), 3)
 
     def test_write_target_history_table(self):

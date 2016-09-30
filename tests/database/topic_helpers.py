@@ -17,6 +17,7 @@ target.num_exposures = 2
 target.exposure_times[0] = 15
 target.exposure_times[1] = 15
 target.request_time = 1640995200.0
+target.request_mdj = 59280.0
 target.airmass = 1.4
 target.sky_brightness = 20.4
 target.need = 0.001

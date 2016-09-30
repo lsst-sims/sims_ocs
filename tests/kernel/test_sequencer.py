@@ -41,6 +41,8 @@ class SequencerTest(unittest.TestCase):
 
     def set_values_for_sky_model(self):
         mas = self.mock_astro_sky.return_value
+        mas.date_profile = mock.Mock()
+        mas.date_profile.mjd = 59280.1
         mas.get_sky_brightness.return_value = {'u': [16.0], 'g': [17.0], 'r': [18.0],
                                                'i': [19.0], 'z': [20.0], 'y': [21.0]}
         mas.get_target_information.return_value = {'airmass': [1.1], 'alts': [0.5], 'azs': [0.5]}

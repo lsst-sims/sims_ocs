@@ -731,6 +731,9 @@ def create_target_history(metadata):
                   Column("requestTime", Float, nullable=False,
                          doc="The UTC time (units=seconds) when all of the associated information (airmass "
                              "etc.) was calculated for the target."),
+                  Column("requestMJD", Float, nullable=False,
+                         doc="The Modified Julian Date (units=seconds) when all of the associated "
+                             "information (airmass etc.) was calculated for the target."),
                   Column("ra", Float, nullable=False,
                          doc="Right Ascension of the requested target (units=degrees)."),
                   Column("dec", Float, nullable=False,
