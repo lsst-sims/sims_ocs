@@ -13,7 +13,6 @@ import logging.handlers
 import os
 import signal
 import subprocess as sp
-import time
 
 import ts_scheduler.schedulerMain
 
@@ -24,7 +23,8 @@ from lsst.sims.ocs.setup import create_parser, configure_logging, generate_logfi
 from lsst.sims.ocs.setup import read_file_config, set_log_levels, Tracking
 from lsst.sims.ocs.utilities import expand_path
 
-def stop_programs(lpid, spid):
+def stop_programs(lpid, spid, log):
+    log.info("Stopping programs.")
     if spid is not None:
         try:
             os.waitpid(spid, 0)
@@ -32,7 +32,6 @@ def stop_programs(lpid, spid):
             # Scheduler PID is no longer present.
             pass
     if lpid is not None:
-        time.sleep(5)
         os.kill(lpid, signal.SIGKILL)
 
 def main(args):
@@ -85,9 +84,8 @@ def main(args):
             sim.finalize()
             logger.error("Simulation was not completed correctly.")
             logger.error("", exc_info=True)
+            stop_programs(log_pid, sched_pid, logger)
             raise
-        finally:
-            stop_programs(log_pid, sched_pid)
 
         sim.finalize()
 
@@ -110,7 +108,7 @@ def main(args):
 
     finally:
         logger.info("Waiting for Scheduler to finish.")
-        stop_programs(log_pid, sched_pid)
+        stop_programs(log_pid, sched_pid, logger)
 
 
 if __name__ == "__main__":
