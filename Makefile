@@ -1,4 +1,4 @@
-GH_PAGES_SOURCES = Makefile docs setup.py lsst README.rst HISTORY.rst scripts
+GH_PAGES_SOURCES = Makefile docs setup.py lsst README.rst HISTORY.rst scripts tests
 
 .PHONY: clean-pyc clean-build docs clean
 
@@ -70,7 +70,7 @@ gh-pages:
 	python setup.py develop
 	$(MAKE) docs
 	mv -fv docs/_build/html/* ./
-	rm -rf $(GH_PAGES_SOURCES) sims_ocs.egg-info
+	rm -rf $(GH_PAGES_SOURCES) sims_ocs.egg-info .cache ospl-info.log
 
 release: clean
 	python setup.py sdist upload
