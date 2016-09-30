@@ -13,6 +13,7 @@ import logging.handlers
 import os
 import signal
 import subprocess as sp
+import time
 
 import ts_scheduler.schedulerMain
 
@@ -31,6 +32,7 @@ def stop_programs(lpid, spid):
             # Scheduler PID is no longer present.
             pass
     if lpid is not None:
+        time.sleep(5)
         os.kill(lpid, signal.SIGKILL)
 
 def main(args):
@@ -106,8 +108,8 @@ def main(args):
         if args.track_session:
             tracking.update_session("Simulation finished successfully in {:.2f} seconds".format(run_time))
 
-        logger.info("Waiting for Scheduler to finish.")
     finally:
+        logger.info("Waiting for Scheduler to finish.")
         stop_programs(log_pid, sched_pid)
 
 

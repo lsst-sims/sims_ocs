@@ -310,7 +310,7 @@ class MainObservatory(object):
             self.log.info("Filter swap not performed as requested filter {} "
                           "is not in removable list.".format(filter_to_unmount))
             return
-
+        self.log.info("Swap out {} filter.".format(filter_to_unmount))
         mindex = self.model.currentState.mountedfilters.index(filter_to_unmount)
         self.model.currentState.mountedfilters.insert(mindex, self.model.currentState.unmountedfilters[0])
         self.model.currentState.mountedfilters.remove(filter_to_unmount)

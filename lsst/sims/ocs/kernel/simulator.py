@@ -10,7 +10,7 @@ from lsst.sims.ocs.environment import CloudModel, SeeingModel
 from lsst.sims.ocs.kernel import DowntimeHandler, ProposalHistory, ProposalInfo, Sequencer, TimeHandler
 from lsst.sims.ocs.sal import SalManager, topic_strdict
 from lsst.sims.ocs.setup import LoggingLevel
-from lsst.sims.ocs.utilities.constants import DAYS_IN_YEAR, SECONDS_IN_HOUR
+from lsst.sims.ocs.utilities.constants import DAYS_IN_YEAR
 
 __all__ = ["Simulator"]
 
@@ -107,14 +107,16 @@ class Simulator(object):
          rise_timestamp) = self.seq.sky_model.get_night_boundaries(self.conf.sched_driver.night_boundary)
 
         delta = math.fabs(self.time_handler.current_timestamp - set_timestamp)
+        self.log.debug("Delta to start of night: {}".format(delta))
         self.time_handler.update_time(delta, "seconds")
 
-        self.log.debug("Start of night {} at {}".format(night, self.time_handler.current_timestring))
+        self.log.debug("Start of night {} at {} ({})".format(night, self.time_handler.current_timestring,
+                                                             self.time_handler.current_timestamp))
 
         self.end_of_night = rise_timestamp
 
         end_of_night_str = self.time_handler.future_timestring(0, "seconds", timestamp=self.end_of_night)
-        self.log.debug("End of night {} at {}".format(night, end_of_night_str))
+        self.log.debug("End of night {} at {} ({})".format(night, end_of_night_str, self.end_of_night))
 
         self.db.clear_data()
 
