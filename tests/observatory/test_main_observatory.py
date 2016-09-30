@@ -141,15 +141,3 @@ class MainObservatoryTest(unittest.TestCase):
         self.observatory.swap_filter('y')
         self.assertListEqual(self.observatory.currentState.mountedfilters, swapped_mounted_filters)
         self.assertListEqual(self.observatory.currentState.unmountedfilters, swapped_unmounted_filters)
-
-    def test_swap_nonremovable_filter(self):
-        self.observatory_configure()
-        current_mounted_filters = ['g', 'r', 'i', 'z', 'y']
-        current_unmounted_filters = ['u']
-        self.assertListEqual(self.observatory.currentState.mountedfilters, current_mounted_filters)
-        self.assertListEqual(self.observatory.currentState.unmountedfilters, current_unmounted_filters)
-        swapped_mounted_filters = ['g', 'r', 'i', 'z', 'y']
-        swapped_unmounted_filters = ['u']
-        self.observatory.swap_filter('g')
-        self.assertListEqual(self.observatory.currentState.mountedfilters, swapped_mounted_filters)
-        self.assertListEqual(self.observatory.currentState.unmountedfilters, swapped_unmounted_filters)
