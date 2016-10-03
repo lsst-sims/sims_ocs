@@ -1,7 +1,8 @@
 import collections
 
-__all__ = ["write_cloud", "write_field", "write_observation_exposures", "write_observation_history",
-           "write_proposal", "write_proposal_history", "write_scheduled_downtime", "write_seeing",
+__all__ = ["write_cloud", "write_config", "write_field", "write_observation_exposures",
+           "write_observation_history", "write_proposal", "write_proposal_history",
+           "write_scheduled_downtime", "write_seeing",
            "write_slew_activities", "write_slew_history",
            "write_slew_final_state", "write_slew_initial_state", "write_slew_maxspeeds",
            "write_target_exposures", "write_target_history", "write_unscheduled_downtime"]
@@ -45,6 +46,30 @@ def write_cloud(data, sid):
         ('Session_sessionId', sid),
         ('c_date', data[1]),
         ('cloud', data[2])
+    ])
+
+    return values
+
+def write_config(data, sid):
+    """Create a dictionary of data for the Config table.
+
+    Parameters
+    ----------
+    data : tuple
+        The set of information from a configuration parameter.
+    sid : int
+        The current session ID.
+
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the data.
+    """
+    values = collections.OrderedDict([
+        ('configId', data[0]),
+        ('Session_sessionId', sid),
+        ('paramName', data[1]),
+        ('paramValue', data[2])
     ])
 
     return values
