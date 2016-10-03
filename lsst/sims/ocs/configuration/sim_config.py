@@ -39,6 +39,26 @@ class SimulationConfig(pexConfig.Config):
             num_props += len(self.science.area_dist_props.names)
         return num_props
 
+    def config_list(self, sub_config=None):
+        """Get a list of parameter name, value tuples.
+
+        Paramters
+        ---------
+        sub_config : str, optional
+            The name of a sub-configuration parameter.
+
+        Returns
+        -------
+        list[tuple(str, str)]
+            The list of configuration name, value tuples.
+        """
+        if sub_config is not None:
+            c = getattr(self, sub_config)
+        else:
+            c = self
+
+        return self.make_tuples(c.toDict())
+
     def load(self, ifiles):
         """Load and apply configuration override files.
 
@@ -81,6 +101,36 @@ class SimulationConfig(pexConfig.Config):
         """
         self.science.load_proposals({"AD": self.survey.ad_proposals},
                                     alternate_proposals=self.survey.alt_proposal_dir)
+
+    def make_tuples(self, value, key=None):
+        """
+
+        Parameters
+        ----------
+        value : any
+            A configuration parameter or dictionary.
+        key : str, optional
+            The part of a fully qualified parameter name.
+
+        Returns
+        -------
+        list[tuple(str, str)]
+            The list of configuration name, value tuples.
+        """
+        configs = []
+        for k, v in value.items():
+            try:
+                if key is None:
+                    tag = k
+                else:
+                    tag = "/".join([key, k])
+            except TypeError:
+                tag = "/".join([key, str(k)])
+            if isinstance(v, dict):
+                configs.extend(self.make_tuples(v, tag))
+            else:
+                configs.append((tag, str(v)))
+        return configs
 
     def save(self, save_dir=''):
         """Save the configuration objects to separate files.
