@@ -268,6 +268,7 @@ class Simulator(object):
                      "Daytime Timestamp sent: {}".format(self.time_handler.current_timestring))
         self.sal.put(self.comm_time)
 
+        self.filter_swap = self.sal.get_topic("filterSwap")
         lastconfigtime = time.time()
         while self.wait_for_scheduler:
             rcode = self.sal.manager.getNextSample_filterSwap(self.filter_swap)
@@ -316,6 +317,11 @@ class Simulator(object):
             self.log.log(LoggingLevel.EXTENSIVE.value,
                          "Timestamp sent: {}".format(self.time_handler.current_timestring))
             self.sal.put(self.comm_time)
+            observatory_state = self.seq.get_observatory_state(self.time_handler.current_timestamp)
+            self.log.log(LoggingLevel.EXTENSIVE.value,
+                         "Observatory State: {}".format(topic_strdict(observatory_state)))
+            self.sal.put(observatory_state)
+
             delta = math.fabs(self.time_handler.current_timestamp - self.end_of_night) + SECONDS_IN_MINUTE
             self.time_handler.update_time(delta, "seconds")
         else:
