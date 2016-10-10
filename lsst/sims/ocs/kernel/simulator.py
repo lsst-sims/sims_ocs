@@ -5,7 +5,7 @@ import time
 from ts_scheduler.sky_model import Sun
 
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
-from lsst.sims.ocs.database.tables import write_field, write_proposal
+from lsst.sims.ocs.database.tables import write_config, write_field, write_proposal
 from lsst.sims.ocs.environment import CloudModel, SeeingModel
 from lsst.sims.ocs.kernel import DowntimeHandler, ProposalHistory, ProposalInfo, Sequencer, TimeHandler
 from lsst.sims.ocs.sal import SalManager, topic_strdict
@@ -159,6 +159,7 @@ class Simulator(object):
         self.log.info("Starting simulation")
 
         self.conf_comm.run()
+        self.save_configuration()
         self.save_proposal_information()
 
         # Get fields from scheduler
@@ -242,6 +243,13 @@ class Simulator(object):
 
             self.end_night()
             self.start_day()
+
+    def save_configuration(self):
+        """Save the configuration information to the DB.
+        """
+        c = self.conf.config_list()
+        config_list = [write_config((i + 1, x[0], x[1]), self.db.session_id) for i, x in enumerate(c)]
+        self.db.write_table("config", config_list)
 
     def save_proposal_information(self):
         """Save the active proposal information to the DB.

@@ -295,3 +295,18 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['Session_sessionId'], 1002)
         self.assertEqual(result['c_date'], cld[1])
         self.assertEqual(result['cloud'], cld[2])
+
+    def test_create_config_table(self):
+        cnf = tbls.create_config(self.metadata)
+        self.assertEqual(len(cnf.c), 4)
+        self.assertEqual(len(cnf.indexes), 1)
+
+    def test_write_config_table(self):
+        cnt = topic_helpers.config_tuple
+        result = tbls.write_config(cnt, 1002)
+        cnf = tbls.create_config(self.metadata)
+        self.check_ordered_dict_to_table(result, cnf)
+        self.assertEqual(result['configId'], cnt[0])
+        self.assertEqual(result['Session_sessionId'], 1002)
+        self.assertEqual(result['paramName'], cnt[1])
+        self.assertEqual(result['paramValue'], cnt[2])

@@ -126,3 +126,20 @@ class SimulationConfigTest(unittest.TestCase):
             self.assertEqual(len(self.sim_config.science.area_dist_props.names), 0)
         with self.assertRaises(TypeError):
             self.assertEqual(len(self.sim_config.science.area_dist_props.active), 0)
+
+    def test_make_tuples(self):
+        d = {"a": 1, "b": {"c": "test", "d": [1, 2, 3]}}
+        results = self.sim_config.make_tuples(d)
+        self.assertEqual(len(results), 3)
+        truth = [("a", "1"), ("b/c", "test"), ("b/d", "[1, 2, 3]")]
+        self.assertListEqual(results, truth)
+
+    def test_specific_configuration_tuple_list(self):
+        result = self.sim_config.config_list("survey")
+        self.assertEqual(len(result), 5)
+        self.assertIsInstance(result, list)
+        self.assertIsInstance(result[0], tuple)
+
+    def test_full_configuration_tuple_list(self):
+        result = self.sim_config.config_list()
+        self.assertGreater(len(result), 7)
