@@ -16,7 +16,8 @@ def admin_create(options, database):
         os.system(cmd)
 
 def main(args):
-    db = SocsDatabase(dialect=args.type, mysql_config_path=args.config_path, sqlite_save_path=args.save_dir)
+    db = SocsDatabase(dialect=args.type, mysql_config_path=args.config_path, sqlite_save_path=args.save_dir,
+                      session_id_start=args.session_id_start)
 
     if args.type == "mysql" and (args.create or args.recreate):
         admin_create(args, db)
@@ -31,6 +32,7 @@ def main(args):
         db.create_db()
     if args.delete:
         db.delete_db()
+
 
 if __name__ == '__main__':
     description = ["This script helps manage the simulation database for version 4 of"]
@@ -48,6 +50,8 @@ if __name__ == '__main__':
     parser.add_argument("-t", "--type", dest="type", choices=["mysql", "sqlite"], default="mysql",
                         help="Type of database to create. MySQL assumes that a .my.cnf file is available "
                         "and contains the appropriate connection information.")
+    parser.add_argument("-s", "--session-id-start", dest="session_id_start",
+                        help="Set the session Id to start new runs counting from.")
     action_group = parser.add_mutually_exclusive_group(required=True)
     action_group.add_argument("-c", "--create", dest="create", action="store_true",
                               help="Create the simulation database. For MySQL, this will create all the "

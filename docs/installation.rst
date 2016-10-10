@@ -131,3 +131,6 @@ The installation will cover a SQLite storage option. The following assumes a ``$
 	manage_db -c --type=sqlite --save-dir=$HOME/run_local/output
 
 This process creates in ``$HOME/run_local/output`` a ``<hostname>_session.db`` file where ``<hostname>`` is the name of your computer. If you have a DNS provided hostname and would like to have a more "normal" name, add the ``$OPSIM_HOSTNAME`` environmental variable to the session before running the above command. The script also creates a configuration file in ``$HOME/.config`` called ``opsim4`` and it contains the database setup information. This will allow you to not have to provide that information to the main simulation driver script.
+
+If you wish to clear out your database and start over, but begin at the next run number from 
+where you left off, this task can be accomplished. The ``-s`` flag to the ``manage_db`` will adjust the starting point for the run numbers. You will need the last run number generated and then pass that number incremented by one to the flag. For MySQL, this will set the base point for the autoincremented sessionId column in the Session table. For SQLite, the run number is written into the configuration file for later use when running the simulation.

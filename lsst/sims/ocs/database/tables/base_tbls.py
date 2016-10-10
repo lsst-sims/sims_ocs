@@ -314,8 +314,8 @@ def create_proposal(metadata):
                          doc="The numeric identifier for the particular proposal."),
                   Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
                          doc="The simulation run session Id."),
-                  Column("propName", String, nullable=False, doc="The name of the science proposal."),
-                  Column("propType", String, nullable=False, doc="The type of the science proposal."))
+                  Column("propName", String(50), nullable=False, doc="The name of the science proposal."),
+                  Column("propType", String(50), nullable=False, doc="The type of the science proposal."))
 
     Index("fk_Proposal_Session1", table.c.Session_sessionId)
 
@@ -422,7 +422,7 @@ def create_seeing(metadata):
 
     return table
 
-def create_session(metadata, autoincrement=True):
+def create_session(metadata, autoincrement=True, session_id_start=1000):
     """Create Session table.
 
     This function creates the Session table for tracking the various simulations run. For MySQL, it adds
@@ -439,6 +439,8 @@ def create_session(metadata, autoincrement=True):
         The database object that collects the tables.
     autoincrement : bool
         A flag to set auto incrementing on the sessionID column.
+      session_id_start : int
+        A new starting session Id for counting new simulations.
 
     Returns
     -------
@@ -460,7 +462,7 @@ def create_session(metadata, autoincrement=True):
 
     Index("s_host_user_date_idx", table.c.sessionUser, table.c.sessionHost, table.c.sessionDate, unique=True)
 
-    alter_table = DDL("ALTER TABLE %(table)s AUTO_INCREMENT=1000;")
+    alter_table = DDL("ALTER TABLE %(table)s AUTO_INCREMENT={};".format(session_id_start))
     event.listen(table, 'after_create', alter_table.execute_if(dialect='mysql'))
 
     return table

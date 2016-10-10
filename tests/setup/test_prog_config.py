@@ -41,6 +41,7 @@ config_path = /home/demouser/mysql
     def sqlite_options(self):
         self.options.type = "sqlite"
         self.options.save_dir = "/home/demouser/run/output"
+        self.options.session_id_start = "1040"
 
     def mysql_options(self):
         self.options.type = "mysql"

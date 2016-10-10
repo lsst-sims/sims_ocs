@@ -39,18 +39,18 @@ def main(args):
     sched_pid = None
     try:
         db = SocsDatabase(args.db_type, mysql_config_path=args.mysql_config_path,
-                          sqlite_save_path=args.sqlite_save_dir)
+                          sqlite_save_path=args.sqlite_save_dir, session_id_start=args.session_id_start)
 
         session_id = db.new_session(args.startup_comment)
-        args.session_id = session_id
+        # args.session_id_start = session_id
 
-        log_file = generate_logfile_path(args.log_path, args.session_id)
+        log_file = generate_logfile_path(args.log_path, session_id)
         console_detail, file_detail = set_log_levels(args.verbose)
         configure_logging(console_detail, file_detail)
         log_pid = sp.Popen(["central_logger", "--filename={}".format(log_file),
                             "--level={}".format(file_detail)]).pid
 
-        tracking = Tracking(args.session_id, args.session_code, args.startup_comment)
+        tracking = Tracking(session_id, args.session_code, args.startup_comment)
         if args.track_session:
             if args.tracking_db is not None:
                 tracking.opsim_tracking_url = args.tracking_db
@@ -90,7 +90,7 @@ def main(args):
         sim.finalize()
 
         if args.save_config:
-            config_dir = "config_{}".format(args.session_id)
+            config_dir = "config_{}".format(session_id)
             if args.config_save_dir == '':
                 args.config_save_dir = config_dir
             else:
@@ -111,6 +111,7 @@ def main(args):
         stop_programs(log_pid, sched_pid, logger)
 
 
+
 if __name__ == "__main__":
     parser = create_parser()
     args = parser.parse_args()
@@ -124,6 +125,10 @@ if __name__ == "__main__":
         args.db_type = db_conf.get("Database", "type")
         try:
             args.sqlite_save_dir = db_conf.get(args.db_type, "save_directory")
+        except NoOptionError:
+            pass
+        try:
+            args.session_id_start = int(db_conf.get(args.db_type, "session_id_start"))
         except NoOptionError:
             pass
         try:
