@@ -197,7 +197,7 @@ class Simulator(object):
 
                 self.comm_time.timestamp = self.time_handler.current_timestamp
                 self.log.log(LoggingLevel.EXTENSIVE.value,
-                             "Timestamp sent: {}".format(self.time_handler.current_timestring))
+                             "Timestamp sent: {:.6f}".format(self.time_handler.current_timestamp))
                 self.sal.put(self.comm_time)
 
                 observatory_state = self.seq.get_observatory_state(self.time_handler.current_timestamp)
@@ -264,8 +264,10 @@ class Simulator(object):
         * Peforming the filter swap if requested
         """
         self.comm_time.timestamp = self.time_handler.current_timestamp
+        self.log.debug("Start of day {} at {}".format(self.comm_time.night,
+                                                      self.time_handler.current_timestring))
         self.log.log(LoggingLevel.EXTENSIVE.value,
-                     "Daytime Timestamp sent: {}".format(self.time_handler.current_timestring))
+                     "Daytime Timestamp sent: {:.6f}".format(self.time_handler.current_timestamp))
         self.sal.put(self.comm_time)
 
         self.filter_swap = self.sal.get_topic("filterSwap")
@@ -312,14 +314,17 @@ class Simulator(object):
 
         down_days = self.dh.get_downtime(night)
         if down_days:
+            self.log.info("Observatory is down: {} days.".format(down_days))
             self.comm_time.is_down = True
             self.comm_time.down_duration = down_days
+            self.comm_time.timestamp = self.time_handler.current_timestamp
             self.log.log(LoggingLevel.EXTENSIVE.value,
-                         "Timestamp sent: {}".format(self.time_handler.current_timestring))
+                         "Downtime Start Night Timestamp sent: {:.6f}"
+                         .format(self.time_handler.current_timestamp))
             self.sal.put(self.comm_time)
             observatory_state = self.seq.get_observatory_state(self.time_handler.current_timestamp)
             self.log.log(LoggingLevel.EXTENSIVE.value,
-                         "Observatory State: {}".format(topic_strdict(observatory_state)))
+                         "Downtime Observatory State: {}".format(topic_strdict(observatory_state)))
             self.sal.put(observatory_state)
 
             delta = math.fabs(self.time_handler.current_timestamp - self.end_of_night) + SECONDS_IN_MINUTE
