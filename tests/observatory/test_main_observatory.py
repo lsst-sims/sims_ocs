@@ -24,7 +24,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.observatory.variational_model.config.obs_var.apply_variation = True
         self.observatory.variational_model.config.obs_var.telescope_change = 80.0
         self.observatory.variational_model.config.obs_var.dome_change = 80.0
-        self.observatory.start_of_night(2281, 3650)
+        self.observatory.start_night(2281, 3650)
 
     def test_object_has_no_attribute(self):
         with self.assertRaises(AttributeError):
@@ -117,7 +117,7 @@ class MainObservatoryTest(unittest.TestCase):
         # No slew performed
         self.assertEquals(len(self.observatory.slew_activities_list), 0)
 
-    def test_start_of_night(self):
+    def test_start_night(self):
         self.observatory_configure()
         self.observatory_variational_model_configure()
         self.assertAlmostEqual(math.degrees(self.observatory.model.params.TelAz_MaxSpeed_rad), 3.5,

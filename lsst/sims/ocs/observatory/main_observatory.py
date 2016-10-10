@@ -280,7 +280,7 @@ class MainObservatory(object):
 
         return slew_time
 
-    def start_of_night(self, night, duration):
+    def start_night(self, night, duration):
         """Perform start of night functions.
 
         Parameters

@@ -99,14 +99,14 @@ class SequencerTest(unittest.TestCase):
     @mock.patch("logging.Logger.log")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetrySub")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
-    def test_end_of_night(self, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
+    def test_end_night(self, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
         self.initialize_sequencer()
         target, time_handler = self.create_objects()
         self.set_values_for_sky_model()
 
         # Don't care about outputs
         self.seq.observe_target(target, time_handler)
-        self.seq.end_of_night()
+        self.seq.end_night()
 
         obs_current_state = self.seq.observatory_model.currentState
 
@@ -145,11 +145,11 @@ class SequencerTest(unittest.TestCase):
     @mock.patch("logging.Logger.log")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetrySub")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
-    @mock.patch("lsst.sims.ocs.observatory.main_observatory.MainObservatory.start_of_night")
-    def test_start_of_night(self, mock_obs_son, mock_sal_telemetry_pub, mock_sal_telemetry_sub,
-                            mock_logger_log):
+    @mock.patch("lsst.sims.ocs.observatory.main_observatory.MainObservatory.start_night")
+    def test_start_night(self, mock_obs_son, mock_sal_telemetry_pub, mock_sal_telemetry_sub,
+                         mock_logger_log):
         self.initialize_sequencer()
-        self.seq.start_of_night(2281, 3560)
+        self.seq.start_night(2281, 3560)
         self.assertTrue(mock_obs_son.called)
 
     @mock.patch("logging.Logger.log")
@@ -174,7 +174,7 @@ class SequencerTest(unittest.TestCase):
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetrySub")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetryPub")
     @mock.patch("lsst.sims.ocs.observatory.main_observatory.MainObservatory.swap_filter")
-    def test_start_of_day(self, mock_obs_sf, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
+    def test_start_day(self, mock_obs_sf, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
         self.initialize_sequencer()
-        self.seq.start_of_day('u')
+        self.seq.start_day('u')
         self.assertTrue(mock_obs_sf.called)

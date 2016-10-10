@@ -26,7 +26,7 @@ class SchedulerDriver(pexConfig.Config):
         self.time_balancing = True
         self.timebonus_tmax = 200.0
         self.timebonus_bmax = 10.0
-        self.timebonus_slope = 2.26
+        self.timebonus_slope = 5.0
         self.night_boundary = -12.0
         self.ignore_sky_brightness = False
         self.ignore_airmass = False

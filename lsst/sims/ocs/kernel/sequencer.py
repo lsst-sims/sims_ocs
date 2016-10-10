@@ -66,7 +66,7 @@ class Sequencer(object):
         """
         return self.observatory_model.observations_made
 
-    def end_of_night(self):
+    def end_night(self):
         """Perform end of night functions.
         """
         # Park the telescope for the day.
@@ -204,7 +204,7 @@ class Sequencer(object):
 
         return self.observation, slew_info, exposure_info
 
-    def start_of_day(self, filter_to_unmount):
+    def start_day(self, filter_to_unmount):
         """Perform start of day functions.
 
         Parameters
@@ -214,7 +214,7 @@ class Sequencer(object):
         """
         self.observatory_model.swap_filter(filter_to_unmount)
 
-    def start_of_night(self, night, duration):
+    def start_night(self, night, duration):
         """Perform start of night functions.
 
         Parameters
@@ -224,4 +224,4 @@ class Sequencer(object):
         duration : int
             The survey duration in days.
         """
-        self.observatory_model.start_of_night(night, duration)
+        self.observatory_model.start_night(night, duration)

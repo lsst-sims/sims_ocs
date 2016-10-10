@@ -9,6 +9,7 @@ except ImportError:
 
 from lsst.sims.ocs.configuration.sim_config import SimulationConfig
 from lsst.sims.ocs.kernel.simulator import Simulator
+import SALPY_scheduler
 
 from tests.database.topic_helpers import exposure_coll1, exposure_coll2, exposure_coll3, exposure_coll4
 from tests.database.topic_helpers import slew_activity_coll
@@ -46,6 +47,10 @@ class SimulatorTest(unittest.TestCase):
 
     def update_timestamp(self, timestamp):
         self.sim.time_handler.current_dt = datetime.utcfromtimestamp(timestamp)
+
+    def topic_get(self, *args):
+        topic = getattr(SALPY_scheduler, "scheduler_{}C".format(args[0]))
+        return topic()
 
     def test_basic_information_after_creation(self):
         self.assertEqual(self.sim.duration, 183.0)
@@ -131,7 +136,15 @@ class SimulatorTest(unittest.TestCase):
         self.sim.target.num_exposures = 2
         # Filter Swap
         mock_ss.getNextSample_filterSwap = mock.MagicMock(return_value=0)
-        self.sim.filter_swap.filter_to_unmount = 'z'
+
+        def filter_swap_side_effect(*args):
+            topic = self.topic_get(*args)
+            if isinstance(topic, SALPY_scheduler.scheduler_filterSwapC):
+                topic.filter_to_unmount = 'z'
+            return topic
+
+        self.sim.sal.get_topic = mock.MagicMock(side_effect=filter_swap_side_effect)
+        #self.sim.filter_swap.filter_to_unmount = 'z'
 
         self.sim.run()
 
@@ -161,13 +174,59 @@ class SimulatorTest(unittest.TestCase):
         self.sim.target.num_exposures = 2
         # Filter Swap
         mock_ss.getNextSample_filterSwap = mock.MagicMock(return_value=0)
-        self.sim.filter_swap.need_swap = True
-        self.sim.filter_swap.filter_to_unmount = 'u'
 
-        self.sim.seq.start_of_day = mock.MagicMock(return_value=None)
+        def filter_swap_side_effect(*args):
+            topic = self.topic_get(*args)
+            if isinstance(topic, SALPY_scheduler.scheduler_filterSwapC):
+                topic.need_swap = True
+                topic.filter_to_unmount = 'z'
+            return topic
+
+        self.sim.sal.get_topic = mock.MagicMock(side_effect=filter_swap_side_effect)
+        # self.sim.filter_swap.need_swap = True
+        # self.sim.filter_swap.filter_to_unmount = 'u'
+
+        self.sim.seq.start_day = mock.MagicMock(return_value=None)
 
         self.sim.run()
 
         self.assertTrue(mock_ss.getNextSample_filterSwap.called)
-        self.assertTrue(self.sim.seq.start_of_day.called)
-        self.sim.seq.start_of_day.assert_called_once_with('u')
+        self.assertTrue(self.sim.seq.start_day.called)
+        self.sim.seq.start_day.assert_called_once_with('z')
+
+    @mock.patch("SALPY_scheduler.SAL_scheduler")
+    @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.put")
+    def test_run_with_scheduler_and_downtime(self, mock_salmanager_put, mock_salscheduler):
+        self.short_run(True)
+
+        self.sim.initialize()
+        # Need to make Scheduler wait break conditions work.
+        mock_ss = mock_salscheduler()
+        # Fields
+        mock_ss.getNextSample_field = mock.MagicMock(return_value=0)
+        self.sim.field.ID = -1
+        # Targets
+        mock_ss.getNextSample_target = mock.MagicMock(return_value=0)
+        self.sim.target.num_exposures = 2
+        # Filter swap
+        mock_ss.getNextSample_filterSwap = mock.MagicMock(return_value=0)
+
+        def filter_swap_side_effect(*args):
+            topic = self.topic_get(*args)
+            if isinstance(topic, SALPY_scheduler.scheduler_filterSwapC):
+                topic.need_swap = False
+                topic.filter_to_unmount = 'z'
+            return topic
+
+        self.sim.sal.get_topic = mock.MagicMock(side_effect=filter_swap_side_effect)
+        # self.sim.filter_swap.filter_to_unmount = 'z'
+        # self.sim.filter_swap.need_swap = False
+
+        self.sim.dh.get_downtime = mock.Mock(return_value=1)
+        self.sim.seq.start_day = mock.MagicMock(return_value=None)
+
+        self.sim.run()
+
+        self.assertEqual(self.sim.dh.get_downtime.call_count, self.num_nights)
+        self.assertEqual(mock_ss.getNextSample_target.call_count, 0)
+        self.assertEqual(self.sim.seq.start_day.call_count, 0)

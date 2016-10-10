@@ -20,6 +20,8 @@ class DowntimeHandler(object):
         The set of current scheduled downtime information.
     current_unscheduled : tuple or None
         The set of current unscheduled downtime information.
+    downtime_days : set
+        The holder for the list of downtime days.
     log : Logger
         The handle for the logger.
     """
@@ -31,7 +33,26 @@ class DowntimeHandler(object):
         self.unscheduled = UnscheduledDowntime()
         self.current_scheduled = None
         self.current_unscheduled = None
+        self.downtime_days = set()
         self.log = logging.getLogger("kernel.DowntimeHandler")
+
+    def downtime_range(self, dt):
+        """Get the downtime day range and start night.
+
+        Parameters
+        ----------
+        dt : tuple
+            The collection of downtime information (start, length, description)
+
+        Returns
+        -------
+        set, int
+            The list of downtime days as a set and the downtime start night.
+        """
+        if dt is None:
+            return set(), -1
+        else:
+            return set(list(range(dt[0], dt[0] + dt[1]))), dt[0]
 
     def initialize(self, config):
         """Perform initialization steps.
@@ -48,7 +69,9 @@ class DowntimeHandler(object):
     def get_downtime(self, night):
         """Determine if there is downtime for the given night.
 
-        This function looks at the given
+        This function looks at the given downtime and determines if there are any
+        downtime days. If downtime is identified, then this number will return a
+        decreasing number of days until no more downtime if found.
 
         Parameters
         ----------
@@ -60,63 +83,71 @@ class DowntimeHandler(object):
         int
             The number of downtime nights.
         """
-        if self.current_unscheduled is None:
-            self.current_unscheduled = self.unscheduled()
+        self.update()
+        try:
+            self.downtime_days.remove(night)
+            return len(self.downtime_days) + 1
+        except KeyError:
+            return 0
+
+    def update(self):
+        """Update the lsit of downtime days.
+        """
+        if len(self.downtime_days):
+            return
+
         if self.current_scheduled is None:
             self.current_scheduled = self.scheduled()
+        if self.current_unscheduled is None:
+            self.current_unscheduled = self.unscheduled()
 
-        downtime_days = 0
-        end_downtime_night = -1
-
-        # No more downtime
         if self.current_scheduled is None and self.current_unscheduled is None:
-            return downtime_days
+            return
 
-        if self.current_scheduled is not None:
-            if night == self.current_scheduled[0]:
-                end_downtime_night = night + self.current_scheduled[1] - 1
-                downtime_days = self.current_scheduled[1]
+        usdt, usdt_start = self.downtime_range(self.current_unscheduled)
+        sdt, sdt_start = self.downtime_range(self.current_scheduled)
+
+        if sdt_start < usdt_start:
+            if sdt.isdisjoint(usdt):
+                self.downtime_days.update(sdt)
                 self.current_scheduled = None
+            else:
+                if sdt.issuperset(usdt):
+                    self.log.log(LoggingLevel.EXTENSIVE.value,
+                                 "Completely overlapping unscheduled downtime")
+                else:
+                    partial = len(sdt.intersection(usdt))
+                    self.log.log(LoggingLevel.EXTENSIVE.value,
+                                 "Partial overlapping unscheduled downtime: {}".format(partial))
 
-                if self.current_unscheduled is not None:
-                    start_night = self.current_unscheduled[0]
-                    end_night = start_night + self.current_unscheduled[1] - 1
-                    if start_night >= night and start_night <= end_downtime_night:
-                        if end_night > end_downtime_night:
-                            partial = end_night - end_downtime_night
-                            downtime_days += partial
-                            self.log.log(LoggingLevel.EXTENSIVE.value,
-                                         "Partial overlapping unscheduled downtime: {}".format(partial))
-                        else:
-                            self.log.log(LoggingLevel.EXTENSIVE.value,
-                                         "Completely overlapping unscheduled downtime")
-
-                        self.current_unscheduled = None
-                return downtime_days
-
-        if self.current_unscheduled is not None:
-            if night == self.current_unscheduled[0]:
-                end_downtime_night = night + self.current_unscheduled[1] - 1
-                downtime_days = self.current_unscheduled[1]
+                self.downtime_days.update(sdt)
+                self.downtime_days.update(usdt)
+                self.current_scheduled = None
                 self.current_unscheduled = None
 
-                if self.current_scheduled is not None:
-                    start_night = self.current_scheduled[0]
-                    end_night = start_night + self.current_scheduled[1] - 1
-                    if start_night >= night and start_night <= end_downtime_night:
-                        if end_night > end_downtime_night:
-                            partial = end_night - end_downtime_night
-                            downtime_days += partial
-                            self.log.log(LoggingLevel.EXTENSIVE.value,
-                                         "Partial overlapping scheduled downtime: {}".format(partial))
-                        else:
-                            self.log.log(LoggingLevel.EXTENSIVE.value,
-                                         "Completely overlapping scheduled downtime")
-                        self.current_scheduled = None
-                return downtime_days
+        if usdt_start < sdt_start:
+            if usdt.isdisjoint(sdt):
+                self.downtime_days.update(usdt)
+                self.current_unscheduled = None
+            else:
+                if usdt.issuperset(sdt):
+                    self.log.log(LoggingLevel.EXTENSIVE.value,
+                                 "Completely overlapping scheduled downtime")
+                else:
+                    partial = len(usdt.intersection(sdt))
+                    self.log.log(LoggingLevel.EXTENSIVE.value,
+                                 "Partial overlapping scheduled downtime: {}".format(partial))
 
-        # Downtime available, but none tonight.
-        return downtime_days
+                self.downtime_days.update(sdt)
+                self.downtime_days.update(usdt)
+                self.current_scheduled = None
+                self.current_unscheduled = None
+
+        if sdt_start == usdt_start:
+            self.downtime_days.update(sdt)
+            self.downtime_days.update(usdt)
+            self.current_scheduled = None
+            self.current_unscheduled = None
 
     def write_downtime_to_db(self, db):
         """Write all the downtime information to the survey database.
