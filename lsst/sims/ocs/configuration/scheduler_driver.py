@@ -13,6 +13,8 @@ class SchedulerDriver(pexConfig.Config):
     timebonus_bmax = pexConfig.Field("", float)
     timebonus_slope = pexConfig.Field("", float)
     night_boundary = pexConfig.Field('Solar altitude (degrees) when it is considered night.', float)
+    new_moon_phase_threshold = pexConfig.Field('New moon phase threshold for swapping to dark time filter.',
+                                               float)
     ignore_sky_brightness = pexConfig.Field('Flag to ignore sky brightness limits when rejecting targets.',
                                             bool)
     ignore_airmass = pexConfig.Field('Flag to ignore airmass limits when rejecting targets.', bool)
@@ -28,6 +30,7 @@ class SchedulerDriver(pexConfig.Config):
         self.timebonus_bmax = 10.0
         self.timebonus_slope = 5.0
         self.night_boundary = -12.0
+        self.new_moon_phase_threshold = 20.0
         self.ignore_sky_brightness = False
         self.ignore_airmass = False
         self.ignore_clouds = False

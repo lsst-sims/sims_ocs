@@ -56,6 +56,7 @@ class ConfigurationCommunicator(object):
         self.sched_driver_conf.timebonus_bmax = self.config.sched_driver.timebonus_bmax
         self.sched_driver_conf.timebonus_slope = self.config.sched_driver.timebonus_slope
         self.sched_driver_conf.night_boundary = self.config.sched_driver.night_boundary
+        self.sched_driver_conf.new_moon_phase_threshold = self.config.sched_driver.new_moon_phase_threshold
         self.sched_driver_conf.ignore_sky_brightness = self.config.sched_driver.ignore_sky_brightness
         self.sched_driver_conf.ignore_airmass = self.config.sched_driver.ignore_airmass
         self.sched_driver_conf.ignore_clouds = self.config.sched_driver.ignore_clouds
