@@ -68,7 +68,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_observation_history_table(self):
         obs_hist = tbls.create_observation_history(self.metadata)
-        self.assertEqual(len(obs_hist.c), 30)
+        self.assertEqual(len(obs_hist.c), 31)
         self.assertEqual(len(obs_hist.indexes), 4)
 
     def test_write_observation_history_table(self):
@@ -92,6 +92,7 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['visitTime'], obs_topic.visit_time)
         self.assertEqual(result['visitExposureTime'], sum(obs_topic.exposure_times))
         self.assertEqual(result['skyBrightness'], obs_topic.sky_brightness)
+        self.assertEqual(result['cloud'], obs_topic.cloud)
         self.assertEqual(result['moonRA'], obs_topic.moon_ra)
         self.assertEqual(result['moonAz'], obs_topic.moon_az)
         self.assertEqual(result['sunDec'], obs_topic.sun_dec)

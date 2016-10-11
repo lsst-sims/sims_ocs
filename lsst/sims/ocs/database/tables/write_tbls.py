@@ -155,6 +155,7 @@ def write_observation_history(data, sid):
         ('visitExposureTime', sum([data.exposure_times[i] for i in range(data.num_exposures)])),
         ('airmass', data.airmass),
         ('skyBrightness', data.sky_brightness),
+        ('cloud', data.cloud),
         ('moonRA', data.moon_ra),
         ('moonDec', data.moon_dec),
         ('moonAlt', data.moon_alt),

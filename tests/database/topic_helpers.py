@@ -65,6 +65,7 @@ observation_topic.exposure_times[1] = 15
 observation_topic.visit_time = 34.0
 observation_topic.airmass = 1.4
 observation_topic.sky_brightness = 20.4
+observation_topic.cloud = 0.2
 observation_topic.moon_ra = 65.0
 observation_topic.moon_dec = -10.0
 observation_topic.moon_alt = -30.0

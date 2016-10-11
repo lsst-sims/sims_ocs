@@ -218,6 +218,8 @@ class Simulator(object):
                                                                                 self.time_handler)
                 # Add a few more things to the observation
                 observation.night = night
+                elapsed_time = self.time_handler.time_since_given(observation.observation_start_time)
+                observation.cloud = self.cloud_model.get_cloud(elapsed_time)
 
                 # Pass observation back to scheduler
                 self.sal.put(observation)

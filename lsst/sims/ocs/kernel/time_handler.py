@@ -196,3 +196,22 @@ class TimeHandler(object):
             The future date/time in ISO-8601.
         """
         return self.future_datetime(time_increment, time_units, timestamp=timestamp).isoformat()
+
+    def time_since_given(self, timestamp):
+        """Return the elapsed time (seconds).
+
+        This function takes the given timestamp and calculates the elapsed time in seconds
+        between it and the initial timestamp in the handler.
+
+        Parameters
+        ----------
+        timestamp : float
+            A UNIX timestamp
+
+        Returns
+        -------
+        float
+            The elapsed time (seconds) between the given
+        """
+        dt = datetime.utcfromtimestamp(timestamp)
+        return self._time_difference(dt, self.initial_dt)

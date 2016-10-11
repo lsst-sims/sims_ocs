@@ -258,6 +258,8 @@ def create_observation_history(metadata):
                   Column("airmass", Float, nullable=False, doc="The airmass of the target."),
                   Column("skyBrightness", Float, nullable=False,
                          doc="The calculated skybrightness for the target."),
+                  Column("cloud", Float, nullable=False,
+                         doc="The fraction of clouds present (0: none to 1: total)."),
                   Column("moonRA", Float, nullable=False,
                          doc="The right-ascension (units=degrees) of the moon."),
                   Column("moonDec", Float, nullable=False,
