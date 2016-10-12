@@ -289,8 +289,7 @@ class Simulator(object):
                 if (tf - lastconfigtime) > 5.0:
                     break
 
-        if self.wait_for_scheduler and self.filter_swap.need_swap:
-            self.seq.start_day(self.filter_swap.filter_to_unmount)
+        self.seq.start_day(self.filter_swap)
 
     def start_night(self, night):
         """Perform actions at the start of the night.

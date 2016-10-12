@@ -144,7 +144,6 @@ class SimulatorTest(unittest.TestCase):
             return topic
 
         self.sim.sal.get_topic = mock.MagicMock(side_effect=filter_swap_side_effect)
-        #self.sim.filter_swap.filter_to_unmount = 'z'
 
         self.sim.run()
 
@@ -183,8 +182,6 @@ class SimulatorTest(unittest.TestCase):
             return topic
 
         self.sim.sal.get_topic = mock.MagicMock(side_effect=filter_swap_side_effect)
-        # self.sim.filter_swap.need_swap = True
-        # self.sim.filter_swap.filter_to_unmount = 'u'
 
         self.sim.seq.start_day = mock.MagicMock(return_value=None)
 
@@ -192,7 +189,6 @@ class SimulatorTest(unittest.TestCase):
 
         self.assertTrue(mock_ss.getNextSample_filterSwap.called)
         self.assertTrue(self.sim.seq.start_day.called)
-        self.sim.seq.start_day.assert_called_once_with('z')
 
     @mock.patch("SALPY_scheduler.SAL_scheduler")
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.put")
@@ -219,8 +215,6 @@ class SimulatorTest(unittest.TestCase):
             return topic
 
         self.sim.sal.get_topic = mock.MagicMock(side_effect=filter_swap_side_effect)
-        # self.sim.filter_swap.filter_to_unmount = 'z'
-        # self.sim.filter_swap.need_swap = False
 
         self.sim.dh.get_downtime = mock.Mock(return_value=1)
         self.sim.seq.start_day = mock.MagicMock(return_value=None)
@@ -229,4 +223,4 @@ class SimulatorTest(unittest.TestCase):
 
         self.assertEqual(self.sim.dh.get_downtime.call_count, self.num_nights)
         self.assertEqual(mock_ss.getNextSample_target.call_count, 0)
-        self.assertEqual(self.sim.seq.start_day.call_count, 0)
+        self.assertEqual(self.sim.seq.start_day.call_count, 1)

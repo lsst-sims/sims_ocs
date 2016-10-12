@@ -9,6 +9,7 @@ from lsst.sims.ocs.configuration import Observatory, ObservingSite, Survey
 from lsst.sims.ocs.kernel.sequencer import Sequencer
 from lsst.sims.ocs.kernel.time_handler import TimeHandler
 from lsst.sims.ocs.sal.sal_manager import SalManager
+from SALPY_scheduler import scheduler_filterSwapC
 
 class SequencerTest(unittest.TestCase):
 
@@ -176,5 +177,8 @@ class SequencerTest(unittest.TestCase):
     @mock.patch("lsst.sims.ocs.observatory.main_observatory.MainObservatory.swap_filter")
     def test_start_day(self, mock_obs_sf, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
         self.initialize_sequencer()
-        self.seq.start_day('u')
+        fs = scheduler_filterSwapC()
+        fs.need_swap = True
+        fs.filter_to_unmount = 'u'
+        self.seq.start_day(fs)
         self.assertTrue(mock_obs_sf.called)

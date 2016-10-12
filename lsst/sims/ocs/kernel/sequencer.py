@@ -204,15 +204,16 @@ class Sequencer(object):
 
         return self.observation, slew_info, exposure_info
 
-    def start_day(self, filter_to_unmount):
+    def start_day(self, filter_swap):
         """Perform start of day functions.
 
         Parameters
         ----------
-        filter_to_unmount : str
-            The filter requested for unmounting.
+        filter_swap : scheduler_filterSwapC
+            The instance of the filter swap information.
         """
-        self.observatory_model.swap_filter(filter_to_unmount)
+        if filter_swap.need_swap:
+            self.observatory_model.swap_filter(filter_swap.filter_to_unmount)
 
     def start_night(self, night, duration):
         """Perform start of night functions.
