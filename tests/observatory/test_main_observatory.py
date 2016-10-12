@@ -50,7 +50,7 @@ class MainObservatoryTest(unittest.TestCase):
 
     def test_information_after_configuration(self):
         self.observatory_configure()
-        self.assertEqual(len(self.observatory.param_dict), 8)
+        self.assertEqual(len(self.observatory.param_dict), 9)
         self.assertEqual(self.observatory.model.params.TelAz_MaxSpeed_rad, math.radians(7.0))
         self.assertEqual(self.observatory.model.parkState.alt_rad, math.radians(86.5))
         self.assertFalse(self.observatory.model.params.Rotator_FollowSky)

@@ -6,6 +6,7 @@ except ImportError:
     import mock
 
 from lsst.sims.ocs.sal.sal_manager import SalManager
+from SALPY_scheduler import scheduler_targetC
 
 class SalManagerTest(unittest.TestCase):
 
@@ -46,6 +47,7 @@ class SalManagerTest(unittest.TestCase):
         topic_name = "target"
         topic = self.sal.set_subscribe_topic(topic_name)
         self.assertIsNotNone(topic)
+        self.assertIsInstance(topic, scheduler_targetC)
         self.assertEqual(topic.targetId, 0)
         self.assertTrue(mock_sal_telemetry_sub.called)
 

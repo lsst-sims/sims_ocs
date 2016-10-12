@@ -219,7 +219,7 @@ class MainObservatory(object):
 
         observation.visit_time = visit_time[0]
         for i, exposure in enumerate(self.observation_exposure_list):
-            observation.exposure_times[i] = exposure.exposureTime
+            observation.exposure_times[i] = int(exposure.exposureTime)
 
         time_handler.update_time(*visit_time)
 

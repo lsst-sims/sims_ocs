@@ -260,6 +260,16 @@ def create_observation_history(metadata):
                          doc="The calculated skybrightness for the target."),
                   Column("cloud", Float, nullable=False,
                          doc="The fraction of clouds present (0: none to 1: total)."),
+                  Column("seeingFwhm500", Float, nullable=False,
+                         doc="The full-width at half-maximum for seeing observations at 500 nm at zenith."),
+                  Column("seeingFwhmGeom", Float, nullable=False,
+                         doc="\"Geometrical\" full-width at half-maximum, actual half width at maximum "
+                         "brightness. This can be used to represent the FWHM of a double Gaussian "
+                         "representing the physical width of a PSF."),
+                  Column("seeingFwhmEff", Float, nullable=False,
+                         doc="\"Effective\" full-width at half-maximum, typically ~15% larger than "
+                         "seeingFwhmGeom. This can be used to calculate SNR for point sources, using "
+                         "seeingFwhmEff as the FWHM of a single Gaussian describing the PSF."),
                   Column("moonRA", Float, nullable=False,
                          doc="The right-ascension (units=degrees) of the moon."),
                   Column("moonDec", Float, nullable=False,
@@ -441,7 +451,7 @@ def create_session(metadata, autoincrement=True, session_id_start=1000):
         The database object that collects the tables.
     autoincrement : bool
         A flag to set auto incrementing on the sessionID column.
-      session_id_start : int
+    session_id_start : int
         A new starting session Id for counting new simulations.
 
     Returns

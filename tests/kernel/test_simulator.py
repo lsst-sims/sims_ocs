@@ -68,7 +68,7 @@ class SimulatorTest(unittest.TestCase):
 
     @mock.patch("lsst.sims.ocs.kernel.sequencer.Sequencer.initialize")
     def test_initialization(self, mock_sequencer_init):
-        self.mock_socs_db.session_id = mock.Mock(return_value=1001)
+        self.mock_socs_db.session_id = 1001
         self.sim.initialize()
         self.assertEqual(self.mock_salmanager_pub_topic.call_count, 3 + CONFIG_COMM_PUT_CALLS)
         self.assertEqual(self.mock_salmanager_sub_topic.call_count, 3)
@@ -80,10 +80,20 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(mock_salmanager_final.call_count, 1)
 
     def short_run(self, wait_for_sched):
-        self.mock_socs_db.session_id = mock.Mock(return_value=1001)
-        mock_dateprofile = mock.Mock()
-        mock_dateprofile.mjd = mock.Mock(return_value=59280.1)
-        self.mock_astro_sky.return_value.date_profile = mock_dateprofile
+        self.mock_salmanager_pub_topic.side_effect = self.topic_get
+        self.mock_salmanager_sub_topic.side_effect = self.topic_get
+        self.mock_socs_db.session_id = 1001
+        mock_dateprofile = mock.MagicMock(mjd=59280.1)
+        mas = self.mock_astro_sky.return_value
+        mas.date_profile = mock_dateprofile
+        mas.get_sky_brightness.return_value = {'u': [16.0], 'g': [17.0], 'r': [18.0],
+                                               'i': [19.0], 'z': [20.0], 'y': [21.0]}
+        mas.get_target_information.return_value = {'airmass': [1.1], 'alts': [0.5], 'azs': [0.5]}
+        mas.get_moon_sun_info.return_value = {'moonRA': 30.0, 'moonDec': 10.0, 'moonAlt': -2.0,
+                                              'moonAz': 135.0, 'moonPhase': 0.3, 'moonDist': 80.0,
+                                              'sunRA': 310.0, 'sunDec': 5.0, 'sunAlt': -24.0, 'sunAz': 285.0,
+                                              'sunEclipLon': 150.0}
+
         # Setup for 1 night and 9 visits
         self.num_nights = 1
         self.num_visits = 9
@@ -109,7 +119,7 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(self.sim.duration, 1.0)
 
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.put")
-    def test_run_no_scheduler(self, mock_salmanager_put):
+    def xtest_run_no_scheduler(self, mock_salmanager_put):
         self.short_run(False)
 
         self.sim.initialize()
@@ -134,6 +144,7 @@ class SimulatorTest(unittest.TestCase):
         # Targets
         mock_ss.getNextSample_target = mock.MagicMock(return_value=0)
         self.sim.target.num_exposures = 2
+        self.sim.target.filter = 'r'
         # Filter Swap
         mock_ss.getNextSample_filterSwap = mock.MagicMock(return_value=0)
 
@@ -145,8 +156,11 @@ class SimulatorTest(unittest.TestCase):
 
         self.sim.sal.get_topic = mock.MagicMock(side_effect=filter_swap_side_effect)
 
-        self.sim.run()
+        # TargetHistory, ObsHistory, SlewHistory, SlewActivity, SlewInitialState, SlewFinalState
+        # 2 * TargetExposures, 2 * ObsExposures, ProposalHistory
+        DATABASE_APPEND_DATA_CALLS = 11
 
+        self.sim.run()
         self.assertEqual(mock_salmanager_put.call_count, self.put_calls)
         self.assertEqual(mock_ss.getNextSample_field.call_count, 2)
         self.assertEqual(mock_ss.getNextSample_target.call_count, get_calls)
@@ -154,7 +168,8 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(self.sim.seq.targets_received, self.num_visits)
         self.assertEqual(self.sim.seq.observations_made, self.num_visits)
         self.assertEqual(self.mock_socs_db.clear_data.call_count, self.num_nights)
-        self.assertEqual(self.mock_socs_db.append_data.call_count, self.num_visits * 12)
+        self.assertEqual(self.mock_socs_db.append_data.call_count,
+                         self.num_visits * DATABASE_APPEND_DATA_CALLS)
         self.assertEqual(self.mock_socs_db.write.call_count, self.num_nights)
 
     @mock.patch("SALPY_scheduler.SAL_scheduler")
@@ -171,6 +186,7 @@ class SimulatorTest(unittest.TestCase):
         # Targets
         mock_ss.getNextSample_target = mock.MagicMock(return_value=0)
         self.sim.target.num_exposures = 2
+        self.sim.target.filter = 'r'
         # Filter Swap
         mock_ss.getNextSample_filterSwap = mock.MagicMock(return_value=0)
 
@@ -204,6 +220,7 @@ class SimulatorTest(unittest.TestCase):
         # Targets
         mock_ss.getNextSample_target = mock.MagicMock(return_value=0)
         self.sim.target.num_exposures = 2
+        self.sim.target.filter = 'r'
         # Filter swap
         mock_ss.getNextSample_filterSwap = mock.MagicMock(return_value=0)
 
