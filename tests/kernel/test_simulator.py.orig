@@ -164,7 +164,6 @@ class SimulatorTest(unittest.TestCase):
         DATABASE_APPEND_DATA_CALLS = 11
 
         self.sim.run()
-
         self.assertEqual(mock_salmanager_put.call_count, self.put_calls)
         self.assertEqual(mock_ss.getNextSample_field.call_count, 2)
         self.assertEqual(mock_ss.getNextSample_target.call_count, get_calls)
@@ -172,8 +171,12 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(self.sim.seq.targets_received, self.num_visits)
         self.assertEqual(self.sim.seq.observations_made, self.num_visits)
         self.assertEqual(self.mock_socs_db.clear_data.call_count, self.num_nights)
+<<<<<<< 9b03e15b5898e1b623257de1230ba53cd8d35ec5
         self.assertEqual(self.mock_socs_db.append_data.call_count,
                          self.num_visits * DATABASE_APPEND_DATA_CALLS)
+=======
+        self.assertEqual(self.mock_socs_db.append_data.call_count, self.num_visits * 13)
+>>>>>>> Handling interested proposal information.
         self.assertEqual(self.mock_socs_db.write.call_count, self.num_nights)
 
     @mock.patch("SALPY_scheduler.SAL_scheduler")

@@ -100,21 +100,26 @@ class Simulator(object):
         self.sal.finalize()
         self.log.info("Ending simulation")
 
-    def gather_proposal_history(self, obsId):
+    def gather_proposal_history(self, topic, obsId=None):
         """Gather the proposal history from the current target.
 
         Parameters
         ----------
-        obsId : int
+        topic : :class:`scheduler_targetC` or :class:`scheduler_interestedProposalC`
+            The topic instance to gather the proposal information from.
+        obsId : int, optional
             The current observation identifier.
         """
-        for i in xrange(self.target.num_proposals):
+        if obsId is None:
+            obsId = topic.observationId
+
+        for i in xrange(topic.num_proposals):
             self.db.append_data("proposal_history", ProposalHistory(self.proposals_counted,
-                                                                    self.target.proposal_Ids[i],
-                                                                    self.target.proposal_values[i],
-                                                                    self.target.proposal_needs[i],
-                                                                    self.target.proposal_bonuses[i],
-                                                                    self.target.proposal_boosts[i],
+                                                                    topic.proposal_Ids[i],
+                                                                    topic.proposal_values[i],
+                                                                    topic.proposal_needs[i],
+                                                                    topic.proposal_bonuses[i],
+                                                                    topic.proposal_boosts[i],
                                                                     obsId))
             self.proposals_counted += 1
 
@@ -152,6 +157,7 @@ class Simulator(object):
         self.cloud = self.sal.set_publish_topic("cloud")
         self.seeing = self.sal.set_publish_topic("seeing")
         self.filter_swap = self.sal.set_subscribe_topic("filterSwap")
+        self.interested_proposal = self.sal.set_subscribe_topic("interestedProposal")
 
     def run(self):
         """Run the simulation.
@@ -229,10 +235,22 @@ class Simulator(object):
                 # Pass observation back to scheduler
                 self.sal.put(observation)
 
+                # Wait for interested proposal information
+                lastconfigtime = time.time()
+                while self.wait_for_scheduler:
+                    rcode = self.sal.manager.getNextSample_interestedProposal(self.interested_proposal)
+                    if rcode == 0 and self.interested_proposal.observationId != -1:
+                        break
+                    else:
+                        tf = time.time()
+                        if (tf - lastconfigtime) > 0.0001:
+                            break
+
                 if self.wait_for_scheduler and observation.targetId != -1:
                     self.db.append_data("target_history", self.target)
                     self.db.append_data("observation_history", observation)
-                    self.gather_proposal_history(observation.observationId)
+                    self.gather_proposal_history(self.target, observation.observationId)
+                    self.gather_proposal_history(self.interested_proposal)
                     for slew_type, slew_data in slew_info.items():
                         self.log.log(LoggingLevel.TRACE.value, "{}, {}".format(slew_type, type(slew_data)))
                         if isinstance(slew_data, list):
