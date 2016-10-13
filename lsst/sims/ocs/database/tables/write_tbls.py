@@ -385,6 +385,8 @@ def write_target_history(data, sid):
         ('requestMJD', data.request_mjd),
         ('airmass', data.airmass),
         ('skyBrightness', data.sky_brightness),
+        ('cloud', data.cloud),
+        ('seeing', data.seeing),
         ('slewTime', data.slew_time),
         ('costBonus', data.cost_bonus),
         ('rank', data.rank),
