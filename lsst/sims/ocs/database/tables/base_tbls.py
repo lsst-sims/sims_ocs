@@ -169,12 +169,12 @@ def create_observation_exposures(metadata):
     Parameters
     ----------
     metadata : sqlalchemy.MetaData
-      The database object that collects the tables.
+        The database object that collects the tables.
 
     Returns
     -------
     sqlalchemy.Table
-      The ObsExposure table object.
+        The ObsExposure table object.
     """
     table = Table("ObsExposures", metadata,
                   Column("exposureId", Integer, primary_key=True, autoincrement=False, nullable=False,
@@ -439,7 +439,7 @@ def create_session(metadata, autoincrement=True, session_id_start=1000):
         The database object that collects the tables.
     autoincrement : bool
         A flag to set auto incrementing on the sessionID column.
-      session_id_start : int
+    session_id_start : int
         A new starting session Id for counting new simulations.
 
     Returns
@@ -712,12 +712,12 @@ def create_target_exposures(metadata):
     Parameters
     ----------
     metadata : sqlalchemy.MetaData
-      The database object that collects the tables.
+        The database object that collects the tables.
 
     Returns
     -------
     sqlalchemy.Table
-      The Target Exposure table object.
+        The Target Exposure table object.
     """
     table = Table("TargetExposures", metadata,
                   Column("exposureId", Integer, primary_key=True, autoincrement=False, nullable=False,
