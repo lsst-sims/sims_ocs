@@ -143,7 +143,7 @@ class Simulator(object):
         self.dh.write_downtime_to_db(self.db)
         self.cloud_model.initialize(self.conf.environment.cloud_db)
         # self.cloud_model.write_to_db(self.db)
-        self.seeing_model.initialize(self.conf.environment.seeing_db)
+        self.seeing_model.initialize(self.conf.environment, self.conf.observatory.filters)
         # self.seeing_model.write_to_db(self.db)
         self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
@@ -218,6 +218,13 @@ class Simulator(object):
                                                                                 self.time_handler)
                 # Add a few more things to the observation
                 observation.night = night
+                elapsed_time = self.time_handler.time_since_given(observation.observation_start_time)
+                observation.cloud = self.cloud_model.get_cloud(elapsed_time)
+                seeing_values = self.seeing_model.calculate_seeing(elapsed_time, observation.filter,
+                                                                   observation.airmass)
+                observation.seeing_fwhm_500 = seeing_values[0]
+                observation.seeing_fwhm_geom = seeing_values[1]
+                observation.seeing_fwhm_eff = seeing_values[2]
 
                 # Pass observation back to scheduler
                 self.sal.put(observation)

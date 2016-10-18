@@ -42,8 +42,8 @@ class SimulationConfig(pexConfig.Config):
     def config_list(self, sub_config=None):
         """Get a list of parameter name, value tuples.
 
-        Paramters
-        ---------
+        Parameters
+        ----------
         sub_config : str, optional
             The name of a sub-configuration parameter.
 

@@ -36,6 +36,7 @@ class AreaDistribution(pexConfig.Config):
         topic.delta_lst = self.sky_nightly_bounds.delta_lst
         topic.dec_window = self.sky_exclusion.dec_window
         topic.max_airmass = self.sky_constraints.max_airmass
+        topic.max_cloud = self.sky_constraints.max_cloud
 
         num_region_selections = len(self.sky_region.selections) \
             if self.sky_region.selections is not None else 0

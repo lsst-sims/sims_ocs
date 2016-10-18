@@ -1,3 +1,4 @@
+from __future__ import division
 import numpy
 import os
 import sqlite3
@@ -15,6 +16,9 @@ class SeeingModel(object):
 
     SEEING_DB = "seeing.db"
     """Filename of the internal seeing observation database."""
+    AIRMASS_CORRECTION_POWER = 0.6
+    FILTER_WAVELENGTH_CORRECTION_POWER = 0.3
+    RAW_SEEING_WAVELENGTH = 500  # nm
 
     def __init__(self):
         """Initialize the class.
@@ -22,6 +26,38 @@ class SeeingModel(object):
         self.seeing_db = None
         self.seeing_dates = None
         self.seeing_values = None
+        self.environment_config = None
+        self.filters_config = None
+        self.seeing_fwhm_system_zenith = None
+
+    def calculate_seeing(self, delta_time, filter_name, airmass):
+        """Calculate the geometric and effective seeing values.
+
+        Parameters
+        ----------
+        delta_time : int
+            The time (seconds) from the start of the simulation.
+        filter_name : str
+            The single character filter name for the calculation.
+        airmass : float
+            The airmass for the calculation.
+
+        Returns
+        -------
+        tuple
+            The FWHM 500nm, FWHM Geometric and FWHM Effective seeing values.
+        """
+        fwhm_500 = self.get_seeing(delta_time)
+        airmass_correction = numpy.power(airmass, self.AIRMASS_CORRECTION_POWER)
+        filter_wavelength_correction = numpy.power(self.RAW_SEEING_WAVELENGTH /
+                                                   self.filters_config.get_effective_wavelength(filter_name),
+                                                   self.FILTER_WAVELENGTH_CORRECTION_POWER)
+        fwhm_system = self.seeing_fwhm_system_zenith * airmass_correction
+        fwhm_geometric = fwhm_500 * filter_wavelength_correction * airmass_correction
+        temp1 = numpy.sqrt(fwhm_system**2 + self.environment_config.geom_eff_factor * fwhm_geometric**2)
+        fwhm_effective = self.environment_config.scale_to_eff * temp1
+
+        return (fwhm_500, fwhm_geometric, fwhm_effective)
 
     def get_seeing(self, delta_time):
         """Get the seeing for the specified time.
@@ -41,11 +77,12 @@ class SeeingModel(object):
         idx = numpy.where(date_delta == numpy.min(date_delta))
         return self.seeing_values[idx][0]
 
-    def initialize(self, seeing_file=""):
+    def initialize(self, environment_config, filters_config):
         """Configure the seeing information.
 
-        This function gets the appropriate database file and creates the seeing information
-        from it. The default behavior is to use the module stored database. However, an
+        This function gets the environment and filters configuration, calculates the FWHM system
+        seeing at zenith and creates the seeing information from the appropriate database.
+        The default behavior is to use the module stored database. However, an
         alternate database file can be provided. The alternate database file needs to have a
         table called *Seeing* with the following columns:
 
@@ -58,11 +95,20 @@ class SeeingModel(object):
 
         Parameters
         ----------
-        seeing_file : str, optional
-            The full path to an alternate seeing database.
+        environment_config : :class:`.Environment`
+            The configuration instance for the environment.
+        filters_config : :class:`.Filters`
+            The configuration instance for the filters.
         """
-        if seeing_file != "":
-            self.seeing_db = seeing_file
+        self.environment_config = environment_config
+        self.filters_config = filters_config
+
+        self.seeing_fwhm_system_zenith = numpy.sqrt(self.environment_config.telescope_seeing**2 +
+                                                    self.environment_config.optical_design_seeing**2 +
+                                                    self.environment_config.camera_seeing**2)
+
+        if self.environment_config.seeing_db != "":
+            self.seeing_db = self.environment_config.seeing_db
         else:
             self.seeing_db = os.path.join(os.path.dirname(__file__), self.SEEING_DB)
 
@@ -80,7 +126,7 @@ class SeeingModel(object):
 
         Parameters
         ----------
-        th : :class:`TimeHandler`
+        th : :class:`.TimeHandler`
             A time hadnling instance.
         topic : SALPY_scheduler.scheduler_seeingC
             An instance of the seeing topic.

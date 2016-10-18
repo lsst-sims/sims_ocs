@@ -29,7 +29,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_target_history_table(self):
         targets = tbls.create_target_history(self.metadata)
-        self.assertEqual(len(targets.c), 29)
+        self.assertEqual(len(targets.c), 31)
         self.assertEqual(len(targets.indexes), 3)
 
     def test_write_target_history_table(self):
@@ -45,6 +45,8 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['dec'], target_topic.dec)
         self.assertEqual(result['requestedExpTime'], sum(target_topic.exposure_times))
         self.assertEqual(result['airmass'], target_topic.airmass)
+        self.assertEqual(result['cloud'], target_topic.cloud)
+        self.assertEqual(result['seeing'], target_topic.seeing)
         self.assertEqual(result['rank'], target_topic.rank)
         self.assertEqual(result['numRequestingProps'], target_topic.num_proposals)
         self.assertEqual(result['moonRA'], target_topic.moon_ra)
@@ -68,7 +70,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_observation_history_table(self):
         obs_hist = tbls.create_observation_history(self.metadata)
-        self.assertEqual(len(obs_hist.c), 30)
+        self.assertEqual(len(obs_hist.c), 34)
         self.assertEqual(len(obs_hist.indexes), 4)
 
     def test_write_observation_history_table(self):
@@ -92,6 +94,8 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['visitTime'], obs_topic.visit_time)
         self.assertEqual(result['visitExposureTime'], sum(obs_topic.exposure_times))
         self.assertEqual(result['skyBrightness'], obs_topic.sky_brightness)
+        self.assertEqual(result['cloud'], obs_topic.cloud)
+        self.assertEqual(result['seeingFwhmGeom'], obs_topic.seeing_fwhm_geom)
         self.assertEqual(result['moonRA'], obs_topic.moon_ra)
         self.assertEqual(result['moonAz'], obs_topic.moon_az)
         self.assertEqual(result['sunDec'], obs_topic.sun_dec)

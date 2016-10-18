@@ -3,7 +3,7 @@ import os
 import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration import load_config
-from lsst.sims.ocs.configuration.instrument import Camera, Dome, Park, ObservatoryVariation
+from lsst.sims.ocs.configuration.instrument import Camera, Dome, Filters, Park, ObservatoryVariation
 from lsst.sims.ocs.configuration.instrument import OpticsLoopCorr, Rotator, Slew, Telescope
 
 __all__ = ["Observatory"]
@@ -16,6 +16,7 @@ class Observatory(pexConfig.Config):
     dome = pexConfig.ConfigField("The LSST dome configuration.", Dome)
     rotator = pexConfig.ConfigField("The LSST rotator configuration.", Rotator)
     camera = pexConfig.ConfigField("The LSST camera configuration.", Camera)
+    filters = pexConfig.ConfigField("The LSST filters configuration.", Filters)
     slew = pexConfig.ConfigField("The LSST slew configuration.", Slew)
     optics_loop_corr = pexConfig.ConfigField("The LSST optics loop corrections.", OpticsLoopCorr)
     park = pexConfig.ConfigField("The LSST observatory park position configuration.", Park)
@@ -38,6 +39,7 @@ class Observatory(pexConfig.Config):
         load_config(self.dome, config_files)
         load_config(self.rotator, config_files)
         load_config(self.camera, config_files)
+        load_config(self.filters, config_files)
         load_config(self.slew, config_files)
         load_config(self.optics_loop_corr, config_files)
         load_config(self.park, config_files)
@@ -55,6 +57,7 @@ class Observatory(pexConfig.Config):
         self.dome.save(os.path.join(save_dir, "dome.py"))
         self.rotator.save(os.path.join(save_dir, "rotator.py"))
         self.camera.save(os.path.join(save_dir, "camera.py"))
+        self.camera.save(os.path.join(save_dir, "filters.py"))
         self.slew.save(os.path.join(save_dir, "slew.py"))
         self.optics_loop_corr.save(os.path.join(save_dir, "optics_loop_corr.py"))
         self.park.save(os.path.join(save_dir, "park.py"))

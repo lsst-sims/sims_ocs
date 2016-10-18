@@ -258,6 +258,18 @@ def create_observation_history(metadata):
                   Column("airmass", Float, nullable=False, doc="The airmass of the target."),
                   Column("skyBrightness", Float, nullable=False,
                          doc="The calculated skybrightness for the target."),
+                  Column("cloud", Float, nullable=False,
+                         doc="The fraction of clouds present (0: none to 1: total)."),
+                  Column("seeingFwhm500", Float, nullable=False,
+                         doc="The full-width at half-maximum for seeing observations at 500 nm at zenith."),
+                  Column("seeingFwhmGeom", Float, nullable=False,
+                         doc="\"Geometrical\" full-width at half-maximum, actual half width at maximum "
+                         "brightness. This can be used to represent the FWHM of a double Gaussian "
+                         "representing the physical width of a PSF."),
+                  Column("seeingFwhmEff", Float, nullable=False,
+                         doc="\"Effective\" full-width at half-maximum, typically ~15% larger than "
+                         "seeingFwhmGeom. This can be used to calculate SNR for point sources, using "
+                         "seeingFwhmEff as the FWHM of a single Gaussian describing the PSF."),
                   Column("moonRA", Float, nullable=False,
                          doc="The right-ascension (units=degrees) of the moon."),
                   Column("moonDec", Float, nullable=False,
@@ -784,6 +796,10 @@ def create_target_history(metadata):
                   Column("airmass", Float, nullable=False, doc="The airmass of the target."),
                   Column("skyBrightness", Float, nullable=False,
                          doc="The calculated skybrightness for the target."),
+                  Column("cloud", Float, nullable=False,
+                         doc="The fraction of clouds (0: none to 1: total) for the target."),
+                  Column("seeing", Float, nullable=False,
+                         doc="The seeing (units=arcseconds) for the target."),
                   Column("slewTime", Float, nullable=False,
                          doc="The calculated slew time (units=seconds) for the target."),
                   Column("costBonus", Float, nullable=False,
