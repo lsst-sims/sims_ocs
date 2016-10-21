@@ -46,6 +46,7 @@ class GalacticPlane(AreaDistribution):
         # ------------------------------
 
         self.sky_constraints.max_airmass = 2.5
+        self.sky_constraints.max_cloud = 0.7
 
         # ----------------------
         # Scheduling information
@@ -54,6 +55,7 @@ class GalacticPlane(AreaDistribution):
         self.scheduling.max_num_targets = 100
         self.scheduling.accept_serendipity = False
         self.scheduling.accept_consecutive_visits = False
+        self.scheduling.airmass_bonus = 0.5
 
         # --------------------------
         # Band Filter specifications

@@ -83,5 +83,6 @@ class AreaDistribution(pexConfig.Config):
         topic.max_num_targets = self.scheduling.max_num_targets
         topic.accept_serendipity = self.scheduling.accept_serendipity
         topic.accept_consecutive_visits = self.scheduling.accept_consecutive_visits
+        topic.airmass_bonus = self.scheduling.airmass_bonus
 
         return topic
