@@ -40,7 +40,7 @@ class SocsDatabaseMySqlTest(unittest.TestCase):
         self.assertTrue(hasattr(self.db, "config"))
         # self.assertTrue(hasattr(self.db, "seeing"))
         # self.assertTrue(hasattr(self.db, "cloud"))
-        self.assertTrue(hasattr(self.db, "summary"))
+        self.assertTrue(hasattr(self.db, "summary_all_props"))
 
     @mock.patch("sqlalchemy.MetaData.create_all")
     def test_database_creation(self, mock_create_all):
