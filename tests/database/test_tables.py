@@ -100,6 +100,7 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['moonAz'], obs_topic.moon_az)
         self.assertEqual(result['sunDec'], obs_topic.sun_dec)
         self.assertEqual(result['sunAlt'], obs_topic.sun_alt)
+        self.assertEqual(result['solarElong'], obs_topic.solar_elong)
 
     def test_create_slew_history_table(self):
         slew_hist = tbls.create_slew_history(self.metadata)

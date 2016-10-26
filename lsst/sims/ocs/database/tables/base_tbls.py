@@ -255,9 +255,9 @@ def create_observation_history(metadata):
                   Column("visitExposureTime", Float, nullable=False,
                          doc="The sum of all the exposure times for the observation (units=seconds). No "
                              "shutter and readout time included."),
-                  Column("airmass", Float, nullable=False, doc="The airmass of the target."),
+                  Column("airmass", Float, nullable=False, doc="The airmass of the observation field."),
                   Column("skyBrightness", Float, nullable=False,
-                         doc="The calculated skybrightness for the target."),
+                         doc="The calculated skybrightness for the observation field."),
                   Column("cloud", Float, nullable=False,
                          doc="The fraction of clouds present (0: none to 1: total)."),
                   Column("seeingFwhm500", Float, nullable=False,
@@ -279,7 +279,7 @@ def create_observation_history(metadata):
                   Column("moonAz", Float, nullable=False,
                          doc="The azimuth (units=degrees) of the moon."),
                   Column("moonDistance", Float, nullable=False,
-                         doc="The distance (units=degrees) between the moon and the target."),
+                         doc="The distance (units=degrees) between the moon and the observation field."),
                   Column("moonPhase", Float, nullable=False,
                          doc="The phase of the moon."),
                   Column("sunRA", Float, nullable=False,
@@ -290,8 +290,9 @@ def create_observation_history(metadata):
                          doc="The altitude (units=degrees) of the sun."),
                   Column("sunAz", Float, nullable=False,
                          doc="The azimuth (units=degrees) of the sun."),
-                  Column("sunElong", Float, nullable=False,
-                         doc="The elongation (units=degrees) of the sun."),
+                  Column("solarElong", Float, nullable=False,
+                         doc="The solar elongation (units=degrees) of the observation field (distance "
+                             "between it and sun)."),
                   ForeignKeyConstraint(["Field_fieldId"], ["Field.fieldId"]),
                   ForeignKeyConstraint(["TargetHistory_targetId"], ["TargetHistory.targetId"]))
 

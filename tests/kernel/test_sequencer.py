@@ -50,7 +50,7 @@ class SequencerTest(unittest.TestCase):
         mas.get_moon_sun_info.return_value = {'moonRA': 30.0, 'moonDec': 10.0, 'moonAlt': -2.0,
                                               'moonAz': 135.0, 'moonPhase': 0.3, 'moonDist': 80.0,
                                               'sunRA': 310.0, 'sunDec': 5.0, 'sunAlt': -24.0, 'sunAz': 285.0,
-                                              'sunEclipLon': 150.0}
+                                              'solarElong': 150.0}
 
     def test_basic_information_after_creation(self):
         self.assertEqual(self.seq.observations_made, 0)

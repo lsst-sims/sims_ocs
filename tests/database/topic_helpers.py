@@ -81,7 +81,7 @@ observation_topic.sun_ra = 245.0
 observation_topic.sun_dec = 0.0
 observation_topic.sun_alt = -10.0
 observation_topic.sun_az = 250.0
-observation_topic.sun_elong = 250.0
+observation_topic.solar_elong = 250.0
 
 slew_history_coll = lsst.sims.ocs.observatory.SlewHistory(slewCount=1, startDate=2922, endDate=2925,
                                                           slewTime=6.0, slewDistance=1.0,
