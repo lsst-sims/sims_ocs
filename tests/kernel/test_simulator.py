@@ -14,6 +14,7 @@ import SALPY_scheduler
 from tests.database.topic_helpers import exposure_coll1, exposure_coll2, exposure_coll3, exposure_coll4
 from tests.database.topic_helpers import slew_activity_coll
 from tests.helpers import CONFIG_GEN_PROPS, CONFIG_COMM_PUT_CALLS
+from tests.helpers import MOON_SUN_INFO, SKY_BRIGHTNESS, TARGET_INFO
 
 class SimulatorTest(unittest.TestCase):
 
@@ -89,13 +90,9 @@ class SimulatorTest(unittest.TestCase):
         mock_dateprofile = mock.MagicMock(mjd=59280.1)
         mas = self.mock_astro_sky.return_value
         mas.date_profile = mock_dateprofile
-        mas.get_sky_brightness.return_value = {'u': [16.0], 'g': [17.0], 'r': [18.0],
-                                               'i': [19.0], 'z': [20.0], 'y': [21.0]}
-        mas.get_target_information.return_value = {'airmass': [1.1], 'alts': [0.5], 'azs': [0.5]}
-        mas.get_moon_sun_info.return_value = {'moonRA': 30.0, 'moonDec': 10.0, 'moonAlt': -2.0,
-                                              'moonAz': 135.0, 'moonPhase': 0.3, 'moonDist': 80.0,
-                                              'sunRA': 310.0, 'sunDec': 5.0, 'sunAlt': -24.0, 'sunAz': 285.0,
-                                              'solarElong': 150.0}
+        mas.get_sky_brightness.return_value = SKY_BRIGHTNESS
+        mas.get_target_information.return_value = TARGET_INFO
+        mas.get_moon_sun_info.return_value = MOON_SUN_INFO
 
         # Setup for 1 night and 9 visits
         self.num_nights = 1

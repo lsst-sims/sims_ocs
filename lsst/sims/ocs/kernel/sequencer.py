@@ -181,19 +181,19 @@ class Sequencer(object):
 
             self.observation.sky_brightness = sky_mags[self.observation.filter][0]
             self.observation.airmass = attrs["airmass"][0]
-            self.observation.altitude = numpy.degrees(attrs["alts"][0])
-            self.observation.azimuth = numpy.degrees(attrs["azs"][0])
+            self.observation.altitude = numpy.degrees(attrs["altitude"][0])
+            self.observation.azimuth = numpy.degrees(attrs["azimuth"][0])
             self.observation.moon_ra = numpy.degrees(msi["moonRA"])
             self.observation.moon_dec = numpy.degrees(msi["moonDec"])
             self.observation.moon_alt = numpy.degrees(msi["moonAlt"])
             self.observation.moon_az = numpy.degrees(msi["moonAz"])
             self.observation.moon_phase = msi["moonPhase"]
-            self.observation.moon_distance = numpy.degrees(msi["moonDist"])
+            self.observation.moon_distance = numpy.degrees(msi["moonDist"][0])
             self.observation.sun_alt = numpy.degrees(msi["sunAlt"])
             self.observation.sun_az = numpy.degrees(msi["sunAz"])
             self.observation.sun_ra = numpy.degrees(msi["sunRA"])
             self.observation.sun_dec = numpy.degrees(msi["sunDec"])
-            self.observation.sun_elong = numpy.degrees(msi["solarElong"])
+            self.observation.sun_elong = numpy.degrees(msi["solarElong"][0])
         else:
             self.log.log(LoggingLevel.EXTENSIVE.value, "No target received!")
             self.observation.observationId = target.targetId
