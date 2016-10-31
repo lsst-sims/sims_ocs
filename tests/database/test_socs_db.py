@@ -35,7 +35,7 @@ class SocsDatabaseMySqlTest(unittest.TestCase):
         self.assertTrue(hasattr(self.db, "scheduled_downtime"))
         self.assertTrue(hasattr(self.db, "unscheduled_downtime"))
         self.assertTrue(hasattr(self.db, "proposal"))
-        self.assertTrue(hasattr(self.db, "proposal_history"))
+        self.assertTrue(hasattr(self.db, "observation_proposal_history"))
         self.assertTrue(hasattr(self.db, "config"))
         # self.assertTrue(hasattr(self.db, "seeing"))
         # self.assertTrue(hasattr(self.db, "cloud"))

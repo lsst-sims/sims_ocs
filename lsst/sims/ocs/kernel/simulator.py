@@ -7,7 +7,7 @@ from ts_scheduler.sky_model import Sun
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
 from lsst.sims.ocs.database.tables import write_config, write_field, write_proposal
 from lsst.sims.ocs.environment import CloudModel, SeeingModel
-from lsst.sims.ocs.kernel import DowntimeHandler, ProposalHistory, ProposalInfo, Sequencer, TimeHandler
+from lsst.sims.ocs.kernel import DowntimeHandler, ObsProposalHistory, ProposalInfo, Sequencer, TimeHandler
 from lsst.sims.ocs.sal import SalManager, topic_strdict
 from lsst.sims.ocs.setup import LoggingLevel
 from lsst.sims.ocs.utilities.constants import DAYS_IN_YEAR, SECONDS_IN_MINUTE
@@ -106,7 +106,7 @@ class Simulator(object):
         Parameters
         ----------
         topic : :class:`scheduler_targetC` or :class:`scheduler_interestedProposalC`
-            The topic instance to gather the proposal information from.
+            The topic instance to gather the observation proposal information from.
         obsId : int, optional
             The current observation identifier.
         """
@@ -114,13 +114,13 @@ class Simulator(object):
             obsId = topic.observationId
 
         for i in xrange(topic.num_proposals):
-            self.db.append_data("proposal_history", ProposalHistory(self.proposals_counted,
-                                                                    topic.proposal_Ids[i],
-                                                                    topic.proposal_values[i],
-                                                                    topic.proposal_needs[i],
-                                                                    topic.proposal_bonuses[i],
-                                                                    topic.proposal_boosts[i],
-                                                                    obsId))
+            self.db.append_data("observation_proposal_history", ObsProposalHistory(self.proposals_counted,
+                                                                                   topic.proposal_Ids[i],
+                                                                                   topic.proposal_values[i],
+                                                                                   topic.proposal_needs[i],
+                                                                                   topic.proposal_bonuses[i],
+                                                                                   topic.proposal_boosts[i],
+                                                                                   obsId))
             self.proposals_counted += 1
 
     def get_target_from_scheduler(self):

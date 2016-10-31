@@ -116,9 +116,9 @@ exposure_coll4 = lsst.sims.ocs.observatory.ObsExposure(exposureId=1, exposureNum
 
 prop_info = lsst.sims.ocs.kernel.ProposalInfo(propId=1, propName="TestProposal", propType="AreaDistribution")
 
-prop_hist = lsst.sims.ocs.kernel.ProposalHistory(propHistId=1, Proposal_propId=2, proposalValue=1.32,
-                                                 proposalNeed=0.5, proposalBonus=0.82, proposalBoost=0.2,
-                                                 ObsHistory_observationId=10)
+obs_prop_hist = lsst.sims.ocs.kernel.ObsProposalHistory(propHistId=1, Proposal_propId=2, proposalValue=1.32,
+                                                        proposalNeed=0.5, proposalBonus=0.82,
+                                                        proposalBoost=0.2, ObsHistory_observationId=10)
 
 seeing_tuple = (102, 9997, 0.456)
 

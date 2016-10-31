@@ -1,13 +1,14 @@
 import collections
 
-__all__ = ["ProposalHistory", "ProposalInfo"]
+__all__ = ["ObsProposalHistory", "ProposalInfo"]
 
 """Simple tuple for handling proposal information.
 """
 ProposalInfo = collections.namedtuple("ProposalInfo", ["propId", "propName", "propType"])
 
-"""Simple tuple for handling proposal history information.
+"""Simple tuple for handling observation proposal history information.
 """
-ProposalHistory = collections.namedtuple("ProposalHistory", ["propHistId", "Proposal_propId", "proposalValue",
-                                                             "proposalNeed", "proposalBonus", "proposalBoost",
-                                                             "ObsHistory_observationId"])
+ObsProposalHistory = collections.namedtuple("ObsProposalHistory", ["propHistId", "Proposal_propId",
+                                                                   "proposalValue", "proposalNeed",
+                                                                   "proposalBonus", "proposalBoost",
+                                                                   "ObsHistory_observationId"])
