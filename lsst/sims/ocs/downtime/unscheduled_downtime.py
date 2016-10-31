@@ -18,7 +18,7 @@ class UnscheduledDowntime(object):
     def __init__(self):
         """Initialize the class.
         """
-        self.seed = 1640995200
+        self.seed = 1516231120
         self.downtimes = []
         self.log = logging.getLogger("downtime.UnscheduledDowntime")
 

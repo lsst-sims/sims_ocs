@@ -19,15 +19,15 @@ class UnscheduledDowntimeTest(unittest.TestCase):
         self.assertEqual(downtime[2], activity)
 
     def test_basic_information_after_creation(self):
-        self.assertEqual(self.usdt.seed, 1640995200)
+        self.assertEqual(self.usdt.seed, 1516231120)
         self.assertEqual(len(self.usdt), 0)
 
     def test_information_after_iniitialization(self):
         self.usdt.initialize()
-        self.assertEqual(len(self.usdt), 176)
-        self.assertEqual(self.usdt.total_downtime, 376)
-        self.check_downtime(self.usdt.downtimes[0], 7, 1, "minor event")
-        self.check_downtime(self.usdt.downtimes[-1], 7285, 1, "minor event")
+        self.assertEqual(len(self.usdt), 158)
+        self.assertEqual(self.usdt.total_downtime, 322)
+        self.check_downtime(self.usdt.downtimes[0], 29, 1, "minor event")
+        self.check_downtime(self.usdt.downtimes[-1], 7228, 3, "intermediate event")
 
     @mock.patch("time.time")
     def test_alternate_seed(self, mock_time):
@@ -47,5 +47,5 @@ class UnscheduledDowntimeTest(unittest.TestCase):
 
     def test_call(self):
         self.usdt.initialize()
-        self.check_downtime(self.usdt(), 7, 1, "minor event")
-        self.assertEqual(len(self.usdt), 175)
+        self.check_downtime(self.usdt(), 29, 1, "minor event")
+        self.assertEqual(len(self.usdt), 157)

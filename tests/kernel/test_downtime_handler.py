@@ -153,6 +153,6 @@ class DowntimeHandlerTest(unittest.TestCase):
     def test_database_write(self, mock_db):
         self.initialize()
         self.dh.write_downtime_to_db(mock_db)
-        self.assertEqual(mock_db.append_data.call_count, 176 + 31)
+        self.assertEqual(mock_db.append_data.call_count, 158 + 31)
         self.assertEqual(mock_db.write.call_count, 1)
         self.assertEqual(mock_db.clear_data.call_count, 1)
