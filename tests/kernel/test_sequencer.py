@@ -128,7 +128,7 @@ class SequencerTest(unittest.TestCase):
 
         # Observatory state should be in the park position
         self.assertEqual(observatory_state.timestamp, 0.0)
-        self.assertEqual(observatory_state.pointing_ra, 29.34160493523685)
+        self.assertEqual(observatory_state.pointing_ra, 29.480264096112467)
         self.assertEqual(observatory_state.pointing_dec, -26.7444)
         self.assertEqual(observatory_state.pointing_altitude, 86.5)
         self.assertEqual(observatory_state.pointing_azimuth, 0.0)

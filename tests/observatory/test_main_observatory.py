@@ -13,7 +13,7 @@ from tests.database import topic_helpers
 class MainObservatoryTest(unittest.TestCase):
 
     def setUp(self):
-        self.truth_slew_time = 56.347699999734026
+        self.truth_slew_time = 56.45919674628731
         logging.getLogger().setLevel(logging.WARN)
         self.observatory = MainObservatory(ObservingSite())
 
@@ -128,7 +128,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.observatory_variational_model_configure()
         target = topic_helpers.target
         slew_time = self.observatory.slew(target)
-        self.assertAlmostEqual(slew_time[0], 89.68809171544446, delta=1.0e-3)
+        self.assertAlmostEqual(slew_time[0], 89.91106077358576, delta=1.0e-3)
 
     def test_swap_filter(self):
         self.observatory_configure()
