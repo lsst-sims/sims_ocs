@@ -205,6 +205,9 @@ class MainObservatory(object):
         observation.observation_start_mjd = start_mjd
         observation.observation_start_lst = math.degrees(start_lst)
         observation.targetId = target.targetId
+        observation.num_proposals = target.num_proposals
+        for i in range(observation.num_proposals):
+            observation.proposal_Ids[i] = target.proposal_Ids[i]
         observation.fieldId = target.fieldId
         observation.filter = target.filter
         observation.ra = target.ra
