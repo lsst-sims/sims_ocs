@@ -7,7 +7,8 @@ from ts_scheduler.sky_model import Sun
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
 from lsst.sims.ocs.database.tables import write_config, write_field, write_proposal
 from lsst.sims.ocs.environment import CloudModel, SeeingModel
-from lsst.sims.ocs.kernel import DowntimeHandler, ObsProposalHistory, ProposalInfo, Sequencer, TimeHandler
+from lsst.sims.ocs.kernel import DowntimeHandler, ObsProposalHistory, ProposalInfo
+from lsst.sims.ocs.kernel import Sequencer, TargetProposalHistory, TimeHandler
 from lsst.sims.ocs.sal import SalManager, topic_strdict
 from lsst.sims.ocs.setup import LoggingLevel
 from lsst.sims.ocs.utilities.constants import DAYS_IN_YEAR, SECONDS_IN_MINUTE
@@ -77,7 +78,8 @@ class Simulator(object):
         self.seeing_model = SeeingModel()
         self.obs_site_info = (self.conf.observing_site.longitude, self.conf.observing_site.latitude)
         self.wait_for_scheduler = not self.opts.no_scheduler
-        self.proposals_counted = 1
+        self.observation_proposals_counted = 1
+        self.target_proposals_counted = 1
 
     @property
     def duration(self):
@@ -100,28 +102,38 @@ class Simulator(object):
         self.sal.finalize()
         self.log.info("Ending simulation")
 
-    def gather_proposal_history(self, topic, obsId=None):
+    def gather_proposal_history(self, phtype, topic):
         """Gather the proposal history from the current target.
 
         Parameters
         ----------
+        phtype : str
+            The type of the proposal history (target or observation).
         topic : :class:`scheduler_targetC` or :class:`scheduler_interestedProposalC`
             The topic instance to gather the observation proposal information from.
-        obsId : int, optional
-            The current observation identifier.
         """
-        if obsId is None:
-            obsId = topic.observationId
-
-        for i in xrange(topic.num_proposals):
-            self.db.append_data("observation_proposal_history", ObsProposalHistory(self.proposals_counted,
-                                                                                   topic.proposal_Ids[i],
-                                                                                   topic.proposal_values[i],
-                                                                                   topic.proposal_needs[i],
-                                                                                   topic.proposal_bonuses[i],
-                                                                                   topic.proposal_boosts[i],
-                                                                                   obsId))
-            self.proposals_counted += 1
+        if phtype == "observation":
+            for i in range(topic.num_proposals):
+                self.db.append_data("observation_proposal_history",
+                                    ObsProposalHistory(self.observation_proposals_counted,
+                                                       topic.proposal_Ids[i],
+                                                       topic.proposal_values[i],
+                                                       topic.proposal_needs[i],
+                                                       topic.proposal_bonuses[i],
+                                                       topic.proposal_boosts[i],
+                                                       topic.observationId))
+                self.observation_proposals_counted += 1
+        if phtype == "target":
+            for i in range(topic.num_proposals):
+                self.db.append_data("target_proposal_history",
+                                    TargetProposalHistory(self.target_proposals_counted,
+                                                          topic.proposal_Ids[i],
+                                                          topic.proposal_values[i],
+                                                          topic.proposal_needs[i],
+                                                          topic.proposal_bonuses[i],
+                                                          topic.proposal_boosts[i],
+                                                          topic.targetId))
+                self.target_proposals_counted += 1
 
     def get_target_from_scheduler(self):
         """Get target from scheduler.
@@ -249,8 +261,8 @@ class Simulator(object):
                 if self.wait_for_scheduler and observation.targetId != -1:
                     self.db.append_data("target_history", self.target)
                     self.db.append_data("observation_history", observation)
-                    self.gather_proposal_history(self.target, observation.observationId)
-                    self.gather_proposal_history(self.interested_proposal)
+                    self.gather_proposal_history("target", self.target)
+                    self.gather_proposal_history("observation", self.interested_proposal)
                     for slew_type, slew_data in slew_info.items():
                         self.log.log(LoggingLevel.TRACE.value, "{}, {}".format(slew_type, type(slew_data)))
                         if isinstance(slew_data, list):

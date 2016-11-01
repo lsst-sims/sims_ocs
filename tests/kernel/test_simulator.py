@@ -145,11 +145,17 @@ class SimulatorTest(unittest.TestCase):
         mock_ss.getNextSample_target = mock.MagicMock(return_value=0)
         self.sim.target.num_exposures = 2
         self.sim.target.filter = 'r'
+        self.sim.target.num_proposals = 1
+        for i in range(self.sim.target.num_proposals):
+            self.sim.target.proposal_Ids[i] = i + 1
         # Filter Swap
         mock_ss.getNextSample_filterSwap = mock.MagicMock(return_value=0)
         # Interested Proposal
         mock_ss.getNextSample_interestedProposal = mock.MagicMock(return_value=0)
         self.sim.interested_proposal.observationId = 10
+        self.sim.interested_proposal.num_proposals = 1
+        for i in range(self.sim.interested_proposal.num_proposals):
+            self.sim.interested_proposal.proposal_Ids[i] = i + 1
 
         def filter_swap_side_effect(*args):
             topic = self.topic_get(*args)
@@ -160,8 +166,8 @@ class SimulatorTest(unittest.TestCase):
         self.sim.sal.get_topic = mock.MagicMock(side_effect=filter_swap_side_effect)
 
         # TargetHistory, ObsHistory, SlewHistory, SlewActivity, SlewInitialState, SlewFinalState
-        # 2 * TargetExposures, 2 * ObsExposures, ProposalHistory
-        DATABASE_APPEND_DATA_CALLS = 11
+        # SlewMaxSpeeds, 2 * TargetExposures, 2 * ObsExposures, TargetProposalHistory, ObsProposalHistory
+        DATABASE_APPEND_DATA_CALLS = 13
 
         self.sim.run()
 

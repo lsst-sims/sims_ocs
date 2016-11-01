@@ -5,7 +5,8 @@ __all__ = ["write_cloud", "write_config", "write_field", "write_observation_expo
            "write_scheduled_downtime", "write_seeing",
            "write_slew_activities", "write_slew_history",
            "write_slew_final_state", "write_slew_initial_state", "write_slew_maxspeeds",
-           "write_target_exposures", "write_target_history", "write_unscheduled_downtime"]
+           "write_target_exposures", "write_target_history", "write_target_proposal_history",
+           "write_unscheduled_downtime"]
 
 def ordered_dict_from_namedtuple(data, sid=None):
     """Convert a namedtuple to an OrderedDict.
@@ -406,6 +407,23 @@ def write_target_history(data, sid):
         ('sunElong', data.sun_elong)
     ])
     return values
+
+def write_target_proposal_history(data, sid):
+    """Create a dictionary of data for the TargetProposalHistory table.
+
+    Parameters
+    ----------
+    data : tuple
+        The instance containing the target proposal history information
+    sid : int
+        The current session ID.
+
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the topic data.
+    """
+    return ordered_dict_from_namedtuple(data, sid=sid)
 
 def write_unscheduled_downtime(data, sid):
     """Create a dictionary of data for the UnscheduledDowntime table.

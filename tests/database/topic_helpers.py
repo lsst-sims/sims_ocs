@@ -120,6 +120,11 @@ obs_prop_hist = lsst.sims.ocs.kernel.ObsProposalHistory(propHistId=1, Proposal_p
                                                         proposalNeed=0.5, proposalBonus=0.82,
                                                         proposalBoost=0.2, ObsHistory_observationId=10)
 
+target_prop_hist = lsst.sims.ocs.kernel.TargetProposalHistory(propHistId=1, Proposal_propId=2,
+                                                              proposalValue=1.32, proposalNeed=0.5,
+                                                              proposalBonus=0.82, proposalBoost=0.2,
+                                                              TargetHistory_targetId=10)
+
 seeing_tuple = (102, 9997, 0.456)
 
 cloud_tuple = (25, 2403, 0.125)

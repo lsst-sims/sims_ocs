@@ -7,7 +7,8 @@ __all__ = ["create_cloud", "create_config", "create_field", "create_observation_
            "create_scheduled_downtime", "create_seeing",
            "create_session", "create_slew_activities", "create_slew_final_state",
            "create_slew_history", "create_slew_initial_state", "create_slew_maxspeeds",
-           "create_target_exposures", "create_target_history", "create_unscheduled_downtime"]
+           "create_target_exposures", "create_target_history", "create_target_proposal_history",
+           "create_unscheduled_downtime"]
 
 def create_cloud(metadata):
     """Create the Cloud table.
@@ -378,6 +379,11 @@ def create_proposal_history(name, metadata):
         fkc_column = "ObsHistory.observationId"
         index_key_name = "ObsHistory1"
         help_tag = "observation"
+    if "Target" in name:
+        fkc_name = "TargetHistory_targetId"
+        fkc_column = "TargetHistory.targetId"
+        index_key_name = "TargetHistory1"
+        help_tag = "target"
 
     table = Table(name, metadata,
                   Column("propHistId", Integer, primary_key=True, autoincrement=False, nullable=False,
@@ -404,6 +410,8 @@ def create_proposal_history(name, metadata):
     index_name = "fk_{}_{}".format(name, index_key_name)
     if "Obs" in name:
         Index(index_name, table.c.ObsHistory_observationId, table.c.Session_sessionId)
+    if "Target" in name:
+        Index(index_name, table.c.TargetHistory_targetId, table.c.Session_sessionId)
 
     return table
 
@@ -869,6 +877,28 @@ def create_target_history(metadata):
     Index("fk_TargetHistory_Field1", table.c.Field_fieldId)
 
     return table
+
+def create_target_proposal_history(metadata):
+    """Create the TargetProposalHistory table.
+
+    This function creates the TargetProposalHistory table for listing all proposals that are assigned to
+    a given target.
+
+    Table Description:
+
+    This table records all of the proposals and proposal information for a given target.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The TargetProposalHistory table object.
+    """
+    return create_proposal_history("TargetProposalHistory", metadata)
 
 def create_unscheduled_downtime(metadata):
     """Create the UnscheduledDowntime table.
