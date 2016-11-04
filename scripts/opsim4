@@ -110,8 +110,6 @@ def main(args):
         logger.info("Waiting for Scheduler to finish.")
         stop_programs(log_pid, sched_pid, logger)
 
-
-
 if __name__ == "__main__":
     parser = create_parser()
     args = parser.parse_args()
