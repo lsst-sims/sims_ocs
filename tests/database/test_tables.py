@@ -343,4 +343,4 @@ class TablesTest(unittest.TestCase):
         p = tbls.create_proposal(self.metadata)
         f = tbls.create_field(self.metadata)
         summary = tbls.create_summary_all_props(self.metadata, oh, sh, sfs, p, ph, f)
-        self.assertEqual(len(summary.c), 34)
+        self.assertEqual(len(summary.c), 35)
