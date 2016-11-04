@@ -113,6 +113,11 @@ class SocsDatabase(object):
         self.config = tables.create_config(metadata)
         # self.seeing = tables.create_seeing(metadata)
         # self.cloud = tables.create_cloud(metadata)
+        self.summary_all_props = tables.create_summary_all_props(metadata, self.observation_history,
+                                                                 self.slew_history, self.slew_initial_state,
+                                                                 self.proposal,
+                                                                 self.observation_proposal_history,
+                                                                 self.field)
 
     def _connect(self):
         """Create the database connection for MySQL.

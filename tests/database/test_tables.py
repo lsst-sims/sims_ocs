@@ -334,3 +334,13 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['Session_sessionId'], 1002)
         self.assertEqual(result['paramName'], cnt[1])
         self.assertEqual(result['paramValue'], cnt[2])
+
+    def test_summary_all_props_table(self):
+        oh = tbls.create_observation_history(self.metadata)
+        sh = tbls.create_slew_history(self.metadata)
+        sfs = tbls.create_slew_final_state(self.metadata)
+        ph = tbls.create_observation_proposal_history(self.metadata)
+        p = tbls.create_proposal(self.metadata)
+        f = tbls.create_field(self.metadata)
+        summary = tbls.create_summary_all_props(self.metadata, oh, sh, sfs, p, ph, f)
+        self.assertEqual(len(summary.c), 35)
