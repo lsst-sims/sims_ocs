@@ -4,7 +4,7 @@ from lsst.sims.ocs.database.tables import view
 
 __all__ = ["create_summary_all_props"]
 
-def create_summary_all_props(metadata, oh, sh, sfs, p, ph):
+def create_summary_all_props(metadata, oh, sh, sfs, p, ph, f):
     """Create the SummaryAllProps view (table).
 
     Parameters
@@ -21,7 +21,8 @@ def create_summary_all_props(metadata, oh, sh, sfs, p, ph):
         The instance of the Proposal table.
     ph : sqlalchemy.Table
         The instance of the ProposalHistory table.
-
+    f : sqlalchemy.Table
+        The instance of the Field table.
     Returns
     -------
     :class:`.view`
