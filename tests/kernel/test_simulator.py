@@ -71,7 +71,7 @@ class SimulatorTest(unittest.TestCase):
         self.mock_socs_db.session_id = 1001
         self.sim.initialize()
         self.assertEqual(self.mock_salmanager_pub_topic.call_count, 3 + CONFIG_COMM_PUT_CALLS)
-        self.assertEqual(self.mock_salmanager_sub_topic.call_count, 3)
+        self.assertEqual(self.mock_salmanager_sub_topic.call_count, 4)
         self.assertEqual(mock_sequencer_init.call_count, 1)
 
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.finalize")
@@ -145,8 +145,17 @@ class SimulatorTest(unittest.TestCase):
         mock_ss.getNextSample_target = mock.MagicMock(return_value=0)
         self.sim.target.num_exposures = 2
         self.sim.target.filter = 'r'
+        self.sim.target.num_proposals = 1
+        for i in range(self.sim.target.num_proposals):
+            self.sim.target.proposal_Ids[i] = i + 1
         # Filter Swap
         mock_ss.getNextSample_filterSwap = mock.MagicMock(return_value=0)
+        # Interested Proposal
+        mock_ss.getNextSample_interestedProposal = mock.MagicMock(return_value=0)
+        self.sim.interested_proposal.observationId = 10
+        self.sim.interested_proposal.num_proposals = 1
+        for i in range(self.sim.interested_proposal.num_proposals):
+            self.sim.interested_proposal.proposal_Ids[i] = i + 1
 
         def filter_swap_side_effect(*args):
             topic = self.topic_get(*args)
@@ -157,10 +166,11 @@ class SimulatorTest(unittest.TestCase):
         self.sim.sal.get_topic = mock.MagicMock(side_effect=filter_swap_side_effect)
 
         # TargetHistory, ObsHistory, SlewHistory, SlewActivity, SlewInitialState, SlewFinalState
-        # 2 * TargetExposures, 2 * ObsExposures, ProposalHistory
-        DATABASE_APPEND_DATA_CALLS = 11
+        # SlewMaxSpeeds, 2 * TargetExposures, 2 * ObsExposures, TargetProposalHistory, ObsProposalHistory
+        DATABASE_APPEND_DATA_CALLS = 13
 
         self.sim.run()
+
         self.assertEqual(mock_salmanager_put.call_count, self.put_calls)
         self.assertEqual(mock_ss.getNextSample_field.call_count, 2)
         self.assertEqual(mock_ss.getNextSample_target.call_count, get_calls)
@@ -189,6 +199,9 @@ class SimulatorTest(unittest.TestCase):
         self.sim.target.filter = 'r'
         # Filter Swap
         mock_ss.getNextSample_filterSwap = mock.MagicMock(return_value=0)
+        # Interested Proposal
+        mock_ss.getNextSample_interestedProposal = mock.MagicMock(return_value=0)
+        self.sim.interested_proposal.observationId = 10
 
         def filter_swap_side_effect(*args):
             topic = self.topic_get(*args)
@@ -223,6 +236,9 @@ class SimulatorTest(unittest.TestCase):
         self.sim.target.filter = 'r'
         # Filter swap
         mock_ss.getNextSample_filterSwap = mock.MagicMock(return_value=0)
+        # Interested Proposal
+        mock_ss.getNextSample_interestedProposal = mock.MagicMock(return_value=0)
+        self.sim.interested_proposal.observationId = 10
 
         def filter_swap_side_effect(*args):
             topic = self.topic_get(*args)

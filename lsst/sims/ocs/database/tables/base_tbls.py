@@ -3,11 +3,12 @@ from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event, ForeignKeyConstraint
 
 __all__ = ["create_cloud", "create_config", "create_field", "create_observation_exposures",
-           "create_observation_history", "create_proposal", "create_proposal_history",
+           "create_observation_history", "create_observation_proposal_history", "create_proposal",
            "create_scheduled_downtime", "create_seeing",
            "create_session", "create_slew_activities", "create_slew_final_state",
            "create_slew_history", "create_slew_initial_state", "create_slew_maxspeeds",
-           "create_target_exposures", "create_target_history", "create_unscheduled_downtime"]
+           "create_target_exposures", "create_target_history", "create_target_proposal_history",
+           "create_unscheduled_downtime"]
 
 def create_cloud(metadata):
     """Create the Cloud table.
@@ -303,6 +304,28 @@ def create_observation_history(metadata):
 
     return table
 
+def create_observation_proposal_history(metadata):
+    """Create the ObsProposalHistory table.
+
+    This function creates the ObsProposalHistory table for listing all proposals that are assigned to
+    a given observation.
+
+    Table Description:
+
+    This table records all of the proposals and proposal information for a given observation.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The ObsProposalHistory table object.
+    """
+    return create_proposal_history("ObsProposalHistory", metadata)
+
 def create_proposal(metadata):
     """Create the Proposal table.
 
@@ -334,48 +357,61 @@ def create_proposal(metadata):
 
     return table
 
-def create_proposal_history(metadata):
-    """Create the ProposalHistory table.
+def create_proposal_history(name, metadata):
+    """Create one of the ProposalHistory tables.
 
-    This function creates the ProposalHistory table for listing all proposals that are assigned to
-    a given observation.
-
-    Table Description:
-
-    This table records all of the proposals and proposal information for a given observation.
+    This function creates one of the ProposalHistory tables.
 
     Parameters
     ----------
+    name : str
+        The name of the proposal history table.
     metadata : sqlalchemy.MetaData
         The database object that collects the tables.
 
     Returns
     -------
     sqlalchemy.Table
-        The ProposalHistory table object.
+        One of the ProposalHistory table objects.
     """
-    table = Table("ProposalHistory", metadata,
+    if "Obs" in name:
+        fkc_name = "ObsHistory_observationId"
+        fkc_column = "ObsHistory.observationId"
+        index_key_name = "ObsHistory1"
+        help_tag = "observation"
+    if "Target" in name:
+        fkc_name = "TargetHistory_targetId"
+        fkc_column = "TargetHistory.targetId"
+        index_key_name = "TargetHistory1"
+        help_tag = "target"
+
+    table = Table(name, metadata,
                   Column("propHistId", Integer, primary_key=True, autoincrement=False, nullable=False,
                          doc="The numeric identifier for the particular proposal history entry."),
                   Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
                          doc="The simulation run session Id."),
                   Column("Proposal_propId", Integer, nullable=False,
-                         doc="Numeric identifier that relates to an entry in the Prposal table."),
+                         doc="Numeric identifier that relates to an entry in the Proposal table."),
                   Column("proposalValue", Float, nullable=False,
-                         doc="The value (need + bonus) of the observation assigned by a particular "
-                             "proposal."),
+                         doc="The value (need + bonus) of the {} assigned by a particular "
+                             "proposal.".format(help_tag)),
                   Column("proposalNeed", Float, nullable=False,
-                         doc="The need of the observation assigned by a particular proposal."),
+                         doc="The need of the {} assigned by a particular proposal.".format(help_tag)),
                   Column("proposalBonus", Float, nullable=False,
-                         doc="The bonus of the observation assigned by a particular proposal."),
+                         doc="The bonus of the {} assigned by a particular proposal.".format(help_tag)),
                   Column("proposalBoost", Float, nullable=False,
                          doc="The time-balancing boost assigned by a particular proposal."),
-                  Column("ObsHistory_observationId", Integer, nullable=False,
-                         doc="Numeric identifier that relates to an entry in the ObsHistory table."),
-                  ForeignKeyConstraint(["ObsHistory_observationId"], ["ObsHistory.observationId"]),
+                  Column(fkc_name, Integer, nullable=False,
+                         doc="Numeric identifier that relates to an entry in the "
+                             "{} table.".format(index_key_name.rstrip("1"))),
+                  ForeignKeyConstraint([fkc_name], [fkc_column]),
                   ForeignKeyConstraint(["Proposal_propId"], ["Proposal.propId"]))
 
-    Index("fk_ProposalHistory_ObsHistory1", table.c.ObsHistory_observationId, table.c.Session_sessionId)
+    index_name = "fk_{}_{}".format(name, index_key_name)
+    if "Obs" in name:
+        Index(index_name, table.c.ObsHistory_observationId, table.c.Session_sessionId)
+    if "Target" in name:
+        Index(index_name, table.c.TargetHistory_targetId, table.c.Session_sessionId)
 
     return table
 
@@ -841,6 +877,28 @@ def create_target_history(metadata):
     Index("fk_TargetHistory_Field1", table.c.Field_fieldId)
 
     return table
+
+def create_target_proposal_history(metadata):
+    """Create the TargetProposalHistory table.
+
+    This function creates the TargetProposalHistory table for listing all proposals that are assigned to
+    a given target.
+
+    Table Description:
+
+    This table records all of the proposals and proposal information for a given target.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The TargetProposalHistory table object.
+    """
+    return create_proposal_history("TargetProposalHistory", metadata)
 
 def create_unscheduled_downtime(metadata):
     """Create the UnscheduledDowntime table.

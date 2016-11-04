@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.kernel import ProposalHistory, ProposalInfo
+from lsst.sims.ocs.kernel import ObsProposalHistory, ProposalInfo, TargetProposalHistory
 
 class ProposalInformationTest(unittest.TestCase):
 
@@ -11,10 +11,10 @@ class ProposalInformationTest(unittest.TestCase):
         self.assertEqual(pi.propName, "TestProposal")
         self.assertEqual(pi.propType, "AreaDistribution")
 
-class ProposalHistoryTest(unittest.TestCase):
+class ObsProposalHistoryTest(unittest.TestCase):
 
-    def test_proposal_history(self):
-        ph = ProposalHistory(1, 2, 1.32, 0.5, 0.82, 0.2, 10)
+    def test_observation_proposal_history(self):
+        ph = ObsProposalHistory(1, 2, 1.32, 0.5, 0.82, 0.2, 10)
         self.assertEqual(len(ph._fields), 7)
         self.assertEqual(ph.propHistId, 1)
         self.assertEqual(ph.Proposal_propId, 2)
@@ -23,3 +23,16 @@ class ProposalHistoryTest(unittest.TestCase):
         self.assertEqual(ph.proposalBonus, 0.82)
         self.assertEqual(ph.proposalBoost, 0.2)
         self.assertEqual(ph.ObsHistory_observationId, 10)
+
+class TargetProposalHistoryTest(unittest.TestCase):
+
+    def test_target_proposal_history(self):
+        ph = TargetProposalHistory(1, 2, 1.32, 0.5, 0.82, 0.2, 10)
+        self.assertEqual(len(ph._fields), 7)
+        self.assertEqual(ph.propHistId, 1)
+        self.assertEqual(ph.Proposal_propId, 2)
+        self.assertEqual(ph.proposalValue, 1.32)
+        self.assertEqual(ph.proposalNeed, 0.5)
+        self.assertEqual(ph.proposalBonus, 0.82)
+        self.assertEqual(ph.proposalBoost, 0.2)
+        self.assertEqual(ph.TargetHistory_targetId, 10)

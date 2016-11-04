@@ -252,15 +252,15 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['propType'], pinfo[2])
         self.assertEqual(result['Session_sessionId'], 1000)
 
-    def test_create_proposal_history_table(self):
-        prop_hist = tbls.create_proposal_history(self.metadata)
+    def test_create_observation_proposal_history_table(self):
+        prop_hist = tbls.create_observation_proposal_history(self.metadata)
         self.assertEqual(len(prop_hist.c), 8)
         self.assertEqual(len(prop_hist.indexes), 1)
 
-    def test_write_proposal_history_table(self):
-        phist = topic_helpers.prop_hist
-        result = tbls.write_proposal_history(phist, 1001)
-        prop_hist = tbls.create_proposal_history(self.metadata)
+    def test_write_observation_proposal_history_table(self):
+        phist = topic_helpers.obs_prop_hist
+        result = tbls.write_observation_proposal_history(phist, 1001)
+        prop_hist = tbls.create_observation_proposal_history(self.metadata)
         self.check_ordered_dict_to_table(result, prop_hist)
         self.assertEqual(result['propHistId'], phist[0])
         self.assertEqual(result['Proposal_propId'], phist[1])
@@ -269,6 +269,25 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['proposalBonus'], phist[4])
         self.assertEqual(result['proposalBoost'], phist[5])
         self.assertEqual(result['ObsHistory_observationId'], phist[6])
+        self.assertEqual(result['Session_sessionId'], 1001)
+
+    def test_create_target_proposal_history_table(self):
+        prop_hist = tbls.create_target_proposal_history(self.metadata)
+        self.assertEqual(len(prop_hist.c), 8)
+        self.assertEqual(len(prop_hist.indexes), 1)
+
+    def test_write_target_proposal_history_table(self):
+        phist = topic_helpers.target_prop_hist
+        result = tbls.write_target_proposal_history(phist, 1001)
+        prop_hist = tbls.create_target_proposal_history(self.metadata)
+        self.check_ordered_dict_to_table(result, prop_hist)
+        self.assertEqual(result['propHistId'], phist[0])
+        self.assertEqual(result['Proposal_propId'], phist[1])
+        self.assertEqual(result['proposalValue'], phist[2])
+        self.assertEqual(result['proposalNeed'], phist[3])
+        self.assertEqual(result['proposalBonus'], phist[4])
+        self.assertEqual(result['proposalBoost'], phist[5])
+        self.assertEqual(result['TargetHistory_targetId'], phist[6])
         self.assertEqual(result['Session_sessionId'], 1001)
 
     def test_create_seeing_table(self):
