@@ -1,14 +1,14 @@
 from lsst.sims.ocs.configuration.proposal import AreaDistribution, BandFilter, Selection
 from lsst.sims.ocs.configuration.proposal import SELECTION_LIMIT_TYPES
 
-class TestProposal2(AreaDistribution):
+class BasicProposal2(AreaDistribution):
     """This class sets the parameters for specifying a test proposal.
     """
 
     def setDefaults(self):
         """Setup all the proposal information.
         """
-        self.name = "TestProposal2"
+        self.name = "BasicProposal2"
 
         # -------------------------
         # Sky Region specifications
