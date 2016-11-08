@@ -18,7 +18,7 @@ def main():
     if not os.path.exists(table_file_path):
         os.mkdir(table_file_path)
 
-    create_calls = [k for k in dir(tbls) if "create" in k]
+    create_calls = [k for k in dir(tbls) if "create" in k and "summary" not in k]
     for create_call in create_calls:
         func = getattr(tbls, create_call)
         if "session" in create_call:
