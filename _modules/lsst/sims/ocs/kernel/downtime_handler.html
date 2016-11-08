@@ -158,6 +158,8 @@
 <span class="sd">        The set of current scheduled downtime information.</span>
 <span class="sd">    current_unscheduled : tuple or None</span>
 <span class="sd">        The set of current unscheduled downtime information.</span>
+<span class="sd">    downtime_days : set</span>
+<span class="sd">        The holder for the list of downtime days.</span>
 <span class="sd">    log : Logger</span>
 <span class="sd">        The handle for the logger.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -169,7 +171,26 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">unscheduled</span> <span class="o">=</span> <span class="n">UnscheduledDowntime</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">downtime_days</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;kernel.DowntimeHandler&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DowntimeHandler.downtime_range"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.downtime_range">[docs]</a>    <span class="k">def</span> <span class="nf">downtime_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the downtime day range and start night.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dt : tuple</span>
+<span class="sd">            The collection of downtime information (start, length, description)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        set, int</span>
+<span class="sd">            The list of downtime days as a set and the downtime start night.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dt</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">set</span><span class="p">(),</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">dt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dt</span><span class="p">[</span><span class="mi">1</span><span class="p">]))),</span> <span class="n">dt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="DowntimeHandler.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform initialization steps.</span>
@@ -186,7 +207,9 @@
 <div class="viewcode-block" id="DowntimeHandler.get_downtime"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.get_downtime">[docs]</a>    <span class="k">def</span> <span class="nf">get_downtime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">night</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determine if there is downtime for the given night.</span>
 
-<span class="sd">        This function looks at the given</span>
+<span class="sd">        This function looks at the given downtime and determines if there are any</span>
+<span class="sd">        downtime days. If downtime is identified, then this number will return a</span>
+<span class="sd">        decreasing number of days until no more downtime if found.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -198,63 +221,71 @@
 <span class="sd">        int</span>
 <span class="sd">            The number of downtime nights.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unscheduled</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">downtime_days</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">night</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">downtime_days</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="DowntimeHandler.update"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the lsit of downtime days.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">downtime_days</span><span class="p">):</span>
+            <span class="k">return</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduled</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unscheduled</span><span class="p">()</span>
 
-        <span class="n">downtime_days</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">end_downtime_night</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-
-        <span class="c1"># No more downtime</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">downtime_days</span>
+            <span class="k">return</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">night</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="n">end_downtime_night</span> <span class="o">=</span> <span class="n">night</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
-                <span class="n">downtime_days</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">usdt</span><span class="p">,</span> <span class="n">usdt_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">downtime_range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span><span class="p">)</span>
+        <span class="n">sdt</span><span class="p">,</span> <span class="n">sdt_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">downtime_range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sdt_start</span> <span class="o">&lt;</span> <span class="n">usdt_start</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">sdt</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">usdt</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">downtime_days</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sdt</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sdt</span><span class="o">.</span><span class="n">issuperset</span><span class="p">(</span><span class="n">usdt</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                 <span class="s2">&quot;Completely overlapping unscheduled downtime&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">partial</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sdt</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">usdt</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                 <span class="s2">&quot;Partial overlapping unscheduled downtime: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">partial</span><span class="p">))</span>
 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                    <span class="n">start_night</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                    <span class="n">end_night</span> <span class="o">=</span> <span class="n">start_night</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
-                    <span class="k">if</span> <span class="n">start_night</span> <span class="o">&gt;=</span> <span class="n">night</span> <span class="ow">and</span> <span class="n">start_night</span> <span class="o">&lt;=</span> <span class="n">end_downtime_night</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">end_night</span> <span class="o">&gt;</span> <span class="n">end_downtime_night</span><span class="p">:</span>
-                            <span class="n">partial</span> <span class="o">=</span> <span class="n">end_night</span> <span class="o">-</span> <span class="n">end_downtime_night</span>
-                            <span class="n">downtime_days</span> <span class="o">+=</span> <span class="n">partial</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                                         <span class="s2">&quot;Partial overlapping unscheduled downtime: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">partial</span><span class="p">))</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                                         <span class="s2">&quot;Completely overlapping unscheduled downtime&quot;</span><span class="p">)</span>
-
-                        <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span> <span class="o">=</span> <span class="bp">None</span>
-                <span class="k">return</span> <span class="n">downtime_days</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">night</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="n">end_downtime_night</span> <span class="o">=</span> <span class="n">night</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
-                <span class="n">downtime_days</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">downtime_days</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sdt</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">downtime_days</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">usdt</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span> <span class="o">=</span> <span class="bp">None</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span> <span class="o">=</span> <span class="bp">None</span>
 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                    <span class="n">start_night</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                    <span class="n">end_night</span> <span class="o">=</span> <span class="n">start_night</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
-                    <span class="k">if</span> <span class="n">start_night</span> <span class="o">&gt;=</span> <span class="n">night</span> <span class="ow">and</span> <span class="n">start_night</span> <span class="o">&lt;=</span> <span class="n">end_downtime_night</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">end_night</span> <span class="o">&gt;</span> <span class="n">end_downtime_night</span><span class="p">:</span>
-                            <span class="n">partial</span> <span class="o">=</span> <span class="n">end_night</span> <span class="o">-</span> <span class="n">end_downtime_night</span>
-                            <span class="n">downtime_days</span> <span class="o">+=</span> <span class="n">partial</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                                         <span class="s2">&quot;Partial overlapping scheduled downtime: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">partial</span><span class="p">))</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                                         <span class="s2">&quot;Completely overlapping scheduled downtime&quot;</span><span class="p">)</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span> <span class="o">=</span> <span class="bp">None</span>
-                <span class="k">return</span> <span class="n">downtime_days</span>
+        <span class="k">if</span> <span class="n">usdt_start</span> <span class="o">&lt;</span> <span class="n">sdt_start</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">usdt</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">sdt</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">downtime_days</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">usdt</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">usdt</span><span class="o">.</span><span class="n">issuperset</span><span class="p">(</span><span class="n">sdt</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                 <span class="s2">&quot;Completely overlapping scheduled downtime&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">partial</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">usdt</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">sdt</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                 <span class="s2">&quot;Partial overlapping scheduled downtime: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">partial</span><span class="p">))</span>
 
-        <span class="c1"># Downtime available, but none tonight.</span>
-        <span class="k">return</span> <span class="n">downtime_days</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">downtime_days</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sdt</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">downtime_days</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">usdt</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">if</span> <span class="n">sdt_start</span> <span class="o">==</span> <span class="n">usdt_start</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">downtime_days</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sdt</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">downtime_days</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">usdt</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_scheduled</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_unscheduled</span> <span class="o">=</span> <span class="bp">None</span></div>
 
 <div class="viewcode-block" id="DowntimeHandler.write_downtime_to_db"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.downtime_handler.html#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.write_downtime_to_db">[docs]</a>    <span class="k">def</span> <span class="nf">write_downtime_to_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write all the downtime information to the survey database.</span>

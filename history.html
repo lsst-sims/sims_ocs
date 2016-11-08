@@ -147,9 +147,23 @@
 <h2>1.0 (in progress)<a class="headerlink" href="#in-progress" title="Permalink to this headline">¶</a></h2>
 <p>This release of SOCS is designed to replace version 3 of the Operations Simulator.</p>
 <ul class="simple">
+<li>Implement interested proposal behavior</li>
+<li>Filter swapping during dark time around new moon</li>
+<li>Environment information used in simulation<ul>
+<li>Cloud information from OpSim3 read and sent to Scheduler</li>
+<li>Seeing information from OpSim3 read and sent to Scheduler, new seeing calculations added and stored to survey database</li>
+</ul>
+</li>
 <li>Downtime system<ul>
 <li>Scheduled downtime information in small SQLite DB</li>
 <li>Unscheduled downtime generated on fly using a fixed seed via algorithm</li>
+</ul>
+</li>
+<li>More information to survey database<ul>
+<li>New tables (ObsProposalHistory, TargetProposalHistory) for tracking proposal history for observations and targets</li>
+<li>More information to ObsHistory and TargetHistory tables</li>
+<li>New table (Config) for tracking simulation configuration information</li>
+<li>New table (Proposal) for tracking the active science proposals</li>
 </ul>
 </li>
 </ul>
@@ -159,7 +173,7 @@
 <p>Next interim release of SOCS. Focused on performing observations and handling area
 distribution proposals.</p>
 <ul class="simple">
-<li>More information to survey data base<ul>
+<li>More information to survey database<ul>
 <li>All slew related information: SlewHistory, InitialSlewState, FinalSlewState, SlewMaxSpeeds and SlewActivities</li>
 <li>More information to TargetHistory and ObsHistory tables</li>
 <li>New tables (TargetExposures and ObservationExposures) for tracking exposure cadences</li>

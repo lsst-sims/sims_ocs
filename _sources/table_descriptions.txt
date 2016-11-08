@@ -7,15 +7,17 @@ Database Tables
 
    tables/cloud
 
+   tables/config
+
    tables/field
 
    tables/obsexposures
 
    tables/obshistory
 
-   tables/proposal
+   tables/obsproposalhistory
 
-   tables/proposalhistory
+   tables/proposal
 
    tables/scheduleddowntime
 
@@ -36,6 +38,8 @@ Database Tables
    tables/targetexposures
 
    tables/targethistory
+
+   tables/targetproposalhistory
 
    tables/unscheduleddowntime
 

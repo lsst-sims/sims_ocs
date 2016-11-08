@@ -289,6 +289,24 @@ is greater than or equal the elapsed time and false if less than the elapsed tim
 </dd></dl>
 
 <dl class="method">
+<dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.time_since_given">
+<code class="descname">time_since_given</code><span class="sig-paren">(</span><em>timestamp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/time_handler.html#TimeHandler.time_since_given"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.time_since_given" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the elapsed time (seconds).</p>
+<p>This function takes the given timestamp and calculates the elapsed time in seconds
+between it and the initial timestamp in the handler.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timestamp</strong> (<em>float</em>) &#8211; A UNIX timestamp</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>float</em> &#8211; The elapsed time (seconds) between the given</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.update_time">
 <code class="descname">update_time</code><span class="sig-paren">(</span><em>time_increment</em>, <em>time_units</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/time_handler.html#TimeHandler.update_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.update_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the currently held timestamp.</p>

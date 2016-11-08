@@ -232,8 +232,8 @@ make an astronomical observation. It is then responsible for handing that observ
 </tbody>
 </table>
 <dl class="method">
-<dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.end_of_night">
-<code class="descname">end_of_night</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/sequencer.html#Sequencer.end_of_night"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.end_of_night" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.end_night">
+<code class="descname">end_night</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/sequencer.html#Sequencer.end_night"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.end_night" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform end of night functions.</p>
 </dd></dl>
 
@@ -317,22 +317,22 @@ target&#8217;s Id.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.start_of_day">
-<code class="descname">start_of_day</code><span class="sig-paren">(</span><em>filter_to_unmount</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/sequencer.html#Sequencer.start_of_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.start_of_day" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.start_day">
+<code class="descname">start_day</code><span class="sig-paren">(</span><em>filter_swap</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/sequencer.html#Sequencer.start_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.start_day" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform start of day functions.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filter_to_unmount</strong> (<em>str</em>) &#8211; The filter requested for unmounting.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filter_swap</strong> (<em>scheduler_filterSwapC</em>) &#8211; The instance of the filter swap information.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.start_of_night">
-<code class="descname">start_of_night</code><span class="sig-paren">(</span><em>night</em>, <em>duration</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/sequencer.html#Sequencer.start_of_night"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.start_of_night" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.start_night">
+<code class="descname">start_night</code><span class="sig-paren">(</span><em>night</em>, <em>duration</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/sequencer.html#Sequencer.start_night"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.start_night" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform start of night functions.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

@@ -177,6 +177,26 @@
             <span class="n">num_props</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">area_dist_props</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">num_props</span>
 
+<div class="viewcode-block" id="SimulationConfig.config_list"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.config_list">[docs]</a>    <span class="k">def</span> <span class="nf">config_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_config</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a list of parameter name, value tuples.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sub_config : str, optional</span>
+<span class="sd">            The name of a sub-configuration parameter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[tuple(str, str)]</span>
+<span class="sd">            The list of configuration name, value tuples.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sub_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_config</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_tuples</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">toDict</span><span class="p">())</span></div>
+
 <div class="viewcode-block" id="SimulationConfig.load"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifiles</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Load and apply configuration override files.</span>
 
@@ -219,6 +239,36 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">load_proposals</span><span class="p">({</span><span class="s2">&quot;AD&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">survey</span><span class="o">.</span><span class="n">ad_proposals</span><span class="p">},</span>
                                     <span class="n">alternate_proposals</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">survey</span><span class="o">.</span><span class="n">alt_proposal_dir</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SimulationConfig.make_tuples"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.make_tuples">[docs]</a>    <span class="k">def</span> <span class="nf">make_tuples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : any</span>
+<span class="sd">            A configuration parameter or dictionary.</span>
+<span class="sd">        key : str, optional</span>
+<span class="sd">            The part of a fully qualified parameter name.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[tuple(str, str)]</span>
+<span class="sd">            The list of configuration name, value tuples.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">configs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">tag</span> <span class="o">=</span> <span class="n">k</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">key</span><span class="p">,</span> <span class="n">k</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)])</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">configs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">make_tuples</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">tag</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">configs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">tag</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">configs</span></div>
 
 <div class="viewcode-block" id="SimulationConfig.save"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.sim_config.html#lsst.sims.ocs.configuration.sim_config.SimulationConfig.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the configuration objects to separate files.</span>

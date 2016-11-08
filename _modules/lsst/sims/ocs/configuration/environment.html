@@ -148,12 +148,26 @@
                                 <span class="s1">&#39;internal database.&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
     <span class="n">cloud_db</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Alternate database file for the seeing. Must have same format as &#39;</span>
                                <span class="s1">&#39;internal database.&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="n">telescope_seeing</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Design value of the telescope contribution to the seeing &#39;</span>
+                                       <span class="s1">&#39;(units=arcseconds).&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">optical_design_seeing</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Design value of the optical path contribution to the seeing &#39;</span>
+                                            <span class="s1">&#39;(units=arcseconds).&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">camera_seeing</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Design value of the camera contribution to the seeing &#39;</span>
+                                    <span class="s1">&#39;(units=arcseconds).&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">scale_to_eff</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Scale factor to convert seeing to effective.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">geom_eff_factor</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Scale factor to convert geometric seeing to effective seeing.&#39;</span><span class="p">,</span>
+                                      <span class="nb">float</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Environment.setDefaults"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.environment.html#lsst.sims.ocs.configuration.environment.Environment.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set defaults for the seeing and cloud model configurations.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seeing_db</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cloud_db</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cloud_db</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">telescope_seeing</span> <span class="o">=</span> <span class="mf">0.25</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optical_design_seeing</span> <span class="o">=</span> <span class="mf">0.08</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">camera_seeing</span> <span class="o">=</span> <span class="mf">0.3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_to_eff</span> <span class="o">=</span> <span class="mf">1.16</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geom_eff_factor</span> <span class="o">=</span> <span class="mf">1.04</span></div></div>
 </pre></div>
 
            </div>

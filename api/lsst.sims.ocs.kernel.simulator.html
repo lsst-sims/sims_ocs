@@ -256,6 +256,12 @@
 </tbody>
 </table>
 <dl class="method">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.end_night">
+<code class="descname">end_night</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.end_night"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.end_night" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform actions at the end of the night.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.finalize">
 <code class="descname">finalize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.finalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.finalize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform finalization steps.</p>
@@ -264,13 +270,17 @@
 
 <dl class="method">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.gather_proposal_history">
-<code class="descname">gather_proposal_history</code><span class="sig-paren">(</span><em>obsId</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.gather_proposal_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.gather_proposal_history" title="Permalink to this definition">¶</a></dt>
+<code class="descname">gather_proposal_history</code><span class="sig-paren">(</span><em>phtype</em>, <em>topic</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.gather_proposal_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.gather_proposal_history" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gather the proposal history from the current target.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>obsId</strong> (<em>int</em>) &#8211; The current observation identifier.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>phtype</strong> (<em>str</em>) &#8211; The type of the proposal history (target or observation).</li>
+<li><strong>topic</strong> (<code class="xref py py-class docutils literal"><span class="pre">scheduler_targetC</span></code> or <code class="xref py py-class docutils literal"><span class="pre">scheduler_interestedProposalC</span></code>) &#8211; The topic instance to gather the observation proposal information from.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -299,6 +309,12 @@ gathering the necessary telemetry topics.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.save_configuration">
+<code class="descname">save_configuration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.save_configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.save_configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the configuration information to the DB.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.save_proposal_information">
 <code class="descname">save_proposal_information</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.save_proposal_information"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.save_proposal_information" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the active proposal information to the DB.</p>
@@ -314,6 +330,20 @@ gathering the necessary telemetry topics.</p>
 <li>Checking if the Scheduler requests a filter swap</li>
 <li>Peforming the filter swap if requested</li>
 </ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.start_night">
+<code class="descname">start_night</code><span class="sig-paren">(</span><em>night</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.start_night"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.start_night" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform actions at the start of the night.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>night</strong> (<em>int</em>) &#8211; The current night.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">

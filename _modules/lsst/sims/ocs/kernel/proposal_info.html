@@ -138,17 +138,25 @@
   <h1>Source code for lsst.sims.ocs.kernel.proposal_info</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">collections</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ProposalHistory&quot;</span><span class="p">,</span> <span class="s2">&quot;ProposalInfo&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ObsProposalHistory&quot;</span><span class="p">,</span> <span class="s2">&quot;ProposalInfo&quot;</span><span class="p">,</span> <span class="s2">&quot;TargetProposalHistory&quot;</span><span class="p">]</span>
 
 <span class="sd">&quot;&quot;&quot;Simple tuple for handling proposal information.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">ProposalInfo</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;ProposalInfo&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;propId&quot;</span><span class="p">,</span> <span class="s2">&quot;propName&quot;</span><span class="p">,</span> <span class="s2">&quot;propType&quot;</span><span class="p">])</span>
 
-<span class="sd">&quot;&quot;&quot;Simple tuple for handling proposal history information.</span>
+<span class="sd">&quot;&quot;&quot;Simple tuple for handling observation proposal history information.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">ProposalHistory</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;ProposalHistory&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;propHistId&quot;</span><span class="p">,</span> <span class="s2">&quot;Proposal_propId&quot;</span><span class="p">,</span> <span class="s2">&quot;proposalValue&quot;</span><span class="p">,</span>
-                                                             <span class="s2">&quot;proposalNeed&quot;</span><span class="p">,</span> <span class="s2">&quot;proposalBonus&quot;</span><span class="p">,</span> <span class="s2">&quot;proposalBoost&quot;</span><span class="p">,</span>
-                                                             <span class="s2">&quot;ObsHistory_observationId&quot;</span><span class="p">])</span>
+<span class="n">ObsProposalHistory</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;ObsProposalHistory&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;propHistId&quot;</span><span class="p">,</span> <span class="s2">&quot;Proposal_propId&quot;</span><span class="p">,</span>
+                                                                   <span class="s2">&quot;proposalValue&quot;</span><span class="p">,</span> <span class="s2">&quot;proposalNeed&quot;</span><span class="p">,</span>
+                                                                   <span class="s2">&quot;proposalBonus&quot;</span><span class="p">,</span> <span class="s2">&quot;proposalBoost&quot;</span><span class="p">,</span>
+                                                                   <span class="s2">&quot;ObsHistory_observationId&quot;</span><span class="p">])</span>
+
+<span class="sd">&quot;&quot;&quot;Simple tuple for handling target proposal history information.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">TargetProposalHistory</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;TargetProposalHistory&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;propHistId&quot;</span><span class="p">,</span> <span class="s2">&quot;Proposal_propId&quot;</span><span class="p">,</span>
+                                                                         <span class="s2">&quot;proposalValue&quot;</span><span class="p">,</span> <span class="s2">&quot;proposalNeed&quot;</span><span class="p">,</span>
+                                                                         <span class="s2">&quot;proposalBonus&quot;</span><span class="p">,</span> <span class="s2">&quot;proposalBoost&quot;</span><span class="p">,</span>
+                                                                         <span class="s2">&quot;TargetHistory_targetId&quot;</span><span class="p">])</span>
 </pre></div>
 
            </div>

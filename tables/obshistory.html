@@ -32,7 +32,7 @@
   
     <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../index.html"/>
         <link rel="up" title="Survey Database" href="../database.html"/>
-        <link rel="next" title="Proposal" href="proposal.html"/>
+        <link rel="next" title="ObsProposalHistory" href="obsproposalhistory.html"/>
         <link rel="prev" title="ObsExposures" href="obsexposures.html"/> 
 
   
@@ -205,10 +205,22 @@
 <td>The sum of all the exposure times for the observation (units=seconds). No shutter and readout time included.</td>
 </tr>
 <tr class="row-odd"><td>airmass</td>
-<td>The airmass of the target.</td>
+<td>The airmass of the observation field.</td>
 </tr>
 <tr class="row-even"><td>skyBrightness</td>
-<td>The calculated skybrightness for the target.</td>
+<td>The calculated skybrightness for the observation field.</td>
+</tr>
+<tr class="row-odd"><td>cloud</td>
+<td>The fraction of clouds present (0: none to 1: total).</td>
+</tr>
+<tr class="row-even"><td>seeingFwhm500</td>
+<td>The full-width at half-maximum for seeing observations at 500 nm at zenith.</td>
+</tr>
+<tr class="row-odd"><td>seeingFwhmGeom</td>
+<td>&#8220;Geometrical&#8221; full-width at half-maximum, actual half width at maximum brightness. This can be used to represent the FWHM of a double Gaussian representing the physical width of a PSF.</td>
+</tr>
+<tr class="row-even"><td>seeingFwhmEff</td>
+<td>&#8220;Effective&#8221; full-width at half-maximum, typically ~15% larger than seeingFwhmGeom. This can be used to calculate SNR for point sources, using seeingFwhmEff as the FWHM of a single Gaussian describing the PSF.</td>
 </tr>
 <tr class="row-odd"><td>moonRA</td>
 <td>The right-ascension (units=degrees) of the moon.</td>
@@ -223,7 +235,7 @@
 <td>The azimuth (units=degrees) of the moon.</td>
 </tr>
 <tr class="row-odd"><td>moonDistance</td>
-<td>The distance (units=degrees) between the moon and the target.</td>
+<td>The distance (units=degrees) between the moon and the observation field.</td>
 </tr>
 <tr class="row-even"><td>moonPhase</td>
 <td>The phase of the moon.</td>
@@ -240,8 +252,8 @@
 <tr class="row-even"><td>sunAz</td>
 <td>The azimuth (units=degrees) of the sun.</td>
 </tr>
-<tr class="row-odd"><td>sunElong</td>
-<td>The elongation (units=degrees) of the sun.</td>
+<tr class="row-odd"><td>solarElong</td>
+<td>The solar elongation (units=degrees) of the observation field (distance between it and sun).</td>
 </tr>
 </tbody>
 </table>
@@ -254,7 +266,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="proposal.html" class="btn btn-neutral float-right" title="Proposal" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="obsproposalhistory.html" class="btn btn-neutral float-right" title="ObsProposalHistory" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="obsexposures.html" class="btn btn-neutral" title="ObsExposures" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>

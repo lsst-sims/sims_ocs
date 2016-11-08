@@ -136,7 +136,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for lsst.sims.ocs.environment.seeing_model</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
 
@@ -153,6 +154,9 @@
 
     <span class="n">SEEING_DB</span> <span class="o">=</span> <span class="s2">&quot;seeing.db&quot;</span>
     <span class="sd">&quot;&quot;&quot;Filename of the internal seeing observation database.&quot;&quot;&quot;</span>
+    <span class="n">AIRMASS_CORRECTION_POWER</span> <span class="o">=</span> <span class="mf">0.6</span>
+    <span class="n">FILTER_WAVELENGTH_CORRECTION_POWER</span> <span class="o">=</span> <span class="mf">0.3</span>
+    <span class="n">RAW_SEEING_WAVELENGTH</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># nm</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the class.</span>
@@ -160,6 +164,38 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">seeing_db</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seeing_dates</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seeing_values</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">environment_config</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters_config</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seeing_fwhm_system_zenith</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="SeeingModel.calculate_seeing"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.environment.seeing_model.html#lsst.sims.ocs.environment.seeing_model.SeeingModel.calculate_seeing">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_seeing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta_time</span><span class="p">,</span> <span class="n">filter_name</span><span class="p">,</span> <span class="n">airmass</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the geometric and effective seeing values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        delta_time : int</span>
+<span class="sd">            The time (seconds) from the start of the simulation.</span>
+<span class="sd">        filter_name : str</span>
+<span class="sd">            The single character filter name for the calculation.</span>
+<span class="sd">        airmass : float</span>
+<span class="sd">            The airmass for the calculation.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            The FWHM 500nm, FWHM Geometric and FWHM Effective seeing values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fwhm_500</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_seeing</span><span class="p">(</span><span class="n">delta_time</span><span class="p">)</span>
+        <span class="n">airmass_correction</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">airmass</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AIRMASS_CORRECTION_POWER</span><span class="p">)</span>
+        <span class="n">filter_wavelength_correction</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RAW_SEEING_WAVELENGTH</span> <span class="o">/</span>
+                                                   <span class="bp">self</span><span class="o">.</span><span class="n">filters_config</span><span class="o">.</span><span class="n">get_effective_wavelength</span><span class="p">(</span><span class="n">filter_name</span><span class="p">),</span>
+                                                   <span class="bp">self</span><span class="o">.</span><span class="n">FILTER_WAVELENGTH_CORRECTION_POWER</span><span class="p">)</span>
+        <span class="n">fwhm_system</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seeing_fwhm_system_zenith</span> <span class="o">*</span> <span class="n">airmass_correction</span>
+        <span class="n">fwhm_geometric</span> <span class="o">=</span> <span class="n">fwhm_500</span> <span class="o">*</span> <span class="n">filter_wavelength_correction</span> <span class="o">*</span> <span class="n">airmass_correction</span>
+        <span class="n">temp1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fwhm_system</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment_config</span><span class="o">.</span><span class="n">geom_eff_factor</span> <span class="o">*</span> <span class="n">fwhm_geometric</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">fwhm_effective</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment_config</span><span class="o">.</span><span class="n">scale_to_eff</span> <span class="o">*</span> <span class="n">temp1</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">fwhm_500</span><span class="p">,</span> <span class="n">fwhm_geometric</span><span class="p">,</span> <span class="n">fwhm_effective</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SeeingModel.get_seeing"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.environment.seeing_model.html#lsst.sims.ocs.environment.seeing_model.SeeingModel.get_seeing">[docs]</a>    <span class="k">def</span> <span class="nf">get_seeing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta_time</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the seeing for the specified time.</span>
@@ -179,11 +215,12 @@
         <span class="n">idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">date_delta</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">date_delta</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">seeing_values</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="SeeingModel.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.environment.seeing_model.html#lsst.sims.ocs.environment.seeing_model.SeeingModel.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seeing_file</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="SeeingModel.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.environment.seeing_model.html#lsst.sims.ocs.environment.seeing_model.SeeingModel.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environment_config</span><span class="p">,</span> <span class="n">filters_config</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configure the seeing information.</span>
 
-<span class="sd">        This function gets the appropriate database file and creates the seeing information</span>
-<span class="sd">        from it. The default behavior is to use the module stored database. However, an</span>
+<span class="sd">        This function gets the environment and filters configuration, calculates the FWHM system</span>
+<span class="sd">        seeing at zenith and creates the seeing information from the appropriate database.</span>
+<span class="sd">        The default behavior is to use the module stored database. However, an</span>
 <span class="sd">        alternate database file can be provided. The alternate database file needs to have a</span>
 <span class="sd">        table called *Seeing* with the following columns:</span>
 
@@ -196,11 +233,20 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        seeing_file : str, optional</span>
-<span class="sd">            The full path to an alternate seeing database.</span>
+<span class="sd">        environment_config : :class:`.Environment`</span>
+<span class="sd">            The configuration instance for the environment.</span>
+<span class="sd">        filters_config : :class:`.Filters`</span>
+<span class="sd">            The configuration instance for the filters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">seeing_file</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">seeing_db</span> <span class="o">=</span> <span class="n">seeing_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">environment_config</span> <span class="o">=</span> <span class="n">environment_config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters_config</span> <span class="o">=</span> <span class="n">filters_config</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">seeing_fwhm_system_zenith</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">environment_config</span><span class="o">.</span><span class="n">telescope_seeing</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">environment_config</span><span class="o">.</span><span class="n">optical_design_seeing</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">environment_config</span><span class="o">.</span><span class="n">camera_seeing</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment_config</span><span class="o">.</span><span class="n">seeing_db</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">seeing_db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment_config</span><span class="o">.</span><span class="n">seeing_db</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">seeing_db</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">SEEING_DB</span><span class="p">)</span>
 
@@ -218,7 +264,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        th : :class:`TimeHandler`</span>
+<span class="sd">        th : :class:`.TimeHandler`</span>
 <span class="sd">            A time hadnling instance.</span>
 <span class="sd">        topic : SALPY_scheduler.scheduler_seeingC</span>
 <span class="sd">            An instance of the seeing topic.</span>

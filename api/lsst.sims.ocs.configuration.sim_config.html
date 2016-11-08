@@ -178,6 +178,22 @@ attributes are handled at allocation time rather than at initialization</p>
 the author does not need to be concerned about when or even if he
 should call the base Config.__init__</p>
 <dl class="method">
+<dt id="lsst.sims.ocs.configuration.sim_config.SimulationConfig.config_list">
+<code class="descname">config_list</code><span class="sig-paren">(</span><em>sub_config=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/sim_config.html#SimulationConfig.config_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.sim_config.SimulationConfig.config_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of parameter name, value tuples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sub_config</strong> (<em>str, optional</em>) &#8211; The name of a sub-configuration parameter.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>list[tuple(str, str)]</em> &#8211; The list of configuration name, value tuples.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="lsst.sims.ocs.configuration.sim_config.SimulationConfig.load">
 <code class="descname">load</code><span class="sig-paren">(</span><em>ifiles</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/sim_config.html#SimulationConfig.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.sim_config.SimulationConfig.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load and apply configuration override files.</p>
@@ -198,6 +214,26 @@ files.</p>
 <dt id="lsst.sims.ocs.configuration.sim_config.SimulationConfig.load_proposals">
 <code class="descname">load_proposals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/sim_config.html#SimulationConfig.load_proposals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.sim_config.SimulationConfig.load_proposals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tell the science proposals to load their configuration.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.configuration.sim_config.SimulationConfig.make_tuples">
+<code class="descname">make_tuples</code><span class="sig-paren">(</span><em>value</em>, <em>key=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/sim_config.html#SimulationConfig.make_tuples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.sim_config.SimulationConfig.make_tuples" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>value</strong> (<em>any</em>) &#8211; A configuration parameter or dictionary.</li>
+<li><strong>key</strong> (<em>str, optional</em>) &#8211; The part of a fully qualified parameter name.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>list[tuple(str, str)]</em> &#8211; The list of configuration name, value tuples.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">

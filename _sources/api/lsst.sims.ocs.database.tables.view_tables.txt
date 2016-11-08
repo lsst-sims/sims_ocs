@@ -1,0 +1,7 @@
+lsst.sims.ocs.database.tables.view_tables module
+================================================
+
+.. automodule:: lsst.sims.ocs.database.tables.view_tables
+    :members:
+    :undoc-members:
+    :show-inheritance:

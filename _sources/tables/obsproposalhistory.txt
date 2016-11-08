@@ -1,8 +1,8 @@
-.. _database-tables-proposalhistory:
+.. _database-tables-obsproposalhistory:
 
-===============
-ProposalHistory
-===============
+==================
+ObsProposalHistory
+==================
 
 This table records all of the proposals and proposal information for a given observation.
 
@@ -16,7 +16,7 @@ This table records all of the proposals and proposal information for a given obs
     * -  Session_sessionId
       -  The simulation run session Id.
     * -  Proposal_propId
-      -  Numeric identifier that relates to an entry in the Prposal table.
+      -  Numeric identifier that relates to an entry in the Proposal table.
     * -  proposalValue
       -  The value (need + bonus) of the observation assigned by a particular proposal.
     * -  proposalNeed

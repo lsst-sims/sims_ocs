@@ -204,7 +204,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">observatory_model</span><span class="o">.</span><span class="n">observations_made</span>
 
-<div class="viewcode-block" id="Sequencer.end_of_night"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.end_of_night">[docs]</a>    <span class="k">def</span> <span class="nf">end_of_night</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Sequencer.end_night"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.end_night">[docs]</a>    <span class="k">def</span> <span class="nf">end_night</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform end of night functions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Park the telescope for the day.</span>
@@ -330,7 +330,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">sun_az</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;sunAz&quot;</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">sun_ra</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;sunRA&quot;</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">sun_dec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;sunDec&quot;</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">sun_elong</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;sunEclipLon&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">solar_elong</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">msi</span><span class="p">[</span><span class="s2">&quot;solarElong&quot;</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;No target received!&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">observationId</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">targetId</span>
@@ -342,17 +342,18 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="p">,</span> <span class="n">slew_info</span><span class="p">,</span> <span class="n">exposure_info</span></div>
 
-<div class="viewcode-block" id="Sequencer.start_of_day"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.start_of_day">[docs]</a>    <span class="k">def</span> <span class="nf">start_of_day</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_to_unmount</span><span class="p">):</span>
+<div class="viewcode-block" id="Sequencer.start_day"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.start_day">[docs]</a>    <span class="k">def</span> <span class="nf">start_day</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_swap</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform start of day functions.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filter_to_unmount : str</span>
-<span class="sd">            The filter requested for unmounting.</span>
+<span class="sd">        filter_swap : scheduler_filterSwapC</span>
+<span class="sd">            The instance of the filter swap information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">observatory_model</span><span class="o">.</span><span class="n">swap_filter</span><span class="p">(</span><span class="n">filter_to_unmount</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">filter_swap</span><span class="o">.</span><span class="n">need_swap</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observatory_model</span><span class="o">.</span><span class="n">swap_filter</span><span class="p">(</span><span class="n">filter_swap</span><span class="o">.</span><span class="n">filter_to_unmount</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Sequencer.start_of_night"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.start_of_night">[docs]</a>    <span class="k">def</span> <span class="nf">start_of_night</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">night</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+<div class="viewcode-block" id="Sequencer.start_night"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.sequencer.html#lsst.sims.ocs.kernel.sequencer.Sequencer.start_night">[docs]</a>    <span class="k">def</span> <span class="nf">start_night</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">night</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform start of night functions.</span>
 
 <span class="sd">        Parameters</span>
@@ -362,7 +363,7 @@
 <span class="sd">        duration : int</span>
 <span class="sd">            The survey duration in days.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">observatory_model</span><span class="o">.</span><span class="n">start_of_night</span><span class="p">(</span><span class="n">night</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observatory_model</span><span class="o">.</span><span class="n">start_night</span><span class="p">(</span><span class="n">night</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

@@ -32,7 +32,7 @@
   
     <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.database.tables package" href="lsst.sims.ocs.database.tables.html"/>
-        <link rel="next" title="lsst.sims.ocs.database.tables.write_tbls module" href="lsst.sims.ocs.database.tables.write_tbls.html"/>
+        <link rel="next" title="lsst.sims.ocs.database.tables.view_helpers module" href="lsst.sims.ocs.database.tables.view_helpers.html"/>
         <link rel="prev" title="lsst.sims.ocs.database.tables package" href="lsst.sims.ocs.database.tables.html"/> 
 
   
@@ -186,6 +186,26 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_config">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_config</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the Config table.</p>
+<p>This function creates the Config table containing the values for all the configuration parameters of
+the simulation. This table will be created after differences are applied to the configuration.</p>
+<p>Table Description:</p>
+<p>This table contains the configuration information for the given simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The Config table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="lsst.sims.ocs.database.tables.base_tbls.create_field">
 <code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_field</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Field table.</p>
@@ -253,6 +273,26 @@ this table.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_observation_proposal_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_observation_proposal_history</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_observation_proposal_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_observation_proposal_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the ObsProposalHistory table.</p>
+<p>This function creates the ObsProposalHistory table for listing all proposals that are assigned to
+a given observation.</p>
+<p>Table Description:</p>
+<p>This table records all of the proposals and proposal information for a given observation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The ObsProposalHistory table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="lsst.sims.ocs.database.tables.base_tbls.create_proposal">
 <code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_proposal</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_proposal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_proposal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the Proposal table.</p>
@@ -266,26 +306,6 @@ this table.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The Proposal table object.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="lsst.sims.ocs.database.tables.base_tbls.create_proposal_history">
-<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_proposal_history</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_proposal_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_proposal_history" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create the ProposalHistory table.</p>
-<p>This function creates the ProposalHistory table for listing all proposals that are assigned to
-a given observation.</p>
-<p>Table Description:</p>
-<p>This table records all of the proposals and proposal information for a given observation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The ProposalHistory table object.</td>
 </tr>
 </tbody>
 </table>
@@ -333,7 +353,7 @@ actual downtime used in the simulation maybe different depending on the length o
 
 <dl class="function">
 <dt id="lsst.sims.ocs.database.tables.base_tbls.create_session">
-<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_session</code><span class="sig-paren">(</span><em>metadata</em>, <em>autoincrement=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_session" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_session</code><span class="sig-paren">(</span><em>metadata</em>, <em>autoincrement=True</em>, <em>session_id_start=1000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session table.</p>
 <p>This function creates the Session table for tracking the various simulations run. For MySQL, it adds
 a post-create command to set the lower limit of the auto increment value.</p>
@@ -347,6 +367,7 @@ runs are identified by the combination of the hostname and session Id: <em>sessi
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</li>
 <li><strong>autoincrement</strong> (<em>bool</em>) &#8211; A flag to set auto incrementing on the sessionID column.</li>
+<li><strong>session_id_start</strong> (<em>int</em>) &#8211; A new starting session Id for counting new simulations.</li>
 </ul>
 </td>
 </tr>
@@ -503,6 +524,26 @@ the Scheduler in the simulation run.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_target_proposal_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_target_proposal_history</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_target_proposal_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_target_proposal_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the TargetProposalHistory table.</p>
+<p>This function creates the TargetProposalHistory table for listing all proposals that are assigned to
+a given target.</p>
+<p>Table Description:</p>
+<p>This table records all of the proposals and proposal information for a given target.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The TargetProposalHistory table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="lsst.sims.ocs.database.tables.base_tbls.create_unscheduled_downtime">
 <code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_unscheduled_downtime</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_unscheduled_downtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_unscheduled_downtime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the UnscheduledDowntime table.</p>
@@ -532,7 +573,7 @@ actual downtime used in the simulation maybe different depending on the length o
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="lsst.sims.ocs.database.tables.write_tbls.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.database.tables.write_tbls module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="lsst.sims.ocs.database.tables.view_helpers.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.database.tables.view_helpers module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="lsst.sims.ocs.database.tables.html" class="btn btn-neutral" title="lsst.sims.ocs.database.tables package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>

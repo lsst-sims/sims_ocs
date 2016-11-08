@@ -148,6 +148,8 @@
     <span class="n">accept_serendipity</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to determine if observations other than proposal</span><span class="se">\&#39;</span><span class="s1">s top &#39;</span>
                                          <span class="s1">&#39;target are accepted.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="n">accept_consecutive_visits</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to determine if consecutive visits are accepted.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">airmass_bonus</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Bonus to apply to fields giving precidence to low arimass ones. &#39;</span>
+                                    <span class="s1">&#39;Bonus runs from 0 to 1.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Scheduling.setDefaults"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.scheduling.html#lsst.sims.ocs.configuration.proposal.scheduling.Scheduling.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Default specification for scheduling information.</span>
@@ -155,7 +157,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">max_num_targets</span> <span class="o">=</span> <span class="mi">100</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">accept_serendipity</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">accept_consecutive_visits</span> <span class="o">=</span> <span class="bp">True</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accept_consecutive_visits</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">airmass_bonus</span> <span class="o">=</span> <span class="mf">0.5</span></div></div>
 </pre></div>
 
            </div>

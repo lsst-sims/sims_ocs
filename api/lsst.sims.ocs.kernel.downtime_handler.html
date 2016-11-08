@@ -195,6 +195,12 @@ downtime information.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.downtime_days">
+<code class="descname">downtime_days</code><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.downtime_days" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>set</em> &#8211; The holder for the list of downtime days.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.log">
 <code class="descname">log</code><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.log" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>Logger</em> &#8211; The handle for the logger.</p>
@@ -202,10 +208,28 @@ downtime information.</p>
 
 <p>Initialize the class.</p>
 <dl class="method">
+<dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.downtime_range">
+<code class="descname">downtime_range</code><span class="sig-paren">(</span><em>dt</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/downtime_handler.html#DowntimeHandler.downtime_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.downtime_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the downtime day range and start night.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dt</strong> (<em>tuple</em>) &#8211; The collection of downtime information (start, length, description)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>set, int</em> &#8211; The list of downtime days as a set and the downtime start night.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.get_downtime">
 <code class="descname">get_downtime</code><span class="sig-paren">(</span><em>night</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/downtime_handler.html#DowntimeHandler.get_downtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.get_downtime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine if there is downtime for the given night.</p>
-<p>This function looks at the given</p>
+<p>This function looks at the given downtime and determines if there are any
+downtime days. If downtime is identified, then this number will return a
+decreasing number of days until no more downtime if found.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -230,6 +254,12 @@ downtime information.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/downtime_handler.html#DowntimeHandler.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the lsit of downtime days.</p>
 </dd></dl>
 
 <dl class="method">

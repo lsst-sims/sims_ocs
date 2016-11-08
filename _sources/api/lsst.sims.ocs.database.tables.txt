@@ -7,6 +7,8 @@ Submodules
 .. toctree::
 
    lsst.sims.ocs.database.tables.base_tbls
+   lsst.sims.ocs.database.tables.view_helpers
+   lsst.sims.ocs.database.tables.view_tables
    lsst.sims.ocs.database.tables.write_tbls
 
 Module contents

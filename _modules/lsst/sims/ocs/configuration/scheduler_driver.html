@@ -151,6 +151,8 @@
     <span class="n">timebonus_bmax</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
     <span class="n">timebonus_slope</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
     <span class="n">night_boundary</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Solar altitude (degrees) when it is considered night.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">new_moon_phase_threshold</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;New moon phase threshold for swapping to dark time filter.&#39;</span><span class="p">,</span>
+                                               <span class="nb">float</span><span class="p">)</span>
     <span class="n">ignore_sky_brightness</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to ignore sky brightness limits when rejecting targets.&#39;</span><span class="p">,</span>
                                             <span class="nb">bool</span><span class="p">)</span>
     <span class="n">ignore_airmass</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to ignore airmass limits when rejecting targets.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
@@ -164,8 +166,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">time_balancing</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timebonus_tmax</span> <span class="o">=</span> <span class="mf">200.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timebonus_bmax</span> <span class="o">=</span> <span class="mf">10.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timebonus_slope</span> <span class="o">=</span> <span class="mf">2.26</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timebonus_slope</span> <span class="o">=</span> <span class="mf">5.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">night_boundary</span> <span class="o">=</span> <span class="o">-</span><span class="mf">12.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_moon_phase_threshold</span> <span class="o">=</span> <span class="mf">20.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ignore_sky_brightness</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ignore_airmass</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ignore_clouds</span> <span class="o">=</span> <span class="bp">False</span>

@@ -37,6 +37,10 @@ This table keeps a record of the information from the requested targets during a
       -  The airmass of the target.
     * -  skyBrightness
       -  The calculated skybrightness for the target.
+    * -  cloud
+      -  The fraction of clouds (0: none to 1: total) for the target.
+    * -  seeing
+      -  The seeing (units=arcseconds) for the target.
     * -  slewTime
       -  The calculated slew time (units=seconds) for the target.
     * -  costBonus

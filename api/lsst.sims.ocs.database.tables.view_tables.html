@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.database package &mdash; Simulated OCS 0.3.0 documentation</title>
+  <title>lsst.sims.ocs.database.tables.view_tables module &mdash; Simulated OCS 0.3.0 documentation</title>
   
 
   
@@ -31,9 +31,9 @@
 
   
     <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../index.html"/>
-        <link rel="up" title="lsst.sims.ocs package" href="lsst.sims.ocs.html"/>
-        <link rel="next" title="lsst.sims.ocs.database.tables package" href="lsst.sims.ocs.database.tables.html"/>
-        <link rel="prev" title="lsst.sims.ocs.configuration.survey module" href="lsst.sims.ocs.configuration.survey.html"/> 
+        <link rel="up" title="lsst.sims.ocs.database.tables package" href="lsst.sims.ocs.database.tables.html"/>
+        <link rel="next" title="lsst.sims.ocs.database.tables.write_tbls module" href="lsst.sims.ocs.database.tables.write_tbls.html"/>
+        <link rel="prev" title="lsst.sims.ocs.database.tables.view_helpers module" href="lsst.sims.ocs.database.tables.view_helpers.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -95,10 +95,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="lsst.sims.ocs.html">lsst.sims.ocs package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="lsst.sims.ocs.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">lsst.sims.ocs.database package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-lsst.sims.ocs.database">Module contents</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="lsst.sims.ocs.database.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.database.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.database.html#module-lsst.sims.ocs.database">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
@@ -146,11 +146,15 @@
       
           <li><a href="lsst.sims.ocs.html">lsst.sims.ocs package</a> &raquo;</li>
       
-    <li>lsst.sims.ocs.database package</li>
+          <li><a href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a> &raquo;</li>
+      
+          <li><a href="lsst.sims.ocs.database.tables.html">lsst.sims.ocs.database.tables package</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.database.tables.view_tables module</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/lsst.sims.ocs.database.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/lsst.sims.ocs.database.tables.view_tables.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -160,38 +164,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="lsst-sims-ocs-database-package">
-<h1>lsst.sims.ocs.database package<a class="headerlink" href="#lsst-sims-ocs-database-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="lsst.sims.ocs.database.tables.html">lsst.sims.ocs.database.tables package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lsst.sims.ocs.database.tables.html#submodules">Submodules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.tables.base_tbls.html">lsst.sims.ocs.database.tables.base_tbls module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.tables.view_helpers.html">lsst.sims.ocs.database.tables.view_helpers module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.tables.view_tables.html">lsst.sims.ocs.database.tables.view_tables module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.database.tables.write_tbls.html">lsst.sims.ocs.database.tables.write_tbls module</a></li>
+  <div class="section" id="module-lsst.sims.ocs.database.tables.view_tables">
+<span id="lsst-sims-ocs-database-tables-view-tables-module"></span><h1>lsst.sims.ocs.database.tables.view_tables module<a class="headerlink" href="#module-lsst.sims.ocs.database.tables.view_tables" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.view_tables.create_summary_all_props">
+<code class="descclassname">lsst.sims.ocs.database.tables.view_tables.</code><code class="descname">create_summary_all_props</code><span class="sig-paren">(</span><em>metadata</em>, <em>oh</em>, <em>sh</em>, <em>sfs</em>, <em>p</em>, <em>ph</em>, <em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/view_tables.html#create_summary_all_props"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.view_tables.create_summary_all_props" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the SummaryAllProps view (table).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</li>
+<li><strong>oh</strong> (<em>sqlalchemy.Table</em>) &#8211; The instance of the ObsHistory table.</li>
+<li><strong>sh</strong> (<em>sqlalchemy.Table</em>) &#8211; The instance of the SlewHistory table.</li>
+<li><strong>sfs</strong> (<em>sqlalchemy.Table</em>) &#8211; The instance of the SlewFinalState table.</li>
+<li><strong>p</strong> (<em>sqlalchemy.Table</em>) &#8211; The instance of the Proposal table.</li>
+<li><strong>ph</strong> (<em>sqlalchemy.Table</em>) &#8211; The instance of the ProposalHistory table.</li>
+<li><strong>f</strong> (<em>sqlalchemy.Table</em>) &#8211; The instance of the Field table.</li>
 </ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="lsst.sims.ocs.database.tables.html#module-lsst.sims.ocs.database.tables">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="lsst.sims.ocs.database.socs_db.html">lsst.sims.ocs.database.socs_db module</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="module-lsst.sims.ocs.database">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lsst.sims.ocs.database" title="Permalink to this headline">¶</a></h2>
-<p>Module for classes that handle the interaction with the simulation database.</p>
-</div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">view</span></code> &#8211; The instance of the SummaryAllProps view.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 
 
@@ -201,10 +201,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="lsst.sims.ocs.database.tables.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.database.tables package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="lsst.sims.ocs.database.tables.write_tbls.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.database.tables.write_tbls module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="lsst.sims.ocs.configuration.survey.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.survey module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="lsst.sims.ocs.database.tables.view_helpers.html" class="btn btn-neutral" title="lsst.sims.ocs.database.tables.view_helpers module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

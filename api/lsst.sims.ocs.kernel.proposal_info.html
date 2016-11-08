@@ -164,67 +164,67 @@
   <div class="section" id="module-lsst.sims.ocs.kernel.proposal_info">
 <span id="lsst-sims-ocs-kernel-proposal-info-module"></span><h1>lsst.sims.ocs.kernel.proposal_info module<a class="headerlink" href="#module-lsst.sims.ocs.kernel.proposal_info" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalHistory">
-<em class="property">class </em><code class="descclassname">lsst.sims.ocs.kernel.proposal_info.</code><code class="descname">ProposalHistory</code><span class="sig-paren">(</span><em>propHistId</em>, <em>Proposal_propId</em>, <em>proposalValue</em>, <em>proposalNeed</em>, <em>proposalBonus</em>, <em>proposalBoost</em>, <em>ObsHistory_observationId</em><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalHistory" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory">
+<em class="property">class </em><code class="descclassname">lsst.sims.ocs.kernel.proposal_info.</code><code class="descname">ObsProposalHistory</code><span class="sig-paren">(</span><em>propHistId</em>, <em>Proposal_propId</em>, <em>proposalValue</em>, <em>proposalNeed</em>, <em>proposalBonus</em>, <em>proposalBoost</em>, <em>ObsHistory_observationId</em><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
-<p>Create new instance of ProposalHistory(propHistId, Proposal_propId, proposalValue, proposalNeed, proposalBonus, proposalBoost, ObsHistory_observationId)</p>
+<p>Simple tuple for handling target proposal history information.</p>
 <dl class="method">
-<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalHistory.__getnewargs__">
-<code class="descname">__getnewargs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalHistory.__getnewargs__" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.__getnewargs__">
+<code class="descname">__getnewargs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.__getnewargs__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return self as a plain tuple.  Used by copy and pickle.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalHistory.__getstate__">
-<code class="descname">__getstate__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalHistory.__getstate__" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.__getstate__">
+<code class="descname">__getstate__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.__getstate__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exclude the OrderedDict from pickling</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalHistory.__repr__">
-<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalHistory.__repr__" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.__repr__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a nicely formatted representation string</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalHistory.ObsHistory_observationId">
-<code class="descname">ObsHistory_observationId</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalHistory.ObsHistory_observationId" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.ObsHistory_observationId">
+<code class="descname">ObsHistory_observationId</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.ObsHistory_observationId" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 6</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalHistory.Proposal_propId">
-<code class="descname">Proposal_propId</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalHistory.Proposal_propId" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.Proposal_propId">
+<code class="descname">Proposal_propId</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.Proposal_propId" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalHistory.propHistId">
-<code class="descname">propHistId</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalHistory.propHistId" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.propHistId">
+<code class="descname">propHistId</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.propHistId" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalHistory.proposalBonus">
-<code class="descname">proposalBonus</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalHistory.proposalBonus" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.proposalBonus">
+<code class="descname">proposalBonus</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.proposalBonus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 4</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalHistory.proposalBoost">
-<code class="descname">proposalBoost</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalHistory.proposalBoost" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.proposalBoost">
+<code class="descname">proposalBoost</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.proposalBoost" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 5</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalHistory.proposalNeed">
-<code class="descname">proposalNeed</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalHistory.proposalNeed" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.proposalNeed">
+<code class="descname">proposalNeed</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.proposalNeed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 3</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalHistory.proposalValue">
-<code class="descname">proposalValue</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalHistory.proposalValue" title="Permalink to this definition">¶</a></dt>
+<dt id="lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.proposalValue">
+<code class="descname">proposalValue</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ObsProposalHistory.proposalValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
@@ -234,7 +234,7 @@
 <dt id="lsst.sims.ocs.kernel.proposal_info.ProposalInfo">
 <em class="property">class </em><code class="descclassname">lsst.sims.ocs.kernel.proposal_info.</code><code class="descname">ProposalInfo</code><span class="sig-paren">(</span><em>propId</em>, <em>propName</em>, <em>propType</em><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
-<p>Simple tuple for handling proposal history information.</p>
+<p>Simple tuple for handling observation proposal history information.</p>
 <dl class="method">
 <dt id="lsst.sims.ocs.kernel.proposal_info.ProposalInfo.__getnewargs__">
 <code class="descname">__getnewargs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalInfo.__getnewargs__" title="Permalink to this definition">¶</a></dt>
@@ -268,6 +268,73 @@
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.proposal_info.ProposalInfo.propType">
 <code class="descname">propType</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalInfo.propType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory">
+<em class="property">class </em><code class="descclassname">lsst.sims.ocs.kernel.proposal_info.</code><code class="descname">TargetProposalHistory</code><span class="sig-paren">(</span><em>propHistId</em>, <em>Proposal_propId</em>, <em>proposalValue</em>, <em>proposalNeed</em>, <em>proposalBonus</em>, <em>proposalBoost</em>, <em>TargetHistory_targetId</em><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<p>Create new instance of TargetProposalHistory(propHistId, Proposal_propId, proposalValue, proposalNeed, proposalBonus, proposalBoost, TargetHistory_targetId)</p>
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.__getnewargs__">
+<code class="descname">__getnewargs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.__getnewargs__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self as a plain tuple.  Used by copy and pickle.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.__getstate__">
+<code class="descname">__getstate__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.__getstate__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exclude the OrderedDict from pickling</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a nicely formatted representation string</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.Proposal_propId">
+<code class="descname">Proposal_propId</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.Proposal_propId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.TargetHistory_targetId">
+<code class="descname">TargetHistory_targetId</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.TargetHistory_targetId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 6</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.propHistId">
+<code class="descname">propHistId</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.propHistId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.proposalBonus">
+<code class="descname">proposalBonus</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.proposalBonus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.proposalBoost">
+<code class="descname">proposalBoost</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.proposalBoost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 5</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.proposalNeed">
+<code class="descname">proposalNeed</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.proposalNeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.proposalValue">
+<code class="descname">proposalValue</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.proposalValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 

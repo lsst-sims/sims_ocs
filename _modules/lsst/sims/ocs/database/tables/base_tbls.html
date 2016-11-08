@@ -140,11 +140,13 @@
 <span class="kn">from</span> <span class="nn">sqlalchemy.types</span> <span class="kn">import</span> <span class="n">DATETIME</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">DDL</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">ForeignKeyConstraint</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;create_cloud&quot;</span><span class="p">,</span> <span class="s2">&quot;create_field&quot;</span><span class="p">,</span> <span class="s2">&quot;create_observation_exposures&quot;</span><span class="p">,</span> <span class="s2">&quot;create_observation_history&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;create_proposal&quot;</span><span class="p">,</span> <span class="s2">&quot;create_proposal_history&quot;</span><span class="p">,</span> <span class="s2">&quot;create_scheduled_downtime&quot;</span><span class="p">,</span> <span class="s2">&quot;create_seeing&quot;</span><span class="p">,</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;create_cloud&quot;</span><span class="p">,</span> <span class="s2">&quot;create_config&quot;</span><span class="p">,</span> <span class="s2">&quot;create_field&quot;</span><span class="p">,</span> <span class="s2">&quot;create_observation_exposures&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;create_observation_history&quot;</span><span class="p">,</span> <span class="s2">&quot;create_observation_proposal_history&quot;</span><span class="p">,</span> <span class="s2">&quot;create_proposal&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;create_scheduled_downtime&quot;</span><span class="p">,</span> <span class="s2">&quot;create_seeing&quot;</span><span class="p">,</span>
            <span class="s2">&quot;create_session&quot;</span><span class="p">,</span> <span class="s2">&quot;create_slew_activities&quot;</span><span class="p">,</span> <span class="s2">&quot;create_slew_final_state&quot;</span><span class="p">,</span>
            <span class="s2">&quot;create_slew_history&quot;</span><span class="p">,</span> <span class="s2">&quot;create_slew_initial_state&quot;</span><span class="p">,</span> <span class="s2">&quot;create_slew_maxspeeds&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;create_target_exposures&quot;</span><span class="p">,</span> <span class="s2">&quot;create_target_history&quot;</span><span class="p">,</span> <span class="s2">&quot;create_unscheduled_downtime&quot;</span><span class="p">]</span>
+           <span class="s2">&quot;create_target_exposures&quot;</span><span class="p">,</span> <span class="s2">&quot;create_target_history&quot;</span><span class="p">,</span> <span class="s2">&quot;create_target_proposal_history&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;create_unscheduled_downtime&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="create_cloud"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_cloud">[docs]</a><span class="k">def</span> <span class="nf">create_cloud</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create the Cloud table.</span>
@@ -176,6 +178,40 @@
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The cloud coverage in 8th on the sky.&quot;</span><span class="p">))</span>
 
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_Cloud_Session1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">Session_sessionId</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">table</span></div>
+
+<div class="viewcode-block" id="create_config"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_config">[docs]</a><span class="k">def</span> <span class="nf">create_config</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create the Config table.</span>
+
+<span class="sd">    This function creates the Config table containing the values for all the configuration parameters of</span>
+<span class="sd">    the simulation. This table will be created after differences are applied to the configuration.</span>
+
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table contains the configuration information for the given simulation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    metadata : sqlalchemy.MetaData</span>
+<span class="sd">        The database object that collects the tables.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sqlalchemy.Table</span>
+<span class="sd">        The Config table object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;Config&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;configId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The numeric identifier for the particular configuration entry.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The simulation run session Id.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;paramName&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">512</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Fully qualified parameter name from the configuration.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;paramValue&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">512</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Value of the parameter.&quot;</span><span class="p">))</span>
+
+    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_Config_Session&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">Session_sessionId</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">table</span></div>
 
@@ -272,12 +308,12 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    metadata : sqlalchemy.MetaData</span>
-<span class="sd">      The database object that collects the tables.</span>
+<span class="sd">        The database object that collects the tables.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    sqlalchemy.Table</span>
-<span class="sd">      The ObsExposure table object.</span>
+<span class="sd">        The ObsExposure table object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;ObsExposures&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
@@ -358,9 +394,21 @@
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;visitExposureTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The sum of all the exposure times for the observation (units=seconds). No &quot;</span>
                              <span class="s2">&quot;shutter and readout time included.&quot;</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;airmass&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The airmass of the target.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;airmass&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The airmass of the observation field.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;skyBrightness&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The calculated skybrightness for the target.&quot;</span><span class="p">),</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The calculated skybrightness for the observation field.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;cloud&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The fraction of clouds present (0: none to 1: total).&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;seeingFwhm500&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The full-width at half-maximum for seeing observations at 500 nm at zenith.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;seeingFwhmGeom&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">Geometrical</span><span class="se">\&quot;</span><span class="s2"> full-width at half-maximum, actual half width at maximum &quot;</span>
+                         <span class="s2">&quot;brightness. This can be used to represent the FWHM of a double Gaussian &quot;</span>
+                         <span class="s2">&quot;representing the physical width of a PSF.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;seeingFwhmEff&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">Effective</span><span class="se">\&quot;</span><span class="s2"> full-width at half-maximum, typically ~15% larger than &quot;</span>
+                         <span class="s2">&quot;seeingFwhmGeom. This can be used to calculate SNR for point sources, using &quot;</span>
+                         <span class="s2">&quot;seeingFwhmEff as the FWHM of a single Gaussian describing the PSF.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;moonRA&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The right-ascension (units=degrees) of the moon.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;moonDec&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
@@ -370,7 +418,7 @@
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;moonAz&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The azimuth (units=degrees) of the moon.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;moonDistance&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The distance (units=degrees) between the moon and the target.&quot;</span><span class="p">),</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The distance (units=degrees) between the moon and the observation field.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;moonPhase&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The phase of the moon.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sunRA&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
@@ -381,8 +429,9 @@
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The altitude (units=degrees) of the sun.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sunAz&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The azimuth (units=degrees) of the sun.&quot;</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sunElong&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The elongation (units=degrees) of the sun.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;solarElong&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The solar elongation (units=degrees) of the observation field (distance &quot;</span>
+                             <span class="s2">&quot;between it and sun).&quot;</span><span class="p">),</span>
                   <span class="n">ForeignKeyConstraint</span><span class="p">([</span><span class="s2">&quot;Field_fieldId&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Field.fieldId&quot;</span><span class="p">]),</span>
                   <span class="n">ForeignKeyConstraint</span><span class="p">([</span><span class="s2">&quot;TargetHistory_targetId&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;TargetHistory.targetId&quot;</span><span class="p">]))</span>
 
@@ -392,6 +441,28 @@
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_ObsHistory_Target1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">TargetHistory_targetId</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">table</span></div>
+
+<div class="viewcode-block" id="create_observation_proposal_history"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_observation_proposal_history">[docs]</a><span class="k">def</span> <span class="nf">create_observation_proposal_history</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create the ObsProposalHistory table.</span>
+
+<span class="sd">    This function creates the ObsProposalHistory table for listing all proposals that are assigned to</span>
+<span class="sd">    a given observation.</span>
+
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table records all of the proposals and proposal information for a given observation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    metadata : sqlalchemy.MetaData</span>
+<span class="sd">        The database object that collects the tables.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sqlalchemy.Table</span>
+<span class="sd">        The ObsProposalHistory table object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">create_proposal_history</span><span class="p">(</span><span class="s2">&quot;ObsProposalHistory&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="create_proposal"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_proposal">[docs]</a><span class="k">def</span> <span class="nf">create_proposal</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create the Proposal table.</span>
@@ -417,57 +488,70 @@
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The numeric identifier for the particular proposal.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The simulation run session Id.&quot;</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;propName&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The name of the science proposal.&quot;</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;propType&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The type of the science proposal.&quot;</span><span class="p">))</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;propName&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The name of the science proposal.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;propType&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The type of the science proposal.&quot;</span><span class="p">))</span>
 
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_Proposal_Session1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">Session_sessionId</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">table</span></div>
 
-<div class="viewcode-block" id="create_proposal_history"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_proposal_history">[docs]</a><span class="k">def</span> <span class="nf">create_proposal_history</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create the ProposalHistory table.</span>
+<span class="k">def</span> <span class="nf">create_proposal_history</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create one of the ProposalHistory tables.</span>
 
-<span class="sd">    This function creates the ProposalHistory table for listing all proposals that are assigned to</span>
-<span class="sd">    a given observation.</span>
-
-<span class="sd">    Table Description:</span>
-
-<span class="sd">    This table records all of the proposals and proposal information for a given observation.</span>
+<span class="sd">    This function creates one of the ProposalHistory tables.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The name of the proposal history table.</span>
 <span class="sd">    metadata : sqlalchemy.MetaData</span>
 <span class="sd">        The database object that collects the tables.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    sqlalchemy.Table</span>
-<span class="sd">        The ProposalHistory table object.</span>
+<span class="sd">        One of the ProposalHistory table objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;ProposalHistory&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+    <span class="k">if</span> <span class="s2">&quot;Obs&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">fkc_name</span> <span class="o">=</span> <span class="s2">&quot;ObsHistory_observationId&quot;</span>
+        <span class="n">fkc_column</span> <span class="o">=</span> <span class="s2">&quot;ObsHistory.observationId&quot;</span>
+        <span class="n">index_key_name</span> <span class="o">=</span> <span class="s2">&quot;ObsHistory1&quot;</span>
+        <span class="n">help_tag</span> <span class="o">=</span> <span class="s2">&quot;observation&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;Target&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">fkc_name</span> <span class="o">=</span> <span class="s2">&quot;TargetHistory_targetId&quot;</span>
+        <span class="n">fkc_column</span> <span class="o">=</span> <span class="s2">&quot;TargetHistory.targetId&quot;</span>
+        <span class="n">index_key_name</span> <span class="o">=</span> <span class="s2">&quot;TargetHistory1&quot;</span>
+        <span class="n">help_tag</span> <span class="o">=</span> <span class="s2">&quot;target&quot;</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;propHistId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The numeric identifier for the particular proposal history entry.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The simulation run session Id.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;Proposal_propId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier that relates to an entry in the Prposal table.&quot;</span><span class="p">),</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier that relates to an entry in the Proposal table.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;proposalValue&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The value (need + bonus) of the observation assigned by a particular &quot;</span>
-                             <span class="s2">&quot;proposal.&quot;</span><span class="p">),</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The value (need + bonus) of the {} assigned by a particular &quot;</span>
+                             <span class="s2">&quot;proposal.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">help_tag</span><span class="p">)),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;proposalNeed&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The need of the observation assigned by a particular proposal.&quot;</span><span class="p">),</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The need of the {} assigned by a particular proposal.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">help_tag</span><span class="p">)),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;proposalBonus&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The bonus of the observation assigned by a particular proposal.&quot;</span><span class="p">),</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The bonus of the {} assigned by a particular proposal.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">help_tag</span><span class="p">)),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;proposalBoost&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The time-balancing boost assigned by a particular proposal.&quot;</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;ObsHistory_observationId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier that relates to an entry in the ObsHistory table.&quot;</span><span class="p">),</span>
-                  <span class="n">ForeignKeyConstraint</span><span class="p">([</span><span class="s2">&quot;ObsHistory_observationId&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;ObsHistory.observationId&quot;</span><span class="p">]),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="n">fkc_name</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Numeric identifier that relates to an entry in the &quot;</span>
+                             <span class="s2">&quot;{} table.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index_key_name</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">))),</span>
+                  <span class="n">ForeignKeyConstraint</span><span class="p">([</span><span class="n">fkc_name</span><span class="p">],</span> <span class="p">[</span><span class="n">fkc_column</span><span class="p">]),</span>
                   <span class="n">ForeignKeyConstraint</span><span class="p">([</span><span class="s2">&quot;Proposal_propId&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Proposal.propId&quot;</span><span class="p">]))</span>
 
-    <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_ProposalHistory_ObsHistory1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">ObsHistory_observationId</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">Session_sessionId</span><span class="p">)</span>
+    <span class="n">index_name</span> <span class="o">=</span> <span class="s2">&quot;fk_{}_{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">index_key_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;Obs&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">Index</span><span class="p">(</span><span class="n">index_name</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">ObsHistory_observationId</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">Session_sessionId</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;Target&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">Index</span><span class="p">(</span><span class="n">index_name</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">TargetHistory_targetId</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">Session_sessionId</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">table</span></div>
+    <span class="k">return</span> <span class="n">table</span>
 
 <div class="viewcode-block" id="create_scheduled_downtime"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_scheduled_downtime">[docs]</a><span class="k">def</span> <span class="nf">create_scheduled_downtime</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create the ScheduledDowntime table.</span>
@@ -525,7 +609,7 @@
 
     <span class="k">return</span> <span class="n">table</span></div>
 
-<div class="viewcode-block" id="create_session"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_session">[docs]</a><span class="k">def</span> <span class="nf">create_session</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="create_session"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_session">[docs]</a><span class="k">def</span> <span class="nf">create_session</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">session_id_start</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create Session table.</span>
 
 <span class="sd">    This function creates the Session table for tracking the various simulations run. For MySQL, it adds</span>
@@ -542,6 +626,8 @@
 <span class="sd">        The database object that collects the tables.</span>
 <span class="sd">    autoincrement : bool</span>
 <span class="sd">        A flag to set auto incrementing on the sessionID column.</span>
+<span class="sd">    session_id_start : int</span>
+<span class="sd">        A new starting session Id for counting new simulations.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -563,7 +649,7 @@
 
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;s_host_user_date_idx&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">sessionUser</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">sessionHost</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">sessionDate</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-    <span class="n">alter_table</span> <span class="o">=</span> <span class="n">DDL</span><span class="p">(</span><span class="s2">&quot;ALTER TABLE </span><span class="si">%(table)s</span><span class="s2"> AUTO_INCREMENT=1000;&quot;</span><span class="p">)</span>
+    <span class="n">alter_table</span> <span class="o">=</span> <span class="n">DDL</span><span class="p">(</span><span class="s2">&quot;ALTER TABLE </span><span class="si">%(table)s</span><span class="s2"> AUTO_INCREMENT={};&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">session_id_start</span><span class="p">))</span>
     <span class="n">event</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="s1">&#39;after_create&#39;</span><span class="p">,</span> <span class="n">alter_table</span><span class="o">.</span><span class="n">execute_if</span><span class="p">(</span><span class="n">dialect</span><span class="o">=</span><span class="s1">&#39;mysql&#39;</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">table</span></div>
@@ -813,12 +899,12 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    metadata : sqlalchemy.MetaData</span>
-<span class="sd">      The database object that collects the tables.</span>
+<span class="sd">        The database object that collects the tables.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    sqlalchemy.Table</span>
-<span class="sd">      The Target Exposure table object.</span>
+<span class="sd">        The Target Exposure table object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;TargetExposures&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;exposureId&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
@@ -885,6 +971,10 @@
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;airmass&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The airmass of the target.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;skyBrightness&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The calculated skybrightness for the target.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;cloud&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The fraction of clouds (0: none to 1: total) for the target.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;seeing&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The seeing (units=arcseconds) for the target.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The calculated slew time (units=seconds) for the target.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;costBonus&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
@@ -925,6 +1015,28 @@
     <span class="n">Index</span><span class="p">(</span><span class="s2">&quot;fk_TargetHistory_Field1&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">Field_fieldId</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">table</span></div>
+
+<div class="viewcode-block" id="create_target_proposal_history"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_target_proposal_history">[docs]</a><span class="k">def</span> <span class="nf">create_target_proposal_history</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create the TargetProposalHistory table.</span>
+
+<span class="sd">    This function creates the TargetProposalHistory table for listing all proposals that are assigned to</span>
+<span class="sd">    a given target.</span>
+
+<span class="sd">    Table Description:</span>
+
+<span class="sd">    This table records all of the proposals and proposal information for a given target.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    metadata : sqlalchemy.MetaData</span>
+<span class="sd">        The database object that collects the tables.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sqlalchemy.Table</span>
+<span class="sd">        The TargetProposalHistory table object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">create_proposal_history</span><span class="p">(</span><span class="s2">&quot;TargetProposalHistory&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="create_unscheduled_downtime"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.base_tbls.html#lsst.sims.ocs.database.tables.base_tbls.create_unscheduled_downtime">[docs]</a><span class="k">def</span> <span class="nf">create_unscheduled_downtime</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create the UnscheduledDowntime table.</span>

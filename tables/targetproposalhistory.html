@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>UnscheduledDowntime &mdash; Simulated OCS 0.3.0 documentation</title>
+  <title>TargetProposalHistory &mdash; Simulated OCS 0.3.0 documentation</title>
   
 
   
@@ -32,8 +32,8 @@
   
     <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../index.html"/>
         <link rel="up" title="Survey Database" href="../database.html"/>
-        <link rel="next" title="History" href="../history.html"/>
-        <link rel="prev" title="TargetProposalHistory" href="targetproposalhistory.html"/> 
+        <link rel="next" title="UnscheduledDowntime" href="unscheduleddowntime.html"/>
+        <link rel="prev" title="TargetHistory" href="targethistory.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -125,11 +125,11 @@
       
           <li><a href="../database.html">Survey Database</a> &raquo;</li>
       
-    <li>UnscheduledDowntime</li>
+    <li>TargetProposalHistory</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/tables/unscheduleddowntime.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/tables/targetproposalhistory.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -139,9 +139,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="unscheduleddowntime">
-<span id="database-tables-unscheduleddowntime"></span><h1>UnscheduledDowntime<a class="headerlink" href="#unscheduleddowntime" title="Permalink to this headline">¶</a></h1>
-<p>This table records all of the unscheduled downtime for the entire survey (plus an extra 10 years). The actual downtime used in the simulation maybe different depending on the length of the simulation.</p>
+  <div class="section" id="targetproposalhistory">
+<span id="database-tables-targetproposalhistory"></span><h1>TargetProposalHistory<a class="headerlink" href="#targetproposalhistory" title="Permalink to this headline">¶</a></h1>
+<p>This table records all of the proposals and proposal information for a given target.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="50%" />
@@ -153,17 +153,29 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>night</td>
-<td>The starting night for the downtime.</td>
+<tr class="row-even"><td>propHistId</td>
+<td>The numeric identifier for the particular proposal history entry.</td>
 </tr>
 <tr class="row-odd"><td>Session_sessionId</td>
 <td>The simulation run session Id.</td>
 </tr>
-<tr class="row-even"><td>duration</td>
-<td>The length of the downtime (units=days).</td>
+<tr class="row-even"><td>Proposal_propId</td>
+<td>Numeric identifier that relates to an entry in the Proposal table.</td>
 </tr>
-<tr class="row-odd"><td>activity</td>
-<td>The description of the activity associated with the downtime.</td>
+<tr class="row-odd"><td>proposalValue</td>
+<td>The value (need + bonus) of the target assigned by a particular proposal.</td>
+</tr>
+<tr class="row-even"><td>proposalNeed</td>
+<td>The need of the target assigned by a particular proposal.</td>
+</tr>
+<tr class="row-odd"><td>proposalBonus</td>
+<td>The bonus of the target assigned by a particular proposal.</td>
+</tr>
+<tr class="row-even"><td>proposalBoost</td>
+<td>The time-balancing boost assigned by a particular proposal.</td>
+</tr>
+<tr class="row-odd"><td>TargetHistory_targetId</td>
+<td>Numeric identifier that relates to an entry in the TargetHistory table.</td>
 </tr>
 </tbody>
 </table>
@@ -176,10 +188,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../history.html" class="btn btn-neutral float-right" title="History" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="unscheduleddowntime.html" class="btn btn-neutral float-right" title="UnscheduledDowntime" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="targetproposalhistory.html" class="btn btn-neutral" title="TargetProposalHistory" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="targethistory.html" class="btn btn-neutral" title="TargetHistory" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

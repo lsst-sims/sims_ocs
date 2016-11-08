@@ -271,6 +271,8 @@ cp scheduler/cpp/libsacpp_scheduler_types.so $HOME/dds/lib
 </pre></div>
 </div>
 <p>This process creates in <code class="docutils literal"><span class="pre">$HOME/run_local/output</span></code> a <code class="docutils literal"><span class="pre">&lt;hostname&gt;_session.db</span></code> file where <code class="docutils literal"><span class="pre">&lt;hostname&gt;</span></code> is the name of your computer. If you have a DNS provided hostname and would like to have a more &#8220;normal&#8221; name, add the <code class="docutils literal"><span class="pre">$OPSIM_HOSTNAME</span></code> environmental variable to the session before running the above command. The script also creates a configuration file in <code class="docutils literal"><span class="pre">$HOME/.config</span></code> called <code class="docutils literal"><span class="pre">opsim4</span></code> and it contains the database setup information. This will allow you to not have to provide that information to the main simulation driver script.</p>
+<p>If you wish to clear out your database and start over, but begin at the next run number from
+where you left off, this task can be accomplished. The <code class="docutils literal"><span class="pre">-s</span></code> flag to the <code class="docutils literal"><span class="pre">manage_db</span></code> will adjust the starting point for the run numbers. You will need the last run number generated and then pass that number incremented by one to the flag. For MySQL, this will set the base point for the autoincremented sessionId column in the Session table. For SQLite, the run number is written into the configuration file for later use when running the simulation.</p>
 </div>
 </div>
 
