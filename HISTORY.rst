@@ -8,10 +8,26 @@ History
 
 This release of SOCS is designed to replace version 3 of the Operations Simulator.
 
+* Implement interested proposal behavior
+
+* Filter swapping during dark time around new moon
+
+* Environment information used in simulation
+
+  * Cloud information from OpSim3 read and sent to Scheduler
+  * Seeing information from OpSim3 read and sent to Scheduler, new seeing calculations added and stored to survey database
+
 * Downtime system
 
   * Scheduled downtime information in small SQLite DB
   * Unscheduled downtime generated on fly using a fixed seed via algorithm
+
+* More information to survey database
+
+  * New tables (ObsProposalHistory, TargetProposalHistory) for tracking proposal history for observations and targets
+  * More information to ObsHistory and TargetHistory tables
+  * New table (Config) for tracking simulation configuration information
+  * New table (Proposal) for tracking the active science proposals
 
 0.3 (2016-05-20)
 ~~~~~~~~~~~~~~~~
@@ -19,7 +35,7 @@ This release of SOCS is designed to replace version 3 of the Operations Simulato
 Next interim release of SOCS. Focused on performing observations and handling area 
 distribution proposals.
 
-* More information to survey data base
+* More information to survey database
 
   * All slew related information: SlewHistory, InitialSlewState, FinalSlewState, SlewMaxSpeeds and SlewActivities
   * More information to TargetHistory and ObsHistory tables
