@@ -3,6 +3,8 @@ import logging
 import logging.handlers
 import os
 
+from lsst.sims.ocs.utilities import get_hostname
+
 __all__ = ["LoggingLevel", "configure_logging", "generate_logfile_path", "set_log_levels"]
 
 MAX_CONSOLE = 2
@@ -95,5 +97,5 @@ def generate_logfile_path(log_file_path="log", session_id="1000"):
     """
     if not os.path.exists(log_file_path):
         log_file_path = ""
-    log_file = os.path.join(log_file_path, "lsst.log_{}".format(session_id))
+    log_file = os.path.join(log_file_path, "{}_{}.log".format(get_hostname(), session_id))
     return log_file
