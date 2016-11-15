@@ -14,17 +14,15 @@ Due to the heavy use of repositories for this installation, the instructions wil
 SAL Installation
 ----------------
 
-The SAL (Software Abstraction Layer) is a wrapper around the DDS layer and provides binding to Python. This requires the OpenSplice and SAL repositories from Telescope and Site. Inside the ``gitdir`` create a directory called ``ts``. Go into this directory and run the following::
+The SAL (Software Abstraction Layer) is a wrapper around the DDS (Data Distribution Service) layer and provides binding to Python. This requires the OpenSplice and SAL repositories from Telescope and Site. Inside the ``gitdir`` create a directory called ``ts``. Go into this directory and run the following::
 
 	git clone https://github.com/lsst-ts/ts_opensplice.git
 	git clone https://github.com/lsst-ts/ts_sal.git
 
-In the SAL clone, there is a user guide that will be referenced in the following documentation. Its location is ``gitdir/ts/ts_sal/SAL_User_Guide.pdf`` and will be referred to as ``SUG``.
+In the SAL clone, there is a user guide that documents installation and setup of SAL. Its location is ``gitdir/ts/ts_sal/SAL_User_Guide.pdf``. Follow section 1 and the main part of section 2. Sub-sections (those colored blue) 2.1 and 2.2 are redundant as we've already installed the SAL. Sub-section 2.3 is replaced by the following documentation that is specific to this SOCS/Scheduler setup.
 
 Build Scheduler Topic Library
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-There are prerequisites that need to be installed to build the topic library. They can be found in the *Introduction* section of the ``SUG`` and must be installed before continuing.
 
 Create a ``$HOME/dds`` directory and copy the ``gitdir/ts/ts_sal/setup.env`` to it. Also, create a ``$HOME/dds/lib`` directory for later. The following variables need to be edited in ``setup.env`` to reflect your setup::
 
@@ -37,7 +35,7 @@ All other variables can remain the same. Once the edits are complete, do::
 
 The configuration should complete without errors. Go back to ``gitdir/ts/ts_sal`` and do the following::
 
-	git co -t origin/feature/scheduler_xml_devel
+	git checkout -t origin/feature/scheduler_xml_devel
 	cd test
 	salgenerator scheduler validate
 	salgenerator scheduler sal cpp
@@ -47,8 +45,6 @@ Once the build is complete, the topic and supporting library need to be copied v
 
 	cp scheduler/cpp/src/SALPY_scheduler.so $HOME/dds/lib
 	cp scheduler/cpp/libsacpp_scheduler_types.so $HOME/dds/lib
-
-There are firewall rules that need to be applied in order for the DDS communications to work directly. They can be found in the *Installation* section of the ``SUG`` and need to be applied before running the SOCS/Scheduler system.
 
 Scheduler and SOCS Source Code
 ------------------------------
