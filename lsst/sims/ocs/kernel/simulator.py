@@ -255,7 +255,7 @@ class Simulator(object):
                         break
                     else:
                         tf = time.time()
-                        if (tf - lastconfigtime) > 0.0001:
+                        if (tf - lastconfigtime) > 5.0:
                             break
 
                 if self.wait_for_scheduler and observation.targetId != -1:
