@@ -3,4 +3,5 @@ MAINTAINER Michael Reuter <mareuter@lsst.org>
 
 RUN yum install -y \
   bzip2 \
-  git
+  git \
+  boost-python
