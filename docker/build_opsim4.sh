@@ -21,7 +21,7 @@
 # see <http://www.lsstcorp.org/LegalNotices/>.
 
 
-# Create a OpSim4 image
+# Create an OpSim4 image
 # @author Michael Reuter, LSST
 # Special thanks to Brian Van Klaveren, SLAC for the nice build scripts
 
