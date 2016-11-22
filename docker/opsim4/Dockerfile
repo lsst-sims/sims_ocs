@@ -1,13 +1,19 @@
 FROM mareuter/opsim4:base
 MAINTAINER Michael Reuter <mareuter@lsst.org>
 
+ARG SIMS_VERSION
+ARG USER
+ENV USER ${USER:-opsim}
+ENV HOME /home/opsim
+
 # Create user and group
 RUN groupadd opsim && adduser -m -g opsim -s /bin/bash opsim
 
 USER opsim
 WORKDIR /home/opsim
 
-RUN mkdir dds && mkdir repos && mkdir run-local
+RUN mkdir dds && mkdir repos && mkdir run-local && mkdir alt-configs
+VOLUME ["/home/opsim/run-local", "/home/opsim/alt-configs"]
 
 # Install Conda for python
 RUN curl -Ok ftp://ftp.noao.edu/pub/lsst/mareuter/sched_stuff/Miniconda2-latest-Linux-x86_64.sh && bash Miniconda2-latest-Linux-x86_64.sh -b -p miniconda && \
@@ -15,9 +21,10 @@ RUN curl -Ok ftp://ftp.noao.edu/pub/lsst/mareuter/sched_stuff/Miniconda2-latest-
 
 # Update Conda, set SIMS channel and install dependencies
 RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
-    conda config --add channels http://conda.lsst.codes/sims/2.3.1 && \
+    conda config --add channels http://conda.lsst.codes/sims/${SIMS_VERSION} && \
     conda update -y conda && \
-    conda install -y enum34 lsst-pex-config lsst-sims-skybrightness mysql-python pandas pytz requests sqlalchemy"
+    conda install -y enum34 lsst-pex-config lsst-sims-skybrightness mysql-python pandas pytz requests sqlalchemy && \
+    rm -rf miniconda/pkgs"
 
 # Install Scheduler DDS topic library
 WORKDIR /home/opsim/dds
@@ -51,5 +58,16 @@ RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
 
 WORKDIR /home/opsim
 
-ADD ./startup.sh /home/opsim/startup.sh
-CMD ["/bin/bash", "/home/opsim/startup.sh"]
+ENV LSST_DDS_DOMAIN=SOCS-DOCKER
+ENV NDDS_DISCOVERY_PEERS=builtin.shmem://
+ENV OPENSPLICE_LOC=${HOME}/repos/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
+ENV OSPL_URI=file://${OPENSPLICE_LOC}/etc/config/ospl.xml
+ENV SCHED_TOPIC_LIB=${HOME}/dds/lib
+ENV LD_LIBRARY_PATH=${OPENSPLICE_LOC}/lib:${SCHED_TOPIC_LIB}:${LD_LIBRARY_PATH}
+ENV PYTHONPATH=${SCHED_TOPIC_LIB}:${PYTHONPATH}
+ENV PATH=$HOME/miniconda/bin:$PATH
+
+#ADD ./startup.sh /home/opsim/startup.sh
+#RUN chown opsim:opsim /home/opsim/startup.sh
+CMD ["/bin/bash"]
+#, "/home/opsim/startup.sh"]
