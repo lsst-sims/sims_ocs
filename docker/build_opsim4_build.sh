@@ -21,20 +21,20 @@
 # see <http://www.lsstcorp.org/LegalNotices/>.
 
 
-# Create an OpSim4 development image
+# Create an OpSim4 builder image
 # @author Michael Reuter, LSST
 # Special thanks to Brian Van Klaveren, SLAC for the nice build scripts
 
 set -e
 
-DEFAULT_TAG="mareuter/opsim4:opsim4-dev"
+DEFAULT_TAG="mareuter/opsim4:opsim4-build"
 
 usage() {
   cat << EOD
 
   Usage: $(basename "$0") [options]
 
-  This command builds an OpSim4 development image.
+  This command builds an OpSim4 builder image.
 
   Available options:
     -h          this message
@@ -68,8 +68,8 @@ fi
 
 # Build the release image
 
-printf "Building Opsim4 development image with tag: %s\n" $TAG
-docker build --no-cache=true --tag="$TAG" opsim4-dev
+printf "Building Opsim4 builder image with tag: %s\n" $TAG
+docker build --no-cache=true --tag="$TAG" opsim4-build
 
 if [ $PUSH ] ; then
     printf "Pushing to Docker hub\n"
