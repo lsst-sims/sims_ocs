@@ -59,7 +59,6 @@ RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
 
 WORKDIR /home/opsim
 
-ENV LSST_DDS_DOMAIN=SOCS-DOCKER
 ENV NDDS_DISCOVERY_PEERS=builtin.shmem://
 ENV OPENSPLICE_LOC=${HOME}/repos/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
 ENV OSPL_URI=file://${OPENSPLICE_LOC}/etc/config/ospl.xml
@@ -68,7 +67,5 @@ ENV LD_LIBRARY_PATH=${OPENSPLICE_LOC}/lib:${SCHED_TOPIC_LIB}:${LD_LIBRARY_PATH}
 ENV PYTHONPATH=${SCHED_TOPIC_LIB}:${PYTHONPATH}
 ENV PATH=$HOME/miniconda/bin:$PATH
 
-#ADD ./startup.sh /home/opsim/startup.sh
-#RUN chown opsim:opsim /home/opsim/startup.sh
-CMD ["/bin/bash"]
-#, "/home/opsim/startup.sh"]
+ADD ./startup.sh /home/opsim/startup.sh
+CMD ["/bin/bash", "/home/opsim/startup.sh"]
