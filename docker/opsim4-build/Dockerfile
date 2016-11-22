@@ -1,8 +1,11 @@
 FROM mareuter/opsim4:opsim4
 MAINTAINER Michael Reuter <mareuter@lsst.org>
 
+USER root
 # Add building packages
 RUN yum install -y make
+
+USER opsim
 
 # Add Conda building requirements
 RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
