@@ -12,8 +12,9 @@ RUN groupadd opsim && adduser -m -g opsim -s /bin/bash opsim
 USER opsim
 WORKDIR /home/opsim
 
-RUN mkdir dds && mkdir repos && mkdir run-local && mkdir alt-configs
-VOLUME ["/home/opsim/run-local", "/home/opsim/alt-configs"]
+RUN mkdir dds && mkdir repos && mkdir run-local && mkdir alt-configs && \
+    mkdir .config
+VOLUME ["/home/opsim/run-local", "/home/opsim/alt-configs", "/home/opsim4/.config"]
 
 # Install Conda for python
 RUN curl -Ok ftp://ftp.noao.edu/pub/lsst/mareuter/sched_stuff/Miniconda2-latest-Linux-x86_64.sh && bash Miniconda2-latest-Linux-x86_64.sh -b -p miniconda && \
