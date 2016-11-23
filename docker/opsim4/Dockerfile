@@ -12,9 +12,9 @@ RUN groupadd opsim && adduser -m -g opsim -s /bin/bash opsim
 USER opsim
 WORKDIR /home/opsim
 
-RUN mkdir dds && mkdir repos && mkdir run-local && mkdir alt-configs && \
+RUN mkdir dds && mkdir repos && mkdir run-local && mkdir other-configs && \
     mkdir .config
-VOLUME ["/home/opsim/run-local", "/home/opsim/alt-configs", "/home/opsim4/.config"]
+VOLUME ["/home/opsim/run-local", "/home/opsim/other-configs", "/home/opsim4/.config"]
 
 # Install Conda for python
 RUN curl -Ok ftp://ftp.noao.edu/pub/lsst/mareuter/sched_stuff/Miniconda2-latest-Linux-x86_64.sh && bash Miniconda2-latest-Linux-x86_64.sh -b -p miniconda && \
@@ -26,6 +26,16 @@ RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
     conda update -y conda && \
     conda install -y enum34 lsst-pex-config lsst-sims-skybrightness mysql-python pandas pytz requests sqlalchemy && \
     rm -rf miniconda/pkgs"
+
+# Create a UUID file for Qt's DBUS
+USER root
+RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
+    dbus-uuidgen > /etc/machine-id"
+USER opsim
+
+# Setup matplotlib's font cache
+RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
+    python -c 'import matplotlib.pyplot'"
 
 # Install Scheduler DDS topic library
 WORKDIR /home/opsim/dds
