@@ -4,7 +4,15 @@ Installation
 
 .. warning::
 
-	The current installation requires multiple repositories and a mixture of environments. It also only works on a Linux environment. It has been tested on a RHEL 7 type environment.
+	The current installation requires multiple repositories and a mixture of environments. It also only works on a Linux operating system. It has been tested only CentOS 7.
+
+.. note::
+
+	If performing the installation on a virtual machine, it needs the following minimum requirements:
+
+		* Memory: 1 GB (4 GB recommended)
+		* Number of processors: 3 (4 recommended)
+		* Network: Bridged adapter
 
 General Installation Notes
 --------------------------
