@@ -63,9 +63,12 @@ docs:
 	#open docs/_build/html/index.html
 
 gh-pages:
+	ifeq ($(BRANCH),)
+		BRANCH = master
+	endif
 	git checkout gh-pages
 	rm -rf api build _modules _sources _static tables
-	git checkout master $(GH_PAGES_SOURCES)
+	git checkout $(BRANCH) $(GH_PAGES_SOURCES)
 	git reset HEAD
 	python setup.py develop
 	$(MAKE) docs
