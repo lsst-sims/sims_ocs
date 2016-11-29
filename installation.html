@@ -152,7 +152,18 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The current installation requires multiple repositories and a mixture of environments. It also only works on a Linux environment. It has been tested on a RHEL 7 type environment.</p>
+<p class="last">The current installation requires multiple repositories and a mixture of environments. It also only works on a Linux operating system. It has been tested only CentOS 7.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If performing the installation on a virtual machine, it needs the following minimum requirements:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>Memory: 1 GB (4 GB recommended)</li>
+<li>Number of processors: 3 (4 recommended)</li>
+<li>Network: Bridged adapter</li>
+</ul>
+</div></blockquote>
 </div>
 <div class="section" id="general-installation-notes">
 <h2>General Installation Notes<a class="headerlink" href="#general-installation-notes" title="Permalink to this headline">¶</a></h2>
@@ -160,15 +171,14 @@
 </div>
 <div class="section" id="sal-installation">
 <h2>SAL Installation<a class="headerlink" href="#sal-installation" title="Permalink to this headline">¶</a></h2>
-<p>The SAL (Software Abstraction Layer) is a wrapper around the DDS layer and provides binding to Python. This requires the OpenSplice and SAL repositories from Telescope and Site. Inside the <code class="docutils literal"><span class="pre">gitdir</span></code> create a directory called <code class="docutils literal"><span class="pre">ts</span></code>. Go into this directory and run the following:</p>
+<p>The SAL (Software Abstraction Layer) is a wrapper around the DDS (Data Distribution Service) layer and provides binding to Python. This requires the OpenSplice and SAL repositories from Telescope and Site. Inside the <code class="docutils literal"><span class="pre">gitdir</span></code> create a directory called <code class="docutils literal"><span class="pre">ts</span></code>. Go into this directory and run the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_opensplice</span><span class="o">.</span><span class="n">git</span>
 <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_sal</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-<p>In the SAL clone, there is a user guide that will be referenced in the following documentation. Its location is <code class="docutils literal"><span class="pre">gitdir/ts/ts_sal/SAL_User_Guide.pdf</span></code> and will be referred to as <code class="docutils literal"><span class="pre">SUG</span></code>.</p>
+<p>In the SAL clone, there is a user guide that documents installation and setup of SAL. Its location is <code class="docutils literal"><span class="pre">gitdir/ts/ts_sal/SAL_User_Guide.pdf</span></code>. Follow section 1 and the main part of section 2. Sub-sections (those colored blue) 2.1 and 2.2 are redundant as we&#8217;ve already installed the SAL. Sub-section 2.3 is replaced by the following documentation that is specific to this SOCS/Scheduler setup.</p>
 <div class="section" id="build-scheduler-topic-library">
 <h3>Build Scheduler Topic Library<a class="headerlink" href="#build-scheduler-topic-library" title="Permalink to this headline">¶</a></h3>
-<p>There are prerequisites that need to be installed to build the topic library. They can be found in the <em>Introduction</em> section of the <code class="docutils literal"><span class="pre">SUG</span></code> and must be installed before continuing.</p>
 <p>Create a <code class="docutils literal"><span class="pre">$HOME/dds</span></code> directory and copy the <code class="docutils literal"><span class="pre">gitdir/ts/ts_sal/setup.env</span></code> to it. Also, create a <code class="docutils literal"><span class="pre">$HOME/dds/lib</span></code> directory for later. The following variables need to be edited in <code class="docutils literal"><span class="pre">setup.env</span></code> to reflect your setup:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>export LSST_SDK_INSTALL=$HOME/git/ts/ts_sal
 export OSPL_HOME=$HOME/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
@@ -179,7 +189,7 @@ export OSPL_HOME=$HOME/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linu
 </pre></div>
 </div>
 <p>The configuration should complete without errors. Go back to <code class="docutils literal"><span class="pre">gitdir/ts/ts_sal</span></code> and do the following:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">co</span> <span class="o">-</span><span class="n">t</span> <span class="n">origin</span><span class="o">/</span><span class="n">feature</span><span class="o">/</span><span class="n">scheduler_xml_devel</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">t</span> <span class="n">origin</span><span class="o">/</span><span class="n">feature</span><span class="o">/</span><span class="n">scheduler_xml_devel</span>
 <span class="n">cd</span> <span class="n">test</span>
 <span class="n">salgenerator</span> <span class="n">scheduler</span> <span class="n">validate</span>
 <span class="n">salgenerator</span> <span class="n">scheduler</span> <span class="n">sal</span> <span class="n">cpp</span>
@@ -191,7 +201,6 @@ export OSPL_HOME=$HOME/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linu
 cp scheduler/cpp/libsacpp_scheduler_types.so $HOME/dds/lib
 </pre></div>
 </div>
-<p>There are firewall rules that need to be applied in order for the DDS communications to work directly. They can be found in the <em>Installation</em> section of the <code class="docutils literal"><span class="pre">SUG</span></code> and need to be applied before running the SOCS/Scheduler system.</p>
 </div>
 </div>
 <div class="section" id="scheduler-and-socs-source-code">
@@ -218,7 +227,7 @@ cp scheduler/cpp/libsacpp_scheduler_types.so $HOME/dds/lib
 </pre></div>
 </div>
 <p>Next, add the LSST Conda package channel by doing the following:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">add</span> <span class="n">channels</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">conda</span><span class="o">.</span><span class="n">lsst</span><span class="o">.</span><span class="n">codes</span><span class="o">/</span><span class="n">sims</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">add</span> <span class="n">channels</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">conda</span><span class="o">.</span><span class="n">lsst</span><span class="o">.</span><span class="n">codes</span><span class="o">/</span><span class="n">sims</span><span class="o">/</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">1</span>
 </pre></div>
 </div>
 <p>In order to run the Operations Simulator (SOCS/Scheduler), the following need to be installed:</p>

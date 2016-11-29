@@ -138,7 +138,12 @@
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<p>The Operations Simulator consists of running the SOCS and Scheduler. Due to the nature of the setup, a wrapper script is recommended when launching the SOCS driver script. If you have followed the installation recommendations, a highly recommended example is below.</p>
+<p>We start this section by assuming you have followed the installation instructions and are within the created Conda environment. To setup the environment for running the Operations Simulator, do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">eups</span><span class="o">-</span><span class="n">setups</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">setup</span> <span class="n">sims_ocs</span>
+</pre></div>
+</div>
+<p>The Operations Simulator consists of running the SOCS and Scheduler. Due to the nature of the setup, a wrapper script is recommended when launching the driver script. If you have followed the installation recommendations, a highly recommended example is below.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash
 export LSST_DDS_DOMAIN=MyDomain
 export NDDS_DISCOVERY_PEERS=builtin.shmem://

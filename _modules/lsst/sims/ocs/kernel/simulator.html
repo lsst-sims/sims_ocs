@@ -393,7 +393,7 @@
                         <span class="k">break</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">tf</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                        <span class="k">if</span> <span class="p">(</span><span class="n">tf</span> <span class="o">-</span> <span class="n">lastconfigtime</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.0001</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">tf</span> <span class="o">-</span> <span class="n">lastconfigtime</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">5.0</span><span class="p">:</span>
                             <span class="k">break</span>
 
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_scheduler</span> <span class="ow">and</span> <span class="n">observation</span><span class="o">.</span><span class="n">targetId</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
