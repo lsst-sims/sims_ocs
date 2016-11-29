@@ -82,7 +82,7 @@ Next, create a Conda environment and activate it::
 
 Next, add the LSST Conda package channel by doing the following::
 
-    conda config --add channels http://conda.lsst.codes/sims
+    conda config --add channels http://conda.lsst.codes/sims/2.3.1
 
 In order to run the Operations Simulator (SOCS/Scheduler), the following need to be installed::
 
