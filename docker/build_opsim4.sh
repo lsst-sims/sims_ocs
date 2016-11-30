@@ -27,7 +27,8 @@
 
 set -e
 
-DEFAULT_TAG="mareuter/opsim4:opsim4"
+PACKAGE_NAME="mareuter/opsim4:opsim4"
+DEFAULT_VERSION="master"
 DEFAULT_SIMS_VERSION="2.3.1"
 
 usage() {
@@ -39,20 +40,20 @@ usage() {
 
   Available options:
     -h          this message
-    -T          Tag name. Defaults to $DEFAULT_TAG
     -p          Push to dockerhub after build
-    -s          Version number for SIMS Conda channel
+    -s          Version number for SIMS Conda channel. Defaults to $DEFAULT_SIMS_VERSION
+    -V          Version for SOCS/Scheduler code. Defaults to $DEFAULT_VERSION
 
 EOD
 }
 
 # get the options
-while getopts hT:p c; do
+while getopts hT:ps:V: c; do
     case $c in
             h) usage ; exit 0 ;;
-            T) TAG="$OPTARG" ;;
             p) PUSH=1 ;;
             s) SIMS_VERSION="$OPTARG" ;;
+            V) OPSIM_VERSION="$OPTARG" ;;
             \?) usage ; exit 2 ;;
     esac
 done
@@ -64,9 +65,11 @@ if [ $# -ne 0 ] ; then
     exit 2
 fi
 
-if [ -z $TAG ]  ; then
-    # Use default tag
-    TAG=$DEFAULT_TAG
+if [ -z $OPSIM_VERSION ] ; then
+    OPSIM_VERSION=$DEFAULT_VERSION
+    TAG="${PACKAGE_NAME}-latest"
+else
+    TAG="${PACKAGE_NAME}-${OPSIM_VERSION}"
 fi
 
 if [ -z $SIMS_VERSION ] ; then
@@ -76,7 +79,10 @@ fi
 # Build the release image
 
 printf "Building Opsim4 image with tag: %s\n" $TAG
-docker build --no-cache=true --build-arg SIMS_VERSION="$SIMS_VERSION" --tag="$TAG" opsim4
+docker build --no-cache=true \
+             --build-arg SIMS_VERSION="$SIMS_VERSION" \
+             --build-arg OPSIM_VERSION="$OPSIM_VERSION" \
+             --tag="$TAG" opsim4
 
 if [ $PUSH ] ; then
     printf "Pushing to Docker hub\n"

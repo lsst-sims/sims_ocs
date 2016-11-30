@@ -2,6 +2,7 @@ FROM mareuter/opsim4:base
 MAINTAINER Michael Reuter <mareuter@lsst.org>
 
 ARG SIMS_VERSION
+ARG OPSIM_VERSION
 ARG USER
 ENV USER ${USER:-opsim}
 ENV HOME /home/opsim
@@ -60,12 +61,23 @@ RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
 # Setup sims_ocs
 RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
     source eups-setups.sh && setup sims_ocs && \
-    cd sims_ocs && python setup.py develop && cd .."
+    cd sims_ocs && \
+    git checkout $OPSIM_VERSION && \
+    python setup.py develop && cd .."
+
+# Setup ts_scheduler
+RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
+    source eups-setups.sh && setup ts_scheduler && \
+    cd ts_scheduler && \
+    git checkout v$OPSIM_VERSION && \
+    cd .."
 
 # Setup opsim4_config_ui
 RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
     source eups-setups.sh && setup opsim4_config_ui && \
-    cd opsim4_config_ui && python setup.py build_rcc && cd .."
+    cd opsim4_config_ui && \
+    git checkout $OPSIM_VERSION && \
+    python setup.py build_rcc && cd .."
 
 WORKDIR /home/opsim
 
