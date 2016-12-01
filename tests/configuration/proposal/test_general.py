@@ -1,16 +1,16 @@
 import math
 import unittest
 
-from lsst.sims.ocs.configuration.proposal import AreaDistribution
-from SALPY_scheduler import scheduler_areaDistPropConfigC
+from lsst.sims.ocs.configuration.proposal import General
+from SALPY_scheduler import scheduler_generalPropConfigC
 
 from tests.configuration.proposal.basic_proposal1 import BasicProposal1
 from tests.configuration.proposal.basic_proposal2 import BasicProposal2
 
-class AreaDistributionTest(unittest.TestCase):
+class GeneralTest(unittest.TestCase):
 
     def setUp(self):
-        self.ad = AreaDistribution()
+        self.ad = General()
 
     def test_basic_information_after_creation(self):
         self.assertIsNone(self.ad.name)
@@ -22,13 +22,13 @@ class AreaDistributionTest(unittest.TestCase):
         self.assertIsNotNone(self.ad.scheduling)
 
     def test_default_set_topic(self):
-        in_topic = scheduler_areaDistPropConfigC()
+        in_topic = scheduler_generalPropConfigC()
         out_topic = self.ad.set_topic(in_topic)
         self.assertEqual(out_topic.name, "None")
 
     def test_specific_set_topic(self):
         ad = BasicProposal1()
-        in_topic = scheduler_areaDistPropConfigC()
+        in_topic = scheduler_generalPropConfigC()
         self.assertTrue(hasattr(in_topic, "max_airmass"))
         out_topic = ad.set_topic(in_topic)
         self.assertEqual(out_topic.name, "BasicProposal1")
@@ -45,7 +45,7 @@ class AreaDistributionTest(unittest.TestCase):
 
     def test_another_specific_set_topic(self):
         ad = BasicProposal2()
-        in_topic = scheduler_areaDistPropConfigC()
+        in_topic = scheduler_generalPropConfigC()
         out_topic = ad.set_topic(in_topic)
         self.assertEqual(out_topic.name, "BasicProposal2")
         self.assertEqual(out_topic.num_region_selections, 2)

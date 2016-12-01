@@ -7,7 +7,7 @@ except ImportError:
     import mock
 
 from lsst.sims.ocs.configuration import SimulationConfig
-from tests.helpers import CONFIG_COMM_PUT_CALLS, NUM_AREA_DIST_PROPS
+from tests.helpers import CONFIG_COMM_PUT_CALLS, NUM_GEN_PROPS
 
 def create_file(i, directory=None, message=None):
     filename = "conf{}.py".format(i)
@@ -94,10 +94,10 @@ class SimulationConfigTest(unittest.TestCase):
         # The real configurations can get very expensive to save, so we're just testing that the
         # correct number of executions and blank files are created.
         self.sim_config.load_proposals()
-        self.assertEqual(len(self.sim_config.science.area_dist_props.active), NUM_AREA_DIST_PROPS)
+        self.assertEqual(len(self.sim_config.science.gen_props.active), NUM_GEN_PROPS)
         # The downtime, environment and filters config not needing to be sent via conf_comm.
         EXTRA_CONFIG = 3
-        expected_calls = CONFIG_COMM_PUT_CALLS + NUM_AREA_DIST_PROPS + EXTRA_CONFIG
+        expected_calls = CONFIG_COMM_PUT_CALLS + NUM_GEN_PROPS + EXTRA_CONFIG
         save_files = ["save_conf{}.py".format(i + 1) for i in range(expected_calls)]
         mock_pexconfig_save.side_effect = [save_file(f, self.config_save_dir) for f in save_files]
         self.sim_config.save(self.config_save_dir)
@@ -106,27 +106,27 @@ class SimulationConfigTest(unittest.TestCase):
 
     def test_load_proposals(self):
         with self.assertRaises(TypeError):
-            self.assertEqual(len(self.sim_config.science.area_dist_props.names), NUM_AREA_DIST_PROPS)
+            self.assertEqual(len(self.sim_config.science.gen_props.names), NUM_GEN_PROPS)
 
         self.sim_config.load_proposals()
-        self.assertEqual(self.sim_config.num_proposals, NUM_AREA_DIST_PROPS)
-        self.assertEqual(len(self.sim_config.science.area_dist_props.names), NUM_AREA_DIST_PROPS)
-        self.assertEqual(len(self.sim_config.science.area_dist_props.active), NUM_AREA_DIST_PROPS)
+        self.assertEqual(self.sim_config.num_proposals, NUM_GEN_PROPS)
+        self.assertEqual(len(self.sim_config.science.gen_props.names), NUM_GEN_PROPS)
+        self.assertEqual(len(self.sim_config.science.gen_props.active), NUM_GEN_PROPS)
 
     def test_load_specifc_proposals(self):
-        self.sim_config.survey.ad_proposals = ["GalacticPlane", "SouthCelestialPole"]
+        self.sim_config.survey.gen_proposals = ["GalacticPlane", "SouthCelestialPole"]
         self.sim_config.load_proposals()
-        self.assertEqual(len(self.sim_config.science.area_dist_props.names), 2)
-        self.assertEqual(len(self.sim_config.science.area_dist_props.active), 2)
+        self.assertEqual(len(self.sim_config.science.gen_props.names), 2)
+        self.assertEqual(len(self.sim_config.science.gen_props.active), 2)
 
     def test_load_no_proposals(self):
-        self.sim_config.survey.ad_proposals = []
+        self.sim_config.survey.gen_proposals = []
         self.sim_config.load_proposals()
         self.assertEqual(self.sim_config.num_proposals, 0)
         with self.assertRaises(TypeError):
-            self.assertEqual(len(self.sim_config.science.area_dist_props.names), 0)
+            self.assertEqual(len(self.sim_config.science.gen_props.names), 0)
         with self.assertRaises(TypeError):
-            self.assertEqual(len(self.sim_config.science.area_dist_props.active), 0)
+            self.assertEqual(len(self.sim_config.science.gen_props.active), 0)
 
     def test_make_tuples(self):
         d = {"a": 1, "b": {"c": "test", "d": [1, 2, 3]}}

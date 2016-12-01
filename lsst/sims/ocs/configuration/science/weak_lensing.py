@@ -1,12 +1,12 @@
 import lsst.pex.config as pexConfig
 
-from lsst.sims.ocs.configuration.proposal import AreaDistribution, BandFilter, Selection
-from lsst.sims.ocs.configuration.proposal import area_dist_prop_reg, SELECTION_LIMIT_TYPES
+from lsst.sims.ocs.configuration.proposal import General, BandFilter, Selection
+from lsst.sims.ocs.configuration.proposal import gen_prop_reg, SELECTION_LIMIT_TYPES
 
 __all__ = ["WeakLensing"]
 
-@pexConfig.registerConfig("WeakLensing", area_dist_prop_reg, AreaDistribution)
-class WeakLensing(AreaDistribution):
+@pexConfig.registerConfig("WeakLensing", gen_prop_reg, General)
+class WeakLensing(General):
     """This class sets the parameters for specifying the Weak Lensing proposal.
     """
 

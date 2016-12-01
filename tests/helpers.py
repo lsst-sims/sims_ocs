@@ -1,12 +1,12 @@
 """Number of SAL put calls used in the configuration communicator.
 """
 CONFIG_COMM_PUT_CALLS = 11
-"""Number of currently defined area distribution proposals.
+"""Number of currently defined general proposals.
 """
-NUM_AREA_DIST_PROPS = 3
-"""Constant for handling extra put calls beyond a single area distribution proposal.
+NUM_GEN_PROPS = 3
+"""Constant for handling extra put calls beyond a single general proposal.
 """
-CONFIG_AREA_DIST_PROPS = NUM_AREA_DIST_PROPS - 1
-"""Current list of all area distribution proposals.
+CONFIG_GEN_PROPS = NUM_GEN_PROPS - 1
+"""Current list of all general proposals.
 """
-AREA_DIST_PROPS = ["GalacticPlane", "SouthCelestialPole", "WeakLensing"]
+GEN_PROPS = ["GalacticPlane", "SouthCelestialPole", "WeakLensing"]

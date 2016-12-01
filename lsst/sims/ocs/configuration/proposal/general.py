@@ -3,10 +3,11 @@ import lsst.pex.config as pexConfig
 from lsst.sims.ocs.configuration.proposal import BandFilter, Scheduling
 from lsst.sims.ocs.configuration.proposal import SkyConstraints, SkyExclusion, SkyNightlyBounds, SkyRegion
 
-__all__ = ["AreaDistribution"]
+__all__ = ["General"]
 
-class AreaDistribution(pexConfig.Config):
-    """Configuration for an area distribution proposal.
+class General(pexConfig.Config):
+    """Configuration for a general proposal. This includes area distribution, time-domain
+       and hybrid proposals.
     """
 
     name = pexConfig.Field('Name for the proposal.', str)
@@ -22,12 +23,12 @@ class AreaDistribution(pexConfig.Config):
 
         Parameters
         ----------
-        topic : SALPY_scheduler.scheduler_areaDistPropConfigC
+        topic : SALPY_scheduler.scheduler_genPropConfigC
             The instance of the DDS topic to set information on.
 
         Returns
         -------
-        SALPY_scheduler.scheduler_areaDistPropConfigC
+        SALPY_scheduler.scheduler_genPropConfigC
             The topic with current information set.
         """
         topic.name = self.name if self.name is not None else "None"

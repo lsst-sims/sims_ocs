@@ -5,7 +5,7 @@ import sys
 import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration import load_config
-from lsst.sims.ocs.configuration.proposal import area_dist_prop_reg
+from lsst.sims.ocs.configuration.proposal import gen_prop_reg
 
 __all__ = ["ScienceProposals"]
 
@@ -13,18 +13,18 @@ class ScienceProposals(pexConfig.Config):
     """Configuration for the science propsals.
     """
 
-    area_dist_props = area_dist_prop_reg.makeField('The list of area distribution proposals.', multi=True)
+    gen_props = gen_prop_reg.makeField('The list of area distribution proposals.', multi=True)
 
     @property
-    def ad_proposals(self):
-        """Listing of available area distribution proposals.
+    def gen_proposals(self):
+        """Listing of available general proposals.
 
         Returns
         -------
         list[str]
-           The available area distribution proposals.
+           The available general proposals.
         """
-        return sorted(self.area_dist_props.registry.keys())
+        return sorted(self.gen_props.registry.keys())
 
     def load(self, config_files):
         """Load the configuration override files.
@@ -34,14 +34,14 @@ class ScienceProposals(pexConfig.Config):
         config_files : list[str]
             A set of configuration override files.
         """
-        for prop in self.area_dist_props.values():
+        for prop in self.gen_props.values():
             load_config(prop, config_files)
 
     def load_proposals(self, proposals, alternate_proposals=None):
         """Load given proposals.
 
         This function loads the propsals requested from the function argument.
-        The argument is a dictionary with two keys: AD or TD and a comma-delimited
+        The argument is a dictionary with two keys: GEN or SS and a comma-delimited
         list of proposal names associated with each key.
 
         Parameters
@@ -53,8 +53,8 @@ class ScienceProposals(pexConfig.Config):
         """
         # Listing of all the things related to a proposal but not including the
         # actual class name,
-        proposal_related = ['AreaDistribution', 'BandFilter', 'SELECTION_LIMIT_TYPES',
-                            'Selection', 'area_dist_prop_reg', 'pexConfig']
+        proposal_related = ['General', 'BandFilter', 'SELECTION_LIMIT_TYPES',
+                            'Selection', 'gen_prop_reg', 'pexConfig']
         if alternate_proposals is not None:
             sys.path.append(alternate_proposals)
             prop_files = os.listdir(alternate_proposals)
@@ -64,16 +64,16 @@ class ScienceProposals(pexConfig.Config):
                 prop_mod = prop_file.split('.')[0]
                 module = importlib.import_module(prop_mod)
                 all_names = [x for x in dir(module) if not x.startswith("__")]
-                if "AreaDistribution" in all_names:
-                    key = "AD"
+                if "General" in all_names:
+                    key = "GEN"
                 prop_name = [x for x in all_names if x not in proposal_related][0]
                 if len(proposals[key]):
                     proposals[key].append(prop_name)
                 else:
                     proposals[key] = [prop_name]
 
-        if len(proposals["AD"]):
-            self.area_dist_props.names = proposals["AD"]
+        if len(proposals["GEN"]):
+            self.gen_props.names = proposals["GEN"]
 
     def save_as(self, save_dir=''):
         """Save the configuration objects to separate files.
@@ -83,6 +83,6 @@ class ScienceProposals(pexConfig.Config):
         save_dir : str
             The directory in which to save the configuration files.
         """
-        for prop_name, prop in self.area_dist_props.items():
-            if prop_name in self.area_dist_props.names:
+        for prop_name, prop in self.gen_props.items():
+            if prop_name in self.gen_props.names:
                 prop.save(os.path.join(save_dir, prop_name.lower() + "_prop.py"))

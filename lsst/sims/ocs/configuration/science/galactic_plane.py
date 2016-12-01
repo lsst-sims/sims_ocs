@@ -1,12 +1,12 @@
 import lsst.pex.config as pexConfig
 
-from lsst.sims.ocs.configuration.proposal import AreaDistribution, BandFilter, Selection
-from lsst.sims.ocs.configuration.proposal import area_dist_prop_reg, SELECTION_LIMIT_TYPES
+from lsst.sims.ocs.configuration.proposal import General, BandFilter, Selection
+from lsst.sims.ocs.configuration.proposal import gen_prop_reg, SELECTION_LIMIT_TYPES
 
 __all__ = ["GalacticPlane"]
 
-@pexConfig.registerConfig("GalacticPlane", area_dist_prop_reg, AreaDistribution)
-class GalacticPlane(AreaDistribution):
+@pexConfig.registerConfig("GalacticPlane", gen_prop_reg, General)
+class GalacticPlane(General):
     """This class sets the parameters for specifying the Galactic Plane proposal.
     """
 
