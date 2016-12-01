@@ -72,6 +72,7 @@ class General(pexConfig.Config):
             for i, v in enumerate(self.filters.values()):
                 filter_names.append(v.name)
                 topic.num_visits[i] = v.num_visits
+                topic.num_grouped_visits[i] = v.num_grouped_visits
                 topic.bright_limit[i] = v.bright_limit
                 topic.dark_limit[i] = v.dark_limit
                 topic.max_seeing[i] = v.max_seeing
@@ -85,5 +86,10 @@ class General(pexConfig.Config):
         topic.accept_serendipity = self.scheduling.accept_serendipity
         topic.accept_consecutive_visits = self.scheduling.accept_consecutive_visits
         topic.airmass_bonus = self.scheduling.airmass_bonus
+        topic.restrict_grouped_visits = self.scheduling.restrict_grouped_visits
+        topic.time_interval = self.scheduling.time_interval
+        topic.time_window_start = self.scheduling.time_window_start
+        topic.time_window_max = self.scheduling.time_window_max
+        topic.time_window_end = self.scheduling.time_window_end
 
         return topic

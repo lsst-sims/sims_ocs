@@ -6,6 +6,7 @@ from SALPY_scheduler import scheduler_generalPropConfigC
 
 from tests.configuration.proposal.basic_proposal1 import BasicProposal1
 from tests.configuration.proposal.basic_proposal2 import BasicProposal2
+from tests.configuration.proposal.basic_proposal3 import BasicProposal3
 
 class GeneralTest(unittest.TestCase):
 
@@ -42,6 +43,12 @@ class GeneralTest(unittest.TestCase):
         self.assertEqual(out_topic.exclusion_bounds[0], 90.0)
         self.assertEqual(out_topic.num_filters, 6)
         self.assertEqual(len(out_topic.filter_names.split(',')), 6)
+        self.assertEqual(out_topic.num_grouped_visits[0], 1)
+        self.assertTrue(out_topic.restrict_grouped_visits)
+        self.assertEqual(out_topic.time_interval, 0.0)
+        self.assertEqual(out_topic.time_window_start, 0.0)
+        self.assertEqual(out_topic.time_window_max, 0.0)
+        self.assertEqual(out_topic.time_window_end, 0.0)
 
     def test_another_specific_set_topic(self):
         ad = BasicProposal2()
@@ -51,3 +58,20 @@ class GeneralTest(unittest.TestCase):
         self.assertEqual(out_topic.num_region_selections, 2)
         self.assertEqual(out_topic.num_exclusion_selections, 0)
         self.assertEqual(out_topic.num_filters, 3)
+
+    def test_a_hybrid_proposal_set_topic(self):
+        ad = BasicProposal3()
+        in_topic = scheduler_generalPropConfigC()
+        out_topic = ad.set_topic(in_topic)
+        self.assertEqual(out_topic.name, "BasicProposal3")
+        self.assertEqual(out_topic.num_filters, 4)
+        filter_names = out_topic.filter_names.split(',')
+        idx1 = filter_names.index('u')
+        idx2 = filter_names.index('g')
+        self.assertEqual(out_topic.num_grouped_visits[idx1], 1)
+        self.assertEqual(out_topic.num_grouped_visits[idx2], 2)
+        self.assertFalse(out_topic.restrict_grouped_visits)
+        self.assertEqual(out_topic.time_interval, 30 * 60)
+        self.assertEqual(out_topic.time_window_start, -0.5)
+        self.assertEqual(out_topic.time_window_max, 0.5)
+        self.assertEqual(out_topic.time_window_end, 1.0)
