@@ -251,11 +251,14 @@ class Simulator(object):
                 lastconfigtime = time.time()
                 while self.wait_for_scheduler:
                     rcode = self.sal.manager.getNextSample_interestedProposal(self.interested_proposal)
-                    if rcode == 0 and self.interested_proposal.observationId != -1:
+                    if rcode == 0 and self.interested_proposal.num_proposals >= 0:
+                        self.log.log(LoggingLevel.EXTENSIVE.value, "Received interested proposal.")
                         break
                     else:
                         tf = time.time()
                         if (tf - lastconfigtime) > 5.0:
+                            self.log.log(LoggingLevel.EXTENSIVE.value,
+                                         "Failed to receive interested proposal due to timeout.")
                             break
 
                 if self.wait_for_scheduler and observation.targetId != -1:
