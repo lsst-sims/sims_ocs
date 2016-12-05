@@ -5,11 +5,11 @@ from lsst.sims.ocs.kernel import ObsProposalHistory, ProposalInfo, TargetProposa
 class ProposalInformationTest(unittest.TestCase):
 
     def test_proposal_info(self):
-        pi = ProposalInfo(1, "TestProposal", "AreaDistribution")
+        pi = ProposalInfo(1, "TestProposal", "General")
         self.assertEqual(len(pi._fields), 3)
         self.assertEqual(pi.propId, 1)
         self.assertEqual(pi.propName, "TestProposal")
-        self.assertEqual(pi.propType, "AreaDistribution")
+        self.assertEqual(pi.propType, "General")
 
 class ObsProposalHistoryTest(unittest.TestCase):
 
