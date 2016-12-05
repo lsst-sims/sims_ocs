@@ -15,7 +15,7 @@ class WeakLensingTest(unittest.TestCase):
         self.assertEqual(len(self.prop.sky_exclusion.selections), 1)
         self.assertEqual(self.prop.sky_exclusion.selections[0].limit_type, "GP")
         self.assertEqual(self.prop.sky_exclusion.selections[0].minimum_limit, 0.0)
-        self.assertEqual(self.prop.sky_constraints.max_airmass, 2.5)
+        self.assertEqual(self.prop.sky_constraints.max_airmass, 1.5)
         self.assertEqual(self.prop.sky_nightly_bounds.twilight_boundary, -12.0)
         self.assertEqual(len(self.prop.filters), 6)
         self.assertEqual(self.prop.filters['u'].num_visits, 75)

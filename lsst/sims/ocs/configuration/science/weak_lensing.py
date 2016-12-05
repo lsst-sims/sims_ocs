@@ -53,7 +53,7 @@ class WeakLensing(AreaDistribution):
         # Sky Constraints specifications
         # ------------------------------
 
-        self.sky_constraints.max_airmass = 2.5
+        self.sky_constraints.max_airmass = 1.5
         self.sky_constraints.max_cloud = 0.7
 
         # ----------------------
