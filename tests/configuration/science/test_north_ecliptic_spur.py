@@ -42,6 +42,7 @@ class NorthEclipticSpurTest(unittest.TestCase):
         self.assertEqual(out_topic.num_region_selections, 2)
         self.assertEqual(out_topic.num_exclusion_selections, 0)
         self.assertNotEqual(out_topic.region_minimums[1], 0.0)
+        self.assertEqual(out_topic.region_combiners, "and")
         self.assertEqual(out_topic.num_filters, 4)
         self.assertEqual(out_topic.max_seeing[1], 2.0)
         self.assertEqual(out_topic.num_filter_exposures[1], 2)
