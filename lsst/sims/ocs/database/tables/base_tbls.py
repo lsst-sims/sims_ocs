@@ -236,6 +236,10 @@ def create_observation_history(metadata):
                          doc="Numeric identifier that relates to an entry in the TargetHistory entry."),
                   Column("Field_fieldId", Integer, nullable=False,
                          doc="Numeric identifier that relates to an entry in the Field table."),
+                  Column("groupId", Integer, nullable=False,
+                         doc="Group Id for the observation. This is non-zero and repeated for field/filter "
+                             "combinations collected in sets of N (tuples or sequences). It is zero when N "
+                             "equal one."),
                   Column("filter", String(1), nullable=False,
                          doc="The one character name for the band filter."),
                   Column("ra", Float, nullable=False,
@@ -812,6 +816,10 @@ def create_target_history(metadata):
                          doc="The simulation run session Id."),
                   Column("Field_fieldId", Integer, nullable=False,
                          doc="Numeric identifier that relates to an entry in the Field table."),
+                  Column("groupId", Integer, nullable=False,
+                         doc="Group Id for the target. This is non-zero and repeated for field/filter "
+                             "combinations collected in sets of N (tuples or sequences). It is zero when N "
+                             "equal one."),
                   Column("filter", String(1), nullable=False,
                          doc="Band filter requested by the target."),
                   Column("requestTime", Float, nullable=False,

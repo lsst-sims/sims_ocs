@@ -7,6 +7,7 @@ import lsst.sims.ocs.observatory
 target = SALPY_scheduler.scheduler_targetC()
 target.targetId = 10
 target.fieldId = 300
+target.groupId = 2
 target.filter = "r"
 target.ra = 1.000
 target.dec = -3.00
@@ -55,6 +56,7 @@ observation_topic.observation_start_time = 1640995200.0
 observation_topic.observation_start_mjd = 59580.0
 observation_topic.observation_start_lst = 29.87546023333333
 observation_topic.fieldId = 300
+observation_topic.groupId = 2
 observation_topic.filter = "r"
 observation_topic.ra = 1.000
 observation_topic.dec = -3.00

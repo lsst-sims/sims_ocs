@@ -209,6 +209,7 @@ class MainObservatory(object):
         for i in range(observation.num_proposals):
             observation.proposal_Ids[i] = target.proposal_Ids[i]
         observation.fieldId = target.fieldId
+        observation.groupId = target.groupId
         observation.filter = target.filter
         observation.ra = target.ra
         observation.dec = target.dec

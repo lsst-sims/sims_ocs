@@ -29,7 +29,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_target_history_table(self):
         targets = tbls.create_target_history(self.metadata)
-        self.assertEqual(len(targets.c), 31)
+        self.assertEqual(len(targets.c), 32)
         self.assertEqual(len(targets.indexes), 3)
 
     def test_write_target_history_table(self):
@@ -41,6 +41,7 @@ class TablesTest(unittest.TestCase):
         self.check_ordered_dict_to_table(result, targets)
         self.assertEqual(result['Session_sessionId'], session_id)
         self.assertEqual(result['Field_fieldId'], target_topic.fieldId)
+        self.assertEqual(result['groupId'], target_topic.groupId)
         self.assertEqual(result['filter'], target_topic.filter)
         self.assertEqual(result['dec'], target_topic.dec)
         self.assertEqual(result['requestedExpTime'], sum(target_topic.exposure_times))
@@ -70,7 +71,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_observation_history_table(self):
         obs_hist = tbls.create_observation_history(self.metadata)
-        self.assertEqual(len(obs_hist.c), 34)
+        self.assertEqual(len(obs_hist.c), 35)
         self.assertEqual(len(obs_hist.indexes), 4)
 
     def test_write_observation_history_table(self):
@@ -88,6 +89,7 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['night'], obs_topic.night)
         self.assertEqual(result['TargetHistory_targetId'], obs_topic.targetId)
         self.assertEqual(result['Field_fieldId'], obs_topic.fieldId)
+        self.assertEqual(result['groupId'], obs_topic.groupId)
         self.assertEqual(result['filter'], obs_topic.filter)
         self.assertEqual(result['dec'], obs_topic.dec)
         self.assertEqual(result['altitude'], obs_topic.altitude)
