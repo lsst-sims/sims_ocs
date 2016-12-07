@@ -65,9 +65,9 @@ class WideFastDeep(General):
         self.scheduling.accept_consecutive_visits = False
         self.scheduling.airmass_bonus = 0.5
         self.scheduling.time_interval = 30 * 60
-        self.scheduling.time_window_start = -0.5
-        self.scheduling.time_window_max = 0.5
-        self.scheduling.time_window_end = 1.0
+        self.scheduling.time_window_start = 0.5
+        self.scheduling.time_window_max = 1.0
+        self.scheduling.time_window_end = 2.0
 
         # --------------------------
         # Band Filter specifications

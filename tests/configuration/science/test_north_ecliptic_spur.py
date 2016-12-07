@@ -31,9 +31,9 @@ class NorthEclipticSpurTest(unittest.TestCase):
         self.assertEqual(self.prop.scheduling.airmass_bonus, 0.5)
         self.assertTrue(self.prop.scheduling.restrict_grouped_visits)
         self.assertEqual(self.prop.scheduling.time_interval, self.time_interval)
-        self.assertEqual(self.prop.scheduling.time_window_start, -0.5)
-        self.assertEqual(self.prop.scheduling.time_window_max, 0.5)
-        self.assertEqual(self.prop.scheduling.time_window_end, 1.0)
+        self.assertEqual(self.prop.scheduling.time_window_start, 0.5)
+        self.assertEqual(self.prop.scheduling.time_window_max, 1.0)
+        self.assertEqual(self.prop.scheduling.time_window_end, 2.0)
 
     def test_set_topic(self):
         in_topic = scheduler_generalPropConfigC()
@@ -52,4 +52,4 @@ class NorthEclipticSpurTest(unittest.TestCase):
         self.assertEqual(out_topic.airmass_bonus, 0.5)
         self.assertTrue(out_topic.restrict_grouped_visits)
         self.assertEqual(out_topic.time_interval, self.time_interval)
-        self.assertEqual(out_topic.time_window_end, 1.0)
+        self.assertEqual(out_topic.time_window_end, 2.0)
