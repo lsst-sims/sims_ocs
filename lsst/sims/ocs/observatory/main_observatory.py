@@ -213,6 +213,7 @@ class MainObservatory(object):
         observation.filter = target.filter
         observation.ra = target.ra
         observation.dec = target.dec
+        observation.angle = target.angle
         observation.num_exposures = target.num_exposures
 
         self.log.log(LoggingLevel.EXTENSIVE.value,
