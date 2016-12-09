@@ -5,9 +5,25 @@ import logging
 import logging.handlers
 import pickle
 import SocketServer
+import socket
 import struct
 
 from lsst.sims.ocs.setup.log import DETAIL_LEVEL, MIN_FILE
+
+def get_port_address():
+    """Check available ports for the central logger.
+    """
+    port_range = (16345, 16365)
+    for port_number in range(port_range[0], port_range[1]):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            s.bind(("127.0.0.1", port_number))
+        except socket.error as e:
+            if e.errno == 98:
+                s.close()
+                continue
+        s.close()
+        return port_number
 
 class LogRecordStreamHandler(SocketServer.StreamRequestHandler):
     """Handler for a streaming logging request.
@@ -82,7 +98,9 @@ def main(options):
                         format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
                         filename=options.log_filename,
                         filemode="w")
-    tcpserver = LogRecordSocketReceiver()
+
+    port_address = get_port_address()
+    tcpserver = LogRecordSocketReceiver(port=port_address)
     tcpserver.serve_until_stopped()
 
 if __name__ == '__main__':
