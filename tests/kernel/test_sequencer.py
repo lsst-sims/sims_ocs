@@ -115,7 +115,7 @@ class SequencerTest(unittest.TestCase):
         self.assertEqual(obs_current_state.telaz, 0.0)
         self.assertEqual(obs_current_state.domalt, 90.0)
         self.assertEqual(obs_current_state.domaz, 0.0)
-        self.assertEqual(obs_current_state.filter, 'r')
+        self.assertEqual(obs_current_state.filter, target.filter)
 
     @mock.patch("logging.Logger.log")
     @mock.patch("SALPY_scheduler.SAL_scheduler.salTelemetrySub")
