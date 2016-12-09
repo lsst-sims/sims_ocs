@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.instrument.optics_loop_corr module &mdash; Simulated OCS 0.7.0 documentation</title>
+  <title>lsst.sims.ocs.configuration.science.north_ecliptic_spur module &mdash; Simulated OCS 0.7.0 documentation</title>
   
 
   
@@ -31,9 +31,9 @@
 
   
     <link rel="top" title="Simulated OCS 0.7.0 documentation" href="../index.html"/>
-        <link rel="up" title="lsst.sims.ocs.configuration.instrument package" href="lsst.sims.ocs.configuration.instrument.html"/>
-        <link rel="next" title="lsst.sims.ocs.configuration.instrument.park module" href="lsst.sims.ocs.configuration.instrument.park.html"/>
-        <link rel="prev" title="lsst.sims.ocs.configuration.instrument.obs_variation module" href="lsst.sims.ocs.configuration.instrument.obs_variation.html"/> 
+        <link rel="up" title="lsst.sims.ocs.configuration.science package" href="lsst.sims.ocs.configuration.science.html"/>
+        <link rel="next" title="lsst.sims.ocs.configuration.science.south_celestial_pole module" href="lsst.sims.ocs.configuration.science.south_celestial_pole.html"/>
+        <link rel="prev" title="lsst.sims.ocs.configuration.science.galactic_plane module" href="lsst.sims.ocs.configuration.science.galactic_plane.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -148,13 +148,13 @@
       
           <li><a href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a> &raquo;</li>
       
-          <li><a href="lsst.sims.ocs.configuration.instrument.html">lsst.sims.ocs.configuration.instrument package</a> &raquo;</li>
+          <li><a href="lsst.sims.ocs.configuration.science.html">lsst.sims.ocs.configuration.science package</a> &raquo;</li>
       
-    <li>lsst.sims.ocs.configuration.instrument.optics_loop_corr module</li>
+    <li>lsst.sims.ocs.configuration.science.north_ecliptic_spur module</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/lsst.sims.ocs.configuration.instrument.optics_loop_corr.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/lsst.sims.ocs.configuration.science.north_ecliptic_spur.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -164,13 +164,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-lsst.sims.ocs.configuration.instrument.optics_loop_corr">
-<span id="lsst-sims-ocs-configuration-instrument-optics-loop-corr-module"></span><h1>lsst.sims.ocs.configuration.instrument.optics_loop_corr module<a class="headerlink" href="#module-lsst.sims.ocs.configuration.instrument.optics_loop_corr" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-lsst.sims.ocs.configuration.science.north_ecliptic_spur">
+<span id="lsst-sims-ocs-configuration-science-north-ecliptic-spur-module"></span><h1>lsst.sims.ocs.configuration.science.north_ecliptic_spur module<a class="headerlink" href="#module-lsst.sims.ocs.configuration.science.north_ecliptic_spur" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr">
-<em class="property">class </em><code class="descclassname">lsst.sims.ocs.configuration.instrument.optics_loop_corr.</code><code class="descname">OpticsLoopCorr</code><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/instrument/optics_loop_corr.html#OpticsLoopCorr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">lsst.pex.config.config.Config</span></code></p>
-<p>Configuration of the LSST Optics Loop Corrections.</p>
+<dt id="lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur">
+<em class="property">class </em><code class="descclassname">lsst.sims.ocs.configuration.science.north_ecliptic_spur.</code><code class="descname">NorthEclipticSpur</code><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/science/north_ecliptic_spur.html#NorthEclipticSpur"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="lsst.sims.ocs.configuration.proposal.general.html#lsst.sims.ocs.configuration.proposal.general.General" title="lsst.sims.ocs.configuration.proposal.general.General"><code class="xref py py-class docutils literal"><span class="pre">lsst.sims.ocs.configuration.proposal.general.General</span></code></a></p>
+<p>This class sets the parameters for specifying the North Ecliptic Spur proposal.</p>
 <p>!Allocate a new Config object.</p>
 <p>In order to ensure that all Config object are always in a proper
 state when handed to users or to derived Config classes, some
@@ -179,45 +179,51 @@ attributes are handled at allocation time rather than at initialization</p>
 the author does not need to be concerned about when or even if he
 should call the base Config.__init__</p>
 <dl class="method">
-<dt id="lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.setDefaults">
-<code class="descname">setDefaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/instrument/optics_loop_corr.html#OpticsLoopCorr.setDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.setDefaults" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set defaults for the LSST Optics Loop Corrections.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.set_array">
-<code class="descname">set_array</code><span class="sig-paren">(</span><em>conf</em>, <em>param</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/instrument/optics_loop_corr.html#OpticsLoopCorr.set_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.set_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set a DDS topic array parameter.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>conf</strong> (<em>SALPY_scheduler.scheduler_opticsLoopCorrConfigC</em>) &#8211; The optics loop corrections configuration instance.</li>
-<li><strong>param</strong> (<em>str</em>) &#8211; The name of the topic parameter to fill.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+<dt id="lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.setDefaults">
+<code class="descname">setDefaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/science/north_ecliptic_spur.html#NorthEclipticSpur.setDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.setDefaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup all the proposal information.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.tel_optics_cl_alt_limit">
-<code class="descname">tel_optics_cl_alt_limit</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.tel_optics_cl_alt_limit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Altitude (units=degrees) limits for the delay ranges.</p>
+<dt id="lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.filters">
+<code class="descname">filters</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter configuration for the proposal.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.tel_optics_cl_delay">
-<code class="descname">tel_optics_cl_delay</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.tel_optics_cl_delay" title="Permalink to this definition">¶</a></dt>
-<dd><p>Time delay (units=seconds) for the corresponding ALT slew range in the Closed Loop optics correction.</p>
+<dt id="lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.name">
+<code class="descname">name</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name for the proposal.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.tel_optics_ol_slope">
-<code class="descname">tel_optics_ol_slope</code><a class="headerlink" href="#lsst.sims.ocs.configuration.instrument.optics_loop_corr.OpticsLoopCorr.tel_optics_ol_slope" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delay factor for Open Loop optics correction (units=seconds/degrees in ALT slew)</p>
+<dt id="lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.scheduling">
+<code class="descname">scheduling</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.scheduling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scheduling configuration for the proposal.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.sky_constraints">
+<code class="descname">sky_constraints</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.sky_constraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sky region selectionfor the proposal.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.sky_exclusion">
+<code class="descname">sky_exclusion</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.sky_exclusion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sky region selectionfor the proposal.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.sky_nightly_bounds">
+<code class="descname">sky_nightly_bounds</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.sky_nightly_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sky region selectionfor the proposal.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.sky_region">
+<code class="descname">sky_region</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.sky_region" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sky region selectionfor the proposal.</p>
 </dd></dl>
 
 </dd></dl>
@@ -231,10 +237,10 @@ should call the base Config.__init__</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="lsst.sims.ocs.configuration.instrument.park.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.configuration.instrument.park module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="lsst.sims.ocs.configuration.science.south_celestial_pole.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.configuration.science.south_celestial_pole module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="lsst.sims.ocs.configuration.instrument.obs_variation.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.instrument.obs_variation module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="lsst.sims.ocs.configuration.science.galactic_plane.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.science.galactic_plane module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

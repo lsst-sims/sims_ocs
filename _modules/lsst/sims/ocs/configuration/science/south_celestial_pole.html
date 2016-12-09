@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.science.south_celestial_pole &mdash; Simulated OCS 0.3.0 documentation</title>
+  <title>lsst.sims.ocs.configuration.science.south_celestial_pole &mdash; Simulated OCS 0.7.0 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 0.7.0 documentation" href="../../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../../index.html"/> 
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.7.0
               </div>
             
           
@@ -138,13 +138,13 @@
   <h1>Source code for lsst.sims.ocs.configuration.science.south_celestial_pole</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
 
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">AreaDistribution</span><span class="p">,</span> <span class="n">BandFilter</span><span class="p">,</span> <span class="n">Selection</span>
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">area_dist_prop_reg</span><span class="p">,</span> <span class="n">SELECTION_LIMIT_TYPES</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">General</span><span class="p">,</span> <span class="n">BandFilter</span><span class="p">,</span> <span class="n">Selection</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">general_prop_reg</span><span class="p">,</span> <span class="n">SELECTION_LIMIT_TYPES</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SouthCelestialPole&quot;</span><span class="p">]</span>
 
-<span class="nd">@pexConfig.registerConfig</span><span class="p">(</span><span class="s2">&quot;SouthCelestialPole&quot;</span><span class="p">,</span> <span class="n">area_dist_prop_reg</span><span class="p">,</span> <span class="n">AreaDistribution</span><span class="p">)</span>
-<div class="viewcode-block" id="SouthCelestialPole"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.science.south_celestial_pole.html#lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole">[docs]</a><span class="k">class</span> <span class="nc">SouthCelestialPole</span><span class="p">(</span><span class="n">AreaDistribution</span><span class="p">):</span>
+<span class="nd">@pexConfig.registerConfig</span><span class="p">(</span><span class="s2">&quot;SouthCelestialPole&quot;</span><span class="p">,</span> <span class="n">general_prop_reg</span><span class="p">,</span> <span class="n">General</span><span class="p">)</span>
+<div class="viewcode-block" id="SouthCelestialPole"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.science.south_celestial_pole.html#lsst.sims.ocs.configuration.science.south_celestial_pole.SouthCelestialPole">[docs]</a><span class="k">class</span> <span class="nc">SouthCelestialPole</span><span class="p">(</span><span class="n">General</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This class sets the parameters for specifying the South Celestial Pole proposal.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -294,7 +294,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'0.3.0',
+            VERSION:'0.7.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

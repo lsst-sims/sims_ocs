@@ -17,6 +17,8 @@ This table keeps a record of the information from the requested targets during a
       -  The simulation run session Id.
     * -  Field_fieldId
       -  Numeric identifier that relates to an entry in the Field table.
+    * -  groupId
+      -  Group Id for the target. This is non-zero and repeated for field/filter combinations collected in sets of N (tuples or sequences). It is zero when N equal one.
     * -  filter
       -  Band filter requested by the target.
     * -  requestTime

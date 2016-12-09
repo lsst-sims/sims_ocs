@@ -6,8 +6,8 @@ Submodules
 
 .. toctree::
 
-   lsst.sims.ocs.configuration.proposal.area_distribution
    lsst.sims.ocs.configuration.proposal.band_filter
+   lsst.sims.ocs.configuration.proposal.general
    lsst.sims.ocs.configuration.proposal.helpers
    lsst.sims.ocs.configuration.proposal.scheduling
    lsst.sims.ocs.configuration.proposal.selection

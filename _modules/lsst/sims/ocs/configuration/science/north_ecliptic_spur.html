@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.science.weak_lensing &mdash; Simulated OCS 0.3.0 documentation</title>
+  <title>lsst.sims.ocs.configuration.science.north_ecliptic_spur &mdash; Simulated OCS 0.7.0 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 0.7.0 documentation" href="../../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../../index.html"/> 
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.7.0
               </div>
             
           
@@ -123,7 +123,7 @@
       
           <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
       
-    <li>lsst.sims.ocs.configuration.science.weak_lensing</li>
+    <li>lsst.sims.ocs.configuration.science.north_ecliptic_spur</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -135,50 +135,48 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for lsst.sims.ocs.configuration.science.weak_lensing</h1><div class="highlight"><pre>
+  <h1>Source code for lsst.sims.ocs.configuration.science.north_ecliptic_spur</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
 
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">AreaDistribution</span><span class="p">,</span> <span class="n">BandFilter</span><span class="p">,</span> <span class="n">Selection</span>
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">area_dist_prop_reg</span><span class="p">,</span> <span class="n">SELECTION_LIMIT_TYPES</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">General</span><span class="p">,</span> <span class="n">BandFilter</span><span class="p">,</span> <span class="n">Selection</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">general_prop_reg</span><span class="p">,</span> <span class="n">SELECTION_LIMIT_TYPES</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;WeakLensing&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NorthEclipticSpur&quot;</span><span class="p">]</span>
 
-<span class="nd">@pexConfig.registerConfig</span><span class="p">(</span><span class="s2">&quot;WeakLensing&quot;</span><span class="p">,</span> <span class="n">area_dist_prop_reg</span><span class="p">,</span> <span class="n">AreaDistribution</span><span class="p">)</span>
-<div class="viewcode-block" id="WeakLensing"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.science.weak_lensing.html#lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing">[docs]</a><span class="k">class</span> <span class="nc">WeakLensing</span><span class="p">(</span><span class="n">AreaDistribution</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This class sets the parameters for specifying the Weak Lensing proposal.</span>
+<span class="nd">@pexConfig.registerConfig</span><span class="p">(</span><span class="s2">&quot;NorthEclipticSpur&quot;</span><span class="p">,</span> <span class="n">general_prop_reg</span><span class="p">,</span> <span class="n">General</span><span class="p">)</span>
+<div class="viewcode-block" id="NorthEclipticSpur"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.science.north_ecliptic_spur.html#lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur">[docs]</a><span class="k">class</span> <span class="nc">NorthEclipticSpur</span><span class="p">(</span><span class="n">General</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class sets the parameters for specifying the North Ecliptic Spur proposal.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="WeakLensing.setDefaults"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.science.weak_lensing.html#lsst.sims.ocs.configuration.science.weak_lensing.WeakLensing.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="NorthEclipticSpur.setDefaults"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.science.north_ecliptic_spur.html#lsst.sims.ocs.configuration.science.north_ecliptic_spur.NorthEclipticSpur.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Setup all the proposal information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;WeakLensing&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;NorthEclipticSpur&quot;</span>
 
         <span class="c1"># -------------------------</span>
         <span class="c1"># Sky Region specifications</span>
         <span class="c1"># -------------------------</span>
 
+        <span class="c1"># Ecliptic Longitude Band</span>
+        <span class="n">eb_limit</span> <span class="o">=</span> <span class="n">Selection</span><span class="p">()</span>
+        <span class="n">eb_limit</span><span class="o">.</span><span class="n">limit_type</span> <span class="o">=</span> <span class="n">SELECTION_LIMIT_TYPES</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">eb_limit</span><span class="o">.</span><span class="n">minimum_limit</span> <span class="o">=</span> <span class="o">-</span><span class="mf">30.0</span>
+        <span class="n">eb_limit</span><span class="o">.</span><span class="n">maximum_limit</span> <span class="o">=</span> <span class="mf">10.0</span>
+
         <span class="c1"># Dec Band</span>
         <span class="n">dec_limit</span> <span class="o">=</span> <span class="n">Selection</span><span class="p">()</span>
         <span class="n">dec_limit</span><span class="o">.</span><span class="n">limit_type</span> <span class="o">=</span> <span class="n">SELECTION_LIMIT_TYPES</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">dec_limit</span><span class="o">.</span><span class="n">minimum_limit</span> <span class="o">=</span> <span class="o">-</span><span class="mf">62.5</span>
-        <span class="n">dec_limit</span><span class="o">.</span><span class="n">maximum_limit</span> <span class="o">=</span> <span class="mf">2.8</span>
+        <span class="n">dec_limit</span><span class="o">.</span><span class="n">minimum_limit</span> <span class="o">=</span> <span class="mf">2.8</span>
+        <span class="n">dec_limit</span><span class="o">.</span><span class="n">maximum_limit</span> <span class="o">=</span> <span class="mf">90.0</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">selections</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">dec_limit</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">selections</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">eb_limit</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">dec_limit</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">combiners</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,)</span>
 
         <span class="c1"># -----------------------------</span>
         <span class="c1"># Sky Exclusion specifications</span>
         <span class="c1"># -----------------------------</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sky_exclusion</span><span class="o">.</span><span class="n">dec_window</span> <span class="o">=</span> <span class="mf">90.0</span>
-
-        <span class="c1"># Galactic Plane</span>
-        <span class="n">gal_plane</span> <span class="o">=</span> <span class="n">Selection</span><span class="p">()</span>
-        <span class="n">gal_plane</span><span class="o">.</span><span class="n">limit_type</span> <span class="o">=</span> <span class="n">SELECTION_LIMIT_TYPES</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
-        <span class="n">gal_plane</span><span class="o">.</span><span class="n">minimum_limit</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="n">gal_plane</span><span class="o">.</span><span class="n">maximum_limit</span> <span class="o">=</span> <span class="mf">10.0</span>
-        <span class="n">gal_plane</span><span class="o">.</span><span class="n">bounds_limit</span> <span class="o">=</span> <span class="mf">90.0</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">sky_exclusion</span><span class="o">.</span><span class="n">selections</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">gal_plane</span><span class="p">}</span>
 
         <span class="c1"># ---------------------------------</span>
         <span class="c1"># Sky Nightly Bounds specifications</span>
@@ -202,65 +200,55 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">accept_serendipity</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">accept_consecutive_visits</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">airmass_bonus</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">time_interval</span> <span class="o">=</span> <span class="mi">30</span> <span class="o">*</span> <span class="mi">60</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">time_window_start</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">time_window_max</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">time_window_end</span> <span class="o">=</span> <span class="mf">2.0</span>
 
         <span class="c1"># --------------------------</span>
         <span class="c1"># Band Filter specifications</span>
         <span class="c1"># --------------------------</span>
 
-        <span class="n">u_filter</span> <span class="o">=</span> <span class="n">BandFilter</span><span class="p">()</span>
-        <span class="n">u_filter</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;u&#39;</span>
-        <span class="n">u_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">75</span>
-        <span class="n">u_filter</span><span class="o">.</span><span class="n">bright_limit</span> <span class="o">=</span> <span class="mf">21.3</span>
-        <span class="n">u_filter</span><span class="o">.</span><span class="n">dark_limit</span> <span class="o">=</span> <span class="mf">30.0</span>
-        <span class="n">u_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">1.5</span>
-        <span class="n">u_filter</span><span class="o">.</span><span class="n">exposures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]</span>
-
         <span class="n">g_filter</span> <span class="o">=</span> <span class="n">BandFilter</span><span class="p">()</span>
         <span class="n">g_filter</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;g&#39;</span>
-        <span class="n">g_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">105</span>
+        <span class="n">g_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">40</span>
+        <span class="n">g_filter</span><span class="o">.</span><span class="n">num_grouped_visits</span> <span class="o">=</span> <span class="mi">2</span>
         <span class="n">g_filter</span><span class="o">.</span><span class="n">bright_limit</span> <span class="o">=</span> <span class="mf">21.0</span>
         <span class="n">g_filter</span><span class="o">.</span><span class="n">dark_limit</span> <span class="o">=</span> <span class="mf">30.0</span>
-        <span class="n">g_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="n">g_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">2.0</span>
         <span class="n">g_filter</span><span class="o">.</span><span class="n">exposures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]</span>
 
         <span class="n">r_filter</span> <span class="o">=</span> <span class="n">BandFilter</span><span class="p">()</span>
         <span class="n">r_filter</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span>
-        <span class="n">r_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">240</span>
+        <span class="n">r_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">92</span>
+        <span class="n">r_filter</span><span class="o">.</span><span class="n">num_grouped_visits</span> <span class="o">=</span> <span class="mi">2</span>
         <span class="n">r_filter</span><span class="o">.</span><span class="n">bright_limit</span> <span class="o">=</span> <span class="mf">20.25</span>
         <span class="n">r_filter</span><span class="o">.</span><span class="n">dark_limit</span> <span class="o">=</span> <span class="mf">30.0</span>
-        <span class="n">r_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="n">r_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">2.0</span>
         <span class="n">r_filter</span><span class="o">.</span><span class="n">exposures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]</span>
 
         <span class="n">i_filter</span> <span class="o">=</span> <span class="n">BandFilter</span><span class="p">()</span>
         <span class="n">i_filter</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;i&#39;</span>
-        <span class="n">i_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">240</span>
+        <span class="n">i_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">92</span>
+        <span class="n">i_filter</span><span class="o">.</span><span class="n">num_grouped_visits</span> <span class="o">=</span> <span class="mi">2</span>
         <span class="n">i_filter</span><span class="o">.</span><span class="n">bright_limit</span> <span class="o">=</span> <span class="mf">19.5</span>
         <span class="n">i_filter</span><span class="o">.</span><span class="n">dark_limit</span> <span class="o">=</span> <span class="mf">30.0</span>
-        <span class="n">i_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="n">i_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">2.0</span>
         <span class="n">i_filter</span><span class="o">.</span><span class="n">exposures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]</span>
 
         <span class="n">z_filter</span> <span class="o">=</span> <span class="n">BandFilter</span><span class="p">()</span>
         <span class="n">z_filter</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span>
-        <span class="n">z_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">210</span>
+        <span class="n">z_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">80</span>
+        <span class="n">z_filter</span><span class="o">.</span><span class="n">num_grouped_visits</span> <span class="o">=</span> <span class="mi">2</span>
         <span class="n">z_filter</span><span class="o">.</span><span class="n">bright_limit</span> <span class="o">=</span> <span class="mf">17.0</span>
         <span class="n">z_filter</span><span class="o">.</span><span class="n">dark_limit</span> <span class="o">=</span> <span class="mf">21.0</span>
-        <span class="n">z_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="n">z_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">2.0</span>
         <span class="n">z_filter</span><span class="o">.</span><span class="n">exposures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]</span>
 
-        <span class="n">y_filter</span> <span class="o">=</span> <span class="n">BandFilter</span><span class="p">()</span>
-        <span class="n">y_filter</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span>
-        <span class="n">y_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">210</span>
-        <span class="n">y_filter</span><span class="o">.</span><span class="n">bright_limit</span> <span class="o">=</span> <span class="mf">16.5</span>
-        <span class="n">y_filter</span><span class="o">.</span><span class="n">dark_limit</span> <span class="o">=</span> <span class="mf">21.0</span>
-        <span class="n">y_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">1.5</span>
-        <span class="n">y_filter</span><span class="o">.</span><span class="n">exposures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="p">{</span><span class="n">u_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">u_filter</span><span class="p">,</span>
-                        <span class="n">g_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">g_filter</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="p">{</span><span class="n">g_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">g_filter</span><span class="p">,</span>
                         <span class="n">r_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">r_filter</span><span class="p">,</span>
                         <span class="n">i_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">i_filter</span><span class="p">,</span>
-                        <span class="n">z_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">z_filter</span><span class="p">,</span>
-                        <span class="n">y_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">y_filter</span><span class="p">}</span></div></div>
+                        <span class="n">z_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">z_filter</span><span class="p">}</span></div></div>
 </pre></div>
 
            </div>
@@ -294,7 +282,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'0.3.0',
+            VERSION:'0.7.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

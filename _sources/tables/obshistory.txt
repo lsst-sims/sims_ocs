@@ -27,6 +27,8 @@ This table keeps a record of each visit made by the observatory during a simulat
       -  Numeric identifier that relates to an entry in the TargetHistory entry.
     * -  Field_fieldId
       -  Numeric identifier that relates to an entry in the Field table.
+    * -  groupId
+      -  Group Id for the observation. This is non-zero and repeated for field/filter combinations collected in sets of N (tuples or sequences). It is zero when N equal one.
     * -  filter
       -  The one character name for the band filter.
     * -  ra

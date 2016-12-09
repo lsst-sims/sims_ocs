@@ -7,8 +7,9 @@ Submodules
 .. toctree::
 
    lsst.sims.ocs.configuration.science.galactic_plane
+   lsst.sims.ocs.configuration.science.north_ecliptic_spur
    lsst.sims.ocs.configuration.science.south_celestial_pole
-   lsst.sims.ocs.configuration.science.weak_lensing
+   lsst.sims.ocs.configuration.science.wide_fast_deep
 
 Module contents
 ---------------

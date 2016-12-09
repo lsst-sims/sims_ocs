@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.science.wide_fast_deep module
+=========================================================
+
+.. automodule:: lsst.sims.ocs.configuration.science.wide_fast_deep
+    :members:
+    :undoc-members:
+    :show-inheritance:

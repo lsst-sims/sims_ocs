@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.conf_comm &mdash; Simulated OCS 0.3.0 documentation</title>
+  <title>lsst.sims.ocs.configuration.conf_comm &mdash; Simulated OCS 0.7.0 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.3.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 0.7.0 documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.7.0
               </div>
             
           
@@ -322,10 +322,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span><span class="o">.</span><span class="n">dome_azimuth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">park</span><span class="o">.</span><span class="n">dome_azimuth</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span><span class="o">.</span><span class="n">filter_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">park</span><span class="o">.</span><span class="n">filter_position</span>
 
-    <span class="k">def</span> <span class="nf">_configure_area_distribution_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Publish the area distribution proposals.</span>
+    <span class="k">def</span> <span class="nf">_configure_general_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Publish the general proposals.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;areaDistPropConfig&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;generalPropConfig&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ConfigurationCommunicator.configure"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.conf_comm.html#lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator.configure">[docs]</a>    <span class="k">def</span> <span class="nf">configure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configure all publish topics for the configuration communicator.</span>
@@ -341,7 +341,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_configure_slew</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configure_optics_loop_corr</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configure_park</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_area_distribution_proposals</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_general_proposals</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ConfigurationCommunicator.run"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.conf_comm.html#lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Send all of the configuration topics.</span>
@@ -357,12 +357,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">olc_conf</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span><span class="p">)</span>
         <span class="n">num_proposals</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">ad_config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">area_dist_props</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
-            <span class="n">ad_topic</span> <span class="o">=</span> <span class="n">ad_config</span><span class="o">.</span><span class="n">set_topic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">get_topic</span><span class="p">(</span><span class="s2">&quot;areaDistPropConfig&quot;</span><span class="p">))</span>
-            <span class="n">ad_topic</span><span class="o">.</span><span class="n">prop_id</span> <span class="o">=</span> <span class="n">num_proposals</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">ad_topic</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">general_config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">general_props</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+            <span class="n">general_topic</span> <span class="o">=</span> <span class="n">general_config</span><span class="o">.</span><span class="n">set_topic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">get_topic</span><span class="p">(</span><span class="s2">&quot;generalPropConfig&quot;</span><span class="p">))</span>
+            <span class="n">general_topic</span><span class="o">.</span><span class="n">prop_id</span> <span class="o">=</span> <span class="n">num_proposals</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">general_topic</span><span class="p">)</span>
             <span class="n">num_proposals</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Sent configuration for {} area distribution proposals.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_proposals</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Sent configuration for {} general proposals.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_proposals</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>
@@ -396,7 +396,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.3.0',
+            VERSION:'0.7.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
