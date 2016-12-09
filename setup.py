@@ -9,7 +9,7 @@ except ImportError:
 PACKAGE = 'sims_ocs'
 MAJOR = 0
 MINOR = 7
-PATCH = 0
+PATCH = 1
 VERSION = "{0}.{1}.{2}".format(MAJOR, MINOR, PATCH)
 
 MODULE = "lsst.sims.ocs"
