@@ -1,4 +1,5 @@
 GH_PAGES_SOURCES = Makefile docs setup.py lsst README.rst HISTORY.rst scripts tests
+BRANCH := $(shell git branch | grep \* | cut -d ' ' -f2)
 
 .PHONY: clean-pyc clean-build docs clean
 
@@ -65,12 +66,12 @@ docs:
 gh-pages:
 	git checkout gh-pages
 	rm -rf api build _modules _sources _static tables
-	git checkout master $(GH_PAGES_SOURCES)
+	git checkout $(BRANCH) $(GH_PAGES_SOURCES)
 	git reset HEAD
 	python setup.py develop
 	$(MAKE) docs
 	mv -fv docs/_build/html/* ./
-	rm -rf $(GH_PAGES_SOURCES) sims_ocs.egg-info .cache ospl-info.log
+	rm -rf $(GH_PAGES_SOURCES) sims_ocs.egg-info .cache ospl-info.log .coverage htmlcov
 
 release: clean
 	python setup.py sdist upload
