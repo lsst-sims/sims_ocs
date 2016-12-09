@@ -1,7 +1,7 @@
 import unittest
 
 from lsst.sims.ocs.configuration.science import SouthCelestialPole
-from SALPY_scheduler import scheduler_areaDistPropConfigC
+from SALPY_scheduler import scheduler_generalPropConfigC
 
 class SouthCelestialPoleTest(unittest.TestCase):
 
@@ -28,7 +28,7 @@ class SouthCelestialPoleTest(unittest.TestCase):
         self.assertEqual(self.prop.scheduling.airmass_bonus, 0.5)
 
     def test_set_topic(self):
-        in_topic = scheduler_areaDistPropConfigC()
+        in_topic = scheduler_generalPropConfigC()
         out_topic = self.prop.set_topic(in_topic)
         self.assertEqual(out_topic.name, "SouthCelestialPole")
         self.assertEqual(out_topic.num_region_selections, 1)

@@ -1,7 +1,7 @@
 import unittest
 
 from lsst.sims.ocs.configuration.science import GalacticPlane
-from SALPY_scheduler import scheduler_areaDistPropConfigC
+from SALPY_scheduler import scheduler_generalPropConfigC
 
 class GalacticPlaneTest(unittest.TestCase):
 
@@ -24,7 +24,7 @@ class GalacticPlaneTest(unittest.TestCase):
         self.assertFalse(self.prop.scheduling.accept_consecutive_visits)
 
     def test_set_topic(self):
-        in_topic = scheduler_areaDistPropConfigC()
+        in_topic = scheduler_generalPropConfigC()
         out_topic = self.prop.set_topic(in_topic)
         self.assertEqual(out_topic.name, "GalacticPlane")
         self.assertEqual(out_topic.num_region_selections, 1)

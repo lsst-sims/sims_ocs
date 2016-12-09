@@ -7,6 +7,7 @@ class BandFilter(pexConfig.Config):
     """
     name = pexConfig.Field('Band name of the filter.', str)
     num_visits = pexConfig.Field('The number of requested visits for the filter.', int)
+    num_grouped_visits = pexConfig.Field('The number of grouped (in a night) visits for the filter.', int)
     bright_limit = pexConfig.Field('Brightest magnitude limit for filter.', float)
     dark_limit = pexConfig.Field('Darkest magnitude limit for filter.', float)
     max_seeing = pexConfig.Field('The maximum seeing limit for filter', float)
@@ -17,6 +18,7 @@ class BandFilter(pexConfig.Config):
         """
         self.name = "u"
         self.num_visits = 10
+        self.num_grouped_visits = 1
         self.bright_limit = 21.0
         self.dark_limit = 30.0
         self.max_seeing = 2.0

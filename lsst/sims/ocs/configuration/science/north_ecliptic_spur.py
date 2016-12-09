@@ -3,30 +3,36 @@ import lsst.pex.config as pexConfig
 from lsst.sims.ocs.configuration.proposal import General, BandFilter, Selection
 from lsst.sims.ocs.configuration.proposal import general_prop_reg, SELECTION_LIMIT_TYPES
 
-__all__ = ["GalacticPlane"]
+__all__ = ["NorthEclipticSpur"]
 
-@pexConfig.registerConfig("GalacticPlane", general_prop_reg, General)
-class GalacticPlane(General):
-    """This class sets the parameters for specifying the Galactic Plane proposal.
+@pexConfig.registerConfig("NorthEclipticSpur", general_prop_reg, General)
+class NorthEclipticSpur(General):
+    """This class sets the parameters for specifying the North Ecliptic Spur proposal.
     """
 
     def setDefaults(self):
         """Setup all the proposal information.
         """
-        self.name = "GalacticPlane"
+        self.name = "NorthEclipticSpur"
 
         # -------------------------
         # Sky Region specifications
         # -------------------------
 
-        # Galactic Plane
-        gal_plane = Selection()
-        gal_plane.limit_type = SELECTION_LIMIT_TYPES[6]
-        gal_plane.minimum_limit = 0.0
-        gal_plane.maximum_limit = 10.0
-        gal_plane.bounds_limit = 90.0
+        # Ecliptic Longitude Band
+        eb_limit = Selection()
+        eb_limit.limit_type = SELECTION_LIMIT_TYPES[5]
+        eb_limit.minimum_limit = -30.0
+        eb_limit.maximum_limit = 10.0
 
-        self.sky_region.selections = {0: gal_plane}
+        # Dec Band
+        dec_limit = Selection()
+        dec_limit.limit_type = SELECTION_LIMIT_TYPES[1]
+        dec_limit.minimum_limit = 2.8
+        dec_limit.maximum_limit = 90.0
+
+        self.sky_region.selections = {0: eb_limit, 1: dec_limit}
+        self.sky_region.combiners = ('and',)
 
         # -----------------------------
         # Sky Exclusion specifications
@@ -56,38 +62,37 @@ class GalacticPlane(General):
         self.scheduling.accept_serendipity = False
         self.scheduling.accept_consecutive_visits = False
         self.scheduling.airmass_bonus = 0.5
+        self.scheduling.time_interval = 30 * 60
+        self.scheduling.time_window_start = 0.5
+        self.scheduling.time_window_max = 1.0
+        self.scheduling.time_window_end = 2.0
 
         # --------------------------
         # Band Filter specifications
         # --------------------------
 
-        u_filter = BandFilter()
-        u_filter.name = 'u'
-        u_filter.num_visits = 30
-        u_filter.bright_limit = 20.8
-        u_filter.dark_limit = 30.0
-        u_filter.max_seeing = 3.0
-        u_filter.exposures = [15.0, 15.0]
-
         g_filter = BandFilter()
         g_filter.name = 'g'
-        g_filter.num_visits = 30
-        g_filter.bright_limit = 20.8
+        g_filter.num_visits = 40
+        g_filter.num_grouped_visits = 2
+        g_filter.bright_limit = 21.0
         g_filter.dark_limit = 30.0
-        g_filter.max_seeing = 3.0
+        g_filter.max_seeing = 2.0
         g_filter.exposures = [15.0, 15.0]
 
         r_filter = BandFilter()
         r_filter.name = 'r'
-        r_filter.num_visits = 30
-        r_filter.bright_limit = 20.0
+        r_filter.num_visits = 92
+        r_filter.num_grouped_visits = 2
+        r_filter.bright_limit = 20.25
         r_filter.dark_limit = 30.0
         r_filter.max_seeing = 2.0
         r_filter.exposures = [15.0, 15.0]
 
         i_filter = BandFilter()
         i_filter.name = 'i'
-        i_filter.num_visits = 30
+        i_filter.num_visits = 92
+        i_filter.num_grouped_visits = 2
         i_filter.bright_limit = 19.5
         i_filter.dark_limit = 30.0
         i_filter.max_seeing = 2.0
@@ -95,23 +100,14 @@ class GalacticPlane(General):
 
         z_filter = BandFilter()
         z_filter.name = 'z'
-        z_filter.num_visits = 30
+        z_filter.num_visits = 80
+        z_filter.num_grouped_visits = 2
         z_filter.bright_limit = 17.0
-        z_filter.dark_limit = 21.4
+        z_filter.dark_limit = 21.0
         z_filter.max_seeing = 2.0
         z_filter.exposures = [15.0, 15.0]
 
-        y_filter = BandFilter()
-        y_filter.name = 'y'
-        y_filter.num_visits = 30
-        y_filter.bright_limit = 16.0
-        y_filter.dark_limit = 21.4
-        y_filter.max_seeing = 2.0
-        y_filter.exposures = [15.0, 15.0]
-
-        self.filters = {u_filter.name: u_filter,
-                        g_filter.name: g_filter,
+        self.filters = {g_filter.name: g_filter,
                         r_filter.name: r_filter,
                         i_filter.name: i_filter,
-                        z_filter.name: z_filter,
-                        y_filter.name: y_filter}
+                        z_filter.name: z_filter}

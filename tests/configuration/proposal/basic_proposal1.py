@@ -1,7 +1,7 @@
-from lsst.sims.ocs.configuration.proposal import AreaDistribution, BandFilter, Selection
+from lsst.sims.ocs.configuration.proposal import General, BandFilter, Selection
 from lsst.sims.ocs.configuration.proposal import SELECTION_LIMIT_TYPES
 
-class BasicProposal1(AreaDistribution):
+class BasicProposal1(General):
     """This class sets the parameters for specifying a test proposal.
     """
 

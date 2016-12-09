@@ -70,7 +70,7 @@ class Sequencer(object):
         """Perform end of night functions.
         """
         # Park the telescope for the day.
-        self.observatory_model.reset()
+        self.observatory_model.park()
 
     def get_observatory_state(self, timestamp):
         """Return the observatory state in a DDS topic instance.
@@ -122,7 +122,6 @@ class Sequencer(object):
         self.observation = sal.set_publish_topic("observation")
         self.observatory_state = sal.set_publish_topic("observatoryState")
         self.observatory_model.configure(obs_config)
-        #self.sky_model = AstronomicalSkyModel(self.observatory_location)
 
     def finalize(self):
         """Perform finalization steps.

@@ -184,10 +184,10 @@ class ConfigurationCommunicator(object):
         self.park_conf.dome_azimuth = self.config.observatory.park.dome_azimuth
         self.park_conf.filter_position = self.config.observatory.park.filter_position
 
-    def _configure_area_distribution_proposals(self):
-        """Publish the area distribution proposals.
+    def _configure_general_proposals(self):
+        """Publish the general proposals.
         """
-        self.sal.set_publish_topic("areaDistPropConfig")
+        self.sal.set_publish_topic("generalPropConfig")
 
     def configure(self):
         """Configure all publish topics for the configuration communicator.
@@ -203,7 +203,7 @@ class ConfigurationCommunicator(object):
         self._configure_slew()
         self._configure_optics_loop_corr()
         self._configure_park()
-        self._configure_area_distribution_proposals()
+        self._configure_general_proposals()
 
     def run(self):
         """Send all of the configuration topics.
@@ -219,9 +219,9 @@ class ConfigurationCommunicator(object):
         self.sal.put(self.olc_conf)
         self.sal.put(self.park_conf)
         num_proposals = 1
-        for ad_config in self.config.science.area_dist_props.active:
-            ad_topic = ad_config.set_topic(self.sal.get_topic("areaDistPropConfig"))
-            ad_topic.prop_id = num_proposals
-            self.sal.put(ad_topic)
+        for general_config in self.config.science.general_props.active:
+            general_topic = general_config.set_topic(self.sal.get_topic("generalPropConfig"))
+            general_topic.prop_id = num_proposals
+            self.sal.put(general_topic)
             num_proposals += 1
-        self.log.info("Sent configuration for {} area distribution proposals.".format(num_proposals - 1))
+        self.log.info("Sent configuration for {} general proposals.".format(num_proposals - 1))

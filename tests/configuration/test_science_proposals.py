@@ -1,7 +1,7 @@
 import unittest
 
 from lsst.sims.ocs.configuration import ScienceProposals
-from tests.helpers import AREA_DIST_PROPS, NUM_AREA_DIST_PROPS
+from tests.helpers import GEN_PROPS, NUM_GEN_PROPS
 
 class ScienceProposalsTest(unittest.TestCase):
 
@@ -9,6 +9,6 @@ class ScienceProposalsTest(unittest.TestCase):
         self.sci_props = ScienceProposals()
 
     def test_basic_information_from_creation(self):
-        self.assertIsNotNone(self.sci_props.area_dist_props)
-        self.assertEqual(len(self.sci_props.area_dist_props), NUM_AREA_DIST_PROPS)
-        self.assertListEqual(self.sci_props.ad_proposals, AREA_DIST_PROPS)
+        self.assertIsNotNone(self.sci_props.general_props)
+        self.assertEqual(len(self.sci_props.general_props), NUM_GEN_PROPS)
+        self.assertListEqual(self.sci_props.general_proposals, GEN_PROPS)

@@ -3,10 +3,11 @@ import lsst.pex.config as pexConfig
 from lsst.sims.ocs.configuration.proposal import BandFilter, Scheduling
 from lsst.sims.ocs.configuration.proposal import SkyConstraints, SkyExclusion, SkyNightlyBounds, SkyRegion
 
-__all__ = ["AreaDistribution"]
+__all__ = ["General"]
 
-class AreaDistribution(pexConfig.Config):
-    """Configuration for an area distribution proposal.
+class General(pexConfig.Config):
+    """Configuration for a general proposal. This includes area distribution, time-domain
+       and hybrid proposals.
     """
 
     name = pexConfig.Field('Name for the proposal.', str)
@@ -22,12 +23,12 @@ class AreaDistribution(pexConfig.Config):
 
         Parameters
         ----------
-        topic : SALPY_scheduler.scheduler_areaDistPropConfigC
+        topic : SALPY_scheduler.scheduler_genPropConfigC
             The instance of the DDS topic to set information on.
 
         Returns
         -------
-        SALPY_scheduler.scheduler_areaDistPropConfigC
+        SALPY_scheduler.scheduler_genPropConfigC
             The topic with current information set.
         """
         topic.name = self.name if self.name is not None else "None"
@@ -71,6 +72,7 @@ class AreaDistribution(pexConfig.Config):
             for i, v in enumerate(self.filters.values()):
                 filter_names.append(v.name)
                 topic.num_visits[i] = v.num_visits
+                topic.num_grouped_visits[i] = v.num_grouped_visits
                 topic.bright_limit[i] = v.bright_limit
                 topic.dark_limit[i] = v.dark_limit
                 topic.max_seeing[i] = v.max_seeing
@@ -84,5 +86,10 @@ class AreaDistribution(pexConfig.Config):
         topic.accept_serendipity = self.scheduling.accept_serendipity
         topic.accept_consecutive_visits = self.scheduling.accept_consecutive_visits
         topic.airmass_bonus = self.scheduling.airmass_bonus
+        topic.restrict_grouped_visits = self.scheduling.restrict_grouped_visits
+        topic.time_interval = self.scheduling.time_interval
+        topic.time_window_start = self.scheduling.time_window_start
+        topic.time_window_max = self.scheduling.time_window_max
+        topic.time_window_end = self.scheduling.time_window_end
 
         return topic

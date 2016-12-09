@@ -2,11 +2,11 @@ import importlib
 
 import lsst.pex.config as pexConfig
 
-from lsst.sims.ocs.configuration.proposal import AreaDistribution
+from lsst.sims.ocs.configuration.proposal import General
 
-__all__ = ["area_dist_prop_reg", "load_class"]
+__all__ = ["general_prop_reg", "load_class"]
 
-area_dist_prop_reg = pexConfig.makeRegistry('A registry for area distribution proposals.', AreaDistribution)
+general_prop_reg = pexConfig.makeRegistry('A registry for general proposals.', General)
 
 def load_class(full_class_string):
     """Dynamically load a class from a string.

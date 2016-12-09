@@ -7,6 +7,7 @@ import lsst.sims.ocs.observatory
 target = SALPY_scheduler.scheduler_targetC()
 target.targetId = 10
 target.fieldId = 300
+target.groupId = 2
 target.filter = "r"
 target.ra = 1.000
 target.dec = -3.00
@@ -55,6 +56,7 @@ observation_topic.observation_start_time = 1640995200.0
 observation_topic.observation_start_mjd = 59580.0
 observation_topic.observation_start_lst = 29.87546023333333
 observation_topic.fieldId = 300
+observation_topic.groupId = 2
 observation_topic.filter = "r"
 observation_topic.ra = 1.000
 observation_topic.dec = -3.00
@@ -114,7 +116,7 @@ exposure_coll3 = lsst.sims.ocs.observatory.ObsExposure(exposureId=1, exposureNum
 exposure_coll4 = lsst.sims.ocs.observatory.ObsExposure(exposureId=1, exposureNum=2, exposureTime=15.0,
                                                        exposureStartTime=2922.2, ObsHistory_observationId=3)
 
-prop_info = lsst.sims.ocs.kernel.ProposalInfo(propId=1, propName="TestProposal", propType="AreaDistribution")
+prop_info = lsst.sims.ocs.kernel.ProposalInfo(propId=1, propName="TestProposal", propType="General")
 
 obs_prop_hist = lsst.sims.ocs.kernel.ObsProposalHistory(propHistId=1, Proposal_propId=2, proposalValue=1.32,
                                                         proposalNeed=0.5, proposalBonus=0.82,

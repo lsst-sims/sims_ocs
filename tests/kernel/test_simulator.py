@@ -13,7 +13,7 @@ import SALPY_scheduler
 
 from tests.database.topic_helpers import exposure_coll1, exposure_coll2, exposure_coll3, exposure_coll4
 from tests.database.topic_helpers import slew_activity_coll
-from tests.helpers import CONFIG_AREA_DIST_PROPS, CONFIG_COMM_PUT_CALLS
+from tests.helpers import CONFIG_GEN_PROPS, CONFIG_COMM_PUT_CALLS
 
 class SimulatorTest(unittest.TestCase):
 
@@ -102,7 +102,7 @@ class SimulatorTest(unittest.TestCase):
         self.put_calls = 5 * self.num_visits + self.num_nights
         self.config_comm_put_calls = 1
         self.put_calls += CONFIG_COMM_PUT_CALLS
-        self.put_calls += CONFIG_AREA_DIST_PROPS
+        self.put_calls += CONFIG_GEN_PROPS
         self.sim.fractional_duration = 1 / 365
         self.sim.wait_for_scheduler = wait_for_sched
         self.mock_astro_sky.return_value.get_night_boundaries.return_value = \
