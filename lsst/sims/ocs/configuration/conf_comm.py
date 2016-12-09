@@ -219,9 +219,9 @@ class ConfigurationCommunicator(object):
         self.sal.put(self.olc_conf)
         self.sal.put(self.park_conf)
         num_proposals = 1
-        for gen_config in self.config.science.gen_props.active:
-            gen_topic = gen_config.set_topic(self.sal.get_topic("generalPropConfig"))
-            gen_topic.prop_id = num_proposals
-            self.sal.put(gen_topic)
+        for general_config in self.config.science.general_props.active:
+            general_topic = general_config.set_topic(self.sal.get_topic("generalPropConfig"))
+            general_topic.prop_id = num_proposals
+            self.sal.put(general_topic)
             num_proposals += 1
         self.log.info("Sent configuration for {} general proposals.".format(num_proposals - 1))

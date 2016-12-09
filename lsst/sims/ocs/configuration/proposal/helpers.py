@@ -4,9 +4,9 @@ import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration.proposal import General
 
-__all__ = ["gen_prop_reg", "load_class"]
+__all__ = ["general_prop_reg", "load_class"]
 
-gen_prop_reg = pexConfig.makeRegistry('A registry for general proposals.', General)
+general_prop_reg = pexConfig.makeRegistry('A registry for general proposals.', General)
 
 def load_class(full_class_string):
     """Dynamically load a class from a string.

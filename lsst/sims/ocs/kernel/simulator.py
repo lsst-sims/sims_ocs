@@ -296,8 +296,8 @@ class Simulator(object):
         """
         proposals = []
         num_proposals = 1
-        for gen_config in self.conf.science.gen_props.active:
-            proposals.append(write_proposal(ProposalInfo(num_proposals, gen_config.name, "General"),
+        for general_config in self.conf.science.general_props.active:
+            proposals.append(write_proposal(ProposalInfo(num_proposals, general_config.name, "General"),
                                             self.db.session_id))
             num_proposals += 1
         self.db.write_table("proposal", proposals)

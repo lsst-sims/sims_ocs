@@ -1,11 +1,11 @@
 import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration.proposal import General, BandFilter, Selection
-from lsst.sims.ocs.configuration.proposal import gen_prop_reg, SELECTION_LIMIT_TYPES
+from lsst.sims.ocs.configuration.proposal import general_prop_reg, SELECTION_LIMIT_TYPES
 
 __all__ = ["SouthCelestialPole"]
 
-@pexConfig.registerConfig("SouthCelestialPole", gen_prop_reg, General)
+@pexConfig.registerConfig("SouthCelestialPole", general_prop_reg, General)
 class SouthCelestialPole(General):
     """This class sets the parameters for specifying the South Celestial Pole proposal.
     """

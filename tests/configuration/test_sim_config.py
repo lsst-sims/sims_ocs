@@ -94,7 +94,7 @@ class SimulationConfigTest(unittest.TestCase):
         # The real configurations can get very expensive to save, so we're just testing that the
         # correct number of executions and blank files are created.
         self.sim_config.load_proposals()
-        self.assertEqual(len(self.sim_config.science.gen_props.active), NUM_GEN_PROPS)
+        self.assertEqual(len(self.sim_config.science.general_props.active), NUM_GEN_PROPS)
         # The downtime, environment and filters config not needing to be sent via conf_comm.
         EXTRA_CONFIG = 3
         expected_calls = CONFIG_COMM_PUT_CALLS + NUM_GEN_PROPS + EXTRA_CONFIG
@@ -106,27 +106,27 @@ class SimulationConfigTest(unittest.TestCase):
 
     def test_load_proposals(self):
         with self.assertRaises(TypeError):
-            self.assertEqual(len(self.sim_config.science.gen_props.names), NUM_GEN_PROPS)
+            self.assertEqual(len(self.sim_config.science.general_props.names), NUM_GEN_PROPS)
 
         self.sim_config.load_proposals()
         self.assertEqual(self.sim_config.num_proposals, NUM_GEN_PROPS)
-        self.assertEqual(len(self.sim_config.science.gen_props.names), NUM_GEN_PROPS)
-        self.assertEqual(len(self.sim_config.science.gen_props.active), NUM_GEN_PROPS)
+        self.assertEqual(len(self.sim_config.science.general_props.names), NUM_GEN_PROPS)
+        self.assertEqual(len(self.sim_config.science.general_props.active), NUM_GEN_PROPS)
 
     def test_load_specifc_proposals(self):
-        self.sim_config.survey.gen_proposals = ["GalacticPlane", "SouthCelestialPole"]
+        self.sim_config.survey.general_proposals = ["GalacticPlane", "SouthCelestialPole"]
         self.sim_config.load_proposals()
-        self.assertEqual(len(self.sim_config.science.gen_props.names), 2)
-        self.assertEqual(len(self.sim_config.science.gen_props.active), 2)
+        self.assertEqual(len(self.sim_config.science.general_props.names), 2)
+        self.assertEqual(len(self.sim_config.science.general_props.active), 2)
 
     def test_load_no_proposals(self):
-        self.sim_config.survey.gen_proposals = []
+        self.sim_config.survey.general_proposals = []
         self.sim_config.load_proposals()
         self.assertEqual(self.sim_config.num_proposals, 0)
         with self.assertRaises(TypeError):
-            self.assertEqual(len(self.sim_config.science.gen_props.names), 0)
+            self.assertEqual(len(self.sim_config.science.general_props.names), 0)
         with self.assertRaises(TypeError):
-            self.assertEqual(len(self.sim_config.science.gen_props.active), 0)
+            self.assertEqual(len(self.sim_config.science.general_props.active), 0)
 
     def test_make_tuples(self):
         d = {"a": 1, "b": {"c": "test", "d": [1, 2, 3]}}

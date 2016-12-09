@@ -14,7 +14,7 @@ class SurveyTest(unittest.TestCase):
         self.assertEqual(self.survey.start_date, self.truth_start_date)
         self.assertEqual(self.survey.duration, 1.0)
         self.assertEqual(self.survey.idle_delay, 60.0)
-        self.assertListEqual(list(self.survey.gen_proposals), GEN_PROPS)
+        self.assertListEqual(list(self.survey.general_proposals), GEN_PROPS)
         self.assertIsNone(self.survey.alt_proposal_dir)
         self.assertEqual(self.survey.full_duration, 3650.0)
 

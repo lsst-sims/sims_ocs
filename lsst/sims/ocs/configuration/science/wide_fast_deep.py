@@ -1,11 +1,11 @@
 import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration.proposal import General, BandFilter, Selection
-from lsst.sims.ocs.configuration.proposal import gen_prop_reg, SELECTION_LIMIT_TYPES
+from lsst.sims.ocs.configuration.proposal import general_prop_reg, SELECTION_LIMIT_TYPES
 
 __all__ = ["WideFastDeep"]
 
-@pexConfig.registerConfig("WideFastDeep", gen_prop_reg, General)
+@pexConfig.registerConfig("WideFastDeep", general_prop_reg, General)
 class WideFastDeep(General):
     """This class sets the parameters for specifying the Wide, Fast, Deep proposal.
     """

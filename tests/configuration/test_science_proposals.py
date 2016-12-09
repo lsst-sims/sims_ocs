@@ -9,6 +9,6 @@ class ScienceProposalsTest(unittest.TestCase):
         self.sci_props = ScienceProposals()
 
     def test_basic_information_from_creation(self):
-        self.assertIsNotNone(self.sci_props.gen_props)
-        self.assertEqual(len(self.sci_props.gen_props), NUM_GEN_PROPS)
-        self.assertListEqual(self.sci_props.gen_proposals, GEN_PROPS)
+        self.assertIsNotNone(self.sci_props.general_props)
+        self.assertEqual(len(self.sci_props.general_props), NUM_GEN_PROPS)
+        self.assertListEqual(self.sci_props.general_proposals, GEN_PROPS)
