@@ -99,8 +99,8 @@ def main(options):
                         filename=options.log_filename,
                         filemode="w")
 
-    port_address = get_port_address()
-    tcpserver = LogRecordSocketReceiver(port=port_address)
+    #port_address = get_port_address()
+    tcpserver = LogRecordSocketReceiver()
     tcpserver.serve_until_stopped()
 
 if __name__ == '__main__':
