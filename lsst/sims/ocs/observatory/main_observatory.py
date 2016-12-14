@@ -167,7 +167,7 @@ class MainObservatory(object):
                                slew_state_info.dec, str(slew_state_info.tracking), slew_state_info.alt,
                                slew_state_info.az, slew_state_info.pa, slew_state_info.domalt,
                                slew_state_info.domaz, slew_state_info.telalt, slew_state_info.telaz,
-                               slew_state_info.rot, slew_state_info.ang, slew_state_info.filter,
+                               slew_state_info.telrot, slew_state_info.ang, slew_state_info.filter,
                                self.slew_count)
         return slew_state
 
