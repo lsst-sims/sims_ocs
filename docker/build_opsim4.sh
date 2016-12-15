@@ -28,7 +28,9 @@
 set -e
 
 PACKAGE_NAME="mareuter/opsim4:opsim4"
-DEFAULT_VERSION="master"
+DEFAULT_SOCS_VERSION="master"
+DEFAULT_SCHED_VERSION="master"
+DEFAULT_CONFUI_VERSION="master"
 DEFAULT_SIMS_VERSION="2.3.1"
 
 usage() {
@@ -42,38 +44,49 @@ usage() {
     -h          this message
     -p          Push to dockerhub after build
     -s          Version number for SIMS Conda channel. Defaults to $DEFAULT_SIMS_VERSION
-    -V          Version for SOCS/Scheduler code. Defaults to $DEFAULT_VERSION
+    -o          Version for the SOCS code. Defaults to $DEFAULT_SOCS_VERSION
+    -d          Version for the Scheduler code. Defaults to $DEFAULT_SCHED_VERSION
+    -u          Version for the Configuration UI code. Defaults to $DEFAULT_CONFUI_VERSION
 
 EOD
 }
 
 # get the options
-while getopts hT:ps:V: c; do
+while getopts hps:o:d:u: c; do
     case $c in
             h) usage ; exit 0 ;;
             p) PUSH=1 ;;
             s) SIMS_VERSION="$OPTARG" ;;
-            V) OPSIM_VERSION="$OPTARG" ;;
+            o) SOCS_VERSION="$OPTARG" ;;
+            d) SCHED_VERSION="$OPTARG" ;;
+            u) CONFUI_VERSION="$OPTARG" ;;
             \?) usage ; exit 2 ;;
     esac
 done
 
 shift "$((OPTIND-1))"
-
 if [ $# -ne 0 ] ; then
     usage
     exit 2
 fi
 
-if [ -z $OPSIM_VERSION ] ; then
-    OPSIM_VERSION=$DEFAULT_VERSION
+if [ -z $SOCS_VERSION ] ; then
+    SOCS_VERSION=$DEFAULT_SOCS_VERSION
     TAG="${PACKAGE_NAME}-latest"
 else
-    TAG="${PACKAGE_NAME}-${OPSIM_VERSION}"
+    TAG="${PACKAGE_NAME}-${SOCS_VERSION}"
 fi
 
 if [ -z $SIMS_VERSION ] ; then
     SIMS_VERSION=$DEFAULT_SIMS_VERSION
+fi 
+
+if [ -z $SCHED_VERSION ] ; then
+    SCHED_VERSION=$DEFAULT_SCHED_VERSION
+fi 
+
+if [ -z $CONFUI_VERSION ] ; then
+    CONFUI_VERSION=$DEFAULT_CONFUI_VERSION
 fi 
 
 # Build the release image
@@ -81,7 +94,9 @@ fi
 printf "Building Opsim4 image with tag: %s\n" $TAG
 docker build --no-cache=true \
              --build-arg SIMS_VERSION="$SIMS_VERSION" \
-             --build-arg OPSIM_VERSION="$OPSIM_VERSION" \
+             --build-arg SOCS_VERSION="$SOCS_VERSION" \
+             --build-arg SCHED_VERSION="$SCHED_VERSION" \
+             --build-arg CONFUI_VERSION="$CONFUI_VERSION" \
              --tag="$TAG" opsim4
 
 if [ $PUSH ] ; then
