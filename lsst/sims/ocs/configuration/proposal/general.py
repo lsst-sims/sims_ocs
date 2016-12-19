@@ -53,6 +53,23 @@ class General(pexConfig.Config):
 
         topic.region_combiners = ','.join(self.sky_region.combiners)
 
+        num_time_ranges = len(self.sky_region.time_ranges) if self.sky_region.time_ranges is not None else 0
+        topic.num_time_ranges = num_time_ranges
+        if num_time_ranges:
+            for i, v in enumerate(self.sky_region.time_ranges.values()):
+                topic.time_range_starts[i] = v.start
+                topic.time_range_ends[i] = v.end
+
+        num_selection_mappings = len(self.sky_region.selection_mapping) \
+            if self.sky_region.selection_mapping is not None else 0
+        if num_selection_mappings:
+            selection_index = 0
+            for i, v in enumerate(self.sky_region.selection_mapping.values()):
+                topic.num_selection_mappings[i] = len(v.indexes)
+                for index in v.indexes:
+                    topic.selection_mappings[selection_index] = index
+                    selection_index += 1
+
         num_exclusion_selections = len(self.sky_exclusion.selections) \
             if self.sky_exclusion.selections is not None else 0
         topic.num_exclusion_selections = num_exclusion_selections

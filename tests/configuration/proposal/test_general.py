@@ -7,6 +7,7 @@ from SALPY_scheduler import scheduler_generalPropConfigC
 from tests.configuration.proposal.basic_proposal1 import BasicProposal1
 from tests.configuration.proposal.basic_proposal2 import BasicProposal2
 from tests.configuration.proposal.basic_proposal3 import BasicProposal3
+from tests.configuration.proposal.basic_proposal4 import BasicProposal4
 
 class GeneralTest(unittest.TestCase):
 
@@ -75,3 +76,19 @@ class GeneralTest(unittest.TestCase):
         self.assertEqual(out_topic.time_window_start, -0.5)
         self.assertEqual(out_topic.time_window_max, 0.5)
         self.assertEqual(out_topic.time_window_end, 1.0)
+
+    def test_a_time_ordered_proposal_set_topic(self):
+        gen = BasicProposal4()
+        in_topic = scheduler_generalPropConfigC()
+        out_topic = gen.set_topic(in_topic)
+        self.assertEqual(out_topic.name, "BasicProposal4")
+        self.assertEqual(out_topic.num_region_selections, 2)
+        self.assertEqual(out_topic.num_time_ranges, 2)
+        self.assertEqual(out_topic.time_range_starts[0], 1)
+        self.assertEqual(out_topic.time_range_ends[0], 1825)
+        self.assertEqual(out_topic.time_range_starts[1], 1826)
+        self.assertEqual(out_topic.time_range_ends[1], 3650)
+        self.assertEqual(out_topic.num_selection_mappings[0], 1)
+        self.assertEqual(out_topic.num_selection_mappings[1], 1)
+        self.assertEqual(out_topic.selection_mappings[0], 0)
+        self.assertEqual(out_topic.selection_mappings[1], 1)
