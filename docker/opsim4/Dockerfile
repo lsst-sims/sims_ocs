@@ -25,7 +25,7 @@ RUN curl -Ok ftp://ftp.noao.edu/pub/lsst/mareuter/sched_stuff/Miniconda2-latest-
 
 # Update Conda, set SIMS channel and install dependencies
 RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
-    conda config --add channels http://conda.lsst.codes/sims/${SIMS_VERSION} && \
+    conda config --add channels http://conda.lsst.codes/sims && \
     conda update -y conda && \
     conda install -y enum34 lsst-pex-config lsst-sims-skybrightness mysql-python pandas pytz requests sqlalchemy && \
     rm -rf miniconda/pkgs"
@@ -71,7 +71,7 @@ RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
 RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
     source eups-setups.sh && setup ts_scheduler && \
     cd ts_scheduler && \
-    git checkout v$SCHED_VERSION && \
+    git checkout $SCHED_VERSION && \
     cd .."
 
 # Setup opsim4_config_ui

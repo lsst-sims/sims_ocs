@@ -27,7 +27,7 @@
 
 set -e
 
-PACKAGE_NAME="mareuter/opsim4:opsim4"
+PACKAGE_NAME="lsst/opsim4:opsim4"
 DEFAULT_SOCS_VERSION="master"
 DEFAULT_SCHED_VERSION="master"
 DEFAULT_CONFUI_VERSION="master"
@@ -83,6 +83,8 @@ fi
 
 if [ -z $SCHED_VERSION ] ; then
     SCHED_VERSION=$DEFAULT_SCHED_VERSION
+else
+    SCHED_VERSION="v$SCHED_VERSION"
 fi 
 
 if [ -z $CONFUI_VERSION ] ; then
