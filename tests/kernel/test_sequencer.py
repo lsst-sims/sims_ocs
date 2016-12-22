@@ -132,7 +132,7 @@ class SequencerTest(unittest.TestCase):
         self.assertEqual(observatory_state.pointing_dec, -26.7444)
         self.assertEqual(observatory_state.pointing_altitude, 86.5)
         self.assertEqual(observatory_state.pointing_azimuth, 0.0)
-        self.assertEqual(observatory_state.pointing_pa, -180.0)
+        self.assertEqual(observatory_state.pointing_pa, 180.0)
         self.assertEqual(observatory_state.pointing_rot, 0.0)
         self.assertFalse(observatory_state.tracking)
         self.assertEqual(observatory_state.telescope_altitude, 86.5)
