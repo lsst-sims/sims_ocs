@@ -83,6 +83,8 @@ def main(args):
         try:
             sim.run()
         except:
+            if not sim.db.data_empty:
+                sim.db.write()
             sim.finalize()
             logger.exception("An exception was thrown in SOCS!")
             if args.track_session:
