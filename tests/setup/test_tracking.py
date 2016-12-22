@@ -83,3 +83,24 @@ class TrackingTest(unittest.TestCase):
 
     def test_bad_update_call(self):
         self.run_update_call(False, (0, 1))
+
+    @mock.patch("requests.get")
+    def test_override_values_in_track_session(self, mock_get):
+        test_payload = {'sessionID': self.session_id_truth, 'hostname': 'titan', 'user': 'missle',
+                        'startup_comment': self.startup_comment_truth,
+                        'code_test': self.track.session_type_codes[self.session_type_truth],
+                        'status_id': 1.0, 'run_version': '4.1.1'}
+
+        self.track.track_session(hostname='titan', user='missle', version='4.1.1')
+        mock_get.assert_called_once_with(self.track.tracking_url, params=test_payload, timeout=3.0)
+
+    @mock.patch("requests.get")
+    def test_override_values_in_update_session(self, mock_get):
+
+        eng_comment = "Forgot to update this."
+
+        test_payload = {'sessionID': self.session_id_truth, 'hostname': 'titan',
+                        'eng_comment': eng_comment}
+
+        self.track.update_session(eng_comment, hostname='titan')
+        mock_get.assert_called_once_with(self.track.update_url, params=test_payload, timeout=3.0)

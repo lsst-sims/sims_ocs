@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+import argparse
+import sqlite3
+
+from lsst.sims.ocs.setup import Tracking
+from lsst.sims.ocs.utilities import expand_path
+
+def main(opts):
+    if opts.verbose:
+        print(opts.session_code)
+
+    row = None
+    with sqlite3.connect(expand_path(opts.dbfile)) as conn:
+        cursor = conn.cursor()
+        cursor.execute("select * from Session;")
+        row = cursor.fetchone()
+
+    session_id = row[0]
+    username = row[1]
+    hostname = row[2]
+    version = row[4]
+    startup_comment = row[5]
+
+    if opts.verbose:
+        print(session_id, username, hostname, version, startup_comment)
+
+    tracking = Tracking(session_id, opts.session_code, startup_comment)
+    if opts.tracking_db is not None:
+        tracking.opsim_tracking_url = opts.tracking_db
+
+    tracking.track_session(hostname=hostname, user=username, version=version)
+
+    running_time = None
+    with open(expand_path(opts.logfile), 'r') as ifile:
+        for line in ifile:
+            if "Total running" in line:
+                running_time = float(line.strip().split()[11])
+                break
+
+    eng_comment = "Simulation finished successfully in {:.2f} seconds".format(running_time)
+
+    if opts.verbose:
+        print(eng_comment)
+
+    tracking.update_session(eng_comment, hostname=hostname)
+
+if __name__ == '__main__':
+    description = ["This script will add a tracking record to the production tracking database"]
+    description.append("in the event one does not get added from a simulation.")
+
+    parser = argparse.ArgumentParser(usage="add_tracking [options]",
+                                     description=" ".join(description),
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("-v", "--verbose", dest="verbose", action="store_true",
+                        help="Flag to print out certain information.")
+    parser.add_argument("--session-code", dest="session_code", choices=["science", "code_dev", "system",
+                        "engineering"], default="science", help="Set the type of simulation session for "
+                        "the OpSim tracking database.")
+    parser.add_argument("--tracking-db", dest="tracking_db", help="Option to set an alternative URL "
+                        "for the OpSim tracking database.")
+
+    parser.add_argument("dbfile", help="The full path to the OpSim SQLite database file.")
+    parser.add_argument("logfile", help="The full path to the OpSim log file.")
+
+    args = parser.parse_args()
+    main(args)

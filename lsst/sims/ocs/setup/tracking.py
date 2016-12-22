@@ -58,13 +58,31 @@ class Tracking(object):
         """
         return self.opsim_tracking_url + "/status.php"
 
-    def track_session(self):
+    def track_session(self, hostname=None, user=None, version=None):
         """Record the simulation session into the tracking database.
+
+        Parameters
+        ----------
+        hostname : str, optional
+            An alternate hostname.
+        user : str, optional
+            An alternate username.
+        version : str, optional
+            An alternate version number.
         """
-        payload = {'sessionID': self.session_id, 'hostname': get_hostname(), 'user': get_user(),
+        if hostname is None:
+            hostname = get_hostname()
+
+        if user is None:
+            user = get_user()
+
+        if version is None:
+            version = get_version()
+
+        payload = {'sessionID': self.session_id, 'hostname': hostname, 'user': user,
                    'startup_comment': self.startup_comment,
                    'code_test': self.session_type_codes[self.session_type], 'status_id': 1.0,
-                   'run_version': get_version()}
+                   'run_version': version}
 
         result = requests.get(self.tracking_url, params=payload, timeout=3.0)
         if result.ok:
@@ -72,7 +90,7 @@ class Tracking(object):
         else:
             self.log.warning("Tracking for session was not recorded successfully!")
 
-    def update_session(self, eng_comment):
+    def update_session(self, eng_comment, hostname=None):
         """Update the simulation session in the tracking database with a comment.
 
         This function allows the simulation session's entry in the tracking database to be updated with an
@@ -83,8 +101,13 @@ class Tracking(object):
         ----------
         eng_comment : str
             A comment about the simulation session hopefully for a successful run.
+        hostname : str, optional
+            An alternate hostname
         """
-        payload = {'sessionID': self.session_id, 'hostname': get_hostname(), 'eng_comment': eng_comment}
+        if hostname is None:
+            hostname = get_hostname()
+
+        payload = {'sessionID': self.session_id, 'hostname': hostname, 'eng_comment': eng_comment}
 
         result = requests.get(self.update_url, params=payload, timeout=3.0)
         if result.ok:
