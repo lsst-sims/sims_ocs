@@ -80,6 +80,12 @@ class SocsDatabase(object):
         # Parameter for holding data lists
         self.data_list = collections.defaultdict(list)
 
+    @property
+    def data_empty(self):
+        """bool: Is internal data list empty
+        """
+        return len(self.data_list) == 0
+
     def _create_tables(self, metadata=None, use_autoincrement=True, session_id_start=1000):
         """Create all the relevant tables.
 

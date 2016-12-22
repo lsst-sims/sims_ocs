@@ -13,6 +13,7 @@ import logging.handlers
 import os
 import signal
 import subprocess as sp
+import time
 
 import ts_scheduler.schedulerMain
 
@@ -32,6 +33,8 @@ def stop_programs(lpid, spid, log):
             # Scheduler PID is no longer present.
             pass
     if lpid is not None:
+        # Pause so final log messages can make it, especially on exceptions.
+        time.sleep(5.0)
         os.kill(lpid, signal.SIGKILL)
 
 def main(args):
@@ -80,11 +83,12 @@ def main(args):
         try:
             sim.run()
         except:
-            logger.error("An exception was thrown!")
+            if not sim.db.data_empty:
+                sim.db.write()
             sim.finalize()
-            logger.error("Simulation was not completed correctly.")
-            logger.error("", exc_info=True)
-            stop_programs(log_pid, sched_pid, logger)
+            logger.exception("An exception was thrown in SOCS!")
+            if args.track_session:
+                tracking.update_session("Simulation was not completed correctly.")
             raise
 
         sim.finalize()

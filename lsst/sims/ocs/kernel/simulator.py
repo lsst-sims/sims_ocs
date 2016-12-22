@@ -12,6 +12,7 @@ from lsst.sims.ocs.kernel import Sequencer, TargetProposalHistory, TimeHandler
 from lsst.sims.ocs.sal import SalManager, topic_strdict
 from lsst.sims.ocs.setup import LoggingLevel
 from lsst.sims.ocs.utilities.constants import DAYS_IN_YEAR, SECONDS_IN_MINUTE
+from lsst.sims.ocs.utilities.socs_exceptions import SchedulerTimeoutError
 
 __all__ = ["Simulator"]
 
@@ -141,10 +142,15 @@ class Simulator(object):
         This function provides the mechanism for getting the target from the
         Scheduler. Currently, a while loop is required to do this.
         """
+        lasttime = time.time()
         while self.wait_for_scheduler:
             rcode = self.sal.manager.getNextSample_target(self.target)
             if rcode == 0 and self.target.num_exposures != 0:
                 break
+            else:
+                tf = time.time()
+                if (tf - lasttime) > 60.0:
+                    raise SchedulerTimeoutError("The Scheduler is not serving targets!")
 
     def initialize(self):
         """Perform initialization steps.
