@@ -83,9 +83,10 @@ def main(args):
         try:
             sim.run()
         except:
-            #logger.exception("Simulation was not completed correctly.")
             sim.finalize()
             logger.exception("An exception was thrown in SOCS!")
+            if args.track_session:
+                tracking.update_session("Simulation was not completed correctly.")
             raise
 
         sim.finalize()
