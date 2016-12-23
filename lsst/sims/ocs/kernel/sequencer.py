@@ -193,7 +193,7 @@ class Sequencer(object):
             self.observation.sun_az = numpy.degrees(msi["sunAz"][0])
             self.observation.sun_ra = numpy.degrees(msi["sunRA"])
             self.observation.sun_dec = numpy.degrees(msi["sunDec"])
-            self.observation.sun_elong = numpy.degrees(msi["solarElong"][0])
+            self.observation.solar_elong = numpy.degrees(msi["solarElong"][0])
         else:
             self.log.log(LoggingLevel.EXTENSIVE.value, "No target received!")
             self.observation.observationId = target.targetId
