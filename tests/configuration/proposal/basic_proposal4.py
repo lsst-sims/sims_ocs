@@ -34,7 +34,7 @@ class BasicProposal4(General):
         time_range1.start = 1
         time_range1.end = 1825
 
-         # Dec Band 2
+        # Dec Band 2
         time_range2 = TimeRange()
         time_range2.start = 1826
         time_range2.end = 3650
