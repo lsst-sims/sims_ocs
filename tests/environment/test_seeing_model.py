@@ -101,6 +101,11 @@ class TestSeeingModel(unittest.TestCase):
         seeing_values = self.seeing.calculate_seeing(self.elapsed_time, 'z', 1.5)
         self.compare_seeing(seeing_values, 0.715884983539581, 0.77351383253748662, 1.0886341618872941)
 
+    def test_bad_filter_name(self):
+        self.initialize()
+        seeing_values = self.seeing.calculate_seeing(self.elapsed_time, '', 1.5)
+        self.compare_seeing(seeing_values, -1.0, -1.0, -1.0)
+
     @mock.patch("lsst.sims.ocs.database.socs_db.SocsDatabase", spec=True)
     def xtest_database_write(self, mock_db):
         mock_db.session_id = mock.Mock(return_value=1001)

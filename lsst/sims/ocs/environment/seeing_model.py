@@ -47,6 +47,8 @@ class SeeingModel(object):
         tuple
             The FWHM 500nm, FWHM Geometric and FWHM Effective seeing values.
         """
+        if filter_name == '':
+            return (-1.0, -1.0, -1.0)
         fwhm_500 = self.get_seeing(delta_time)
         airmass_correction = numpy.power(airmass, self.AIRMASS_CORRECTION_POWER)
         filter_wavelength_correction = numpy.power(self.RAW_SEEING_WAVELENGTH /
