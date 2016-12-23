@@ -11,7 +11,7 @@ import os
 import shutil
 import unittest
 
-from lsst.sims.ocs.setup.prog_config import read_file_config, write_file_config
+from lsst.sims.ocs.setup.prog_config import apply_file_config, read_file_config, write_file_config
 
 class ProgConfigTest(unittest.TestCase):
 
@@ -95,3 +95,69 @@ config_path = /home/demouser/mysql
         parser = read_file_config(self.config_file, self.config_dir)
         with self.assertRaises(configparser.NoOptionError):
             parser.get("mysql", "save_directory")
+
+    def test_option_override_with_sqlite_as_db(self):
+        sample_config = """
+[Database]
+type = sqlite
+
+[sqlite]
+save_directory = /home/demouser/storage
+session_id_start = 2345
+
+[tracking]
+tracking_db = http://fun.new.machine.edu/tracking
+        """
+        config_file = "opsim4_options_with_sqlite_testing"
+        with open(os.path.join('.', config_file), 'w') as cfile:
+            cfile.write(sample_config)
+
+        config = read_file_config(config_file, '.')
+
+        options = collections.namedtuple("options", ["db_type", "sqlite_save_dir", "session_id_start",
+                                                     "track_session", "tracking_db"])
+        # Set option defaults
+        options.db_type = "mysql"
+        options.sqlite_save_dir = None
+        options.session_id_start = None
+        options.track_session = False
+        options.tracking_db = None
+
+        apply_file_config(config, options)
+        self.assertEqual(options.db_type, "sqlite")
+        self.assertEqual(options.sqlite_save_dir, "/home/demouser/storage")
+        self.assertEqual(options.session_id_start, 2345)
+        self.assertTrue(options.track_session)
+        self.assertEqual(options.tracking_db, "http://fun.new.machine.edu/tracking")
+
+        os.remove(config_file)
+
+    def test_option_override_with_mysql_as_db(self):
+        sample_config = """
+[Database]
+type = mysql
+
+[mysql]
+config_path = /home/demouser/mysql
+        """
+        config_file = "opsim4_options_with_mysql_testing"
+        with open(os.path.join('.', config_file), 'w') as cfile:
+            cfile.write(sample_config)
+
+        config = read_file_config(config_file, '.')
+
+        options = collections.namedtuple("options", ["db_type", "mysql_config_path",
+                                                     "track_session", "tracking_db"])
+        # Set option defaults
+        options.db_type = "mysql"
+        options.mysql_config_path = None
+        options.track_session = False
+        options.tracking_db = None
+
+        apply_file_config(config, options)
+        self.assertEqual(options.db_type, "mysql")
+        self.assertEqual(options.mysql_config_path, "/home/demouser/mysql")
+        self.assertFalse(options.track_session)
+        self.assertIsNone(options.tracking_db)
+
+        os.remove(config_file)

@@ -7,7 +7,39 @@ import os
 
 from lsst.sims.ocs.utilities import expand_path
 
-__all__ = ["read_file_config", "write_file_config"]
+__all__ = ["apply_file_config", "read_file_config", "write_file_config"]
+
+def apply_file_config(config, options):
+    """Apply configuration file values to the command-line options.
+
+    Parameters
+    ----------
+    config : configparser.ConfigParser
+        The configuration file instance.
+    options : argparse.Namespace
+        The command-line options instance.
+    """
+    options.db_type = config["Database"]["type"]
+    try:
+        options.sqlite_save_dir = config[options.db_type]["save_directory"]
+    except KeyError:
+        pass
+    try:
+        options.session_id_start = int(config[options.db_type]["session_id_start"])
+    except KeyError:
+        pass
+    try:
+        options.mysql_config_path = config[options.db_type]["config_path"]
+    except KeyError:
+        pass
+    try:
+        options.track_session = config["tracking"] is not None
+    except KeyError:
+        pass
+    try:
+        options.tracking_db = config["tracking"]["tracking_db"]
+    except KeyError:
+        pass
 
 def write_file_config(options, conf_dir=None):
     """Write a configuration file from the given options.
