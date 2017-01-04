@@ -847,8 +847,8 @@ def create_target_history(metadata):
                          doc="The seeing (units=arcseconds) for the target."),
                   Column("slewTime", Float, nullable=False,
                          doc="The calculated slew time (units=seconds) for the target."),
-                  Column("costBonus", Float, nullable=False,
-                         doc="The calculated cost bonus (slew time) for the target."),
+                  Column("cost", Float, nullable=False,
+                         doc="The calculated cost for the target."),
                   Column("rank", Float, nullable=False,
                          doc="The rank of the target for the associated proposal. If more than one "
                              "proposal, this is a coadded value."),

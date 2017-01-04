@@ -52,6 +52,7 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['numRequestingProps'], target_topic.num_proposals)
         self.assertEqual(result['moonRA'], target_topic.moon_ra)
         self.assertEqual(result['moonAz'], target_topic.moon_az)
+        self.assertEqual(result['cost'], target_topic.cost)
 
     def test_create_field_table(self):
         fields = tbls.create_field(self.metadata)
