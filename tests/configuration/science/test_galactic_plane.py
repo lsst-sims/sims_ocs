@@ -22,6 +22,7 @@ class GalacticPlaneTest(unittest.TestCase):
         self.assertEqual(self.prop.filters['i'].bright_limit, 19.5)
         self.assertFalse(self.prop.scheduling.accept_serendipity)
         self.assertFalse(self.prop.scheduling.accept_consecutive_visits)
+        self.assertEqual(self.prop.scheduling.time_weight, 0.0)
 
     def test_set_topic(self):
         in_topic = scheduler_generalPropConfigC()

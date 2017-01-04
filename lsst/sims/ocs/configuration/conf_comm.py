@@ -52,9 +52,11 @@ class ConfigurationCommunicator(object):
         self.sched_driver_conf = self.sal.set_publish_topic("driverConfig")
         self.sched_driver_conf.coadd_values = self.config.sched_driver.coadd_values
         self.sched_driver_conf.time_balancing = self.config.sched_driver.time_balancing
-        self.sched_driver_conf.timebonus_tmax = self.config.sched_driver.timebonus_tmax
-        self.sched_driver_conf.timebonus_bmax = self.config.sched_driver.timebonus_bmax
-        self.sched_driver_conf.timebonus_slope = self.config.sched_driver.timebonus_slope
+        self.sched_driver_conf.timecost_time_max = self.config.sched_driver.timecost_time_max
+        self.sched_driver_conf.timecost_time_ref = self.config.sched_driver.timecost_time_ref
+        self.sched_driver_conf.timecost_cost_ref = self.config.sched_driver.timecost_cost_ref
+        self.sched_driver_conf.timecost_weight = self.config.sched_driver.timecost_weight
+        self.sched_driver_conf.filtercost_weight = self.config.sched_driver.filtercost_weight
         self.sched_driver_conf.night_boundary = self.config.sched_driver.night_boundary
         self.sched_driver_conf.new_moon_phase_threshold = self.config.sched_driver.new_moon_phase_threshold
         self.sched_driver_conf.ignore_sky_brightness = self.config.sched_driver.ignore_sky_brightness

@@ -62,6 +62,7 @@ class BasicProposal3(General):
         self.scheduling.time_window_start = -0.5
         self.scheduling.time_window_max = 0.5
         self.scheduling.time_window_end = 1.0
+        self.scheduling.time_weight = 1.0
 
         # --------------------------
         # Band Filter specifications

@@ -23,6 +23,7 @@ class Scheduling(pexConfig.Config):
                                       'grouped visits.', float)
     time_window_end = pexConfig.Field('Relative time when the window ends for subsequent grouped visits.',
                                       float)
+    time_weight = pexConfig.Field('Weighting factor for scaling the shape of the time window.', float)
 
     def setDefaults(self):
         """Default specification for scheduling information.
@@ -37,3 +38,4 @@ class Scheduling(pexConfig.Config):
         self.time_window_start = 0.0
         self.time_window_max = 0.0
         self.time_window_end = 0.0
+        self.time_weight = 0.0

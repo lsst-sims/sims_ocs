@@ -66,6 +66,7 @@ class NorthEclipticSpur(General):
         self.scheduling.time_window_start = 0.5
         self.scheduling.time_window_max = 1.0
         self.scheduling.time_window_end = 2.0
+        self.scheduling.time_weight = 1.0
 
         # --------------------------
         # Band Filter specifications

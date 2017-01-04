@@ -32,6 +32,7 @@ class WideFastDeepTest(unittest.TestCase):
         self.assertEqual(self.prop.scheduling.time_window_start, 0.5)
         self.assertEqual(self.prop.scheduling.time_window_max, 1.0)
         self.assertEqual(self.prop.scheduling.time_window_end, 2.0)
+        self.assertEqual(self.prop.scheduling.time_weight, 1.0)
 
     def test_set_topic(self):
         in_topic = scheduler_generalPropConfigC()
