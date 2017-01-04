@@ -27,7 +27,7 @@
 
 set -e
 
-DEFAULT_TAG="mareuter/opsim4:base"
+DEFAULT_TAG="lsst/opsim4:base"
 
 usage() {
   cat << EOD
