@@ -1,4 +1,4 @@
-FROM mareuter/opsim4:base
+FROM lsst/opsim4:base
 MAINTAINER Michael Reuter <mareuter@lsst.org>
 
 ARG SIMS_VERSION
