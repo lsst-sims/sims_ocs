@@ -32,6 +32,7 @@ DEFAULT_SOCS_VERSION="master"
 DEFAULT_SCHED_VERSION="master"
 DEFAULT_CONFUI_VERSION="master"
 DEFAULT_SIMS_VERSION="2.3.1"
+NOCACHE=true
 
 usage() {
   cat << EOD
@@ -47,12 +48,13 @@ usage() {
     -o          Version for the SOCS code. Defaults to $DEFAULT_SOCS_VERSION
     -d          Version for the Scheduler code. Defaults to $DEFAULT_SCHED_VERSION
     -u          Version for the Configuration UI code. Defaults to $DEFAULT_CONFUI_VERSION
+    -n          Turn off no-cache option.
 
 EOD
 }
 
 # get the options
-while getopts hps:o:d:u: c; do
+while getopts hps:o:d:u:n c; do
     case $c in
             h) usage ; exit 0 ;;
             p) PUSH=1 ;;
@@ -60,6 +62,7 @@ while getopts hps:o:d:u: c; do
             o) SOCS_VERSION="$OPTARG" ;;
             d) SCHED_VERSION="$OPTARG" ;;
             u) CONFUI_VERSION="$OPTARG" ;;
+			n) NOCACHE=false ;;
             \?) usage ; exit 2 ;;
     esac
 done
@@ -91,10 +94,12 @@ if [ -z $CONFUI_VERSION ] ; then
     CONFUI_VERSION=$DEFAULT_CONFUI_VERSION
 fi 
 
+
+
 # Build the release image
 
 printf "Building Opsim4 image with tag: %s\n" $TAG
-docker build --no-cache=true \
+docker build --no-cache=${NOCACHE} \
              --build-arg SIMS_VERSION="$SIMS_VERSION" \
              --build-arg SOCS_VERSION="$SOCS_VERSION" \
              --build-arg SCHED_VERSION="$SCHED_VERSION" \
