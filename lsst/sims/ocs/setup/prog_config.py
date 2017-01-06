@@ -19,26 +19,28 @@ def apply_file_config(config, options):
     options : argparse.Namespace
         The command-line options instance.
     """
-    options.db_type = config["Database"]["type"]
+    # When the code switches to Python 3 for good, replace the get calls with dictionary access
+    # and change the exceptions from configparser.NoOptionError configparser.NoSectionError to KeyError.
+    options.db_type = config.get("Database", "type")
     try:
-        options.sqlite_save_dir = config[options.db_type]["save_directory"]
-    except KeyError:
+        options.sqlite_save_dir = config.get(options.db_type, "save_directory")
+    except configparser.NoOptionError:
         pass
     try:
-        options.session_id_start = int(config[options.db_type]["session_id_start"])
-    except KeyError:
+        options.session_id_start = int(config.get(options.db_type, "session_id_start"))
+    except configparser.NoOptionError:
         pass
     try:
-        options.mysql_config_path = config[options.db_type]["config_path"]
-    except KeyError:
+        options.mysql_config_path = config.get(options.db_type, "config_path")
+    except configparser.NoOptionError:
         pass
     try:
-        options.track_session = config["tracking"] is not None
-    except KeyError:
+        options.track_session = config.has_section("tracking")
+    except configparser.NoSectionError:
         pass
     try:
-        options.tracking_db = config["tracking"]["tracking_db"]
-    except KeyError:
+        options.tracking_db = config.get("tracking", "tracking_db")
+    except (configparser.NoOptionError, configparser.NoSectionError):
         pass
 
 def write_file_config(options, conf_dir=None):

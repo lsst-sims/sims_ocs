@@ -392,7 +392,7 @@ def write_target_history(data, sid):
         ('cloud', data.cloud),
         ('seeing', data.seeing),
         ('slewTime', data.slew_time),
-        ('costBonus', data.cost_bonus),
+        ('cost', data.cost),
         ('rank', data.rank),
         ('propBoost', data.prop_boost),
         ('numRequestingProps', data.num_proposals),

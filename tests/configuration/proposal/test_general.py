@@ -59,6 +59,7 @@ class GeneralTest(unittest.TestCase):
         self.assertEqual(out_topic.num_region_selections, 2)
         self.assertEqual(out_topic.num_exclusion_selections, 0)
         self.assertEqual(out_topic.num_filters, 3)
+        self.assertEqual(out_topic.time_weight, 0.0)
 
     def test_a_hybrid_proposal_set_topic(self):
         ad = BasicProposal3()
@@ -76,6 +77,7 @@ class GeneralTest(unittest.TestCase):
         self.assertEqual(out_topic.time_window_start, -0.5)
         self.assertEqual(out_topic.time_window_max, 0.5)
         self.assertEqual(out_topic.time_window_end, 1.0)
+        self.assertEqual(out_topic.time_weight, 1.0)
 
     def test_a_time_ordered_proposal_set_topic(self):
         gen = BasicProposal4()

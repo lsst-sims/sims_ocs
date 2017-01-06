@@ -17,3 +17,4 @@ class SchedulingTest(unittest.TestCase):
         self.assertEqual(self.sched.time_window_start, 0.0)
         self.assertEqual(self.sched.time_window_max, 0.0)
         self.assertEqual(self.sched.time_window_end, 0.0)
+        self.assertEqual(self.sched.time_weight, 0.0)

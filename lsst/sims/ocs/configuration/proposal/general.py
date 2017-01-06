@@ -108,5 +108,6 @@ class General(pexConfig.Config):
         topic.time_window_start = self.scheduling.time_window_start
         topic.time_window_max = self.scheduling.time_window_max
         topic.time_window_end = self.scheduling.time_window_end
+        topic.time_weight = self.scheduling.time_weight
 
         return topic
