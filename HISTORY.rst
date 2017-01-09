@@ -8,6 +8,15 @@ History
 
 This release of SOCS is designed to replace version 3 of the Operations Simulator.
 
+* Science proposals implemented:
+
+  * Wide-Fast-Deep
+  * North Ecliptic Spur
+  * Galactic Plane
+  * South Celestial Pole
+
+* Science proposals can be configured to have time dependent sky region selections
+
 * Implement interested proposal behavior
 
 * Filter swapping during dark time around new moon
@@ -28,6 +37,7 @@ This release of SOCS is designed to replace version 3 of the Operations Simulato
   * More information to ObsHistory and TargetHistory tables
   * New table (Config) for tracking simulation configuration information
   * New table (Proposal) for tracking the active science proposals
+  * New view (SummaryAllProps) for similar information to OpSim3 Summary table
 
 0.3 (2016-05-20)
 ~~~~~~~~~~~~~~~~
