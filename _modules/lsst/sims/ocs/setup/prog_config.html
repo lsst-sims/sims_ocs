@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.setup.prog_config &mdash; Simulated OCS 0.7.0 documentation</title>
+  <title>lsst.sims.ocs.setup.prog_config &mdash; Simulated OCS 0.7.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.7.0
+                0.7.1
               </div>
             
           
@@ -145,7 +145,41 @@
 
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.utilities</span> <span class="kn">import</span> <span class="n">expand_path</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;read_file_config&quot;</span><span class="p">,</span> <span class="s2">&quot;write_file_config&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apply_file_config&quot;</span><span class="p">,</span> <span class="s2">&quot;read_file_config&quot;</span><span class="p">,</span> <span class="s2">&quot;write_file_config&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="apply_file_config"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.prog_config.html#lsst.sims.ocs.setup.prog_config.apply_file_config">[docs]</a><span class="k">def</span> <span class="nf">apply_file_config</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Apply configuration file values to the command-line options.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    config : configparser.ConfigParser</span>
+<span class="sd">        The configuration file instance.</span>
+<span class="sd">    options : argparse.Namespace</span>
+<span class="sd">        The command-line options instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># When the code switches to Python 3 for good, replace the get calls with dictionary access</span>
+    <span class="c1"># and change the exceptions from configparser.NoOptionError configparser.NoSectionError to KeyError.</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">db_type</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Database&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">sqlite_save_dir</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">db_type</span><span class="p">,</span> <span class="s2">&quot;save_directory&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">session_id_start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">db_type</span><span class="p">,</span> <span class="s2">&quot;session_id_start&quot;</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">mysql_config_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">db_type</span><span class="p">,</span> <span class="s2">&quot;config_path&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">track_session</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="s2">&quot;tracking&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoSectionError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">tracking_db</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tracking&quot;</span><span class="p">,</span> <span class="s2">&quot;tracking_db&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">,</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoSectionError</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="write_file_config"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.prog_config.html#lsst.sims.ocs.setup.prog_config.write_file_config">[docs]</a><span class="k">def</span> <span class="nf">write_file_config</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">conf_dir</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Write a configuration file from the given options.</span>
@@ -229,7 +263,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.0',
+            VERSION:'0.7.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

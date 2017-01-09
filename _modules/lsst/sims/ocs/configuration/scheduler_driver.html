@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.scheduler_driver &mdash; Simulated OCS 0.7.0 documentation</title>
+  <title>lsst.sims.ocs.configuration.scheduler_driver &mdash; Simulated OCS 0.7.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.7.0
+                0.7.1
               </div>
             
           
@@ -147,9 +147,16 @@
     <span class="n">coadd_values</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to determine if two identical field/filter targets have their &#39;</span>
                                    <span class="s1">&#39;ranks added and then considered as one target.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="n">time_balancing</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to detemine if cross-proposal time-balancing is used.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
-    <span class="n">timebonus_tmax</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-    <span class="n">timebonus_bmax</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-    <span class="n">timebonus_slope</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">timecost_time_max</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The slew time (units=seconds) where the time cost value equals &#39;</span>
+                                        <span class="s1">&#39;one.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">timecost_time_ref</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The reference slew time (units=seconds) that sets the steepness of &#39;</span>
+                                        <span class="s1">&#39;the cost function.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">timecost_cost_ref</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The cost value associated with the time cost reference slew time.&#39;</span><span class="p">,</span>
+                                        <span class="nb">float</span><span class="p">)</span>
+    <span class="n">timecost_weight</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The weighting value to apply to the slew time cost function result.&#39;</span><span class="p">,</span>
+                                      <span class="nb">float</span><span class="p">)</span>
+    <span class="n">filtercost_weight</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The weighting value to apply to the filter change cost function &#39;</span>
+                                        <span class="s1">&#39;result.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
     <span class="n">night_boundary</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Solar altitude (degrees) when it is considered night.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
     <span class="n">new_moon_phase_threshold</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;New moon phase threshold for swapping to dark time filter.&#39;</span><span class="p">,</span>
                                                <span class="nb">float</span><span class="p">)</span>
@@ -164,9 +171,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">coadd_values</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_balancing</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timebonus_tmax</span> <span class="o">=</span> <span class="mf">200.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timebonus_bmax</span> <span class="o">=</span> <span class="mf">10.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timebonus_slope</span> <span class="o">=</span> <span class="mf">5.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timecost_time_max</span> <span class="o">=</span> <span class="mf">150.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timecost_time_ref</span> <span class="o">=</span> <span class="mf">5.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timecost_cost_ref</span> <span class="o">=</span> <span class="mf">0.033</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timecost_weight</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filtercost_weight</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">night_boundary</span> <span class="o">=</span> <span class="o">-</span><span class="mf">12.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">new_moon_phase_threshold</span> <span class="o">=</span> <span class="mf">20.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ignore_sky_brightness</span> <span class="o">=</span> <span class="bp">False</span>
@@ -206,7 +215,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.0',
+            VERSION:'0.7.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

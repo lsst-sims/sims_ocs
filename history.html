@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>History &mdash; Simulated OCS 0.7.0 documentation</title>
+  <title>History &mdash; Simulated OCS 0.7.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.0 documentation" href="index.html"/>
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="index.html"/>
         <link rel="next" title="lsst.sims.ocs package" href="api/lsst.sims.ocs.html"/>
         <link rel="prev" title="UnscheduledDowntime" href="tables/unscheduleddowntime.html"/> 
 
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.7.0
+                0.7.1
               </div>
             
           
@@ -147,6 +147,14 @@
 <h2>1.0 (in progress)<a class="headerlink" href="#in-progress" title="Permalink to this headline">¶</a></h2>
 <p>This release of SOCS is designed to replace version 3 of the Operations Simulator.</p>
 <ul class="simple">
+<li>Science proposals implemented:<ul>
+<li>Wide-Fast-Deep</li>
+<li>North Ecliptic Spur</li>
+<li>Galactic Plane</li>
+<li>South Celestial Pole</li>
+</ul>
+</li>
+<li>Science proposals can be configured to have time dependent sky region selections</li>
 <li>Implement interested proposal behavior</li>
 <li>Filter swapping during dark time around new moon</li>
 <li>Environment information used in simulation<ul>
@@ -164,6 +172,7 @@
 <li>More information to ObsHistory and TargetHistory tables</li>
 <li>New table (Config) for tracking simulation configuration information</li>
 <li>New table (Proposal) for tracking the active science proposals</li>
+<li>New view (SummaryAllProps) for similar information to OpSim3 Summary table</li>
 </ul>
 </li>
 </ul>
@@ -266,7 +275,7 @@ distribution proposals.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.7.0',
+            VERSION:'0.7.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

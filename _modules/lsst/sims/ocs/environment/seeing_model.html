@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.environment.seeing_model &mdash; Simulated OCS 0.7.0 documentation</title>
+  <title>lsst.sims.ocs.environment.seeing_model &mdash; Simulated OCS 0.7.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.7.0
+                0.7.1
               </div>
             
           
@@ -185,6 +185,8 @@
 <span class="sd">        tuple</span>
 <span class="sd">            The FWHM 500nm, FWHM Geometric and FWHM Effective seeing values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">filter_name</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
         <span class="n">fwhm_500</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_seeing</span><span class="p">(</span><span class="n">delta_time</span><span class="p">)</span>
         <span class="n">airmass_correction</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">airmass</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AIRMASS_CORRECTION_POWER</span><span class="p">)</span>
         <span class="n">filter_wavelength_correction</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RAW_SEEING_WAVELENGTH</span> <span class="o">/</span>
@@ -318,7 +320,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.0',
+            VERSION:'0.7.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

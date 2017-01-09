@@ -9,6 +9,7 @@ Submodules
    lsst.sims.ocs.utilities.constants
    lsst.sims.ocs.utilities.file_helpers
    lsst.sims.ocs.utilities.session_info
+   lsst.sims.ocs.utilities.socs_exceptions
 
 Module contents
 ---------------

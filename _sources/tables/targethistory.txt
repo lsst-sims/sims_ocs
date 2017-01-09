@@ -45,8 +45,8 @@ This table keeps a record of the information from the requested targets during a
       -  The seeing (units=arcseconds) for the target.
     * -  slewTime
       -  The calculated slew time (units=seconds) for the target.
-    * -  costBonus
-      -  The calculated cost bonus (slew time) for the target.
+    * -  cost
+      -  The calculated cost for the target.
     * -  rank
       -  The rank of the target for the associated proposal. If more than one proposal, this is a coadded value.
     * -  propBoost

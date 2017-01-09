@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.scheduler_driver module &mdash; Simulated OCS 0.7.0 documentation</title>
+  <title>lsst.sims.ocs.configuration.scheduler_driver module &mdash; Simulated OCS 0.7.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.0 documentation" href="../index.html"/>
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.configuration package" href="lsst.sims.ocs.configuration.html"/>
         <link rel="next" title="lsst.sims.ocs.configuration.science_proposals module" href="lsst.sims.ocs.configuration.science_proposals.html"/>
         <link rel="prev" title="lsst.sims.ocs.configuration.observatory module" href="lsst.sims.ocs.configuration.observatory.html"/> 
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.7.0
+                0.7.1
               </div>
             
           
@@ -189,6 +189,12 @@ should call the base Config.__init__</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.filtercost_weight">
+<code class="descname">filtercost_weight</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.filtercost_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>The weighting value to apply to the filter change cost function result.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.ignore_airmass">
 <code class="descname">ignore_airmass</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.ignore_airmass" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flag to ignore airmass limits when rejecting targets.</p>
@@ -231,19 +237,28 @@ should call the base Config.__init__</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_bmax">
-<code class="descname">timebonus_bmax</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_bmax" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timecost_cost_ref">
+<code class="descname">timecost_cost_ref</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timecost_cost_ref" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cost value associated with the time cost reference slew time.</p>
+</dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_slope">
-<code class="descname">timebonus_slope</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_slope" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timecost_time_max">
+<code class="descname">timecost_time_max</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timecost_time_max" title="Permalink to this definition">¶</a></dt>
+<dd><p>The slew time (units=seconds) where the time cost value equals one.</p>
+</dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_tmax">
-<code class="descname">timebonus_tmax</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timebonus_tmax" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timecost_time_ref">
+<code class="descname">timecost_time_ref</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timecost_time_ref" title="Permalink to this definition">¶</a></dt>
+<dd><p>The reference slew time (units=seconds) that sets the steepness of the cost function.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timecost_weight">
+<code class="descname">timecost_weight</code><a class="headerlink" href="#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.timecost_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>The weighting value to apply to the slew time cost function result.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -290,7 +305,7 @@ should call the base Config.__init__</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.7.0',
+            VERSION:'0.7.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

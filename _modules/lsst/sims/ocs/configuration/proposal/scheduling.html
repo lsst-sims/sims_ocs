@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.proposal.scheduling &mdash; Simulated OCS 0.7.0 documentation</title>
+  <title>lsst.sims.ocs.configuration.proposal.scheduling &mdash; Simulated OCS 0.7.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.0 documentation" href="../../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../../index.html"/> 
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.7.0
+                0.7.1
               </div>
             
           
@@ -161,6 +161,7 @@
                                       <span class="s1">&#39;grouped visits.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
     <span class="n">time_window_end</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Relative time when the window ends for subsequent grouped visits.&#39;</span><span class="p">,</span>
                                       <span class="nb">float</span><span class="p">)</span>
+    <span class="n">time_weight</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Weighting factor for scaling the shape of the time window.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Scheduling.setDefaults"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.scheduling.html#lsst.sims.ocs.configuration.proposal.scheduling.Scheduling.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Default specification for scheduling information.</span>
@@ -174,7 +175,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">time_interval</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_window_start</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_window_max</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">time_window_end</span> <span class="o">=</span> <span class="mf">0.0</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_window_end</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_weight</span> <span class="o">=</span> <span class="mf">0.0</span></div></div>
 </pre></div>
 
            </div>
@@ -208,7 +210,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'0.7.0',
+            VERSION:'0.7.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.database.tables.base_tbls &mdash; Simulated OCS 0.7.0 documentation</title>
+  <title>lsst.sims.ocs.database.tables.base_tbls &mdash; Simulated OCS 0.7.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.0 documentation" href="../../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../../index.html"/> 
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.7.0
+                0.7.1
               </div>
             
           
@@ -985,8 +985,8 @@
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The seeing (units=arcseconds) for the target.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;slewTime&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The calculated slew time (units=seconds) for the target.&quot;</span><span class="p">),</span>
-                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;costBonus&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The calculated cost bonus (slew time) for the target.&quot;</span><span class="p">),</span>
+                  <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;cost&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The calculated cost for the target.&quot;</span><span class="p">),</span>
                   <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;rank&quot;</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The rank of the target for the associated proposal. If more than one &quot;</span>
                              <span class="s2">&quot;proposal, this is a coadded value.&quot;</span><span class="p">),</span>
@@ -1101,7 +1101,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'0.7.0',
+            VERSION:'0.7.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

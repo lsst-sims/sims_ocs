@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.kernel.simulator &mdash; Simulated OCS 0.7.0 documentation</title>
+  <title>lsst.sims.ocs.kernel.simulator &mdash; Simulated OCS 0.7.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.7.0
+                0.7.1
               </div>
             
           
@@ -150,6 +150,7 @@
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.sal</span> <span class="kn">import</span> <span class="n">SalManager</span><span class="p">,</span> <span class="n">topic_strdict</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.setup</span> <span class="kn">import</span> <span class="n">LoggingLevel</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.utilities.constants</span> <span class="kn">import</span> <span class="n">DAYS_IN_YEAR</span><span class="p">,</span> <span class="n">SECONDS_IN_MINUTE</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.utilities.socs_exceptions</span> <span class="kn">import</span> <span class="n">SchedulerTimeoutError</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Simulator&quot;</span><span class="p">]</span>
 
@@ -279,10 +280,15 @@
 <span class="sd">        This function provides the mechanism for getting the target from the</span>
 <span class="sd">        Scheduler. Currently, a while loop is required to do this.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lasttime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_scheduler</span><span class="p">:</span>
             <span class="n">rcode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">getNextSample_target</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">rcode</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">num_exposures</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">break</span></div>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tf</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">tf</span> <span class="o">-</span> <span class="n">lasttime</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">60.0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">SchedulerTimeoutError</span><span class="p">(</span><span class="s2">&quot;The Scheduler is not serving targets!&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Simulator.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform initialization steps.</span>
@@ -550,7 +556,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.0',
+            VERSION:'0.7.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

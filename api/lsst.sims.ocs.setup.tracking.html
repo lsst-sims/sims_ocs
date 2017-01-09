@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.setup.tracking module &mdash; Simulated OCS 0.7.0 documentation</title>
+  <title>lsst.sims.ocs.setup.tracking module &mdash; Simulated OCS 0.7.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.0 documentation" href="../index.html"/>
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.setup package" href="lsst.sims.ocs.setup.html"/>
         <link rel="next" title="lsst.sims.ocs.utilities package" href="lsst.sims.ocs.utilities.html"/>
         <link rel="prev" title="lsst.sims.ocs.setup.prog_config module" href="lsst.sims.ocs.setup.prog_config.html"/> 
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.7.0
+                0.7.1
               </div>
             
           
@@ -222,13 +222,26 @@ information to record the simulation session to the tracking database.</p>
 </table>
 <dl class="method">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.track_session">
-<code class="descname">track_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/setup/tracking.html#Tracking.track_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.track_session" title="Permalink to this definition">¶</a></dt>
+<code class="descname">track_session</code><span class="sig-paren">(</span><em>hostname=None</em>, <em>user=None</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/setup/tracking.html#Tracking.track_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.track_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Record the simulation session into the tracking database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>hostname</strong> (<em>str, optional</em>) &#8211; An alternate hostname.</li>
+<li><strong>user</strong> (<em>str, optional</em>) &#8211; An alternate username.</li>
+<li><strong>version</strong> (<em>str, optional</em>) &#8211; An alternate version number.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.update_session">
-<code class="descname">update_session</code><span class="sig-paren">(</span><em>eng_comment</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/setup/tracking.html#Tracking.update_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.update_session" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_session</code><span class="sig-paren">(</span><em>eng_comment</em>, <em>hostname=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/setup/tracking.html#Tracking.update_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.update_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the simulation session in the tracking database with a comment.</p>
 <p>This function allows the simulation session&#8217;s entry in the tracking database to be updated with an
 engineering comment. This is hopefully to record that the simulation has completed successfully, but
@@ -237,7 +250,11 @@ may be used to indicate a simulation failure.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>eng_comment</strong> (<em>str</em>) &#8211; A comment about the simulation session hopefully for a successful run.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>eng_comment</strong> (<em>str</em>) &#8211; A comment about the simulation session hopefully for a successful run.</li>
+<li><strong>hostname</strong> (<em>str, optional</em>) &#8211; An alternate hostname</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -300,7 +317,7 @@ may be used to indicate a simulation failure.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.7.0',
+            VERSION:'0.7.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

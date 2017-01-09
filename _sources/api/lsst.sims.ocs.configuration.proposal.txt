@@ -11,10 +11,12 @@ Submodules
    lsst.sims.ocs.configuration.proposal.helpers
    lsst.sims.ocs.configuration.proposal.scheduling
    lsst.sims.ocs.configuration.proposal.selection
+   lsst.sims.ocs.configuration.proposal.selection_list
    lsst.sims.ocs.configuration.proposal.sky_constraints
    lsst.sims.ocs.configuration.proposal.sky_exclusion
    lsst.sims.ocs.configuration.proposal.sky_nightly_bounds
    lsst.sims.ocs.configuration.proposal.sky_region
+   lsst.sims.ocs.configuration.proposal.time_range
 
 Module contents
 ---------------

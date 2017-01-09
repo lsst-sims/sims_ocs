@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.conf_comm &mdash; Simulated OCS 0.7.0 documentation</title>
+  <title>lsst.sims.ocs.configuration.conf_comm &mdash; Simulated OCS 0.7.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.7.0
+                0.7.1
               </div>
             
           
@@ -190,9 +190,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;driverConfig&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">coadd_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">coadd_values</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">time_balancing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">time_balancing</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">timebonus_tmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">timebonus_tmax</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">timebonus_bmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">timebonus_bmax</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">timebonus_slope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">timebonus_slope</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">timecost_time_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">timecost_time_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">timecost_time_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">timecost_time_ref</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">timecost_cost_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">timecost_cost_ref</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">timecost_weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">timecost_weight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">filtercost_weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">filtercost_weight</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">night_boundary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">night_boundary</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">new_moon_phase_threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">new_moon_phase_threshold</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">ignore_sky_brightness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">ignore_sky_brightness</span>
@@ -396,7 +398,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.0',
+            VERSION:'0.7.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
