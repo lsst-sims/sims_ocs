@@ -94,8 +94,6 @@ if [ -z $CONFUI_VERSION ] ; then
     CONFUI_VERSION=$DEFAULT_CONFUI_VERSION
 fi 
 
-
-
 # Build the release image
 
 printf "Building Opsim4 image with tag: %s\n" $TAG
