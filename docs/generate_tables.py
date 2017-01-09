@@ -49,6 +49,14 @@ def main():
         doc.save(os.path.join(TOP_LEVEL_DIR, table_rst_file))
         table_rst_files.append(table_rst_file)
 
+    # Handle summary table
+    doc = create_summary_all_props_table()
+    table_rst_file = os.path.join(GENERATED_TABLE_DIR, "summaryallprops.rst")
+    doc.save(os.path.join(TOP_LEVEL_DIR, table_rst_file))
+    table_rst_files.append(table_rst_file)
+
+    table_rst_files.sort()
+
     collection_doc = rst.Document('Database Tables')
     para = rst.Paragraph(os.linesep.join([".. toctree::", "   :maxdepth: 2"]))
     collection_doc.add_child(para)
@@ -69,6 +77,60 @@ def main():
                 for row in iter(ifile):
                     ofile.write(row)
         shutil.move(tmp_file, rst_full_file)
+
+def create_summary_all_props_table():
+    """Create documentation for SummaryAllProps table.
+    """
+    obshistory = tbls.create_observation_history(MetaData())
+    oh_columns_1 = ['observationId', 'night', 'observationStartTime', 'observationStartMJD',
+                    'observationStartLST', 'numExposures', 'visitTime', 'visitExposureTime']
+    oh_columns_2 = ['fieldId', 'fieldRA', 'fieldDec', 'altitude', 'azimuth', 'filter', 'airmass',
+                    'skyBrightness', 'cloud', 'seeingFwhm500', 'seeingFwhmGeom', 'seeingFwhmEff']
+    oh_columns_3 = ['moonRA', 'moonDec', 'moonAlt', 'moonAz', 'moonDistance', 'moonPhase', 'sunAlt', 'sunAz',
+                    'solarElong']
+
+    obsprophist = tbls.create_observation_proposal_history(MetaData())
+    oph_columns = ['Proposal_propId']
+    oph_relabel = ['proposalId']
+
+    slewhistory = tbls.create_slew_history(MetaData())
+    sh_columns = ['slewTime', 'slewDistance']
+
+    slewfinalstate = tbls.create_slew_final_state(MetaData())
+    sfs_columns = ['paraAngle', 'rotTelPos', 'rotSkyPos']
+
+    doc = rst.Document("SummaryAllProps")
+
+    # Table description
+    table_descr = ["This table contains a summary set of information from the observations by joining"]
+    table_descr.append("certain columns from particular tables. There is one row for each proposal observed")
+    table_descr.append("target. If more that one proposal received the same observation, rows with mostly ")
+    table_descr.append("duplicated information, except proposal Id, are created.")
+    para = rst.Paragraph(os.linesep.join(table_descr))
+    doc.add_child(para)
+
+    # Table columns
+    dtbl = rst.Table(header=["Column", "Description"])
+    filtered_column_documentation(dtbl, obshistory, oh_columns_1)
+    filtered_column_documentation(dtbl, obsprophist, oph_columns, oph_relabel)
+    filtered_column_documentation(dtbl, obshistory, oh_columns_2)
+    filtered_column_documentation(dtbl, slewhistory, sh_columns)
+    filtered_column_documentation(dtbl, slewfinalstate, sfs_columns)
+    filtered_column_documentation(dtbl, obshistory, oh_columns_3)
+
+    doc.add_child(dtbl)
+    return doc
+
+def filtered_column_documentation(dtbl, t, cfilter, clabel=None):
+    """Generate column documentation with respect to a filter.
+    """
+    for c in t.columns.values():
+        if c.name in cfilter:
+            if clabel is not None:
+                c_name = clabel.pop(0)
+            else:
+                c_name = c.name
+            dtbl.add_item((c_name, c.doc))
 
 if __name__ == "__main__":
     main()
