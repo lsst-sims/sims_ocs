@@ -68,6 +68,7 @@ class Simulator(object):
             self.fractional_duration = self.conf.survey.duration
         else:
             self.fractional_duration = self.opts.frac_duration
+            self.conf.survey.duration = self.opts.frac_duration
         self.time_handler = TimeHandler(self.conf.survey.start_date)
         self.log = logging.getLogger("kernel.Simulator")
         self.sal = SalManager()

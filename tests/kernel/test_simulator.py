@@ -62,8 +62,11 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(self.sim.duration, 1.0)
 
     def test_no_override_from_options(self):
+        # Need to use a new instance since self.configuration is modified.
+        configuration = SimulationConfig()
+        configuration.load_proposals()
         self.options.frac_duration = -1
-        sim = Simulator(self.options, self.configuration, self.mock_socs_db)
+        sim = Simulator(self.options, configuration, self.mock_socs_db)
         self.assertEquals(sim.duration, 365.0)
 
     @mock.patch("lsst.sims.ocs.kernel.sequencer.Sequencer.initialize")
