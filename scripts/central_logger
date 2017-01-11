@@ -5,25 +5,9 @@ import logging
 import logging.handlers
 import pickle
 import SocketServer
-import socket
 import struct
 
 from lsst.sims.ocs.setup.log import DETAIL_LEVEL, MIN_FILE
-
-def get_port_address():
-    """Check available ports for the central logger.
-    """
-    port_range = (16345, 16365)
-    for port_number in range(port_range[0], port_range[1]):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        try:
-            s.bind(("127.0.0.1", port_number))
-        except socket.error as e:
-            if e.errno == 98:
-                s.close()
-                continue
-        s.close()
-        return port_number
 
 class LogRecordStreamHandler(SocketServer.StreamRequestHandler):
     """Handler for a streaming logging request.
@@ -99,8 +83,7 @@ def main(options):
                         filename=options.log_filename,
                         filemode="w")
 
-    #port_address = get_port_address()
-    tcpserver = LogRecordSocketReceiver()
+    tcpserver = LogRecordSocketReceiver(port=options.log_port)
     tcpserver.serve_until_stopped()
 
 if __name__ == '__main__':
@@ -109,6 +92,8 @@ if __name__ == '__main__':
                         help='Set the detail level of the system.')
     parser.add_argument('-f', '--filename', dest='log_filename',
                         help='Set the logging file name.')
+    parser.add_argument("--log-port", dest="log_port", default=logging.handlers.DEFAULT_TCP_LOGGING_PORT,
+                        type=int, help="Specify the logging port for the central logger.")
 
     args = parser.parse_args()
 

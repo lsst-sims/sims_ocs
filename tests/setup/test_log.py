@@ -1,4 +1,5 @@
 import logging
+import logging.handlers
 try:
     from unittest import mock
 except ImportError:
@@ -66,3 +67,16 @@ class LogTest(unittest.TestCase):
         configure_logging(2, 3)
         self.assertEqual(len(logging.getLogger().handlers), 2)
         self.assertEqual(logging.getLogger().getEffectiveLevel(), logging.DEBUG)
+        handler = logging.getLogger().handlers[-1]
+        self.assertIsInstance(handler, logging.handlers.SocketHandler)
+        self.assertEqual(handler.port, logging.handlers.DEFAULT_TCP_LOGGING_PORT)
+
+    def test_configure_logging_different_port(self):
+        port = 21683
+        logging.getLogger().handlers = []
+        configure_logging(2, 3, port)
+        self.assertEqual(len(logging.getLogger().handlers), 2)
+        self.assertEqual(logging.getLogger().getEffectiveLevel(), logging.DEBUG)
+        handler = logging.getLogger().handlers[-1]
+        self.assertIsInstance(handler, logging.handlers.SocketHandler)
+        self.assertEqual(handler.port, port)
