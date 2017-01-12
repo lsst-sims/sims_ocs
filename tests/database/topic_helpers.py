@@ -127,8 +127,4 @@ target_prop_hist = lsst.sims.ocs.kernel.TargetProposalHistory(propHistId=1, Prop
                                                               proposalBonus=0.82, proposalBoost=0.2,
                                                               TargetHistory_targetId=10)
 
-seeing_tuple = (102, 9997, 0.456)
-
-cloud_tuple = (25, 2403, 0.125)
-
 config_tuple = (10, "config/test/a", "1.0")

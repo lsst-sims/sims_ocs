@@ -117,8 +117,6 @@ class SocsDatabase(object):
         self.observation_proposal_history = tables.create_observation_proposal_history(metadata)
         self.target_proposal_history = tables.create_target_proposal_history(metadata)
         self.config = tables.create_config(metadata)
-        # self.seeing = tables.create_seeing(metadata)
-        # self.cloud = tables.create_cloud(metadata)
         self.summary_all_props = tables.create_summary_all_props(metadata, self.observation_history,
                                                                  self.slew_history, self.slew_initial_state,
                                                                  self.proposal,
