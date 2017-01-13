@@ -13,5 +13,6 @@ from .time_range import *
 from .sky_region import *
 
 from .general import *
+from .sequence import *
 
 from .helpers import *
