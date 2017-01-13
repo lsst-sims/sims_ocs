@@ -105,10 +105,3 @@ class TestSeeingModel(unittest.TestCase):
         self.initialize()
         seeing_values = self.seeing.calculate_seeing(self.elapsed_time, '', 1.5)
         self.compare_seeing(seeing_values, -1.0, -1.0, -1.0)
-
-    @mock.patch("lsst.sims.ocs.database.socs_db.SocsDatabase", spec=True)
-    def xtest_database_write(self, mock_db):
-        mock_db.session_id = mock.Mock(return_value=1001)
-        self.initialize()
-        self.seeing.write_to_db(mock_db)
-        self.assertEqual(mock_db.write_table.call_count, 1)

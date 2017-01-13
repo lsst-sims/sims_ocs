@@ -2,8 +2,6 @@ import numpy
 import os
 import sqlite3
 
-from lsst.sims.ocs.database.tables import write_cloud
-
 __all__ = ["CloudModel"]
 
 class CloudModel(object):
@@ -87,17 +85,3 @@ class CloudModel(object):
         """
         topic.timestamp = th.current_timestamp
         topic.cloud = self.get_cloud(th.time_since_start)
-
-    def write_to_db(self, db):
-        """Write all the cloud information to the survey database.
-
-        Parameters
-        ----------
-        db : :class:`.SocsDatabase`
-            The instance of the survey database.
-        """
-        indicies = numpy.arange(1, self.cloud_dates.size + 1)
-        cloud_info = list(map(tuple, numpy.hstack((indicies, self.cloud_dates,
-                                                  self.cloud_values)).reshape(-1, 3, order='F').tolist()))
-        cloud = [write_cloud(ci, db.session_id) for ci in cloud_info]
-        db.write_table("cloud", cloud)

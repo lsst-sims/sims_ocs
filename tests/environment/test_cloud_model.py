@@ -1,10 +1,6 @@
 import os
 import sqlite3
 import unittest
-try:
-    from unittest import mock
-except ImportError:
-    import mock
 
 import SALPY_scheduler
 
@@ -63,10 +59,3 @@ class TestCloudModel(unittest.TestCase):
         self.cloud.set_topic(th, cloud_topic)
         self.assertEqual(cloud_topic.timestamp, 1590969600.0)
         self.assertEqual(cloud_topic.cloud, 0.5)
-
-    @mock.patch("lsst.sims.ocs.database.socs_db.SocsDatabase", spec=True)
-    def xtest_database_write(self, mock_db):
-        mock_db.session_id = mock.Mock(return_value=1001)
-        self.cloud.initialize()
-        self.cloud.write_to_db(mock_db)
-        self.assertEqual(mock_db.write_table.call_count, 1)
