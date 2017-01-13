@@ -23,12 +23,12 @@ class General(pexConfig.Config):
 
         Parameters
         ----------
-        topic : SALPY_scheduler.scheduler_genPropConfigC
+        topic : SALPY_scheduler.scheduler_generalPropConfigC
             The instance of the DDS topic to set information on.
 
         Returns
         -------
-        SALPY_scheduler.scheduler_genPropConfigC
+        SALPY_scheduler.scheduler_generalPropConfigC
             The topic with current information set.
         """
         topic.name = self.name if self.name is not None else "None"
