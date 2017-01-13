@@ -1,6 +1,6 @@
 import lsst.pex.config as pexConfig
 
-from lsst.sims.ocs.configuration.proposal import General, BandFilter, Selection
+from lsst.sims.ocs.configuration.proposal import General, GeneralBandFilter, Selection
 from lsst.sims.ocs.configuration.proposal import general_prop_reg, SELECTION_LIMIT_TYPES
 
 __all__ = ["WideFastDeep"]
@@ -74,7 +74,7 @@ class WideFastDeep(General):
         # Band Filter specifications
         # --------------------------
 
-        u_filter = BandFilter()
+        u_filter = GeneralBandFilter()
         u_filter.name = 'u'
         u_filter.num_visits = 75
         u_filter.bright_limit = 21.3
@@ -82,7 +82,7 @@ class WideFastDeep(General):
         u_filter.max_seeing = 1.5
         u_filter.exposures = [15.0, 15.0]
 
-        g_filter = BandFilter()
+        g_filter = GeneralBandFilter()
         g_filter.name = 'g'
         g_filter.num_visits = 105
         g_filter.num_grouped_visits = 2
@@ -91,7 +91,7 @@ class WideFastDeep(General):
         g_filter.max_seeing = 1.5
         g_filter.exposures = [15.0, 15.0]
 
-        r_filter = BandFilter()
+        r_filter = GeneralBandFilter()
         r_filter.name = 'r'
         r_filter.num_visits = 240
         r_filter.num_grouped_visits = 2
@@ -100,7 +100,7 @@ class WideFastDeep(General):
         r_filter.max_seeing = 1.5
         r_filter.exposures = [15.0, 15.0]
 
-        i_filter = BandFilter()
+        i_filter = GeneralBandFilter()
         i_filter.name = 'i'
         i_filter.num_visits = 240
         i_filter.num_grouped_visits = 2
@@ -109,7 +109,7 @@ class WideFastDeep(General):
         i_filter.max_seeing = 1.5
         i_filter.exposures = [15.0, 15.0]
 
-        z_filter = BandFilter()
+        z_filter = GeneralBandFilter()
         z_filter.name = 'z'
         z_filter.num_visits = 210
         z_filter.num_grouped_visits = 2
@@ -118,7 +118,7 @@ class WideFastDeep(General):
         z_filter.max_seeing = 1.5
         z_filter.exposures = [15.0, 15.0]
 
-        y_filter = BandFilter()
+        y_filter = GeneralBandFilter()
         y_filter.name = 'y'
         y_filter.num_visits = 210
         y_filter.bright_limit = 16.5

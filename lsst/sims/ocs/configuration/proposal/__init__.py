@@ -2,6 +2,7 @@
 Module for classes that handle the configuration of the science proposals.
 """
 from .band_filter import *
+from .general_band_filter import *
 from .scheduling import *
 from .general_scheduling import *
 from .selection import *

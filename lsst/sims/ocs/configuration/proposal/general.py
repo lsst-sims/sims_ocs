@@ -1,6 +1,6 @@
 import lsst.pex.config as pexConfig
 
-from lsst.sims.ocs.configuration.proposal import BandFilter, GeneralScheduling
+from lsst.sims.ocs.configuration.proposal import GeneralBandFilter, GeneralScheduling
 from lsst.sims.ocs.configuration.proposal import SkyConstraints, SkyExclusion, SkyNightlyBounds, SkyRegion
 
 __all__ = ["General"]
@@ -15,7 +15,7 @@ class General(pexConfig.Config):
     sky_exclusion = pexConfig.ConfigField('Sky region selection for the proposal.', SkyExclusion)
     sky_nightly_bounds = pexConfig.ConfigField('Sky region selection for the proposal.', SkyNightlyBounds)
     sky_constraints = pexConfig.ConfigField('Sky region selection for the proposal.', SkyConstraints)
-    filters = pexConfig.ConfigDictField('Filter configuration for the proposal.', str, BandFilter)
+    filters = pexConfig.ConfigDictField('Filter configuration for the proposal.', str, GeneralBandFilter)
     scheduling = pexConfig.ConfigField('Scheduling configuration for the proposal.', GeneralScheduling)
 
     def set_topic(self, topic):

@@ -1,4 +1,5 @@
-from lsst.sims.ocs.configuration.proposal import BandFilter, General, Selection, SelectionList, TimeRange
+from lsst.sims.ocs.configuration.proposal import General, GeneralBandFilter, Selection
+from lsst.sims.ocs.configuration.proposal import SelectionList, TimeRange
 from lsst.sims.ocs.configuration.proposal import SELECTION_LIMIT_TYPES
 
 class BasicProposal4(General):
@@ -89,7 +90,7 @@ class BasicProposal4(General):
         # Band Filter specifications
         # --------------------------
 
-        u_filter = BandFilter()
+        u_filter = GeneralBandFilter()
         u_filter.name = 'u'
         u_filter.num_visits = 75
         u_filter.num_grouped_visits = 1
@@ -98,7 +99,7 @@ class BasicProposal4(General):
         u_filter.max_seeing = 1.5
         u_filter.exposures = [15.0, 15.0]
 
-        g_filter = BandFilter()
+        g_filter = GeneralBandFilter()
         g_filter.name = 'g'
         g_filter.num_visits = 105
         g_filter.num_grouped_visits = 2
@@ -107,7 +108,7 @@ class BasicProposal4(General):
         g_filter.max_seeing = 1.5
         g_filter.exposures = [15.0, 15.0]
 
-        r_filter = BandFilter()
+        r_filter = GeneralBandFilter()
         r_filter.name = 'r'
         r_filter.num_visits = 240
         r_filter.num_grouped_visits = 2
@@ -116,7 +117,7 @@ class BasicProposal4(General):
         r_filter.max_seeing = 1.5
         r_filter.exposures = [15.0, 15.0]
 
-        i_filter = BandFilter()
+        i_filter = GeneralBandFilter()
         i_filter.name = 'i'
         i_filter.num_visits = 240
         i_filter.num_grouped_visits = 2

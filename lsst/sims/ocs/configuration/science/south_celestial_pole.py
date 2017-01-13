@@ -1,6 +1,6 @@
 import lsst.pex.config as pexConfig
 
-from lsst.sims.ocs.configuration.proposal import General, BandFilter, Selection
+from lsst.sims.ocs.configuration.proposal import General, GeneralBandFilter, Selection
 from lsst.sims.ocs.configuration.proposal import general_prop_reg, SELECTION_LIMIT_TYPES
 
 __all__ = ["SouthCelestialPole"]
@@ -69,7 +69,7 @@ class SouthCelestialPole(General):
         # Band Filter specifications
         # --------------------------
 
-        u_filter = BandFilter()
+        u_filter = GeneralBandFilter()
         u_filter.name = 'u'
         u_filter.num_visits = 30
         u_filter.bright_limit = 21.0
@@ -77,7 +77,7 @@ class SouthCelestialPole(General):
         u_filter.max_seeing = 3.0
         u_filter.exposures = [15.0, 15.0]
 
-        g_filter = BandFilter()
+        g_filter = GeneralBandFilter()
         g_filter.name = 'g'
         g_filter.num_visits = 30
         g_filter.bright_limit = 21.0
@@ -85,7 +85,7 @@ class SouthCelestialPole(General):
         g_filter.max_seeing = 3.0
         g_filter.exposures = [15.0, 15.0]
 
-        r_filter = BandFilter()
+        r_filter = GeneralBandFilter()
         r_filter.name = 'r'
         r_filter.num_visits = 30
         r_filter.bright_limit = 20.0
@@ -93,7 +93,7 @@ class SouthCelestialPole(General):
         r_filter.max_seeing = 2.0
         r_filter.exposures = [15.0, 15.0]
 
-        i_filter = BandFilter()
+        i_filter = GeneralBandFilter()
         i_filter.name = 'i'
         i_filter.num_visits = 30
         i_filter.bright_limit = 19.5
@@ -101,7 +101,7 @@ class SouthCelestialPole(General):
         i_filter.max_seeing = 2.0
         i_filter.exposures = [15.0, 15.0]
 
-        z_filter = BandFilter()
+        z_filter = GeneralBandFilter()
         z_filter.name = 'z'
         z_filter.num_visits = 30
         z_filter.bright_limit = 17.0
@@ -109,7 +109,7 @@ class SouthCelestialPole(General):
         z_filter.max_seeing = 2.0
         z_filter.exposures = [15.0, 15.0]
 
-        y_filter = BandFilter()
+        y_filter = GeneralBandFilter()
         y_filter.name = 'y'
         y_filter.num_visits = 30
         y_filter.bright_limit = 16.0
