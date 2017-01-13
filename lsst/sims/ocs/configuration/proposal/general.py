@@ -11,10 +11,10 @@ class General(pexConfig.Config):
     """
 
     name = pexConfig.Field('Name for the proposal.', str)
-    sky_region = pexConfig.ConfigField('Sky region selectionfor the proposal.', SkyRegion)
-    sky_exclusion = pexConfig.ConfigField('Sky region selectionfor the proposal.', SkyExclusion)
-    sky_nightly_bounds = pexConfig.ConfigField('Sky region selectionfor the proposal.', SkyNightlyBounds)
-    sky_constraints = pexConfig.ConfigField('Sky region selectionfor the proposal.', SkyConstraints)
+    sky_region = pexConfig.ConfigField('Sky region selection for the proposal.', SkyRegion)
+    sky_exclusion = pexConfig.ConfigField('Sky region selection for the proposal.', SkyExclusion)
+    sky_nightly_bounds = pexConfig.ConfigField('Sky region selection for the proposal.', SkyNightlyBounds)
+    sky_constraints = pexConfig.ConfigField('Sky region selection for the proposal.', SkyConstraints)
     filters = pexConfig.ConfigDictField('Filter configuration for the proposal.', str, BandFilter)
     scheduling = pexConfig.ConfigField('Scheduling configuration for the proposal.', Scheduling)
 
