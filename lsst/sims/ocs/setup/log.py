@@ -31,7 +31,7 @@ DETAIL_LEVEL = {
     5: LoggingLevel.TRACE.value
 }
 
-def configure_logging(console_detail, file_detail):
+def configure_logging(console_detail, file_detail, log_port=logging.handlers.DEFAULT_TCP_LOGGING_PORT):
     """Configure logging for the application.
 
     Configuration for both the console and file (via socket) logging for the application.
@@ -40,6 +40,10 @@ def configure_logging(console_detail, file_detail):
     ----------
     console_detail : int
         The requested detail level for the console logger.
+    file_detail : int
+        The requested detail level for the socket (file) logger.
+    log_port : int, optional
+        An alternate port for the socker logger.
     """
     main_level = max(console_detail, file_detail)
     logging.basicConfig(level=DETAIL_LEVEL[main_level], format=CONSOLE_FORMAT)
@@ -54,7 +58,7 @@ def configure_logging(console_detail, file_detail):
     ch.setFormatter(logging.Formatter(CONSOLE_FORMAT))
     logging.getLogger().addHandler(ch)
 
-    sh = logging.handlers.SocketHandler('localhost', logging.handlers.DEFAULT_TCP_LOGGING_PORT)
+    sh = logging.handlers.SocketHandler('localhost', log_port)
     logging.getLogger().addHandler(sh)
 
 def set_log_levels(verbose=0):
