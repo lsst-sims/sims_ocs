@@ -1,4 +1,4 @@
-from lsst.sims.ocs.configuration.proposal import BandFilter, Sequence
+from lsst.sims.ocs.configuration.proposal import BandFilter, SubSequence, Sequence
 
 class BasicProposal5(Sequence):
     """This class sets the parameters for specifying a test proposal.
@@ -33,6 +33,36 @@ class BasicProposal5(Sequence):
         # ------------------------------
 
         self.sky_constraints.max_airmass = 2.5
+
+        #----------------------------
+        # Sub-Sequence specifications
+        #----------------------------
+
+        sseq0 = SubSequence()
+        sseq0.name = "Only_GR"
+        sseq0.filters = ['g', 'r']
+        sseq0.visits_per_filter = [25, 30]
+        sseq0.num_events = 20
+        sseq0.num_max_missed = 5
+        sseq0.time_interval = 3 * 24 * 60 * 60
+        sseq0.time_window_start = 0.0
+        sseq0.time_window_max = 1.0
+        sseq0.time_window_end = 2.0
+        sseq0.time_weight = 1.0
+
+        sseq1 = SubSequence()
+        sseq1.name = "Only_IZ"
+        sseq1.filters = ['i', 'z']
+        sseq1.visits_per_filter = [35, 10]
+        sseq1.num_events = 25
+        sseq1.num_max_missed = 10
+        sseq1.time_interval = 5 * 24 * 60 * 60
+        sseq1.time_window_start = 0.0
+        sseq1.time_window_max = 1.0
+        sseq1.time_window_end = 2.0
+        sseq1.time_weight = 1.0
+
+        self.sub_sequences = {0: sseq0, 1: sseq1}
 
         # ----------------------
         # Scheduling information

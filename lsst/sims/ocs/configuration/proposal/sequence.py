@@ -1,7 +1,7 @@
 import lsst.pex.config as pexConfig
 
-from lsst.sims.ocs.configuration.proposal import BandFilter
-from lsst.sims.ocs.configuration.proposal import Scheduling, SkyConstraints, SkyExclusion, SkyNightlyBounds
+from lsst.sims.ocs.configuration.proposal import BandFilter, Scheduling, SkyConstraints
+from lsst.sims.ocs.configuration.proposal import SkyExclusion, SkyNightlyBounds, SubSequence
 
 __all__ = ["Sequence"]
 
@@ -15,6 +15,7 @@ class Sequence(pexConfig.Config):
     sky_exclusion = pexConfig.ConfigField('Sky region selection for the proposal.', SkyExclusion)
     sky_nightly_bounds = pexConfig.ConfigField('Sky region selection for the proposal.', SkyNightlyBounds)
     sky_constraints = pexConfig.ConfigField('Sky region selection for the proposal.', SkyConstraints)
+    sub_sequences = pexConfig.ConfigDictField('Set of sub-sequences.', int, SubSequence)
     filters = pexConfig.ConfigDictField('Filter configuration for the proposal.', str, BandFilter)
     scheduling = pexConfig.ConfigField('Scheduling configuration for the proposal.', Scheduling)
 
@@ -48,6 +49,30 @@ class Sequence(pexConfig.Config):
         topic.num_user_regions = num_sky_user_regions
         for i, sky_user_region in enumerate(self.sky_user_regions):
             topic.user_region_ids[i] = sky_user_region
+
+        num_sub_sequences = len(self.sub_sequences) if self.sub_sequences is not None else 0
+        topic.num_sub_sequences = num_sub_sequences
+        if topic.num_sub_sequences:
+            sub_sequence_names = []
+            sub_sequence_filters = []
+            filter_visit_index = 0
+            for i, sub_sequence in self.sub_sequences.items():
+                sub_sequence_names.append(sub_sequence.name)
+                sub_sequence_filters.append(sub_sequence.get_filter_string())
+                topic.num_sub_sequence_filters[i] = len(sub_sequence.filters)
+                for filter_visit in sub_sequence.visits_per_filter:
+                    topic.num_sub_sequence_filter_visits[filter_visit_index] = filter_visit
+                    filter_visit_index += 1
+                topic.num_sub_sequence_events[i] = sub_sequence.num_events
+                topic.num_sub_sequence_max_missed[i] = sub_sequence.num_max_missed
+                topic.sub_sequence_time_intervals[i] = sub_sequence.time_interval
+                topic.sub_sequence_time_window_starts[i] = sub_sequence.time_window_start
+                topic.sub_sequence_time_window_maximums[i] = sub_sequence.time_window_max
+                topic.sub_sequence_time_window_ends[i] = sub_sequence.time_window_end
+                topic.sub_sequence_time_weights[i] = sub_sequence.time_weight
+
+            topic.sub_sequence_names = ",".join(sub_sequence_names)
+            topic.sub_sequence_filters = ",".join(sub_sequence_filters)
 
         topic.num_filters = len(self.filters) if self.filters is not None else 0
         if topic.num_filters:
