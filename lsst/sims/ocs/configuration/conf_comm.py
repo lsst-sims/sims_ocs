@@ -222,14 +222,16 @@ class ConfigurationCommunicator(object):
         self.sal.put(self.olc_conf)
         self.sal.put(self.park_conf)
         num_proposals = 1
-        for general_config in self.config.science.general_props.active:
-            general_topic = general_config.set_topic(self.sal.get_topic("generalPropConfig"))
-            general_topic.prop_id = num_proposals
-            self.sal.put(general_topic)
-            num_proposals += 1
-        for sequence_config in self.config.science.sequence_props.active:
-            sequence_topic = sequence_config.set_topic(self.sal.get_topic("sequencePropConfig"))
-            sequence_topic.prop_id = num_proposals
-            self.sal.put(sequence_topic)
-            num_proposals += 1
+        if self.config.science.general_props.active is not None:
+            for general_config in self.config.science.general_props.active:
+                general_topic = general_config.set_topic(self.sal.get_topic("generalPropConfig"))
+                general_topic.prop_id = num_proposals
+                self.sal.put(general_topic)
+                num_proposals += 1
+        if self.config.science.sequence_props.active is not None:
+            for sequence_config in self.config.science.sequence_props.active:
+                sequence_topic = sequence_config.set_topic(self.sal.get_topic("sequencePropConfig"))
+                sequence_topic.prop_id = num_proposals
+                self.sal.put(sequence_topic)
+                num_proposals += 1
         self.log.info("Sent configuration for {} proposals.".format(num_proposals - 1))

@@ -7,6 +7,7 @@ except ImportError:
     import mock
 
 from lsst.sims.ocs.configuration import SimulationConfig
+from lsst.sims.ocs.utilities.socs_exceptions import NoProposalsConfiguredError
 from tests.helpers import CONFIG_COMM_PUT_CALLS, NUM_GEN_PROPS, NUM_SEQ_PROPS
 
 def create_file(i, directory=None, message=None):
@@ -119,7 +120,7 @@ class SimulationConfigTest(unittest.TestCase):
         self.assertEqual(len(self.sim_config.science.sequence_props.names), NUM_SEQ_PROPS)
         self.assertEqual(len(self.sim_config.science.sequence_props.active), NUM_SEQ_PROPS)
 
-    def test_load_specifc_proposals(self):
+    def test_load_general_proposals_only(self):
         self.sim_config.survey.general_proposals = ["GalacticPlane", "SouthCelestialPole"]
         self.sim_config.survey.sequence_proposals = []
         self.sim_config.load_proposals()
@@ -130,19 +131,22 @@ class SimulationConfigTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.assertEqual(len(self.sim_config.science.sequence_props.active), 0)
 
-    def test_load_no_proposals(self):
+    def test_load_sequence_proposals_only(self):
         self.sim_config.survey.general_proposals = []
-        self.sim_config.survey.sequence_proposals = []
+        self.sim_config.survey.sequence_proposals = ["DeepDrillingCosmology1"]
         self.sim_config.load_proposals()
-        self.assertEqual(self.sim_config.num_proposals, 0)
+        self.assertEqual(len(self.sim_config.science.sequence_props.names), 1)
+        self.assertEqual(len(self.sim_config.science.sequence_props.active), 1)
         with self.assertRaises(TypeError):
             self.assertEqual(len(self.sim_config.science.general_props.names), 0)
         with self.assertRaises(TypeError):
             self.assertEqual(len(self.sim_config.science.general_props.active), 0)
-        with self.assertRaises(TypeError):
-            self.assertEqual(len(self.sim_config.science.sequence_props.names), 0)
-        with self.assertRaises(TypeError):
-            self.assertEqual(len(self.sim_config.science.sequence_props.active), 0)
+
+    def test_load_no_proposals(self):
+        self.sim_config.survey.general_proposals = []
+        self.sim_config.survey.sequence_proposals = []
+        with self.assertRaises(NoProposalsConfiguredError):
+            self.sim_config.load_proposals()
 
     def test_make_tuples(self):
         d = {"a": 1, "b": {"c": "test", "d": [1, 2, 3]}}

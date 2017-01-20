@@ -6,6 +6,7 @@ import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration import load_config
 from lsst.sims.ocs.configuration.proposal import general_prop_reg, sequence_prop_reg
+from lsst.sims.ocs.utilities.socs_exceptions import NoProposalsConfiguredError
 
 __all__ = ["ScienceProposals"]
 
@@ -13,8 +14,8 @@ class ScienceProposals(pexConfig.Config):
     """Configuration for the science proposals.
     """
 
-    general_props = general_prop_reg.makeField('The list of general proposals.', multi=True)
-    sequence_props = sequence_prop_reg.makeField('The list of sequence proposals.', multi=True)
+    general_props = general_prop_reg.makeField('The list of general proposals.', optional=True, multi=True)
+    sequence_props = sequence_prop_reg.makeField('The list of sequence proposals.', optional=True, multi=True)
 
     @property
     def general_proposals(self):
@@ -80,7 +81,7 @@ class ScienceProposals(pexConfig.Config):
                 all_names = [x for x in dir(module) if not x.startswith("__")]
                 if "General" in all_names:
                     key = "GEN"
-                if "Seqeunce" in all_names:
+                if "Sequence" in all_names:
                     key = "SEQ"
                 prop_name = [x for x in all_names if x not in proposal_related][0]
                 if len(proposals[key]):
@@ -92,6 +93,9 @@ class ScienceProposals(pexConfig.Config):
             self.general_props.names = proposals["GEN"]
         if len(proposals["SEQ"]):
             self.sequence_props.names = proposals["SEQ"]
+
+        if not len(proposals["GEN"]) and not len(proposals["SEQ"]):
+            raise NoProposalsConfiguredError("Please run at least one science proposal!")
 
     def save_as(self, save_dir=''):
         """Save the configuration objects to separate files.

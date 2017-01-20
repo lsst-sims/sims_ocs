@@ -303,10 +303,16 @@ class Simulator(object):
         """
         proposals = []
         num_proposals = 1
-        for general_config in self.conf.science.general_props.active:
-            proposals.append(write_proposal(ProposalInfo(num_proposals, general_config.name, "General"),
-                                            self.db.session_id))
-            num_proposals += 1
+        if self.conf.science.general_props.active is not None:
+            for general_config in self.conf.science.general_props.active:
+                proposals.append(write_proposal(ProposalInfo(num_proposals, general_config.name, "General"),
+                                                self.db.session_id))
+                num_proposals += 1
+        if self.conf.science.sequence_props.active is not None:
+            for sequence_config in self.conf.science.sequence_props.active:
+                proposals.append(write_proposal(ProposalInfo(num_proposals, sequence_config.name, "Sequence"),
+                                                self.db.session_id))
+                num_proposals += 1
         self.db.write_table("proposal", proposals)
 
     def start_day(self):
