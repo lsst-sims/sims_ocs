@@ -13,6 +13,8 @@ class DeepDrillingCosmology1(Sequence):
     def setDefaults(self):
         """Setup all the proposal information.
         """
+        Sequence.setDefaults(self)
+
         self.name = "DeepDrillingCosmology1"
 
         # -------------------------

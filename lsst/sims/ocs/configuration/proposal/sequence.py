@@ -24,6 +24,8 @@ class Sequence(pexConfig.Config):
         """Default specification for a sequence proposal.
         """
         self.sky_user_regions = []
+        self.sub_sequences = {}
+        self.master_sub_sequences = {}
 
     def set_topic(self, topic):
         """Set the information on a DDS topic instance.

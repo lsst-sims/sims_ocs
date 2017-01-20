@@ -26,7 +26,7 @@ class DeepDrillingCosmology1Test(unittest.TestCase):
         self.assertEqual(self.prop.sub_sequences[0].time_window_max, 0.5)
         self.assertEqual(self.prop.sub_sequences[1].time_window_end, 0.7)
         self.assertEqual(self.prop.sub_sequences[0].time_weight, 1.0)
-        self.assertIsNone(self.prop.master_sub_sequences)
+        self.assertEqual(len(self.prop.master_sub_sequences), 0)
         self.assertTrue(self.prop.scheduling.accept_consecutive_visits)
         self.assertEqual(self.prop.filters['u'].max_seeing, 1.5)
         self.assertEqual(self.prop.filters['g'].bright_limit, 19.5)

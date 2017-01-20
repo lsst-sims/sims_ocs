@@ -14,8 +14,8 @@ class SequenceTest(unittest.TestCase):
     def test_basic_information_after_creation(self):
         self.assertIsNone(self.prop.name)
         self.assertIsNotNone(self.prop.sky_user_regions)
-        self.assertIsNone(self.prop.sub_sequences)
-        self.assertIsNone(self.prop.master_sub_sequences)
+        self.assertIsNotNone(self.prop.sub_sequences)
+        self.assertIsNotNone(self.prop.master_sub_sequences)
         self.assertIsNotNone(self.prop.sky_exclusion)
         self.assertIsNotNone(self.prop.sky_nightly_bounds)
         self.assertIsNotNone(self.prop.sky_constraints)
