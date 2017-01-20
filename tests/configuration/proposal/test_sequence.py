@@ -78,4 +78,17 @@ class SequenceTest(unittest.TestCase):
         self.assertListEqual(list(out_topic.master_sub_sequence_time_window_maximums)[:mss], [1.0, 1.0])
         self.assertListEqual(list(out_topic.master_sub_sequence_time_window_ends)[:mss], [2.0, 2.0])
         self.assertListEqual(list(out_topic.master_sub_sequence_time_weights)[:mss], [1.0, 1.0])
-        #self.assertEqual(out_topic.nested_sub_sequence_names, "Only_GR,Only_IZ")
+        nss = mss
+        self.assertEqual(out_topic.nested_sub_sequence_names, "Only_GR,Only_IZ")
+        self.assertEqual(out_topic.nested_sub_sequence_filters, 'g,r,i,z')
+        self.assertListEqual(list(out_topic.num_nested_sub_sequence_filters)[:mss], [2, 2])
+        self.assertEqual(out_topic.num_nested_sub_sequence_filters[mss], 0)
+        self.assertListEqual(list(out_topic.num_nested_sub_sequence_filter_visits)[:nss * 2],
+                             [2, 2, 1, 1])
+        self.assertListEqual(list(out_topic.num_nested_sub_sequence_events)[:nss], [5, 10])
+        self.assertListEqual(list(out_topic.num_nested_sub_sequence_max_missed)[:nss], [0, 1])
+        self.assertListEqual(list(out_topic.nested_sub_sequence_time_intervals)[:nss], [7200, 21600])
+        self.assertListEqual(list(out_topic.nested_sub_sequence_time_window_starts)[:nss], [0.0, 0.0])
+        self.assertListEqual(list(out_topic.nested_sub_sequence_time_window_maximums)[:nss], [1.0, 1.0])
+        self.assertListEqual(list(out_topic.nested_sub_sequence_time_window_ends)[:nss], [2.0, 2.0])
+        self.assertListEqual(list(out_topic.nested_sub_sequence_time_weights)[:nss], [1.0, 1.0])

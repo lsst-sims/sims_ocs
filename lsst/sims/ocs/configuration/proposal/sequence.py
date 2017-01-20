@@ -81,6 +81,9 @@ class Sequence(pexConfig.Config):
         if topic.num_master_sub_sequences:
             master_sub_sequence_names = []
             nested_sub_sequence_names = []
+            nested_sub_sequence_filters = []
+            nss_index = 0
+            filter_visit_index = 0
             for i, master_sub_sequence in self.master_sub_sequences.items():
                 master_sub_sequence_names.append(master_sub_sequence.name)
                 topic.num_nested_sub_sequences[i] = len(master_sub_sequence.sub_sequences)
@@ -91,9 +94,25 @@ class Sequence(pexConfig.Config):
                 topic.master_sub_sequence_time_window_maximums[i] = master_sub_sequence.time_window_max
                 topic.master_sub_sequence_time_window_ends[i] = master_sub_sequence.time_window_end
                 topic.master_sub_sequence_time_weights[i] = master_sub_sequence.time_weight
+                for sub_sequence in master_sub_sequence.sub_sequences.values():
+                    nested_sub_sequence_names.append(sub_sequence.name)
+                    nested_sub_sequence_filters.append(sub_sequence.get_filter_string())
+                    topic.num_nested_sub_sequence_filters[nss_index] = len(sub_sequence.filters)
+                    for filter_visit in sub_sequence.visits_per_filter:
+                        topic.num_nested_sub_sequence_filter_visits[filter_visit_index] = filter_visit
+                        filter_visit_index += 1
+                    topic.num_nested_sub_sequence_events[nss_index] = sub_sequence.num_events
+                    topic.num_nested_sub_sequence_max_missed[nss_index] = sub_sequence.num_max_missed
+                    topic.nested_sub_sequence_time_intervals[nss_index] = sub_sequence.time_interval
+                    topic.nested_sub_sequence_time_window_starts[nss_index] = sub_sequence.time_window_start
+                    topic.nested_sub_sequence_time_window_maximums[nss_index] = sub_sequence.time_window_max
+                    topic.nested_sub_sequence_time_window_ends[nss_index] = sub_sequence.time_window_end
+                    topic.nested_sub_sequence_time_weights[nss_index] = sub_sequence.time_weight
+                    nss_index += 1
 
             topic.master_sub_sequence_names = ",".join(master_sub_sequence_names)
             topic.nested_sub_sequence_names = ",".join(nested_sub_sequence_names)
+            topic.nested_sub_sequence_filters = ",".join(nested_sub_sequence_filters)
 
         topic.num_filters = len(self.filters) if self.filters is not None else 0
         if topic.num_filters:
