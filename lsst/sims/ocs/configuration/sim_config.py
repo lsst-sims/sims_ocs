@@ -37,6 +37,8 @@ class SimulationConfig(pexConfig.Config):
         num_props = 0
         if self.science.general_props.names is not None:
             num_props += len(self.science.general_props.names)
+        if self.science.sequence_props.names is not None:
+            num_props += len(self.science.sequence_props.names)
         return num_props
 
     def config_list(self, sub_config=None):
@@ -99,7 +101,8 @@ class SimulationConfig(pexConfig.Config):
     def load_proposals(self):
         """Tell the science proposals to load their configuration.
         """
-        self.science.load_proposals({"GEN": self.survey.general_proposals},
+        self.science.load_proposals({"GEN": self.survey.general_proposals,
+                                     "SEQ": self.survey.sequence_proposals},
                                     alternate_proposals=self.survey.alt_proposal_dir)
 
     def make_tuples(self, value, key=None):

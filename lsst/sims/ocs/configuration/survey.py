@@ -13,6 +13,7 @@ class Survey(pexConfig.Config):
     idle_delay = pexConfig.Field("The delay (units=seconds) to skip the simulation time forward when "
                                  "not receiving a target.", float)
     general_proposals = pexConfig.ListField("The list of available general proposals.", str)
+    sequence_proposals = pexConfig.ListField("The list of available sequence proposals.", str)
     alt_proposal_dir = pexConfig.Field("An alternative directory location for proposals.", str, optional=True)
 
     def setDefaults(self):
@@ -23,6 +24,7 @@ class Survey(pexConfig.Config):
         self.idle_delay = 60.0
         sci_prop = ScienceProposals()
         self.general_proposals = sci_prop.general_proposals
+        self.sequence_proposals = sci_prop.sequence_proposals
 
     @property
     def full_duration(self):

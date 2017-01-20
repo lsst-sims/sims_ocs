@@ -2,11 +2,12 @@ import importlib
 
 import lsst.pex.config as pexConfig
 
-from lsst.sims.ocs.configuration.proposal import General
+from lsst.sims.ocs.configuration.proposal import General, Sequence
 
-__all__ = ["general_prop_reg", "load_class"]
+__all__ = ["general_prop_reg", "load_class", "sequence_prop_reg"]
 
 general_prop_reg = pexConfig.makeRegistry('A registry for general proposals.', General)
+sequence_prop_reg = pexConfig.makeRegistry('A registry for sequence proposals.', Sequence)
 
 def load_class(full_class_string):
     """Dynamically load a class from a string.

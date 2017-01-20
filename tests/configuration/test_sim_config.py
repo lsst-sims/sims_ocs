@@ -7,7 +7,7 @@ except ImportError:
     import mock
 
 from lsst.sims.ocs.configuration import SimulationConfig
-from tests.helpers import CONFIG_COMM_PUT_CALLS, NUM_GEN_PROPS
+from tests.helpers import CONFIG_COMM_PUT_CALLS, NUM_GEN_PROPS, NUM_SEQ_PROPS
 
 def create_file(i, directory=None, message=None):
     filename = "conf{}.py".format(i)
@@ -95,9 +95,12 @@ class SimulationConfigTest(unittest.TestCase):
         # correct number of executions and blank files are created.
         self.sim_config.load_proposals()
         self.assertEqual(len(self.sim_config.science.general_props.active), NUM_GEN_PROPS)
-        # The downtime, environment and filters config not needing to be sent via conf_comm.
-        EXTRA_CONFIG = 3
-        expected_calls = CONFIG_COMM_PUT_CALLS + NUM_GEN_PROPS + EXTRA_CONFIG
+        self.assertEqual(len(self.sim_config.science.sequence_props.active), NUM_SEQ_PROPS)
+        # The downtime, environment,filters and observatory variational model
+        # config not needing to be sent via conf_comm.
+        EXTRA_CONFIG = 4
+        expected_calls = CONFIG_COMM_PUT_CALLS + NUM_GEN_PROPS + NUM_SEQ_PROPS + EXTRA_CONFIG
+        print(expected_calls)
         save_files = ["save_conf{}.py".format(i + 1) for i in range(expected_calls)]
         mock_pexconfig_save.side_effect = [save_file(f, self.config_save_dir) for f in save_files]
         self.sim_config.save(self.config_save_dir)
@@ -107,26 +110,39 @@ class SimulationConfigTest(unittest.TestCase):
     def test_load_proposals(self):
         with self.assertRaises(TypeError):
             self.assertEqual(len(self.sim_config.science.general_props.names), NUM_GEN_PROPS)
-
+        with self.assertRaises(TypeError):
+            self.assertEqual(len(self.sim_config.science.sequence_props.names), NUM_SEQ_PROPS)
         self.sim_config.load_proposals()
-        self.assertEqual(self.sim_config.num_proposals, NUM_GEN_PROPS)
+        self.assertEqual(self.sim_config.num_proposals, NUM_GEN_PROPS + NUM_SEQ_PROPS)
         self.assertEqual(len(self.sim_config.science.general_props.names), NUM_GEN_PROPS)
         self.assertEqual(len(self.sim_config.science.general_props.active), NUM_GEN_PROPS)
+        self.assertEqual(len(self.sim_config.science.sequence_props.names), NUM_SEQ_PROPS)
+        self.assertEqual(len(self.sim_config.science.sequence_props.active), NUM_SEQ_PROPS)
 
     def test_load_specifc_proposals(self):
         self.sim_config.survey.general_proposals = ["GalacticPlane", "SouthCelestialPole"]
+        self.sim_config.survey.sequence_proposals = []
         self.sim_config.load_proposals()
         self.assertEqual(len(self.sim_config.science.general_props.names), 2)
         self.assertEqual(len(self.sim_config.science.general_props.active), 2)
+        with self.assertRaises(TypeError):
+            self.assertEqual(len(self.sim_config.science.sequence_props.names), 0)
+        with self.assertRaises(TypeError):
+            self.assertEqual(len(self.sim_config.science.sequence_props.active), 0)
 
     def test_load_no_proposals(self):
         self.sim_config.survey.general_proposals = []
+        self.sim_config.survey.sequence_proposals = []
         self.sim_config.load_proposals()
         self.assertEqual(self.sim_config.num_proposals, 0)
         with self.assertRaises(TypeError):
             self.assertEqual(len(self.sim_config.science.general_props.names), 0)
         with self.assertRaises(TypeError):
             self.assertEqual(len(self.sim_config.science.general_props.active), 0)
+        with self.assertRaises(TypeError):
+            self.assertEqual(len(self.sim_config.science.sequence_props.names), 0)
+        with self.assertRaises(TypeError):
+            self.assertEqual(len(self.sim_config.science.sequence_props.active), 0)
 
     def test_make_tuples(self):
         d = {"a": 1, "b": {"c": "test", "d": [1, 2, 3]}}
@@ -137,7 +153,7 @@ class SimulationConfigTest(unittest.TestCase):
 
     def test_specific_configuration_tuple_list(self):
         result = self.sim_config.config_list("survey")
-        self.assertEqual(len(result), 5)
+        self.assertEqual(len(result), 6)
         self.assertIsInstance(result, list)
         self.assertIsInstance(result[0], tuple)
 

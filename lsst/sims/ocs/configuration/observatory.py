@@ -57,7 +57,7 @@ class Observatory(pexConfig.Config):
         self.dome.save(os.path.join(save_dir, "dome.py"))
         self.rotator.save(os.path.join(save_dir, "rotator.py"))
         self.camera.save(os.path.join(save_dir, "camera.py"))
-        self.camera.save(os.path.join(save_dir, "filters.py"))
+        self.filters.save(os.path.join(save_dir, "filters.py"))
         self.slew.save(os.path.join(save_dir, "slew.py"))
         self.optics_loop_corr.save(os.path.join(save_dir, "optics_loop_corr.py"))
         self.park.save(os.path.join(save_dir, "park.py"))
