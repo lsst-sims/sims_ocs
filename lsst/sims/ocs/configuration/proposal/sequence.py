@@ -1,6 +1,6 @@
 import lsst.pex.config as pexConfig
 
-from lsst.sims.ocs.configuration.proposal import BandFilter, Scheduling, SkyConstraints
+from lsst.sims.ocs.configuration.proposal import BandFilter, MasterSubSequence, Scheduling, SkyConstraints
 from lsst.sims.ocs.configuration.proposal import SkyExclusion, SkyNightlyBounds, SubSequence
 
 __all__ = ["Sequence"]
@@ -16,6 +16,7 @@ class Sequence(pexConfig.Config):
     sky_nightly_bounds = pexConfig.ConfigField('Sky region selection for the proposal.', SkyNightlyBounds)
     sky_constraints = pexConfig.ConfigField('Sky region selection for the proposal.', SkyConstraints)
     sub_sequences = pexConfig.ConfigDictField('Set of sub-sequences.', int, SubSequence)
+    master_sub_sequences = pexConfig.ConfigDictField('Set of master sub-sequences.', int, MasterSubSequence)
     filters = pexConfig.ConfigDictField('Filter configuration for the proposal.', str, BandFilter)
     scheduling = pexConfig.ConfigField('Scheduling configuration for the proposal.', Scheduling)
 
@@ -73,6 +74,26 @@ class Sequence(pexConfig.Config):
 
             topic.sub_sequence_names = ",".join(sub_sequence_names)
             topic.sub_sequence_filters = ",".join(sub_sequence_filters)
+
+        num_master_sub_sequences = len(self.master_sub_sequences) \
+            if self.master_sub_sequences is not None else 0
+        topic.num_master_sub_sequences = num_master_sub_sequences
+        if topic.num_master_sub_sequences:
+            master_sub_sequence_names = []
+            nested_sub_sequence_names = []
+            for i, master_sub_sequence in self.master_sub_sequences.items():
+                master_sub_sequence_names.append(master_sub_sequence.name)
+                topic.num_nested_sub_sequences[i] = len(master_sub_sequence.sub_sequences)
+                topic.num_master_sub_sequence_events[i] = master_sub_sequence.num_events
+                topic.num_master_sub_sequence_max_missed[i] = master_sub_sequence.num_max_missed
+                topic.master_sub_sequence_time_intervals[i] = master_sub_sequence.time_interval
+                topic.master_sub_sequence_time_window_starts[i] = master_sub_sequence.time_window_start
+                topic.master_sub_sequence_time_window_maximums[i] = master_sub_sequence.time_window_max
+                topic.master_sub_sequence_time_window_ends[i] = master_sub_sequence.time_window_end
+                topic.master_sub_sequence_time_weights[i] = master_sub_sequence.time_weight
+
+            topic.master_sub_sequence_names = ",".join(master_sub_sequence_names)
+            topic.nested_sub_sequence_names = ",".join(nested_sub_sequence_names)
 
         topic.num_filters = len(self.filters) if self.filters is not None else 0
         if topic.num_filters:
