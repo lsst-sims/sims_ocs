@@ -1,6 +1,6 @@
 #import lsst.pex.config as pexConfig
 
-from lsst.sims.ocs.configuration.proposal import BandFilter, Sequence
+from lsst.sims.ocs.configuration.proposal import BandFilter, SubSequence, Sequence
 
 __all__ = ["DeepDrillingCosmology1"]
 
@@ -39,6 +39,36 @@ class DeepDrillingCosmology1(Sequence):
 
         self.sky_constraints.max_airmass = 1.5
         self.sky_constraints.max_cloud = 0.7
+
+        #---------------------------
+        # Sub-sequence specification
+        #---------------------------
+
+        sseq0 = SubSequence()
+        sseq0.name = "main"
+        sseq0.filters = ['r', 'g', 'i', 'z', 'y']
+        sseq0.visits_per_filter = [20, 10, 20, 26, 20]
+        sseq0.num_events = 27
+        sseq0.num_max_missed = 0
+        sseq0.time_interval = 3 * 24 * 60 * 60
+        sseq0.time_window_start = -0.2
+        sseq0.time_window_max = 0.5
+        sseq0.time_window_end = 0.7
+        sseq0.time_weight = 1.0
+
+        sseq1 = SubSequence()
+        sseq1.name = "u-band"
+        sseq1.filters = ['u']
+        sseq1.visits_per_filter = [20]
+        sseq1.num_events = 7
+        sseq1.num_max_missed = 0
+        sseq1.time_interval = 1 * 24 * 60 * 60
+        sseq1.time_window_start = -0.2
+        sseq1.time_window_max = 0.5
+        sseq1.time_window_end = 0.7
+        sseq1.time_weight = 1.0
+
+        self.sub_sequences = {0: sseq0, 1: sseq1}
 
         # ----------------------
         # Scheduling information
