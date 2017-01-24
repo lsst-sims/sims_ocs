@@ -194,7 +194,6 @@ class ConfigurationCommunicator(object):
     def configure(self):
         """Configure all publish topics for the configuration communicator.
         """
-        self.log.info("Running configuration communication")
         self._configure_scheduler()
         self._configure_scheduler_driver()
         self._configure_observing_site()
@@ -210,6 +209,7 @@ class ConfigurationCommunicator(object):
     def run(self):
         """Send all of the configuration topics.
         """
+        self.log.info("Running configuration communication")
         self.sal.put(self.sched_conf)
         self.sal.put(self.sched_driver_conf)
         self.sal.put(self.obs_site_conf)
