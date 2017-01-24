@@ -175,7 +175,7 @@ class Sequencer(object):
             nra = numpy.radians(numpy.array([self.observation.ra]))
             ndec = numpy.radians(numpy.array([self.observation.dec]))
 
-            sky_mags = self.sky_model.get_sky_brightness(nid)
+            sky_mags = self.sky_model.get_sky_brightness(nid, extrapolate=True)
             attrs = self.sky_model.get_target_information(nid, nra, ndec)
             msi = self.sky_model.get_moon_sun_info(nra, ndec)
 
