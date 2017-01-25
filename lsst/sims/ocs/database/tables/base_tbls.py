@@ -811,7 +811,7 @@ def create_target_history(metadata):
                          doc="The altitude (units=degrees) of the sun."),
                   Column("sunAz", Float, nullable=False,
                          doc="The azimuth (units=degrees) of the sun."),
-                  Column("sunElong", Float, nullable=False,
+                  Column("solarElong", Float, nullable=False,
                          doc="The elongation (units=degrees) of the sun."))
 
     Index("t_filter", table.c.filter)
