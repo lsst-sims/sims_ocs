@@ -9,6 +9,7 @@ from sqlalchemy import create_engine, desc, exc, MetaData
 from lsst.sims.ocs.setup import LoggingLevel
 import tables
 from lsst.sims.ocs.utilities import expand_path, get_hostname, get_user, get_version
+from lsst.sims.ocs.utilities.socs_exceptions import SocsDatabaseError
 
 __all__ = ["SocsDatabase"]
 
@@ -270,13 +271,14 @@ class SocsDatabase(object):
         """
         conn = self._get_conn()
 
+        db_errors = []
         for table_name, table_data in self.data_list.items():
             try:
                 self.log.log(LoggingLevel.EXTENSIVE.value, "Writing {} data into DB.".format(table_name))
                 self.log.log(LoggingLevel.EXTENSIVE.value, "Length of data: {}".format(len(table_data)))
                 tbl = getattr(self, table_name)
                 conn.execute(tbl.insert(), table_data)
-            except exc.IntegrityError:
+            except exc.IntegrityError as err:
                 self.log.error("Database insertion failed for {}!".format(table_name))
                 output = collections.defaultdict(list)
                 for values in table_data:
@@ -289,7 +291,9 @@ class SocsDatabase(object):
                 filename = "{}_{}.npz".format(table_name, self.session_id)
                 numpy.savez(open(filename, 'w'), **output)
                 self.log.error("Dumping information into {}".format(filename))
-                raise
+                db_errors.append(err.message)
+        if len(db_errors):
+            raise SocsDatabaseError(os.linesep.join(db_errors))
 
     def write_table(self, table_name, table_data):
         """Collect information for the provided table.
