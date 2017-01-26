@@ -205,6 +205,15 @@ class Sequencer(object):
 
         return self.observation, slew_info, exposure_info
 
+    def sky_brightness_config(self):
+        """Get the configuration from the SkyModelPre files.
+
+        Returns
+        -------
+        list[tuple(key, value)]
+        """
+        return self.sky_model.sky_brightness_config()
+
     def start_day(self, filter_swap):
         """Perform start of day functions.
 

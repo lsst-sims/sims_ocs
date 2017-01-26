@@ -21,3 +21,6 @@ TARGET_INFO = {'airmass': [1.1], 'altitude': [0.5], 'azimuth': [0.5]}
 MOON_SUN_INFO = {'moonRA': 30.0, 'moonDec': 10.0, 'moonAlt': [-2.0], 'moonAz': [135.0], 'moonPhase': 0.3,
                  'moonDist': [80.0], 'sunRA': 310.0, 'sunDec': 5.0, 'sunAlt': [-24.0], 'sunAz': [285.0],
                  'solarElong': [150.0]}
+"""A set of configuration information for the pre-calculated sky brightness model.
+"""
+SKY_BRIGHTNESS_PRE_HEADER = {'version': 'unknown', 'fingerprint': '572289de6345a'}

@@ -14,7 +14,7 @@ import SALPY_scheduler
 from tests.database.topic_helpers import exposure_coll1, exposure_coll2, exposure_coll3, exposure_coll4
 from tests.database.topic_helpers import slew_activity_coll
 from tests.helpers import CONFIG_GEN_PROPS, CONFIG_COMM_PUT_CALLS
-from tests.helpers import MOON_SUN_INFO, SKY_BRIGHTNESS, TARGET_INFO
+from tests.helpers import MOON_SUN_INFO, SKY_BRIGHTNESS, SKY_BRIGHTNESS_PRE_HEADER, TARGET_INFO
 
 class SimulatorTest(unittest.TestCase):
 
@@ -93,6 +93,7 @@ class SimulatorTest(unittest.TestCase):
         mas.get_sky_brightness.return_value = SKY_BRIGHTNESS
         mas.get_target_information.return_value = TARGET_INFO
         mas.get_moon_sun_info.return_value = MOON_SUN_INFO
+        mas.sky_brightness_config.return_value = SKY_BRIGHTNESS_PRE_HEADER
 
         # Setup for 1 night and 9 visits
         self.num_nights = 1
