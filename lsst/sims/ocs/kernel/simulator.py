@@ -175,6 +175,7 @@ class Simulator(object):
         self.seeing = self.sal.set_publish_topic("seeing")
         self.filter_swap = self.sal.set_subscribe_topic("filterSwap")
         self.interested_proposal = self.sal.set_subscribe_topic("interestedProposal")
+        self.log.info("Finishing simulation initialization")
 
     def run(self):
         """Run the simulation.

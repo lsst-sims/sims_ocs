@@ -90,8 +90,16 @@ def main(args):
         logger.debug("Scheduler Command: {}".format(sch_cmd))
         sched_pid = sp.Popen(sch_cmd).pid
 
+        breadcrumb = ".scheduler_{}".format(log_port)
+
         sim = Simulator(args, configuration, db)
         sim.initialize()
+        wait_time = 0
+        while not os.path.exists(breadcrumb):
+            time.sleep(1)
+            wait_time += 1
+        os.remove(breadcrumb)
+        logger.info("SOCS waited {} seconds for Scheduler to complete init.".format(wait_time))
         try:
             sim.run()
         except:
