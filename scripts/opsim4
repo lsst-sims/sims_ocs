@@ -90,8 +90,13 @@ def main(args):
         logger.debug("Scheduler Command: {}".format(sch_cmd))
         sched_pid = sp.Popen(sch_cmd).pid
 
+        breadcrumb = ".scheduler_{}".format(log_port)
+
         sim = Simulator(args, configuration, db)
         sim.initialize()
+        while not os.path.exists(breadcrumb):
+            time.sleep(1)
+        os.remove(breadcrumb)
         try:
             sim.run()
         except:
