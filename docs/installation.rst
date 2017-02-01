@@ -10,7 +10,7 @@ Installation
 
 	If performing the installation on a virtual machine, it needs the following minimum requirements:
 
-		* Memory: 1 GB (4 GB recommended)
+		* Memory: 10 GB (minimum)
 		* Number of processors: 3 (4 recommended)
 		* Network: Bridged adapter
 
@@ -120,6 +120,16 @@ To declare and setup SOCS, do::
 
 	source eups-setups.sh
 	setup sims_ocs
+
+
+Sky Brightness Model Data
+-------------------------
+
+In the previous, the pre-calculated sky brightness model was installed, but it does not come with the data required to run. The required data is ~65 GB in size, so create a directory for it. The instructions will assume one was created as ``$HOME/sky_brightness_data``. After running the ``setup sims_ocs`` command, change to this directory and execute the following::
+
+	$SIMS_SKYBRIGHTNESS_PRE_DIR/data/data_down.sh -o 
+
+While this set is completing, the instructions may continue to be followed, but OpSim will not function correctly until the data is done downloading.
 
 .. _installation-database:
 
