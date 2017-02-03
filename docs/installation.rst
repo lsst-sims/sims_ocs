@@ -57,6 +57,10 @@ Once the build is complete, the topic and supporting library need to be copied v
 Scheduler and SOCS Source Code
 ------------------------------
 
+There is a prerequisite repository for the system that needs to be downloaded. Create a ``gitdir/lsst`` directory, go into that and run::
+
+	git clone https://github.com/lsst/sims_skybrightness_pre.git
+
 The Scheduler repository should also be cloned to ``gitdir/ts`` via the following::
 
 	git clone https://github.com/lsst-ts/ts_scheduler.git
@@ -86,7 +90,7 @@ Next, add the LSST Conda package channel by doing the following::
 
 In order to run the Operations Simulator (SOCS/Scheduler), the following need to be installed::
 
-	conda install lsst-sims-skybrightness lsst-pex-config enum34 pytz mysql-python requests sqlalchemy
+	conda install lsst-pex-config enum34 pytz mysql-python requests sqlalchemy
 
 If one wishes to develop the code, being able to run the unit tests, check style compliance and generate the documentation is a must. To do this, these packages need to be installed::
 
@@ -104,7 +108,15 @@ Once the above is complete, setup the environment by doing::
 
 	eups
 
-With the environment setup, we need to declare and setup the SOCS and Scheduler packages so they can be used. Declare the Scheduler::
+With the environment setup, we need to declare and setup the prerequisite repos and then SOCS and Scheduler packages so they can be used. 
+
+Declare the pre-calculated sky brightness model::
+
+	cd gitdir/lsst/sims_skybrightness_pre
+	eups declare sims_skybrightness_pre git -r . -c
+	scons
+
+Declare the Scheduler::
 
 	cd gitdir/ts/ts_scheduler
 	eups declare ts_scheduler git -r . -c
@@ -125,11 +137,11 @@ To declare and setup SOCS, do::
 Sky Brightness Model Data
 -------------------------
 
-In the previous, the pre-calculated sky brightness model was installed, but it does not come with the data required to run. The required data is ~65 GB in size, so create a directory for it. The instructions will assume one was created as ``$HOME/sky_brightness_data``. After running the ``setup sims_ocs`` command, change to this directory and execute the following::
+In the previous section, the pre-calculated sky brightness model was installed, but it does not come with the data required to run. The required data is ~65 GB in size, so create a directory for it. The instructions will assume one was created as ``$HOME/sky_brightness_data``. After running the ``setup sims_ocs`` command, change to this directory and execute the following::
 
 	$SIMS_SKYBRIGHTNESS_PRE_DIR/data/data_down.sh -o 
 
-While this set is completing, the instructions may continue to be followed, but OpSim will not function correctly until the data is done downloading.
+While this instruction is executing, the instructions may continue to be followed, but OpSim will not function correctly until the data is done downloading.
 
 .. _installation-database:
 
