@@ -35,6 +35,8 @@ class GeneralTest(unittest.TestCase):
         out_topic = ad.set_topic(in_topic)
         self.assertEqual(out_topic.name, "BasicProposal1")
         self.assertEqual(out_topic.max_airmass, 2.5)
+        self.assertEqual(out_topic.min_distance_moon, 30.0)
+        self.assertTrue(out_topic.exclude_planets)
         self.assertEqual(out_topic.num_region_selections, 2)
         self.assertEqual(out_topic.region_types.split(',')[1], "RA")
         self.assertTrue(math.isnan(out_topic.region_bounds[1]))

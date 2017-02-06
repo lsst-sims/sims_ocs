@@ -38,6 +38,8 @@ class General(pexConfig.Config):
         topic.dec_window = self.sky_exclusion.dec_window
         topic.max_airmass = self.sky_constraints.max_airmass
         topic.max_cloud = self.sky_constraints.max_cloud
+        topic.min_distance_moon = self.sky_constraints.min_distance_moon
+        topic.exclude_planets = self.sky_constraints.exclude_planets
 
         num_region_selections = len(self.sky_region.selections) \
             if self.sky_region.selections is not None else 0

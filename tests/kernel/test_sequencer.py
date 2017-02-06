@@ -11,6 +11,8 @@ from lsst.sims.ocs.kernel.time_handler import TimeHandler
 from lsst.sims.ocs.sal.sal_manager import SalManager
 from SALPY_scheduler import scheduler_filterSwapC
 
+from tests.helpers import MOON_SUN_INFO, SKY_BRIGHTNESS, TARGET_INFO
+
 class SequencerTest(unittest.TestCase):
 
     def setUp(self):
@@ -44,13 +46,9 @@ class SequencerTest(unittest.TestCase):
         mas = self.mock_astro_sky.return_value
         mas.date_profile = mock.Mock()
         mas.date_profile.mjd = 59280.1
-        mas.get_sky_brightness.return_value = {'u': [16.0], 'g': [17.0], 'r': [18.0],
-                                               'i': [19.0], 'z': [20.0], 'y': [21.0]}
-        mas.get_target_information.return_value = {'airmass': [1.1], 'alts': [0.5], 'azs': [0.5]}
-        mas.get_moon_sun_info.return_value = {'moonRA': 30.0, 'moonDec': 10.0, 'moonAlt': -2.0,
-                                              'moonAz': 135.0, 'moonPhase': 0.3, 'moonDist': 80.0,
-                                              'sunRA': 310.0, 'sunDec': 5.0, 'sunAlt': -24.0, 'sunAz': 285.0,
-                                              'solarElong': 150.0}
+        mas.get_sky_brightness.return_value = SKY_BRIGHTNESS
+        mas.get_target_information.return_value = TARGET_INFO
+        mas.get_moon_sun_info.return_value = MOON_SUN_INFO
 
     def test_basic_information_after_creation(self):
         self.assertEqual(self.seq.observations_made, 0)

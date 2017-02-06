@@ -358,7 +358,7 @@ def write_target_history(data, sid):
         ('sunDec', data.sun_dec),
         ('sunAlt', data.sun_alt),
         ('sunAz', data.sun_az),
-        ('sunElong', data.sun_elong)
+        ('solarElong', data.solar_elong)
     ])
     return values
 

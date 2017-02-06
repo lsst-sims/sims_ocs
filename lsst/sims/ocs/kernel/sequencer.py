@@ -170,28 +170,31 @@ class Sequencer(object):
 
             slew_info, exposure_info = self.observatory_model.observe(th, target, self.observation)
             self.sky_model.update(self.observation.observation_start_time)
-            sky_mags = self.sky_model.get_sky_brightness(numpy.radians(numpy.array([self.observation.ra])),
-                                                         numpy.radians(numpy.array([self.observation.dec])))
 
-            attrs = self.sky_model.get_target_information()
-            msi = self.sky_model.get_moon_sun_info(numpy.radians(self.observation.ra),
-                                                   numpy.radians(self.observation.dec))
+            nid = numpy.array([target.fieldId])
+            nra = numpy.radians(numpy.array([self.observation.ra]))
+            ndec = numpy.radians(numpy.array([self.observation.dec]))
+
+            sky_mags = self.sky_model.get_sky_brightness(nid, extrapolate=True,
+                                                         override_exclude_planets=False)
+            attrs = self.sky_model.get_target_information(nid, nra, ndec)
+            msi = self.sky_model.get_moon_sun_info(nra, ndec)
 
             self.observation.sky_brightness = sky_mags[self.observation.filter][0]
             self.observation.airmass = attrs["airmass"][0]
-            self.observation.altitude = numpy.degrees(attrs["alts"][0])
-            self.observation.azimuth = numpy.degrees(attrs["azs"][0])
+            self.observation.altitude = numpy.degrees(attrs["altitude"][0])
+            self.observation.azimuth = numpy.degrees(attrs["azimuth"][0])
             self.observation.moon_ra = numpy.degrees(msi["moonRA"])
             self.observation.moon_dec = numpy.degrees(msi["moonDec"])
-            self.observation.moon_alt = numpy.degrees(msi["moonAlt"])
-            self.observation.moon_az = numpy.degrees(msi["moonAz"])
+            self.observation.moon_alt = numpy.degrees(msi["moonAlt"][0])
+            self.observation.moon_az = numpy.degrees(msi["moonAz"][0])
             self.observation.moon_phase = msi["moonPhase"]
-            self.observation.moon_distance = numpy.degrees(msi["moonDist"])
-            self.observation.sun_alt = numpy.degrees(msi["sunAlt"])
-            self.observation.sun_az = numpy.degrees(msi["sunAz"])
+            self.observation.moon_distance = numpy.degrees(msi["moonDist"][0])
+            self.observation.sun_alt = numpy.degrees(msi["sunAlt"][0])
+            self.observation.sun_az = numpy.degrees(msi["sunAz"][0])
             self.observation.sun_ra = numpy.degrees(msi["sunRA"])
             self.observation.sun_dec = numpy.degrees(msi["sunDec"])
-            self.observation.solar_elong = numpy.degrees(msi["solarElong"])
+            self.observation.solar_elong = numpy.degrees(msi["solarElong"][0])
         else:
             self.log.log(LoggingLevel.EXTENSIVE.value, "No target received!")
             self.observation.observationId = target.targetId
@@ -202,6 +205,15 @@ class Sequencer(object):
             self.targets_missed += 1
 
         return self.observation, slew_info, exposure_info
+
+    def sky_brightness_config(self):
+        """Get the configuration from the SkyModelPre files.
+
+        Returns
+        -------
+        list[tuple(key, value)]
+        """
+        return self.sky_model.sky_brightness_config()
 
     def start_day(self, filter_swap):
         """Perform start of day functions.
