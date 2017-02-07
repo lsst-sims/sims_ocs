@@ -2,7 +2,12 @@
 Module for classes that handle the configuration of the science proposals.
 """
 from .band_filter import *
+from .base_sequence import *
+from .general_band_filter import *
 from .scheduling import *
+from .general_scheduling import *
+from .sub_sequence import *
+from .master_sub_sequence import *
 from .selection import *
 from .selection_list import *
 from .sky_constraints import *
@@ -13,5 +18,6 @@ from .time_range import *
 from .sky_region import *
 
 from .general import *
+from .sequence import *
 
 from .helpers import *

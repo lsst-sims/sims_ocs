@@ -13,7 +13,7 @@ import SALPY_scheduler
 
 from tests.database.topic_helpers import exposure_coll1, exposure_coll2, exposure_coll3, exposure_coll4
 from tests.database.topic_helpers import slew_activity_coll
-from tests.helpers import CONFIG_GEN_PROPS, CONFIG_COMM_PUT_CALLS
+from tests.helpers import CONFIG_COMM_PUT_CALLS, NUM_GEN_PROPS, NUM_SEQ_PROPS
 from tests.helpers import MOON_SUN_INFO, SKY_BRIGHTNESS, SKY_BRIGHTNESS_PRE_HEADER, TARGET_INFO
 
 class SimulatorTest(unittest.TestCase):
@@ -74,7 +74,8 @@ class SimulatorTest(unittest.TestCase):
     def test_initialization(self, mock_sequencer_init):
         self.mock_socs_db.session_id = 1001
         self.sim.initialize()
-        self.assertEqual(self.mock_salmanager_pub_topic.call_count, 3 + CONFIG_COMM_PUT_CALLS)
+        expected_calls = CONFIG_COMM_PUT_CALLS + NUM_GEN_PROPS + NUM_SEQ_PROPS
+        self.assertEqual(self.mock_salmanager_pub_topic.call_count, expected_calls)
         self.assertEqual(self.mock_salmanager_sub_topic.call_count, 4)
         self.assertEqual(mock_sequencer_init.call_count, 1)
 
@@ -103,7 +104,9 @@ class SimulatorTest(unittest.TestCase):
         self.put_calls = 5 * self.num_visits + self.num_nights
         self.config_comm_put_calls = 1
         self.put_calls += CONFIG_COMM_PUT_CALLS
-        self.put_calls += CONFIG_GEN_PROPS
+        self.put_calls += NUM_GEN_PROPS
+        # FIXME: Extra -1 needed while sequence proposal sending commented out.
+        self.put_calls += NUM_SEQ_PROPS - 1
         self.sim.fractional_duration = 1 / 365
         self.sim.wait_for_scheduler = wait_for_sched
         self.mock_astro_sky.return_value.get_night_boundaries.return_value = \

@@ -2,7 +2,7 @@ import unittest
 
 from lsst.sims.ocs.configuration.survey import Survey
 
-from tests.helpers import GEN_PROPS
+from tests.helpers import GEN_PROPS, SEQ_PROPS
 
 class SurveyTest(unittest.TestCase):
 
@@ -15,6 +15,7 @@ class SurveyTest(unittest.TestCase):
         self.assertEqual(self.survey.duration, 1.0)
         self.assertEqual(self.survey.idle_delay, 60.0)
         self.assertListEqual(list(self.survey.general_proposals), GEN_PROPS)
+        self.assertListEqual(list(self.survey.sequence_proposals), SEQ_PROPS)
         self.assertIsNone(self.survey.alt_proposal_dir)
         self.assertEqual(self.survey.full_duration, 3650.0)
 

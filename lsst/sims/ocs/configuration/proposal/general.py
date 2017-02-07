@@ -1,6 +1,6 @@
 import lsst.pex.config as pexConfig
 
-from lsst.sims.ocs.configuration.proposal import BandFilter, Scheduling
+from lsst.sims.ocs.configuration.proposal import GeneralBandFilter, GeneralScheduling
 from lsst.sims.ocs.configuration.proposal import SkyConstraints, SkyExclusion, SkyNightlyBounds, SkyRegion
 
 __all__ = ["General"]
@@ -11,24 +11,24 @@ class General(pexConfig.Config):
     """
 
     name = pexConfig.Field('Name for the proposal.', str)
-    sky_region = pexConfig.ConfigField('Sky region selectionfor the proposal.', SkyRegion)
-    sky_exclusion = pexConfig.ConfigField('Sky region selectionfor the proposal.', SkyExclusion)
-    sky_nightly_bounds = pexConfig.ConfigField('Sky region selectionfor the proposal.', SkyNightlyBounds)
-    sky_constraints = pexConfig.ConfigField('Sky region selectionfor the proposal.', SkyConstraints)
-    filters = pexConfig.ConfigDictField('Filter configuration for the proposal.', str, BandFilter)
-    scheduling = pexConfig.ConfigField('Scheduling configuration for the proposal.', Scheduling)
+    sky_region = pexConfig.ConfigField('Sky region selection for the proposal.', SkyRegion)
+    sky_exclusion = pexConfig.ConfigField('Sky region selection for the proposal.', SkyExclusion)
+    sky_nightly_bounds = pexConfig.ConfigField('Sky region selection for the proposal.', SkyNightlyBounds)
+    sky_constraints = pexConfig.ConfigField('Sky region selection for the proposal.', SkyConstraints)
+    filters = pexConfig.ConfigDictField('Filter configuration for the proposal.', str, GeneralBandFilter)
+    scheduling = pexConfig.ConfigField('Scheduling configuration for the proposal.', GeneralScheduling)
 
     def set_topic(self, topic):
         """Set the information on a DDS topic instance.
 
         Parameters
         ----------
-        topic : SALPY_scheduler.scheduler_genPropConfigC
+        topic : SALPY_scheduler.scheduler_generalPropConfigC
             The instance of the DDS topic to set information on.
 
         Returns
         -------
-        SALPY_scheduler.scheduler_genPropConfigC
+        SALPY_scheduler.scheduler_generalPropConfigC
             The topic with current information set.
         """
         topic.name = self.name if self.name is not None else "None"
