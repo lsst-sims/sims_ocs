@@ -1,11 +1,12 @@
-import lsst.pex.config as pexConfig
+# FIXME: Remove comments when sequence prop config sending ready.
+#import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration.proposal import BandFilter, SubSequence, Sequence
-from lsst.sims.ocs.configuration.proposal import sequence_prop_reg
+#from lsst.sims.ocs.configuration.proposal import sequence_prop_reg
 
 __all__ = ["DeepDrillingCosmology1"]
 
-@pexConfig.registerConfig("DeepDrillingCosmology1", sequence_prop_reg, Sequence)
+#@pexConfig.registerConfig("DeepDrillingCosmology1", sequence_prop_reg, Sequence)
 class DeepDrillingCosmology1(Sequence):
     """This class sets the parameters for specifying the Deep Drilling Cosmology1 proposal.
     """

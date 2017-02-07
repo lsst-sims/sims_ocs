@@ -36,5 +36,6 @@ class ConfigurationCommunicatorTest(unittest.TestCase):
         self.conf_comm.initialize(self.sal, self.config)
         self.conf_comm.run()
         self.assertEqual(mock_sal_telemetry_pub.call_count, CONFIG_COMM_PUB_CALLS)
+        # FIXME: Extra -1 needed while sequence proposal sending commented out.
         self.assertEqual(mock_salmanager_put.call_count,
-                         CONFIG_COMM_PUT_CALLS + NUM_GEN_PROPS + NUM_SEQ_PROPS)
+                         CONFIG_COMM_PUT_CALLS + NUM_GEN_PROPS + NUM_SEQ_PROPS - 1)

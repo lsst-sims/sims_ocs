@@ -105,7 +105,8 @@ class SimulatorTest(unittest.TestCase):
         self.config_comm_put_calls = 1
         self.put_calls += CONFIG_COMM_PUT_CALLS
         self.put_calls += NUM_GEN_PROPS
-        self.put_calls += NUM_SEQ_PROPS
+        # FIXME: Extra -1 needed while sequence proposal sending commented out.
+        self.put_calls += NUM_SEQ_PROPS - 1
         self.sim.fractional_duration = 1 / 365
         self.sim.wait_for_scheduler = wait_for_sched
         self.mock_astro_sky.return_value.get_night_boundaries.return_value = \
