@@ -101,7 +101,6 @@ class SimulationConfigTest(unittest.TestCase):
         # config not needing to be sent via conf_comm.
         EXTRA_CONFIG = 4
         expected_calls = CONFIG_COMM_PUT_CALLS + NUM_GEN_PROPS + NUM_SEQ_PROPS + EXTRA_CONFIG
-        print(expected_calls)
         save_files = ["save_conf{}.py".format(i + 1) for i in range(expected_calls)]
         mock_pexconfig_save.side_effect = [save_file(f, self.config_save_dir) for f in save_files]
         self.sim_config.save(self.config_save_dir)
