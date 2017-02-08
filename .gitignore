@@ -55,3 +55,9 @@ config_*
 
 # PyTest
 .cache
+
+# LSST Stack
+.sconf_temp
+.sconsign.dblite
+*.tests
+ups/*.cfgc
