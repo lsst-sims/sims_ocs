@@ -1,4 +1,4 @@
-GH_PAGES_SOURCES = Makefile doc setup.py python README.rst HISTORY.rst scripts tests SConstruct
+GH_PAGES_SOURCES = Makefile doc setup.py python README.rst HISTORY.rst scripts tests SConstruct ups
 BRANCH := $(shell git branch | grep \* | cut -d ' ' -f2)
 
 .PHONY: clean-pyc clean-build docs clean
@@ -68,7 +68,6 @@ gh-pages:
 	rm -rf api build _modules _sources _static tables
 	git checkout $(BRANCH) $(GH_PAGES_SOURCES)
 	git reset HEAD
-	scons
 	$(MAKE) docs
 	mv -fv doc/_build/html/* ./
 	rm -rf $(GH_PAGES_SOURCES) sims_ocs.egg-info .cache ospl-info.log .coverage htmlcov
