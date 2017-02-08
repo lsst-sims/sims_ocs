@@ -1,7 +1,0 @@
-lsst.sims.ocs.sal.topic_utilities module
-========================================
-
-.. automodule:: lsst.sims.ocs.sal.topic_utilities
-    :members:
-    :undoc-members:
-    :show-inheritance:

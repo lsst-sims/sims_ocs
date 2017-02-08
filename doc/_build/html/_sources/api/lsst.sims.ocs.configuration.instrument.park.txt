@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.instrument.park module
-==================================================
-
-.. automodule:: lsst.sims.ocs.configuration.instrument.park
-    :members:
-    :undoc-members:
-    :show-inheritance:

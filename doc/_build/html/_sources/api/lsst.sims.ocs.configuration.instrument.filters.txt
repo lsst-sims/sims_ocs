@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.instrument.filters module
-=====================================================
-
-.. automodule:: lsst.sims.ocs.configuration.instrument.filters
-    :members:
-    :undoc-members:
-    :show-inheritance:

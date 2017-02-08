@@ -1,7 +1,0 @@
-lsst.sims.ocs.setup.parser module
-=================================
-
-.. automodule:: lsst.sims.ocs.setup.parser
-    :members:
-    :undoc-members:
-    :show-inheritance:

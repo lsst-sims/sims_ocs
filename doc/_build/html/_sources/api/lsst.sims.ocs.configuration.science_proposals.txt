@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.science_proposals module
-====================================================
-
-.. automodule:: lsst.sims.ocs.configuration.science_proposals
-    :members:
-    :undoc-members:
-    :show-inheritance:

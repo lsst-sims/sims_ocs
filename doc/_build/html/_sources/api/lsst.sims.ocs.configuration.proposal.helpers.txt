@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.proposal.helpers module
-===================================================
-
-.. automodule:: lsst.sims.ocs.configuration.proposal.helpers
-    :members:
-    :undoc-members:
-    :show-inheritance:

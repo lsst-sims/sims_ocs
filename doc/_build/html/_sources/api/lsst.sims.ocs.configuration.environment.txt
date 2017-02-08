@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.environment module
-==============================================
-
-.. automodule:: lsst.sims.ocs.configuration.environment
-    :members:
-    :undoc-members:
-    :show-inheritance:

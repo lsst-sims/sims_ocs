@@ -1,7 +1,0 @@
-lsst.sims.ocs.kernel.sequencer module
-=====================================
-
-.. automodule:: lsst.sims.ocs.kernel.sequencer
-    :members:
-    :undoc-members:
-    :show-inheritance:

@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.obs_site module
-===========================================
-
-.. automodule:: lsst.sims.ocs.configuration.obs_site
-    :members:
-    :undoc-members:
-    :show-inheritance:

@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.proposal.sky_constraints module
-===========================================================
-
-.. automodule:: lsst.sims.ocs.configuration.proposal.sky_constraints
-    :members:
-    :undoc-members:
-    :show-inheritance:

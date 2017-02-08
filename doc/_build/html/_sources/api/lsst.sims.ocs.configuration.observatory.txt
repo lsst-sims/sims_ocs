@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.observatory module
-==============================================
-
-.. automodule:: lsst.sims.ocs.configuration.observatory
-    :members:
-    :undoc-members:
-    :show-inheritance:

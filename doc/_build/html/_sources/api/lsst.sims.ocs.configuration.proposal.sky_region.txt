@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.proposal.sky_region module
-======================================================
-
-.. automodule:: lsst.sims.ocs.configuration.proposal.sky_region
-    :members:
-    :undoc-members:
-    :show-inheritance:

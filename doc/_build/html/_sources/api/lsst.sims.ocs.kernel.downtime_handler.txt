@@ -1,7 +1,0 @@
-lsst.sims.ocs.kernel.downtime_handler module
-============================================
-
-.. automodule:: lsst.sims.ocs.kernel.downtime_handler
-    :members:
-    :undoc-members:
-    :show-inheritance:

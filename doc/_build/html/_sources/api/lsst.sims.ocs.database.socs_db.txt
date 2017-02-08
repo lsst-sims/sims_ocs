@@ -1,7 +1,0 @@
-lsst.sims.ocs.database.socs_db module
-=====================================
-
-.. automodule:: lsst.sims.ocs.database.socs_db
-    :members:
-    :undoc-members:
-    :show-inheritance:

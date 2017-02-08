@@ -1,7 +1,0 @@
-lsst.sims.ocs.environment.cloud_model module
-============================================
-
-.. automodule:: lsst.sims.ocs.environment.cloud_model
-    :members:
-    :undoc-members:
-    :show-inheritance:

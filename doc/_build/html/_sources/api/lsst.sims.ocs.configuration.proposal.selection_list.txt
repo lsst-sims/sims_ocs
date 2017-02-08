@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.proposal.selection_list module
-==========================================================
-
-.. automodule:: lsst.sims.ocs.configuration.proposal.selection_list
-    :members:
-    :undoc-members:
-    :show-inheritance:

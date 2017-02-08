@@ -1,7 +1,0 @@
-lsst.sims.ocs.utilities.socs_exceptions module
-==============================================
-
-.. automodule:: lsst.sims.ocs.utilities.socs_exceptions
-    :members:
-    :undoc-members:
-    :show-inheritance:

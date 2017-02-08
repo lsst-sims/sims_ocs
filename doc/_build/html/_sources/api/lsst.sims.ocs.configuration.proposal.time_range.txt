@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.proposal.time_range module
-======================================================
-
-.. automodule:: lsst.sims.ocs.configuration.proposal.time_range
-    :members:
-    :undoc-members:
-    :show-inheritance:

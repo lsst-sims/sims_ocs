@@ -1,7 +1,0 @@
-lsst.sims.ocs.kernel.proposal_info module
-=========================================
-
-.. automodule:: lsst.sims.ocs.kernel.proposal_info
-    :members:
-    :undoc-members:
-    :show-inheritance:

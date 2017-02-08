@@ -1,7 +1,0 @@
-lsst.sims.ocs.utilities.constants module
-========================================
-
-.. automodule:: lsst.sims.ocs.utilities.constants
-    :members:
-    :undoc-members:
-    :show-inheritance:

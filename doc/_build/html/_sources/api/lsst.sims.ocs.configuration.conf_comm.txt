@@ -1,7 +1,0 @@
-lsst.sims.ocs.configuration.conf_comm module
-============================================
-
-.. automodule:: lsst.sims.ocs.configuration.conf_comm
-    :members:
-    :undoc-members:
-    :show-inheritance:

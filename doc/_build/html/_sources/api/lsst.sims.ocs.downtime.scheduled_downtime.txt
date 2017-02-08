@@ -1,7 +1,0 @@
-lsst.sims.ocs.downtime.scheduled_downtime module
-================================================
-
-.. automodule:: lsst.sims.ocs.downtime.scheduled_downtime
-    :members:
-    :undoc-members:
-    :show-inheritance:
