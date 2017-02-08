@@ -1,0 +1,7 @@
+lsst.sims.ocs.database.tables.write_tbls module
+===============================================
+
+.. automodule:: lsst.sims.ocs.database.tables.write_tbls
+    :members:
+    :undoc-members:
+    :show-inheritance:

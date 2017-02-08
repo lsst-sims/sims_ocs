@@ -1,0 +1,18 @@
+lsst.sims.ocs.downtime package
+==============================
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.downtime.scheduled_downtime
+   lsst.sims.ocs.downtime.unscheduled_downtime
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs.downtime
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.instrument.slew module
+==================================================
+
+.. automodule:: lsst.sims.ocs.configuration.instrument.slew
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.scheduler_driver module
+===================================================
+
+.. automodule:: lsst.sims.ocs.configuration.scheduler_driver
+    :members:
+    :undoc-members:
+    :show-inheritance:

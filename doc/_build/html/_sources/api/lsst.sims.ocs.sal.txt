@@ -1,0 +1,18 @@
+lsst.sims.ocs.sal package
+=========================
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.sal.sal_manager
+   lsst.sims.ocs.sal.topic_utilities
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs.sal
+    :members:
+    :undoc-members:
+    :show-inheritance:

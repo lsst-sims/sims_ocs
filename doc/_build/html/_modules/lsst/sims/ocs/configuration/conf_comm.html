@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.sims.ocs.configuration.conf_comm &mdash; Simulated OCS 0.7.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../../index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../../../../../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../database.html">Survey Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../history.html">History</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/lsst.sims.ocs.html">lsst.sims.ocs package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.configuration.conf_comm</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lsst.sims.ocs.configuration.conf_comm</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ConfigurationCommunicator&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="ConfigurationCommunicator"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.conf_comm.html#lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator">[docs]</a><span class="k">class</span> <span class="nc">ConfigurationCommunicator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Main class for configuration communication.</span>
+
+<span class="sd">    This class handles setting up the configuration DDS topics and publishing them so they can be picked up</span>
+<span class="sd">    by the Scheduler.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sal : :class:`.SalManager`</span>
+<span class="sd">        The object responsible for SAL interaction.</span>
+<span class="sd">    config: :class:`.SimulationConfig`</span>
+<span class="sd">        The top-level simulation configuration object.</span>
+<span class="sd">    log : logging.Logger</span>
+<span class="sd">        The logging instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;configuration.ConfigurationCommunicator&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ConfigurationCommunicator.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.conf_comm.html#lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sal</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform initialization steps.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sal : :class:`.SalManager`</span>
+<span class="sd">            The instance responsible for SAL interaction.</span>
+<span class="sd">        config : :class:`.SimulationConfig`</span>
+<span class="sd">            The top-level simulation configuration instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initializing configuration communication&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span> <span class="o">=</span> <span class="n">sal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configure</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_configure_scheduler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure and send the Scheduler configuration topic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;schedulerConfig&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_conf</span><span class="o">.</span><span class="n">survey_duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">survey</span><span class="o">.</span><span class="n">full_duration</span>
+
+    <span class="k">def</span> <span class="nf">_configure_scheduler_driver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure and the Scheduler Driver configuration topic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;driverConfig&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">coadd_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">coadd_values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">time_balancing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">time_balancing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">timecost_time_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">timecost_time_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">timecost_time_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">timecost_time_ref</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">timecost_cost_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">timecost_cost_ref</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">timecost_weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">timecost_weight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">filtercost_weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">filtercost_weight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">night_boundary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">night_boundary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">new_moon_phase_threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">new_moon_phase_threshold</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">ignore_sky_brightness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">ignore_sky_brightness</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">ignore_airmass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">ignore_airmass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">ignore_clouds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">ignore_clouds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="o">.</span><span class="n">ignore_seeing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sched_driver</span><span class="o">.</span><span class="n">ignore_seeing</span>
+
+    <span class="k">def</span> <span class="nf">_configure_observing_site</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure and send the Observing Site configuration topic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_site_conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;obsSiteConfig&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_site_conf</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_site_conf</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">latitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_site_conf</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">longitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_site_conf</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_site_conf</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">pressure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_site_conf</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">temperature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_site_conf</span><span class="o">.</span><span class="n">relative_humidity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">relative_humidity</span>
+
+    <span class="k">def</span> <span class="nf">_configure_telescope</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure and send the Telescope configuration topic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tel_conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;telescopeConfig&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tel_conf</span><span class="o">.</span><span class="n">altitude_minpos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">telescope</span><span class="o">.</span><span class="n">altitude_minpos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tel_conf</span><span class="o">.</span><span class="n">altitude_maxpos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">telescope</span><span class="o">.</span><span class="n">altitude_maxpos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tel_conf</span><span class="o">.</span><span class="n">altitude_maxspeed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">telescope</span><span class="o">.</span><span class="n">altitude_maxspeed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tel_conf</span><span class="o">.</span><span class="n">altitude_accel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">telescope</span><span class="o">.</span><span class="n">altitude_accel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tel_conf</span><span class="o">.</span><span class="n">altitude_decel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">telescope</span><span class="o">.</span><span class="n">altitude_decel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tel_conf</span><span class="o">.</span><span class="n">azimuth_minpos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">telescope</span><span class="o">.</span><span class="n">azimuth_minpos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tel_conf</span><span class="o">.</span><span class="n">azimuth_maxpos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">telescope</span><span class="o">.</span><span class="n">azimuth_maxpos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tel_conf</span><span class="o">.</span><span class="n">azimuth_maxspeed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">telescope</span><span class="o">.</span><span class="n">azimuth_maxspeed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tel_conf</span><span class="o">.</span><span class="n">azimuth_accel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">telescope</span><span class="o">.</span><span class="n">azimuth_accel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tel_conf</span><span class="o">.</span><span class="n">azimuth_decel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">telescope</span><span class="o">.</span><span class="n">azimuth_decel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tel_conf</span><span class="o">.</span><span class="n">settle_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">telescope</span><span class="o">.</span><span class="n">settle_time</span>
+
+    <span class="k">def</span> <span class="nf">_configure_dome</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure and send the dome configuration topic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dome_conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;domeConfig&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dome_conf</span><span class="o">.</span><span class="n">altitude_maxspeed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">dome</span><span class="o">.</span><span class="n">altitude_maxspeed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dome_conf</span><span class="o">.</span><span class="n">altitude_accel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">dome</span><span class="o">.</span><span class="n">altitude_accel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dome_conf</span><span class="o">.</span><span class="n">altitude_decel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">dome</span><span class="o">.</span><span class="n">altitude_decel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dome_conf</span><span class="o">.</span><span class="n">azimuth_maxspeed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">dome</span><span class="o">.</span><span class="n">azimuth_maxspeed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dome_conf</span><span class="o">.</span><span class="n">azimuth_accel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">dome</span><span class="o">.</span><span class="n">azimuth_accel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dome_conf</span><span class="o">.</span><span class="n">azimuth_decel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">dome</span><span class="o">.</span><span class="n">azimuth_decel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dome_conf</span><span class="o">.</span><span class="n">settle_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">dome</span><span class="o">.</span><span class="n">settle_time</span>
+
+    <span class="k">def</span> <span class="nf">_configure_rotator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure and send the rotator configuration topic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rot_conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;rotatorConfig&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rot_conf</span><span class="o">.</span><span class="n">minpos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">rotator</span><span class="o">.</span><span class="n">minpos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rot_conf</span><span class="o">.</span><span class="n">maxpos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">rotator</span><span class="o">.</span><span class="n">maxpos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rot_conf</span><span class="o">.</span><span class="n">filter_change_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">rotator</span><span class="o">.</span><span class="n">filter_change_pos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rot_conf</span><span class="o">.</span><span class="n">maxspeed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">rotator</span><span class="o">.</span><span class="n">maxspeed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rot_conf</span><span class="o">.</span><span class="n">accel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">rotator</span><span class="o">.</span><span class="n">accel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rot_conf</span><span class="o">.</span><span class="n">decel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">rotator</span><span class="o">.</span><span class="n">decel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rot_conf</span><span class="o">.</span><span class="n">follow_sky</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">rotator</span><span class="o">.</span><span class="n">follow_sky</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rot_conf</span><span class="o">.</span><span class="n">resume_angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">rotator</span><span class="o">.</span><span class="n">resume_angle</span>
+
+    <span class="k">def</span> <span class="nf">_configure_camera</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure and send the camera configuration topic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;cameraConfig&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span><span class="o">.</span><span class="n">readout_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">readout_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span><span class="o">.</span><span class="n">shutter_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">shutter_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span><span class="o">.</span><span class="n">filter_mount_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">filter_mount_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span><span class="o">.</span><span class="n">filter_change_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">filter_change_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span><span class="o">.</span><span class="n">filter_max_changes_burst_num</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">filter_max_changes_burst_num</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span><span class="o">.</span><span class="n">filter_max_changes_burst_time</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">filter_max_changes_burst_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span><span class="o">.</span><span class="n">filter_max_changes_avg_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">filter_max_changes_avg_num</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span><span class="o">.</span><span class="n">filter_max_changes_avg_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">filter_max_changes_avg_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span><span class="o">.</span><span class="n">filter_mounted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">filter_mounted_str</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span><span class="o">.</span><span class="n">filter_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">filter_pos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span><span class="o">.</span><span class="n">filter_removable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">filter_removable_str</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span><span class="o">.</span><span class="n">filter_unmounted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">filter_unmounted_str</span>
+
+    <span class="k">def</span> <span class="nf">_configure_slew</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure and send the slew configuration topic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;slewConfig&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_domalt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_domalt&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_domaz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_domaz&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_telalt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_telalt&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_telaz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_telaz&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_telopticsopenloop</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_telopticsopenloop&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_telopticsclosedloop</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_telopticsclosedloop&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_telrot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_telrot&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_filter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_filter&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_adc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_adc&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_ins_optics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_ins_optics&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_guider_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_guider_pos&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_guider_adq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_guider_adq&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_telsettle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_telsettle&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_domazsettle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_domazsettle&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_exposures</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_exposures&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="o">.</span><span class="n">prereq_readout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">slew</span><span class="o">.</span><span class="n">get_string_rep</span><span class="p">(</span><span class="s2">&quot;prereq_readout&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_configure_optics_loop_corr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure and send the optics loop correction configuration topic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">olc_conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;opticsLoopCorrConfig&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">olc_conf</span><span class="o">.</span><span class="n">tel_optics_ol_slope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">optics_loop_corr</span><span class="o">.</span><span class="n">tel_optics_ol_slope</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">optics_loop_corr</span><span class="o">.</span><span class="n">set_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">olc_conf</span><span class="p">,</span> <span class="s2">&quot;tel_optics_cl_alt_limit&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">optics_loop_corr</span><span class="o">.</span><span class="n">set_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">olc_conf</span><span class="p">,</span> <span class="s2">&quot;tel_optics_cl_delay&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_configure_park</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure and send the park position configuration.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;parkConfig&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span><span class="o">.</span><span class="n">telescope_altitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">park</span><span class="o">.</span><span class="n">telescope_altitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span><span class="o">.</span><span class="n">telescope_azimuth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">park</span><span class="o">.</span><span class="n">telescope_azimuth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span><span class="o">.</span><span class="n">telescope_rotator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">park</span><span class="o">.</span><span class="n">telescope_rotator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span><span class="o">.</span><span class="n">dome_altitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">park</span><span class="o">.</span><span class="n">dome_altitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span><span class="o">.</span><span class="n">dome_azimuth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">park</span><span class="o">.</span><span class="n">dome_azimuth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span><span class="o">.</span><span class="n">filter_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">park</span><span class="o">.</span><span class="n">filter_position</span>
+
+    <span class="k">def</span> <span class="nf">_configure_general_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Publish the general proposals.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;generalPropConfig&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ConfigurationCommunicator.configure"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.conf_comm.html#lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator.configure">[docs]</a>    <span class="k">def</span> <span class="nf">configure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configure all publish topics for the configuration communicator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_scheduler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_scheduler_driver</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_observing_site</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_telescope</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_dome</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_rotator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_camera</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_slew</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_optics_loop_corr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_park</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_general_proposals</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConfigurationCommunicator.run"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.conf_comm.html#lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Send all of the configuration topics.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Running configuration communication&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sched_conf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_site_conf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tel_conf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dome_conf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rot_conf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cam_conf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slew_conf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">olc_conf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span><span class="p">)</span>
+        <span class="n">num_proposals</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">general_config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">general_props</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+            <span class="n">general_topic</span> <span class="o">=</span> <span class="n">general_config</span><span class="o">.</span><span class="n">set_topic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">get_topic</span><span class="p">(</span><span class="s2">&quot;generalPropConfig&quot;</span><span class="p">))</span>
+            <span class="n">general_topic</span><span class="o">.</span><span class="n">prop_id</span> <span class="o">=</span> <span class="n">num_proposals</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">general_topic</span><span class="p">)</span>
+            <span class="n">num_proposals</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Sent configuration for {} general proposals.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_proposals</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.7.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

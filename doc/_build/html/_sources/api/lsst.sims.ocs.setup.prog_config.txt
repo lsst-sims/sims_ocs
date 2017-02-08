@@ -1,0 +1,7 @@
+lsst.sims.ocs.setup.prog_config module
+======================================
+
+.. automodule:: lsst.sims.ocs.setup.prog_config
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,7 @@
+lsst.sims.ocs.observatory.slew_information module
+=================================================
+
+.. automodule:: lsst.sims.ocs.observatory.slew_information
+    :members:
+    :undoc-members:
+    :show-inheritance:

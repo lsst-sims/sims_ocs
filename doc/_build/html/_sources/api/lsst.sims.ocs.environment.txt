@@ -1,0 +1,18 @@
+lsst.sims.ocs.environment package
+=================================
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.environment.cloud_model
+   lsst.sims.ocs.environment.seeing_model
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs.environment
+    :members:
+    :undoc-members:
+    :show-inheritance:

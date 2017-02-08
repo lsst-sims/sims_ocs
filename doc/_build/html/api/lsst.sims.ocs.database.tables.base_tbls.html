@@ -1,0 +1,599 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.sims.ocs.database.tables.base_tbls module &mdash; Simulated OCS 0.7.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../index.html"/>
+        <link rel="up" title="lsst.sims.ocs.database.tables package" href="lsst.sims.ocs.database.tables.html"/>
+        <link rel="next" title="lsst.sims.ocs.database.tables.view_helpers module" href="lsst.sims.ocs.database.tables.view_helpers.html"/>
+        <link rel="prev" title="lsst.sims.ocs.database.tables package" href="lsst.sims.ocs.database.tables.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database.html">Survey Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="lsst.sims.ocs.html">lsst.sims.ocs package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="lsst.sims.ocs.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="lsst.sims.ocs.database.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.database.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.database.html#module-lsst.sims.ocs.database">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.environment.html">lsst.sims.ocs.environment package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.setup.html">lsst.sims.ocs.setup package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.utilities.html">lsst.sims.ocs.utilities package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lsst.sims.ocs.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lsst.sims.ocs.html#module-lsst.sims.ocs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="lsst.sims.ocs.html">lsst.sims.ocs package</a> &raquo;</li>
+      
+          <li><a href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a> &raquo;</li>
+      
+          <li><a href="lsst.sims.ocs.database.tables.html">lsst.sims.ocs.database.tables package</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.database.tables.base_tbls module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/api/lsst.sims.ocs.database.tables.base_tbls.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-lsst.sims.ocs.database.tables.base_tbls">
+<span id="lsst-sims-ocs-database-tables-base-tbls-module"></span><h1>lsst.sims.ocs.database.tables.base_tbls module<a class="headerlink" href="#module-lsst.sims.ocs.database.tables.base_tbls" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_config">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_config</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the Config table.</p>
+<p>This function creates the Config table containing the values for all the configuration parameters of
+the simulation. This table will be created after differences are applied to the configuration.</p>
+<p>Table Description:</p>
+<p>This table contains the configuration information for the given simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The Config table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_field">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_field</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Field table.</p>
+<p>This function creates the Field table from the sky tessellation.</p>
+<p>Table Description:</p>
+<p>This table contains all the coordinate information for the &#8220;visiting&#8221; fields. The field centers
+are determined from a tessellation (or tiling) of the celestial sphere which results in a
+closest-packed set of 5280 hexagons and 12 pentagons inscribed in circular fields having a
+3.5-degree diameter
+(R. H. Hardin, N. J. A. Sloane and W. D. Smith, <em>Tables of spherical codes with icosahedral symmetry</em>,
+published electronically at <a class="reference external" href="http://NeilSloane.com/icosahedral.codes/">http://NeilSloane.com/icosahedral.codes/</a>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The Field table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_observation_exposures">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_observation_exposures</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_observation_exposures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_observation_exposures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create ObsExposures table.</p>
+<p>This function creates the ObsExposures table from the observation exposures.</p>
+<p>Table Description:</p>
+<p>This table contains all of the individual exposure information for each visit in the
+<a class="reference internal" href="../tables/obshistory.html#database-tables-obshistory"><span class="std std-ref">ObsHistory</span></a> table. The number of exposures in a visit is determined
+by the visit target&#8217;s exposure cadence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The ObsExposure table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_observation_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_observation_history</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_observation_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_observation_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create ObsHistory table.</p>
+<p>This function creates the ObsHistory table for tracking all the observations performed
+by the Sequencer in the simulation run.</p>
+<p>Table Description:</p>
+<p>This table keeps a record of each visit made by the observatory during a simulated survey.
+Multiple proposals can be associated with a single visit leading to duplicate entries in
+this table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The ObsHistory table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_observation_proposal_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_observation_proposal_history</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_observation_proposal_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_observation_proposal_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the ObsProposalHistory table.</p>
+<p>This function creates the ObsProposalHistory table for listing all proposals that are assigned to
+a given observation.</p>
+<p>Table Description:</p>
+<p>This table records all of the proposals and proposal information for a given observation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The ObsProposalHistory table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_proposal">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_proposal</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_proposal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_proposal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the Proposal table.</p>
+<p>This function creates the Proposal table for listing the active proposals.</p>
+<p>Table Description:</p>
+<p>This table records all of the active science proposals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The Proposal table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_scheduled_downtime">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_scheduled_downtime</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_scheduled_downtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_scheduled_downtime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the ScheduledDowntime table.</p>
+<p>This function creates the ScheduledDowntime table for listing the scheduled
+downtime during the survey.</p>
+<p>Table Description:</p>
+<p>This table records all of the scheduled downtime for the entire survey (plus an extra 10 years). The
+actual downtime used in the simulation maybe different depending on the length of the simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The ScheduledDowntime table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_session">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_session</code><span class="sig-paren">(</span><em>metadata</em>, <em>autoincrement=True</em>, <em>session_id_start=1000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Session table.</p>
+<p>This function creates the Session table for tracking the various simulations run. For MySQL, it adds
+a post-create command to set the lower limit of the auto increment value.</p>
+<p>Table Description:</p>
+<p>This table contains the log of all simulations (MySQL) or a single simulation (SQLite). Simulation
+runs are identified by the combination of the hostname and session Id: <em>sessionHost_sessionId</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</li>
+<li><strong>autoincrement</strong> (<em>bool</em>) &#8211; A flag to set auto incrementing on the sessionID column.</li>
+<li><strong>session_id_start</strong> (<em>int</em>) &#8211; A new starting session Id for counting new simulations.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>sqlalchemy.Table</em> &#8211; The Session table object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_slew_activities">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_slew_activities</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_slew_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_slew_activities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the SlewActivities table.</p>
+<p>This function creates the SlewActivities table for tracking the activities during a slew.</p>
+<p>Table Description:</p>
+<p>This table contains all the activities for a given visit&#8217;s slew. The <em>SlewHistory_slewCount</em> column
+points to a given slew in the <a class="reference internal" href="../tables/slewhistory.html#database-tables-slewhistory"><span class="std std-ref">SlewHistory</span></a> table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The SlewActivities table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_slew_final_state">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_slew_final_state</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_slew_final_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_slew_final_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the SlewFinalState tables.</p>
+<p>This function creates the SlewFinalState table for tracking the state of the observatory after slewing.</p>
+<p>Table Description:</p>
+<p>This table contains all of the final state information from a given visit&#8217;s slew. The state
+information is collected after the slew has completed, but before the visit activity has started.
+The <em>SlewHistory_slewCount</em> column points to a given slew in the <a class="reference internal" href="../tables/slewhistory.html#database-tables-slewhistory"><span class="std std-ref">SlewHistory</span></a> table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The SlewFinalState table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_slew_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_slew_history</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_slew_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_slew_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create SlewHistory table.</p>
+<p>This function creates the SlewHistory table for tracking all the general slew information
+performed by the observatory.</p>
+<p>Table Description:</p>
+<p>This table contains the basic slew information for each visit.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The SlewHistory table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_slew_initial_state">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_slew_initial_state</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_slew_initial_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_slew_initial_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the SlewInitialState tables.</p>
+<p>This function creates the SlewInitialState table for tracking the state of the observatory before slewing.</p>
+<p>Table Description:</p>
+<p>This table contains all of the initial state information from a given visit&#8217;s slew. The state
+information is collected before the slew to the given target has started. The <em>SlewHistory_slewCount</em>
+column points to a given slew in the <a class="reference internal" href="../tables/slewhistory.html#database-tables-slewhistory"><span class="std std-ref">SlewHistory</span></a> table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The SlewInitialState table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_slew_maxspeeds">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_slew_maxspeeds</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_slew_maxspeeds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_slew_maxspeeds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the SlewMaxSpeeds table.</p>
+<p>This function creates the SlewMaxSpeeds table for tracking the maximum speeds of observatory
+achieved during a slew.</p>
+<p>Table Description:</p>
+<p>This table contains all of the maximum speeds obtained by the telescope, dome and rotator
+during a given visit&#8217;s slew. The <em>SlewHistory_slewCount</em> column points to a given slew in
+the <a class="reference internal" href="../tables/slewhistory.html#database-tables-slewhistory"><span class="std std-ref">SlewHistory</span></a> table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The SlewMaxSpeeds table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_target_exposures">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_target_exposures</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_target_exposures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_target_exposures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create TargetExposures table.</p>
+<p>This function creates the TargetExposures table from the target exposures.</p>
+<p>Table Description:</p>
+<p>This table contains all of the individual exposure information for each target in the
+<a class="reference internal" href="../tables/targethistory.html#database-tables-targethistory"><span class="std std-ref">TargetHistory</span></a> table. The number of exposures for a target is determined
+by the requesting proposal&#8217;s exposure cadence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The Target Exposure table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_target_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_target_history</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_target_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_target_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create TargetHistory table.</p>
+<p>This function creates the TargetHistory table for tracking all the requested targets from
+the Scheduler in the simulation run.</p>
+<p>Table Description:</p>
+<p>This table keeps a record of the information from the requested targets during a simulated survey.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The TargetHistory table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_target_proposal_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_target_proposal_history</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_target_proposal_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_target_proposal_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the TargetProposalHistory table.</p>
+<p>This function creates the TargetProposalHistory table for listing all proposals that are assigned to
+a given target.</p>
+<p>Table Description:</p>
+<p>This table records all of the proposals and proposal information for a given target.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The TargetProposalHistory table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.base_tbls.create_unscheduled_downtime">
+<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_unscheduled_downtime</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_unscheduled_downtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_unscheduled_downtime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the UnscheduledDowntime table.</p>
+<p>This function creates the UnscheduledDowntime table for list the unscheduled
+downtime during the survey.</p>
+<p>Table Description:</p>
+<p>This table records all of the unscheduled downtime for the entire survey (plus an extra 10 years). The
+actual downtime used in the simulation maybe different depending on the length of the simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The UnscheduledDowntime table object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="lsst.sims.ocs.database.tables.view_helpers.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.database.tables.view_helpers module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="lsst.sims.ocs.database.tables.html" class="btn btn-neutral" title="lsst.sims.ocs.database.tables package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.7.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

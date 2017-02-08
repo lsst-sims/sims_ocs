@@ -1,0 +1,7 @@
+lsst.sims.ocs.observatory.variational_model module
+==================================================
+
+.. automodule:: lsst.sims.ocs.observatory.variational_model
+    :members:
+    :undoc-members:
+    :show-inheritance:

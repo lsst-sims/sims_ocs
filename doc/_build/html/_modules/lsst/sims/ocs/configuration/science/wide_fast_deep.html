@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.sims.ocs.configuration.science.wide_fast_deep &mdash; Simulated OCS 0.7.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../../../index.html"/> 
+
+  
+  <script src="../../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../../../../../../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../database.html">Survey Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../history.html">History</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../api/lsst.sims.ocs.html">lsst.sims.ocs package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.configuration.science.wide_fast_deep</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lsst.sims.ocs.configuration.science.wide_fast_deep</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
+
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">General</span><span class="p">,</span> <span class="n">BandFilter</span><span class="p">,</span> <span class="n">Selection</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">general_prop_reg</span><span class="p">,</span> <span class="n">SELECTION_LIMIT_TYPES</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;WideFastDeep&quot;</span><span class="p">]</span>
+
+<span class="nd">@pexConfig.registerConfig</span><span class="p">(</span><span class="s2">&quot;WideFastDeep&quot;</span><span class="p">,</span> <span class="n">general_prop_reg</span><span class="p">,</span> <span class="n">General</span><span class="p">)</span>
+<div class="viewcode-block" id="WideFastDeep"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.science.wide_fast_deep.html#lsst.sims.ocs.configuration.science.wide_fast_deep.WideFastDeep">[docs]</a><span class="k">class</span> <span class="nc">WideFastDeep</span><span class="p">(</span><span class="n">General</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class sets the parameters for specifying the Wide, Fast, Deep proposal.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="WideFastDeep.setDefaults"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.science.wide_fast_deep.html#lsst.sims.ocs.configuration.science.wide_fast_deep.WideFastDeep.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Setup all the proposal information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;WideFastDeep&quot;</span>
+
+        <span class="c1"># -------------------------</span>
+        <span class="c1"># Sky Region specifications</span>
+        <span class="c1"># -------------------------</span>
+
+        <span class="c1"># Dec Band</span>
+        <span class="n">dec_limit</span> <span class="o">=</span> <span class="n">Selection</span><span class="p">()</span>
+        <span class="n">dec_limit</span><span class="o">.</span><span class="n">limit_type</span> <span class="o">=</span> <span class="n">SELECTION_LIMIT_TYPES</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">dec_limit</span><span class="o">.</span><span class="n">minimum_limit</span> <span class="o">=</span> <span class="o">-</span><span class="mf">62.5</span>
+        <span class="n">dec_limit</span><span class="o">.</span><span class="n">maximum_limit</span> <span class="o">=</span> <span class="mf">2.8</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">selections</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">dec_limit</span><span class="p">}</span>
+
+        <span class="c1"># -----------------------------</span>
+        <span class="c1"># Sky Exclusion specifications</span>
+        <span class="c1"># -----------------------------</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_exclusion</span><span class="o">.</span><span class="n">dec_window</span> <span class="o">=</span> <span class="mf">90.0</span>
+
+        <span class="c1"># Galactic Plane</span>
+        <span class="n">gal_plane</span> <span class="o">=</span> <span class="n">Selection</span><span class="p">()</span>
+        <span class="n">gal_plane</span><span class="o">.</span><span class="n">limit_type</span> <span class="o">=</span> <span class="n">SELECTION_LIMIT_TYPES</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+        <span class="n">gal_plane</span><span class="o">.</span><span class="n">minimum_limit</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">gal_plane</span><span class="o">.</span><span class="n">maximum_limit</span> <span class="o">=</span> <span class="mf">10.0</span>
+        <span class="n">gal_plane</span><span class="o">.</span><span class="n">bounds_limit</span> <span class="o">=</span> <span class="mf">90.0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_exclusion</span><span class="o">.</span><span class="n">selections</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">gal_plane</span><span class="p">}</span>
+
+        <span class="c1"># ---------------------------------</span>
+        <span class="c1"># Sky Nightly Bounds specifications</span>
+        <span class="c1"># ---------------------------------</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_nightly_bounds</span><span class="o">.</span><span class="n">twilight_boundary</span> <span class="o">=</span> <span class="o">-</span><span class="mf">12.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_nightly_bounds</span><span class="o">.</span><span class="n">delta_lst</span> <span class="o">=</span> <span class="mf">60.0</span>
+
+        <span class="c1"># ------------------------------</span>
+        <span class="c1"># Sky Constraints specifications</span>
+        <span class="c1"># ------------------------------</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_constraints</span><span class="o">.</span><span class="n">max_airmass</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sky_constraints</span><span class="o">.</span><span class="n">max_cloud</span> <span class="o">=</span> <span class="mf">0.7</span>
+
+        <span class="c1"># ----------------------</span>
+        <span class="c1"># Scheduling information</span>
+        <span class="c1"># ----------------------</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">max_num_targets</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">accept_serendipity</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">accept_consecutive_visits</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">airmass_bonus</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">time_interval</span> <span class="o">=</span> <span class="mi">30</span> <span class="o">*</span> <span class="mi">60</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">time_window_start</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">time_window_max</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">time_window_end</span> <span class="o">=</span> <span class="mf">2.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduling</span><span class="o">.</span><span class="n">time_weight</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="c1"># --------------------------</span>
+        <span class="c1"># Band Filter specifications</span>
+        <span class="c1"># --------------------------</span>
+
+        <span class="n">u_filter</span> <span class="o">=</span> <span class="n">BandFilter</span><span class="p">()</span>
+        <span class="n">u_filter</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;u&#39;</span>
+        <span class="n">u_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">75</span>
+        <span class="n">u_filter</span><span class="o">.</span><span class="n">bright_limit</span> <span class="o">=</span> <span class="mf">21.3</span>
+        <span class="n">u_filter</span><span class="o">.</span><span class="n">dark_limit</span> <span class="o">=</span> <span class="mf">30.0</span>
+        <span class="n">u_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="n">u_filter</span><span class="o">.</span><span class="n">exposures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]</span>
+
+        <span class="n">g_filter</span> <span class="o">=</span> <span class="n">BandFilter</span><span class="p">()</span>
+        <span class="n">g_filter</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;g&#39;</span>
+        <span class="n">g_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">105</span>
+        <span class="n">g_filter</span><span class="o">.</span><span class="n">num_grouped_visits</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">g_filter</span><span class="o">.</span><span class="n">bright_limit</span> <span class="o">=</span> <span class="mf">21.0</span>
+        <span class="n">g_filter</span><span class="o">.</span><span class="n">dark_limit</span> <span class="o">=</span> <span class="mf">30.0</span>
+        <span class="n">g_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="n">g_filter</span><span class="o">.</span><span class="n">exposures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]</span>
+
+        <span class="n">r_filter</span> <span class="o">=</span> <span class="n">BandFilter</span><span class="p">()</span>
+        <span class="n">r_filter</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span>
+        <span class="n">r_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">240</span>
+        <span class="n">r_filter</span><span class="o">.</span><span class="n">num_grouped_visits</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">r_filter</span><span class="o">.</span><span class="n">bright_limit</span> <span class="o">=</span> <span class="mf">20.25</span>
+        <span class="n">r_filter</span><span class="o">.</span><span class="n">dark_limit</span> <span class="o">=</span> <span class="mf">30.0</span>
+        <span class="n">r_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="n">r_filter</span><span class="o">.</span><span class="n">exposures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]</span>
+
+        <span class="n">i_filter</span> <span class="o">=</span> <span class="n">BandFilter</span><span class="p">()</span>
+        <span class="n">i_filter</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;i&#39;</span>
+        <span class="n">i_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">240</span>
+        <span class="n">i_filter</span><span class="o">.</span><span class="n">num_grouped_visits</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">i_filter</span><span class="o">.</span><span class="n">bright_limit</span> <span class="o">=</span> <span class="mf">19.5</span>
+        <span class="n">i_filter</span><span class="o">.</span><span class="n">dark_limit</span> <span class="o">=</span> <span class="mf">30.0</span>
+        <span class="n">i_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="n">i_filter</span><span class="o">.</span><span class="n">exposures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]</span>
+
+        <span class="n">z_filter</span> <span class="o">=</span> <span class="n">BandFilter</span><span class="p">()</span>
+        <span class="n">z_filter</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span>
+        <span class="n">z_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">210</span>
+        <span class="n">z_filter</span><span class="o">.</span><span class="n">num_grouped_visits</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">z_filter</span><span class="o">.</span><span class="n">bright_limit</span> <span class="o">=</span> <span class="mf">17.0</span>
+        <span class="n">z_filter</span><span class="o">.</span><span class="n">dark_limit</span> <span class="o">=</span> <span class="mf">21.0</span>
+        <span class="n">z_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="n">z_filter</span><span class="o">.</span><span class="n">exposures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]</span>
+
+        <span class="n">y_filter</span> <span class="o">=</span> <span class="n">BandFilter</span><span class="p">()</span>
+        <span class="n">y_filter</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span>
+        <span class="n">y_filter</span><span class="o">.</span><span class="n">num_visits</span> <span class="o">=</span> <span class="mi">210</span>
+        <span class="n">y_filter</span><span class="o">.</span><span class="n">bright_limit</span> <span class="o">=</span> <span class="mf">16.5</span>
+        <span class="n">y_filter</span><span class="o">.</span><span class="n">dark_limit</span> <span class="o">=</span> <span class="mf">21.0</span>
+        <span class="n">y_filter</span><span class="o">.</span><span class="n">max_seeing</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="n">y_filter</span><span class="o">.</span><span class="n">exposures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="p">{</span><span class="n">u_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">u_filter</span><span class="p">,</span>
+                        <span class="n">g_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">g_filter</span><span class="p">,</span>
+                        <span class="n">r_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">r_filter</span><span class="p">,</span>
+                        <span class="n">i_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">i_filter</span><span class="p">,</span>
+                        <span class="n">z_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">z_filter</span><span class="p">,</span>
+                        <span class="n">y_filter</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">y_filter</span><span class="p">}</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../',
+            VERSION:'0.7.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

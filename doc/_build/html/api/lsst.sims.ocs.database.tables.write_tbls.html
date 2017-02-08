@@ -1,0 +1,575 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.sims.ocs.database.tables.write_tbls module &mdash; Simulated OCS 0.7.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../index.html"/>
+        <link rel="up" title="lsst.sims.ocs.database.tables package" href="lsst.sims.ocs.database.tables.html"/>
+        <link rel="next" title="lsst.sims.ocs.database.socs_db module" href="lsst.sims.ocs.database.socs_db.html"/>
+        <link rel="prev" title="lsst.sims.ocs.database.tables.view_tables module" href="lsst.sims.ocs.database.tables.view_tables.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database.html">Survey Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="lsst.sims.ocs.html">lsst.sims.ocs package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="lsst.sims.ocs.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.configuration.html">lsst.sims.ocs.configuration package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="lsst.sims.ocs.database.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.database.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lsst.sims.ocs.database.html#module-lsst.sims.ocs.database">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.downtime.html">lsst.sims.ocs.downtime package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.environment.html">lsst.sims.ocs.environment package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.kernel.html">lsst.sims.ocs.kernel package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.observatory.html">lsst.sims.ocs.observatory package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.sal.html">lsst.sims.ocs.sal package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.setup.html">lsst.sims.ocs.setup package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lsst.sims.ocs.utilities.html">lsst.sims.ocs.utilities package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lsst.sims.ocs.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lsst.sims.ocs.html#module-lsst.sims.ocs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="lsst.sims.ocs.html">lsst.sims.ocs package</a> &raquo;</li>
+      
+          <li><a href="lsst.sims.ocs.database.html">lsst.sims.ocs.database package</a> &raquo;</li>
+      
+          <li><a href="lsst.sims.ocs.database.tables.html">lsst.sims.ocs.database.tables package</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.database.tables.write_tbls module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/api/lsst.sims.ocs.database.tables.write_tbls.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-lsst.sims.ocs.database.tables.write_tbls">
+<span id="lsst-sims-ocs-database-tables-write-tbls-module"></span><h1>lsst.sims.ocs.database.tables.write_tbls module<a class="headerlink" href="#module-lsst.sims.ocs.database.tables.write_tbls" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_config">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_config</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the Config table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>tuple</em>) &#8211; The set of information from a configuration parameter.</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_field">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_field</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the Field table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>tuple</em>) &#8211; The set of information from a field.</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_observation_exposures">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_observation_exposures</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_observation_exposures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_observation_exposures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the ObsExposures table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (class:<cite>.ObsExposure</cite>) &#8211; The instance containing the observation exposure information</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_observation_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_observation_history</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_observation_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_observation_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the ObsHistory table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>SALPY_scheduler.observationC</em>) &#8211; The SAL observation topic instance.</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_observation_proposal_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_observation_proposal_history</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_observation_proposal_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_observation_proposal_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the ObsProposalHistory table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>tuple</em>) &#8211; The instance containing the observation proposal history information</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_proposal">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_proposal</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_proposal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_proposal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the Proposal table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>tuple</em>) &#8211; The instance containing the proposal information</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_scheduled_downtime">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_scheduled_downtime</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_scheduled_downtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_scheduled_downtime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the ScheduledDowntime table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>tuple</em>) &#8211; The instance containing the scheduled downtime information</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_slew_activities">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_slew_activities</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_slew_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_slew_activities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the SlewHistory table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (class:<cite>.SlewActivity</cite>) &#8211; The instance containing the slew activity information</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_slew_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_slew_history</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_slew_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_slew_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the SlewHistory table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (class:<cite>.SlewHistory</cite>) &#8211; The instance containing the slew history information</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_slew_final_state">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_slew_final_state</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_slew_final_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_slew_final_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the SlewFinalState table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (class:<cite>.SlewFinalState</cite>) &#8211; The instance containing the slew state information</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_slew_initial_state">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_slew_initial_state</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_slew_initial_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_slew_initial_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the SlewInitialState table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (class:<cite>.SlewInitialState</cite>) &#8211; The instance containing the slew state information</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_slew_maxspeeds">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_slew_maxspeeds</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_slew_maxspeeds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_slew_maxspeeds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the SlewMaxSpeeds table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (class:<cite>.SlewMaxSpeeds</cite>) &#8211; The instance containing the slew maxspeeds information</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_target_exposures">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_target_exposures</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_target_exposures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_target_exposures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the TargetExposures table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (class:<cite>.TargetExposure</cite>) &#8211; The instance containing the target exposure information</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_target_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_target_history</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_target_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_target_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the TargetHistory table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>SALPY_scheduler.targetC</em>) &#8211; The SAL target topic instance.</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_target_proposal_history">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_target_proposal_history</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_target_proposal_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_target_proposal_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the TargetProposalHistory table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>tuple</em>) &#8211; The instance containing the target proposal history information</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lsst.sims.ocs.database.tables.write_tbls.write_unscheduled_downtime">
+<code class="descclassname">lsst.sims.ocs.database.tables.write_tbls.</code><code class="descname">write_unscheduled_downtime</code><span class="sig-paren">(</span><em>data</em>, <em>sid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/write_tbls.html#write_unscheduled_downtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.write_tbls.write_unscheduled_downtime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of data for the UnscheduledDowntime table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>tuple</em>) &#8211; The instance containing the unscheduled downtime information</li>
+<li><strong>sid</strong> (<em>int</em>) &#8211; The current session ID.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>collections.OrderedDict</em> &#8211; A dictionary of the topic data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="lsst.sims.ocs.database.socs_db.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.database.socs_db module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="lsst.sims.ocs.database.tables.view_tables.html" class="btn btn-neutral" title="lsst.sims.ocs.database.tables.view_tables module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.7.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

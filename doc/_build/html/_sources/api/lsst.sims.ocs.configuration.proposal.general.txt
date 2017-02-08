@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.proposal.general module
+===================================================
+
+.. automodule:: lsst.sims.ocs.configuration.proposal.general
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,7 @@
+lsst.sims.ocs.version module
+============================
+
+.. automodule:: lsst.sims.ocs.version
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,245 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lsst.sims.ocs.configuration.scheduler_driver &mdash; Simulated OCS 0.7.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../../index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> Simulated OCS
+          
+
+          
+            
+            <img src="../../../../../_static/socs_logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../database.html">Survey Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../history.html">History</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/lsst.sims.ocs.html">lsst.sims.ocs package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">Simulated OCS</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>lsst.sims.ocs.configuration.scheduler_driver</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lsst.sims.ocs.configuration.scheduler_driver</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SchedulerDriver&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SchedulerDriver"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.scheduler_driver.html#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver">[docs]</a><span class="k">class</span> <span class="nc">SchedulerDriver</span><span class="p">(</span><span class="n">pexConfig</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Configuration of the LSST Scheduler&#39;s Driver.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">coadd_values</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to determine if two identical field/filter targets have their &#39;</span>
+                                   <span class="s1">&#39;ranks added and then considered as one target.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">time_balancing</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to detemine if cross-proposal time-balancing is used.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">timecost_time_max</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The slew time (units=seconds) where the time cost value equals &#39;</span>
+                                        <span class="s1">&#39;one.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">timecost_time_ref</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The reference slew time (units=seconds) that sets the steepness of &#39;</span>
+                                        <span class="s1">&#39;the cost function.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">timecost_cost_ref</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The cost value associated with the time cost reference slew time.&#39;</span><span class="p">,</span>
+                                        <span class="nb">float</span><span class="p">)</span>
+    <span class="n">timecost_weight</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The weighting value to apply to the slew time cost function result.&#39;</span><span class="p">,</span>
+                                      <span class="nb">float</span><span class="p">)</span>
+    <span class="n">filtercost_weight</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;The weighting value to apply to the filter change cost function &#39;</span>
+                                        <span class="s1">&#39;result.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">night_boundary</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Solar altitude (degrees) when it is considered night.&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">new_moon_phase_threshold</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;New moon phase threshold for swapping to dark time filter.&#39;</span><span class="p">,</span>
+                                               <span class="nb">float</span><span class="p">)</span>
+    <span class="n">ignore_sky_brightness</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to ignore sky brightness limits when rejecting targets.&#39;</span><span class="p">,</span>
+                                            <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">ignore_airmass</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to ignore airmass limits when rejecting targets.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">ignore_clouds</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to ignore cloud limits when rejecting targets.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">ignore_seeing</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to ignore seeing limits when rejecting targets.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SchedulerDriver.setDefaults"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.scheduler_driver.html#lsst.sims.ocs.configuration.scheduler_driver.SchedulerDriver.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set defaults for the LSST Scheduler&#39;s Driver.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coadd_values</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_balancing</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timecost_time_max</span> <span class="o">=</span> <span class="mf">150.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timecost_time_ref</span> <span class="o">=</span> <span class="mf">5.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timecost_cost_ref</span> <span class="o">=</span> <span class="mf">0.033</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timecost_weight</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filtercost_weight</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">night_boundary</span> <span class="o">=</span> <span class="o">-</span><span class="mf">12.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_moon_phase_threshold</span> <span class="o">=</span> <span class="mf">20.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_sky_brightness</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_airmass</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_clouds</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_seeing</span> <span class="o">=</span> <span class="bp">False</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, LSST Systems Engineering.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.7.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.science.north_ecliptic_spur module
+==============================================================
+
+.. automodule:: lsst.sims.ocs.configuration.science.north_ecliptic_spur
+    :members:
+    :undoc-members:
+    :show-inheritance:

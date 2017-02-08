@@ -1,0 +1,20 @@
+lsst.sims.ocs.configuration.science package
+===========================================
+
+Submodules
+----------
+
+.. toctree::
+
+   lsst.sims.ocs.configuration.science.galactic_plane
+   lsst.sims.ocs.configuration.science.north_ecliptic_spur
+   lsst.sims.ocs.configuration.science.south_celestial_pole
+   lsst.sims.ocs.configuration.science.wide_fast_deep
+
+Module contents
+---------------
+
+.. automodule:: lsst.sims.ocs.configuration.science
+    :members:
+    :undoc-members:
+    :show-inheritance:
