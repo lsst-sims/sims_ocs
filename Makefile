@@ -1,4 +1,5 @@
 GH_PAGES_SOURCES = Makefile doc setup.py python README.rst HISTORY.rst scripts tests SConstruct ups
+SCONS_STUFF = config.log .sconsign.dblite .sconf_temp
 BRANCH := $(shell git branch | grep \* | cut -d ' ' -f2)
 
 .PHONY: clean-pyc clean-build docs clean
@@ -13,6 +14,7 @@ help:
 	@echo "test-all - run tests on every Python version with tox"
 	@echo "coverage - check code coverage quickly with the default Python"
 	@echo "docs - generate Sphinx HTML documentation, including API docs"
+	@echo "gh-pages - generate information for GitHub pages"
 	@echo "release - package and upload a release"
 	@echo "dist - package"
 	@echo "install - install the package to the active Python's site-packages"
@@ -70,7 +72,7 @@ gh-pages:
 	git reset HEAD
 	$(MAKE) docs
 	mv -fv doc/_build/html/* ./
-	rm -rf $(GH_PAGES_SOURCES) sims_ocs.egg-info .cache ospl-info.log .coverage htmlcov
+	rm -rf $(GH_PAGES_SOURCES) sims_ocs.egg-info .cache ospl-info.log .coverage htmlcov $(SCONS_STUFF)
 
 release: clean
 	python setup.py sdist upload
