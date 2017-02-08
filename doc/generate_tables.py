@@ -6,7 +6,7 @@ from sqlalchemy import MetaData
 
 import lsst.sims.ocs.database.tables as tbls
 
-TOP_LEVEL_DIR = "docs"
+TOP_LEVEL_DIR = "doc"
 GENERATED_TABLE_DIR = "tables"
 
 def main():

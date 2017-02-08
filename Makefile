@@ -1,4 +1,4 @@
-GH_PAGES_SOURCES = Makefile docs setup.py lsst README.rst HISTORY.rst scripts tests
+GH_PAGES_SOURCES = Makefile doc setup.py python README.rst HISTORY.rst scripts tests SConstruct
 BRANCH := $(shell git branch | grep \* | cut -d ' ' -f2)
 
 .PHONY: clean-pyc clean-build docs clean
@@ -38,7 +38,7 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	flake8 lsst tests setup.py scripts/*
+	flake8 python/lsst tests setup.py scripts/*
 
 test:
 	python setup.py test
@@ -47,30 +47,30 @@ test-all:
 	tox
 
 coverage:
-	coverage run --source lsst setup.py test
+	coverage run --source python/lsst setup.py test
 	coverage report -m
 	coverage html
 	#open htmlcov/index.html
 
 docs:
-	rm -f docs/tables/*.rst
-	rm -f docs/table_descriptions.rst
-	python docs/generate_tables.py
-	rm -f docs/api/lsst*.rst
-	rm -f docs/api/modules.rst
-	sphinx-apidoc -H sims_ocs -e -o docs/api lsst
-	$(MAKE) -C docs clean
-	$(MAKE) -C docs html
-	#open docs/_build/html/index.html
+	rm -f doc/tables/*.rst
+	rm -f doc/table_descriptions.rst
+	python doc/generate_tables.py
+	rm -f doc/api/lsst*.rst
+	rm -f doc/api/modules.rst
+	sphinx-apidoc -H sims_ocs -e -o doc/api python/lsst
+	$(MAKE) -C doc clean
+	$(MAKE) -C doc html
+	#open doc/_build/html/index.html
 
 gh-pages:
 	git checkout gh-pages
 	rm -rf api build _modules _sources _static tables
 	git checkout $(BRANCH) $(GH_PAGES_SOURCES)
 	git reset HEAD
-	python setup.py develop
+	scons
 	$(MAKE) docs
-	mv -fv docs/_build/html/* ./
+	mv -fv doc/_build/html/* ./
 	rm -rf $(GH_PAGES_SOURCES) sims_ocs.egg-info .cache ospl-info.log .coverage htmlcov
 
 release: clean
