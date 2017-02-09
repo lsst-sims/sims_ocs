@@ -9,8 +9,6 @@ import socket
 import subprocess as sp
 import time
 
-import ts_scheduler.schedulerMain
-
 from lsst.sims.ocs.configuration import SimulationConfig
 from lsst.sims.ocs.database import SocsDatabase
 from lsst.sims.ocs.kernel import Simulator
@@ -80,8 +78,7 @@ def main(args):
         logger.info("{} proposals active.".format(configuration.num_proposals))
         configuration.validate()
 
-        sch_exe = os.path.join(os.path.dirname(ts_scheduler.schedulerMain.__file__), "scheduler.py")
-        sch_cmd = [sch_exe, "-s", "--log-port={}".format(log_port),
+        sch_cmd = ["scheduler.py", "-s", "--log-port={}".format(log_port),
                    "--console-format=Scheduler: %(message)s"]
         sch_cmd.extend(["-v" for i in xrange(args.verbose)])
         if args.profile:
