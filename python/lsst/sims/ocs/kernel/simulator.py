@@ -2,7 +2,7 @@ import logging
 import math
 import time
 
-from ts_scheduler.sky_model import Sun
+from lsst.ts.scheduler.sky_model import Sun
 
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
 from lsst.sims.ocs.database.tables import write_config, write_field, write_proposal

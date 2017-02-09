@@ -4,9 +4,9 @@ import math
 
 import palpy
 
-from ts_scheduler.observatoryModel import ObservatoryLocation, ObservatoryModel
-from ts_scheduler.schedulerTarget import Target
-from ts_scheduler.sky_model import DateProfile
+from lsst.ts.scheduler.observatory_model import ObservatoryLocation, ObservatoryModel
+from lsst.ts.scheduler.kernel import Target
+from lsst.ts.scheduler.sky_model import DateProfile
 
 from lsst.sims.ocs.setup import LoggingLevel
 from lsst.sims.ocs.observatory import ObsExposure, TargetExposure
@@ -27,7 +27,7 @@ class MainObservatory(object):
     ----------
     log : logging.Logger
         The logging instance.
-    model : ts_scheduler.observatoryModel
+    model : lsst.ts.scheduler.observatory_model.ObservatoryModel
         The instance of the Observatory model from the LSST Scheduler.
     param_dict : dict
         The configuration parameters for the Observatory model.
@@ -62,7 +62,7 @@ class MainObservatory(object):
         self.variational_model = None
 
     def __getattr__(self, name):
-        """Find attributes in ts_scheduler.observatorModel.ObservatorModel as well as MainObservatory.
+        """Find attributes in lsst.ts.scheduler.observator_model.ObservatorModel as well as MainObservatory.
         """
         try:
             return getattr(self.model, name)
@@ -136,8 +136,9 @@ class MainObservatory(object):
         """Get the slew activities for the given slew.
 
         This function retrieved the list of slew activities from the model after
-        ts_scheduler.ObservatoryModel::slew is called. The activites are stored in an internal structure so
-        parameters nor returns are necessary.
+        lsst.ts.scheduler.observatory_model.ObservatoryModel::slew is called. The
+        activites are stored in an internal structure so parameters nor returns are
+        necessary.
         """
         self.slew_activities_list = []
         critical_activities = self.model.lastslew_criticalpath
@@ -155,7 +156,7 @@ class MainObservatory(object):
 
         Parameters
         ----------
-        slew_state_info : ts_scheduler.observatoryModel.ObservatoryState
+        slew_state_info : lsst.ts.scheduler.observatory_model.ObservatoryState
             The current slew state instance.
 
         Returns

@@ -3,8 +3,8 @@ import numpy
 
 from lsst.sims.ocs.observatory import MainObservatory
 from lsst.sims.ocs.setup import LoggingLevel
-from ts_scheduler.observatoryModel import ObservatoryLocation
-from ts_scheduler.sky_model import AstronomicalSkyModel
+from lsst.ts.scheduler.observatory_model import ObservatoryLocation
+from lsst.ts.scheduler.sky_model import AstronomicalSkyModel
 
 __all__ = ["Sequencer"]
 
