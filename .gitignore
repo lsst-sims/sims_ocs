@@ -42,16 +42,15 @@ htmlcov
 output/*.html
 output/*/index.html
 
-# Sphinx
-docs/_build
-docs/modules.rst
-docs/lsst*.rst
-docs/tables/*.rst
-docs/table_descriptions.rst
-
 # Project
 version.py
 config_*
 
 # PyTest
 .cache
+
+# LSST Stack
+.sconf_temp
+.sconsign.dblite
+*.tests
+ups/*.cfgc

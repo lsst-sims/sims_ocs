@@ -69,44 +69,32 @@ The SOCS repository should be cloned into the ``gitdir``. Create a directory the
 
 	git clone https://github.com/lsst-sims/sims_ocs.git
 
-Conda Installation
-~~~~~~~~~~~~~~~~~~
+LSST Stack Installation
+~~~~~~~~~~~~~~~~~~~~~~~
 
-The SOCS and Scheduler installation require a set of Python modules. It is recommended to install a clean version of Python via a mechanism like 
-`Miniconda <http://conda.pydata.org/miniconda.html>`_. A configuration module is also necessary from the LSST Stack for SOCS, so this will need to be setup as well. Going forward, all the prerequisites will be installed via the conda mechanism.
+The SOCS and Scheduler installation require a set of packages from Python and the LSST Science Pipelines. 
+Follow the installation instructions from `here <https://pipelines.lsst.io/install/newinstall.html#installing-from-source-with-newinstall-sh>`_ to get a minimal setup. Go ahead and let the stack software provide Python unless you feel comfortable providing your own. Follow the instructions to get into the stack environment. The instructions will refere to the stack installation directory as ``stack_install_dir``. It is recommended to use a conda environment especially if you are going to use the stack for other reasons. To create an environment, do the following::
 
-Install miniconda from the above link. It is assumed that the ``bin`` directory from the installation will make it into the ``$PATH`` somehow. This is one of the few places where the user gets to choose how to do this. After the installation, it's a good idea to update it, so do the following::
+    conda create -n opsim4 --clone=root
+    source activate opsim4
+    conda remove conda-env
 
-	conda update conda
+The last line is necessary since the create complains about that package being duplicated. Next, install the following stack packages::
 
-Next, create a Conda environment and activate it::
+    eups distrib install sims_utils pex_config -t sims
 
-	conda create -n opsim4 python=2
-	source activate opsim4
+Once this is complete, perform the following operations::
 
-Next, add the LSST Conda package channel by doing the following::
-
-    conda config --add channels http://conda.lsst.codes/sims
-
-In order to run the Operations Simulator (SOCS/Scheduler), the following need to be installed::
-
-	conda install lsst-pex-config enum34 pytz mysql-python requests sqlalchemy
+    conda update sqlalchemy
+    conda install mysql-python
 
 If one wishes to develop the code, being able to run the unit tests, check style compliance and generate the documentation is a must. To do this, these packages need to be installed::
 
-	conda install mock sphinx sphinx_rtd_theme flake8 coverage
+	conda install mock sphinx sphinx_rtd_theme flake8 coverage pytest
 
 There is one package that is required for the documentation but is not available via the conda packaging system. To get this package, do::
 
 	pip install rst
-
-Once the above is complete, setup the environment by doing::
-
-	source eups-setups.sh
-
-**NOTE**: If you are using CSH, you'll need the full path to the appropriate setup file (``eups-setups.csh``). To get this, execute the following command and a helpful message will tell you where to look::
-
-	eups
 
 With the environment setup, we need to declare and setup the prerequisite repos and then SOCS and Scheduler packages so they can be used. 
 
@@ -114,6 +102,7 @@ Declare the pre-calculated sky brightness model::
 
 	cd gitdir/lsst/sims_skybrightness_pre
 	eups declare sims_skybrightness_pre git -r . -c
+	setup sims_skybrightness_pre git
 	scons
 
 Declare the Scheduler::
@@ -126,13 +115,13 @@ To declare and setup SOCS, do::
 	cd gitdir/lsst-sims/sims_ocs
 	eups declare sims_ocs git -r . -c
 	setup sims_ocs
-	python setup.py develop
+	scons
 
 **NOTE**: The declaration steps only need to be done once. After that, when returning to the same conda environment, do::
 
-	source eups-setups.sh
+	source stack_install_dir/loadLSST.<shell>
+	source activate opsim4
 	setup sims_ocs
-
 
 Sky Brightness Model Data
 -------------------------
