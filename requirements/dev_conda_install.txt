@@ -1,6 +1,5 @@
+mock
 sphinx
 sphinx_rtd_theme
 flake8
 coverage
-mock
-rst
