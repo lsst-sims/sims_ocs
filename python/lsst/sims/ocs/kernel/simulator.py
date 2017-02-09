@@ -295,6 +295,7 @@ class Simulator(object):
         """
         c = self.conf.config_list()
         c.extend(self.seq.sky_brightness_config())
+        c.append(("scheduler/version", self.opts.scheduler_version))
         config_list = [write_config((i + 1, x[0], x[1]), self.db.session_id) for i, x in enumerate(c)]
         self.db.write_table("config", config_list)
 

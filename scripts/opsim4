@@ -78,6 +78,10 @@ def main(args):
         logger.info("{} proposals active.".format(configuration.num_proposals))
         configuration.validate()
 
+        # Get scheduler version number
+        output = sp.Popen(["scheduler.py", "--version"], stdout=sp.PIPE, stderr=sp.PIPE).communicate()
+        args.scheduler_version = output[1].strip()
+
         sch_cmd = ["scheduler.py", "-s", "--log-port={}".format(log_port),
                    "--console-format=Scheduler: %(message)s"]
         sch_cmd.extend(["-v" for i in xrange(args.verbose)])
