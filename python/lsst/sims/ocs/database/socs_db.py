@@ -60,7 +60,7 @@ class SocsDatabase(object):
         self.log = logging.getLogger("database.SocsDatabase")
         self.db_dialect = dialect
         self.session_id = -1
-        self.session_start = session_id_start if session_id_start is not None else 1000
+        self.session_start = session_id_start if session_id_start is not None else 2000
         self.metadata = MetaData()
         self.engine = None
         self.mysql_config_path = mysql_config_path
@@ -87,7 +87,7 @@ class SocsDatabase(object):
         """
         return len(self.data_list) == 0
 
-    def _create_tables(self, metadata=None, use_autoincrement=True, session_id_start=1000):
+    def _create_tables(self, metadata=None, use_autoincrement=True, session_id_start=2000):
         """Create all the relevant tables.
 
         Parameters

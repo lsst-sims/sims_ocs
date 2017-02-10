@@ -57,7 +57,7 @@ class SocsDatabaseMySqlTest(unittest.TestCase):
     @mock.patch("lsst.sims.ocs.database.socs_db.create_engine")
     def test_new_session(self, mock_create_engine, mock_engine, mock_conn):
         # Need all the mocks to avoid writing to a real DB.
-        session_id_truth = 1000
+        session_id_truth = 2000
         mock_create_engine.return_value = mock_engine
         mock_engine.connect.return_value = mock_conn
         mock_result = mock.Mock()
@@ -126,7 +126,7 @@ class SocsDatabaseSqliteTest(unittest.TestCase):
     @mock.patch("lsst.sims.ocs.database.socs_db.get_hostname")
     def test_new_session(self, mock_get_hostname):
         mock_get_hostname.return_value = self.hostname
-        session_id_truth = 1000
+        session_id_truth = 2000
         startup_comment = "This is my cool test!"
 
         self.db.create_db()
