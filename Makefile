@@ -43,13 +43,14 @@ lint:
 	flake8 python/lsst tests setup.py scripts/*
 
 test:
-	python setup.py test
+	py.test -v
+	#python setup.py test
 
 test-all:
 	tox
 
 coverage:
-	coverage run --source python/lsst setup.py test
+	coverage run --source python/lsst -m unittest discover tests
 	coverage report -m
 	coverage html
 	#open htmlcov/index.html

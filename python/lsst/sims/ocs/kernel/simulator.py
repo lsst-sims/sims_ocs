@@ -2,7 +2,7 @@ import logging
 import math
 import time
 
-from ts_scheduler.sky_model import Sun
+from lsst.ts.scheduler.sky_model import Sun
 
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
 from lsst.sims.ocs.database.tables import write_config, write_field, write_proposal
@@ -295,6 +295,7 @@ class Simulator(object):
         """
         c = self.conf.config_list()
         c.extend(self.seq.sky_brightness_config())
+        c.append(("scheduler/version", self.opts.scheduler_version))
         config_list = [write_config((i + 1, x[0], x[1]), self.db.session_id) for i, x in enumerate(c)]
         self.db.write_table("config", config_list)
 
