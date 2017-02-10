@@ -85,7 +85,8 @@ def create_summary_all_props_table():
     oh_columns_1 = ['observationId', 'night', 'observationStartTime', 'observationStartMJD',
                     'observationStartLST', 'numExposures', 'visitTime', 'visitExposureTime']
     oh_columns_2 = ['fieldId', 'fieldRA', 'fieldDec', 'altitude', 'azimuth', 'filter', 'airmass',
-                    'skyBrightness', 'cloud', 'seeingFwhm500', 'seeingFwhmGeom', 'seeingFwhmEff']
+                    'skyBrightness', 'cloud', 'seeingFwhm500', 'seeingFwhmGeom', 'seeingFwhmEff',
+                    'fiveSigmaDepth']
     oh_columns_3 = ['moonRA', 'moonDec', 'moonAlt', 'moonAz', 'moonDistance', 'moonPhase', 'sunAlt', 'sunAz',
                     'solarElong']
 

@@ -73,6 +73,7 @@ observation_topic.cloud = 0.2
 observation_topic.seeing_fwhm_500 = 0.7
 observation_topic.seeing_fwhm_geom = 0.75
 observation_topic.seeing_fwhm_eff = 1.04
+observation_topic.five_sigma_depth = 21.3
 observation_topic.moon_ra = 65.0
 observation_topic.moon_dec = -10.0
 observation_topic.moon_alt = -30.0

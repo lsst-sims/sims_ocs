@@ -72,7 +72,7 @@ class TablesTest(unittest.TestCase):
 
     def test_create_observation_history_table(self):
         obs_hist = tbls.create_observation_history(self.metadata)
-        self.assertEqual(len(obs_hist.c), 35)
+        self.assertEqual(len(obs_hist.c), 36)
         self.assertEqual(len(obs_hist.indexes), 4)
 
     def test_write_observation_history_table(self):
@@ -99,6 +99,7 @@ class TablesTest(unittest.TestCase):
         self.assertEqual(result['skyBrightness'], obs_topic.sky_brightness)
         self.assertEqual(result['cloud'], obs_topic.cloud)
         self.assertEqual(result['seeingFwhmGeom'], obs_topic.seeing_fwhm_geom)
+        self.assertEqual(result['fiveSigmaDepth'], obs_topic.five_sigma_depth)
         self.assertEqual(result['moonRA'], obs_topic.moon_ra)
         self.assertEqual(result['moonAz'], obs_topic.moon_az)
         self.assertEqual(result['sunDec'], obs_topic.sun_dec)
@@ -316,4 +317,4 @@ class TablesTest(unittest.TestCase):
         p = tbls.create_proposal(self.metadata)
         f = tbls.create_field(self.metadata)
         summary = tbls.create_summary_all_props(self.metadata, oh, sh, sfs, p, ph, f)
-        self.assertEqual(len(summary.c), 35)
+        self.assertEqual(len(summary.c), 36)

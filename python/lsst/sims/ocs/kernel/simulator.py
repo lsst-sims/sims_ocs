@@ -13,6 +13,7 @@ from lsst.sims.ocs.sal import SalManager, topic_strdict
 from lsst.sims.ocs.setup import LoggingLevel
 from lsst.sims.ocs.utilities.constants import DAYS_IN_YEAR, SECONDS_IN_MINUTE
 from lsst.sims.ocs.utilities.socs_exceptions import SchedulerTimeoutError
+from lsst.sims.utils import m5_flat_sed
 
 __all__ = ["Simulator"]
 
@@ -249,6 +250,14 @@ class Simulator(object):
                 observation.seeing_fwhm_500 = seeing_values[0]
                 observation.seeing_fwhm_geom = seeing_values[1]
                 observation.seeing_fwhm_eff = seeing_values[2]
+
+                visit_exposure_time = sum([observation.exposure_times[i]
+                                           for i in range(observation.num_exposures)])
+                observation.five_sigma_depth = m5_flat_sed(observation.filter,
+                                                           observation.sky_brightness,
+                                                           observation.seeing_fwhm_eff,
+                                                           visit_exposure_time,
+                                                           observation.airmass)
 
                 # Pass observation back to scheduler
                 self.sal.put(observation)

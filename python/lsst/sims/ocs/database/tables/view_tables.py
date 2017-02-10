@@ -51,6 +51,7 @@ def create_summary_all_props(metadata, oh, sh, sfs, p, ph, f):
                                 oh.c.seeingFwhm500.label('seeingFwhm500'),
                                 oh.c.seeingFwhmGeom.label('seeingFwhmGeom'),
                                 oh.c.seeingFwhmEff.label('seeingFwhmEff'),
+                                oh.c.fiveSigmaDepth.label('fiveSigmaDepth'),
                                 sh.c.slewTime.label('slewTime'),
                                 sh.c.slewDistance.label('slewDistance'),
                                 sfs.c.paraAngle.label('paraAngle'),
