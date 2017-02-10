@@ -242,6 +242,9 @@ def create_observation_history(metadata):
                          doc="\"Effective\" full-width at half-maximum, typically ~15% larger than "
                          "seeingFwhmGeom. This can be used to calculate SNR for point sources, using "
                          "seeingFwhmEff as the FWHM of a single Gaussian describing the PSF."),
+                  Column("fiveSigmaDepth", Float, nullable=False,
+                         doc="The magnitude of a point source that would be a 5-sigma detection "
+                             "(units=magnitudes)"),
                   Column("moonRA", Float, nullable=False,
                          doc="The right-ascension (units=degrees) of the moon."),
                   Column("moonDec", Float, nullable=False,

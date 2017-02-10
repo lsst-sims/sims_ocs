@@ -137,6 +137,7 @@ def write_observation_history(data, sid):
         ('seeingFwhm500', data.seeing_fwhm_500),
         ('seeingFwhmGeom', data.seeing_fwhm_geom),
         ('seeingFwhmEff', data.seeing_fwhm_eff),
+        ('fiveSigmaDepth', data.five_sigma_depth),
         ('moonRA', data.moon_ra),
         ('moonDec', data.moon_dec),
         ('moonAlt', data.moon_alt),
