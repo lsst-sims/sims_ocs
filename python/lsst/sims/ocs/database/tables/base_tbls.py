@@ -267,9 +267,7 @@ def create_observation_history(metadata):
                          doc="The azimuth (units=degrees) of the sun."),
                   Column("solarElong", Float, nullable=False,
                          doc="The solar elongation (units=degrees) of the observation field (distance "
-                             "between it and sun)."),
-                  ForeignKeyConstraint(["Field_fieldId"], ["Field.fieldId"]),
-                  ForeignKeyConstraint(["TargetHistory_targetId"], ["TargetHistory.targetId"]))
+                             "between it and sun)."))
 
     Index("o_filter", table.c.filter)
     Index("fk_ObsHistory_Session1", table.c.Session_sessionId)
@@ -377,9 +375,7 @@ def create_proposal_history(name, metadata):
                          doc="The time-balancing boost assigned by a particular proposal."),
                   Column(fkc_name, Integer, nullable=False,
                          doc="Numeric identifier that relates to an entry in the "
-                             "{} table.".format(index_key_name.rstrip("1"))),
-                  ForeignKeyConstraint([fkc_name], [fkc_column]),
-                  ForeignKeyConstraint(["Proposal_propId"], ["Proposal.propId"]))
+                             "{} table.".format(index_key_name.rstrip("1"))))
 
     index_name = "fk_{}_{}".format(name, index_key_name)
     if "Obs" in name:
@@ -490,8 +486,7 @@ def create_slew_history(metadata):
                   Column("slewDistance", Float, nullable=False,
                          doc="The angular distance traveled on the sky of the slew (units=degrees)."),
                   Column("ObsHistory_observationId", Integer, nullable=False,
-                         doc="Numeric identifier that relates to an entry in the ObsHistory table."),
-                  ForeignKeyConstraint(["ObsHistory_observationId"], ["ObsHistory.observationId"]))
+                         doc="Numeric identifier that relates to an entry in the ObsHistory table."))
 
     Index("fk_SlewHistory_ObsHistory1", table.c.ObsHistory_observationId)
 
@@ -529,8 +524,7 @@ def create_slew_activities(metadata):
                   Column("inCriticalPath", String(10), nullable=False,
                          doc="True is slew activity is in the critical path and False if not."),
                   Column("SlewHistory_slewCount", Integer, nullable=False,
-                         doc="Numeric identifier that relates to an entry in the SlewHistory table."),
-                  ForeignKeyConstraint(["SlewHistory_slewCount"], ["SlewHistory.slewCount"]))
+                         doc="Numeric identifier that relates to an entry in the SlewHistory table."))
 
     Index("fk_SlewActivites_SlewHistory1_idx", table.c.SlewHistory_slewCount)
 
