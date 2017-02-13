@@ -69,12 +69,14 @@ class ScienceProposals(pexConfig.Config):
         # Listing of all the things related to a proposal but not including the
         # actual class name,
         proposal_related = ['General', 'BandFilter', 'SELECTION_LIMIT_TYPES', 'Selection',
-                            'Sequence', 'general_prop_reg', 'sequence_prop_reg', 'pexConfig']
+                            'Sequence', 'general_prop_reg', 'sequence_prop_reg', 'pexConfig',
+                            'SelectionList', 'TimeRange', 'GeneralBandFilter', 'SubSequence',
+                            'MasterSubSequence', 'BaseSequence']
         if alternate_proposals is not None:
             sys.path.append(alternate_proposals)
             prop_files = os.listdir(alternate_proposals)
             for prop_file in prop_files:
-                if ".pyc" in prop_file:
+                if not prop_file.endswith(".py"):
                     continue
                 prop_mod = prop_file.split('.')[0]
                 module = importlib.import_module(prop_mod)
