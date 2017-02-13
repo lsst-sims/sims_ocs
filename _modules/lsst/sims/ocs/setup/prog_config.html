@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.setup.prog_config &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.setup.prog_config &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +65,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -139,11 +142,11 @@
 <span></span><span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">configparser</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">ConfigParser</span> <span class="kn">as</span> <span class="nn">configparser</span>
+    <span class="kn">import</span> <span class="nn">ConfigParser</span> <span class="k">as</span> <span class="nn">configparser</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.utilities</span> <span class="kn">import</span> <span class="n">expand_path</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.utilities</span> <span class="k">import</span> <span class="n">expand_path</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apply_file_config&quot;</span><span class="p">,</span> <span class="s2">&quot;read_file_config&quot;</span><span class="p">,</span> <span class="s2">&quot;write_file_config&quot;</span><span class="p">]</span>
 
@@ -181,7 +184,7 @@
     <span class="k">except</span> <span class="p">(</span><span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">,</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoSectionError</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="write_file_config"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.prog_config.html#lsst.sims.ocs.setup.prog_config.write_file_config">[docs]</a><span class="k">def</span> <span class="nf">write_file_config</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">conf_dir</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="write_file_config"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.prog_config.html#lsst.sims.ocs.setup.prog_config.write_file_config">[docs]</a><span class="k">def</span> <span class="nf">write_file_config</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">conf_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Write a configuration file from the given options.</span>
 
 <span class="sd">    Parameters</span>
@@ -198,17 +201,17 @@
     <span class="n">parser</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;sqlite&quot;</span><span class="p">:</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="s2">&quot;save_directory&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">save_dir</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">session_id_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">session_id_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="s2">&quot;session_id_start&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">session_id_start</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;mysql&quot;</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">config_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;mysql&quot;</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">config_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="s2">&quot;config_path&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">config_path</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">conf_dir</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">conf_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">conf_dir</span> <span class="o">=</span> <span class="n">expand_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;$HOME&quot;</span><span class="p">,</span> <span class="s2">&quot;.config&quot;</span><span class="p">))</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">conf_dir</span><span class="p">,</span> <span class="s2">&quot;opsim4&quot;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cfile</span><span class="p">:</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cfile</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="read_file_config"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.prog_config.html#lsst.sims.ocs.setup.prog_config.read_file_config">[docs]</a><span class="k">def</span> <span class="nf">read_file_config</span><span class="p">(</span><span class="n">conf_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">conf_dir</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="read_file_config"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.prog_config.html#lsst.sims.ocs.setup.prog_config.read_file_config">[docs]</a><span class="k">def</span> <span class="nf">read_file_config</span><span class="p">(</span><span class="n">conf_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">conf_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Read in a configuration file.</span>
 
 <span class="sd">    Parameters</span>
@@ -218,14 +221,14 @@
 <span class="sd">    conf_dir : str, optional</span>
 <span class="sd">        The directory location of the configuration file. Default is $HOME/.config</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">conf_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">conf_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">conf_file</span> <span class="o">=</span> <span class="s2">&quot;opsim4&quot;</span>
-    <span class="k">if</span> <span class="n">conf_dir</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">conf_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">conf_dir</span> <span class="o">=</span> <span class="n">expand_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;$HOME&quot;</span><span class="p">,</span> <span class="s2">&quot;.config&quot;</span><span class="p">))</span>
 
     <span class="n">full_conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">conf_dir</span><span class="p">,</span> <span class="n">conf_file</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">full_conf_file</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
     <span class="n">parser</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">SafeConfigParser</span><span class="p">()</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">full_conf_file</span><span class="p">)</span>
@@ -263,7 +266,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

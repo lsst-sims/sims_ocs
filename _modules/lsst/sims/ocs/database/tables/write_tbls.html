@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.database.tables.write_tbls &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.database.tables.write_tbls &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../../index.html"/> 
 
   
@@ -62,7 +65,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -138,15 +141,15 @@
   <h1>Source code for lsst.sims.ocs.database.tables.write_tbls</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">collections</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;write_cloud&quot;</span><span class="p">,</span> <span class="s2">&quot;write_config&quot;</span><span class="p">,</span> <span class="s2">&quot;write_field&quot;</span><span class="p">,</span> <span class="s2">&quot;write_observation_exposures&quot;</span><span class="p">,</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;write_config&quot;</span><span class="p">,</span> <span class="s2">&quot;write_field&quot;</span><span class="p">,</span> <span class="s2">&quot;write_observation_exposures&quot;</span><span class="p">,</span>
            <span class="s2">&quot;write_observation_history&quot;</span><span class="p">,</span> <span class="s2">&quot;write_observation_proposal_history&quot;</span><span class="p">,</span> <span class="s2">&quot;write_proposal&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;write_scheduled_downtime&quot;</span><span class="p">,</span> <span class="s2">&quot;write_seeing&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;write_scheduled_downtime&quot;</span><span class="p">,</span>
            <span class="s2">&quot;write_slew_activities&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_history&quot;</span><span class="p">,</span>
            <span class="s2">&quot;write_slew_final_state&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_initial_state&quot;</span><span class="p">,</span> <span class="s2">&quot;write_slew_maxspeeds&quot;</span><span class="p">,</span>
            <span class="s2">&quot;write_target_exposures&quot;</span><span class="p">,</span> <span class="s2">&quot;write_target_history&quot;</span><span class="p">,</span> <span class="s2">&quot;write_target_proposal_history&quot;</span><span class="p">,</span>
            <span class="s2">&quot;write_unscheduled_downtime&quot;</span><span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">ordered_dict_from_namedtuple</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">ordered_dict_from_namedtuple</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a namedtuple to an OrderedDict.</span>
 
 <span class="sd">    Parameters</span>
@@ -161,33 +164,9 @@
 <span class="sd">        collections.OrderedDict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">values</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">sid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">sid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">values</span><span class="p">[</span><span class="s2">&quot;Session_sessionId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sid</span>
     <span class="k">return</span> <span class="n">values</span>
-
-<div class="viewcode-block" id="write_cloud"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_cloud">[docs]</a><span class="k">def</span> <span class="nf">write_cloud</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the Cloud table.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    data : tuple</span>
-<span class="sd">        The set of information from a cloud observation.</span>
-<span class="sd">    sid : int</span>
-<span class="sd">        The current session ID.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    collections.OrderedDict</span>
-<span class="sd">        A dictionary of the data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">values</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
-        <span class="p">(</span><span class="s1">&#39;cloudId&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-        <span class="p">(</span><span class="s1">&#39;Session_sessionId&#39;</span><span class="p">,</span> <span class="n">sid</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;c_date&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-        <span class="p">(</span><span class="s1">&#39;cloud&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-    <span class="p">])</span>
-
-    <span class="k">return</span> <span class="n">values</span></div>
 
 <div class="viewcode-block" id="write_config"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_config">[docs]</a><span class="k">def</span> <span class="nf">write_config</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the Config table.</span>
@@ -299,6 +278,7 @@
         <span class="p">(</span><span class="s1">&#39;seeingFwhm500&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">seeing_fwhm_500</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;seeingFwhmGeom&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">seeing_fwhm_geom</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;seeingFwhmEff&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">seeing_fwhm_eff</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;fiveSigmaDepth&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">five_sigma_depth</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;moonRA&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">moon_ra</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;moonDec&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">moon_dec</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;moonAlt&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">moon_alt</span><span class="p">),</span>
@@ -369,30 +349,6 @@
         <span class="p">(</span><span class="s1">&#39;duration&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
         <span class="p">(</span><span class="s1">&#39;activity&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
     <span class="p">])</span>
-    <span class="k">return</span> <span class="n">values</span></div>
-
-<div class="viewcode-block" id="write_seeing"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_seeing">[docs]</a><span class="k">def</span> <span class="nf">write_seeing</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a dictionary of data for the Seeing table.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    data : tuple</span>
-<span class="sd">        The set of information from a seeing observation.</span>
-<span class="sd">    sid : int</span>
-<span class="sd">        The current session ID.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    collections.OrderedDict</span>
-<span class="sd">        A dictionary of the data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">values</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
-        <span class="p">(</span><span class="s1">&#39;seeingId&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-        <span class="p">(</span><span class="s1">&#39;Session_sessionId&#39;</span><span class="p">,</span> <span class="n">sid</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;s_date&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-        <span class="p">(</span><span class="s1">&#39;seeing&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-    <span class="p">])</span>
-
     <span class="k">return</span> <span class="n">values</span></div>
 
 <div class="viewcode-block" id="write_slew_activities"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.database.tables.write_tbls.html#lsst.sims.ocs.database.tables.write_tbls.write_slew_activities">[docs]</a><span class="k">def</span> <span class="nf">write_slew_activities</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sid</span><span class="p">):</span>
@@ -544,7 +500,7 @@
         <span class="p">(</span><span class="s1">&#39;sunDec&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">sun_dec</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;sunAlt&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">sun_alt</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;sunAz&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">sun_az</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;sunElong&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">sun_elong</span><span class="p">)</span>
+        <span class="p">(</span><span class="s1">&#39;solarElong&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">solar_elong</span><span class="p">)</span>
     <span class="p">])</span>
     <span class="k">return</span> <span class="n">values</span></div>
 
@@ -620,7 +576,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

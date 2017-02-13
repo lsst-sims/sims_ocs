@@ -6,6 +6,7 @@ Submodules
 
 .. toctree::
 
+   lsst.sims.ocs.configuration.science.deep_drilling_cosmology1
    lsst.sims.ocs.configuration.science.galactic_plane
    lsst.sims.ocs.configuration.science.north_ecliptic_spur
    lsst.sims.ocs.configuration.science.south_celestial_pole

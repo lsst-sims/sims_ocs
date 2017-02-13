@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.setup.tracking &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.setup.tracking &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +65,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -139,7 +142,7 @@
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.utilities</span> <span class="kn">import</span> <span class="n">get_hostname</span><span class="p">,</span> <span class="n">get_user</span><span class="p">,</span> <span class="n">get_version</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.utilities</span> <span class="k">import</span> <span class="n">get_hostname</span><span class="p">,</span> <span class="n">get_user</span><span class="p">,</span> <span class="n">get_version</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Tracking&quot;</span><span class="p">]</span>
 
@@ -196,7 +199,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsim_tracking_url</span> <span class="o">+</span> <span class="s2">&quot;/status.php&quot;</span>
 
-<div class="viewcode-block" id="Tracking.track_session"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.tracking.html#lsst.sims.ocs.setup.tracking.Tracking.track_session">[docs]</a>    <span class="k">def</span> <span class="nf">track_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hostname</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Tracking.track_session"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.tracking.html#lsst.sims.ocs.setup.tracking.Tracking.track_session">[docs]</a>    <span class="k">def</span> <span class="nf">track_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hostname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Record the simulation session into the tracking database.</span>
 
 <span class="sd">        Parameters</span>
@@ -208,13 +211,13 @@
 <span class="sd">        version : str, optional</span>
 <span class="sd">            An alternate version number.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">hostname</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">hostname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">hostname</span> <span class="o">=</span> <span class="n">get_hostname</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">user</span> <span class="o">=</span> <span class="n">get_user</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">version</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">version</span> <span class="o">=</span> <span class="n">get_version</span><span class="p">()</span>
 
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sessionID&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span> <span class="s1">&#39;hostname&#39;</span><span class="p">:</span> <span class="n">hostname</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span>
@@ -228,7 +231,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Tracking for session was not recorded successfully!&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Tracking.update_session"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.tracking.html#lsst.sims.ocs.setup.tracking.Tracking.update_session">[docs]</a>    <span class="k">def</span> <span class="nf">update_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eng_comment</span><span class="p">,</span> <span class="n">hostname</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Tracking.update_session"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.setup.tracking.html#lsst.sims.ocs.setup.tracking.Tracking.update_session">[docs]</a>    <span class="k">def</span> <span class="nf">update_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eng_comment</span><span class="p">,</span> <span class="n">hostname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the simulation session in the tracking database with a comment.</span>
 
 <span class="sd">        This function allows the simulation session&#39;s entry in the tracking database to be updated with an</span>
@@ -242,7 +245,7 @@
 <span class="sd">        hostname : str, optional</span>
 <span class="sd">            An alternate hostname</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">hostname</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">hostname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">hostname</span> <span class="o">=</span> <span class="n">get_hostname</span><span class="p">()</span>
 
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sessionID&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span> <span class="s1">&#39;hostname&#39;</span><span class="p">:</span> <span class="n">hostname</span><span class="p">,</span> <span class="s1">&#39;eng_comment&#39;</span><span class="p">:</span> <span class="n">eng_comment</span><span class="p">}</span>
@@ -285,7 +288,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

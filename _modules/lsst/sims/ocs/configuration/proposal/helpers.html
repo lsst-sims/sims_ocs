@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.proposal.helpers &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.configuration.proposal.helpers &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../../index.html"/> 
 
   
@@ -62,7 +65,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -138,13 +141,14 @@
   <h1>Source code for lsst.sims.ocs.configuration.proposal.helpers</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">importlib</span>
 
-<span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
+<span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="k">as</span> <span class="nn">pexConfig</span>
 
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">General</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="k">import</span> <span class="n">General</span><span class="p">,</span> <span class="n">Sequence</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general_prop_reg&quot;</span><span class="p">,</span> <span class="s2">&quot;load_class&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general_prop_reg&quot;</span><span class="p">,</span> <span class="s2">&quot;load_class&quot;</span><span class="p">,</span> <span class="s2">&quot;sequence_prop_reg&quot;</span><span class="p">]</span>
 
 <span class="n">general_prop_reg</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">makeRegistry</span><span class="p">(</span><span class="s1">&#39;A registry for general proposals.&#39;</span><span class="p">,</span> <span class="n">General</span><span class="p">)</span>
+<span class="n">sequence_prop_reg</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">makeRegistry</span><span class="p">(</span><span class="s1">&#39;A registry for sequence proposals.&#39;</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)</span>
 
 <div class="viewcode-block" id="load_class"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.helpers.html#lsst.sims.ocs.configuration.proposal.helpers.load_class">[docs]</a><span class="k">def</span> <span class="nf">load_class</span><span class="p">(</span><span class="n">full_class_string</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Dynamically load a class from a string.</span>
@@ -202,7 +206,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

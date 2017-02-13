@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.observatory.main_observatory &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.observatory.main_observatory &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +65,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -142,14 +145,14 @@
 
 <span class="kn">import</span> <span class="nn">palpy</span>
 
-<span class="kn">from</span> <span class="nn">ts_scheduler.observatoryModel</span> <span class="kn">import</span> <span class="n">ObservatoryLocation</span><span class="p">,</span> <span class="n">ObservatoryModel</span>
-<span class="kn">from</span> <span class="nn">ts_scheduler.schedulerTarget</span> <span class="kn">import</span> <span class="n">Target</span>
-<span class="kn">from</span> <span class="nn">ts_scheduler.sky_model</span> <span class="kn">import</span> <span class="n">DateProfile</span>
+<span class="kn">from</span> <span class="nn">lsst.ts.scheduler.observatory_model</span> <span class="k">import</span> <span class="n">ObservatoryLocation</span><span class="p">,</span> <span class="n">ObservatoryModel</span>
+<span class="kn">from</span> <span class="nn">lsst.ts.scheduler.kernel</span> <span class="k">import</span> <span class="n">Target</span>
+<span class="kn">from</span> <span class="nn">lsst.ts.scheduler.sky_model</span> <span class="k">import</span> <span class="n">DateProfile</span>
 
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.setup</span> <span class="kn">import</span> <span class="n">LoggingLevel</span>
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.observatory</span> <span class="kn">import</span> <span class="n">ObsExposure</span><span class="p">,</span> <span class="n">TargetExposure</span>
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.observatory</span> <span class="kn">import</span> <span class="n">SlewActivity</span><span class="p">,</span> <span class="n">SlewHistory</span><span class="p">,</span> <span class="n">SlewMaxSpeeds</span><span class="p">,</span> <span class="n">SlewState</span>
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.observatory</span> <span class="kn">import</span> <span class="n">VariationalModel</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.setup</span> <span class="k">import</span> <span class="n">LoggingLevel</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.observatory</span> <span class="k">import</span> <span class="n">ObsExposure</span><span class="p">,</span> <span class="n">TargetExposure</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.observatory</span> <span class="k">import</span> <span class="n">SlewActivity</span><span class="p">,</span> <span class="n">SlewHistory</span><span class="p">,</span> <span class="n">SlewMaxSpeeds</span><span class="p">,</span> <span class="n">SlewState</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.observatory</span> <span class="k">import</span> <span class="n">VariationalModel</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MainObservatory&quot;</span><span class="p">]</span>
 
@@ -165,7 +168,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    log : logging.Logger</span>
 <span class="sd">        The logging instance.</span>
-<span class="sd">    model : ts_scheduler.observatoryModel</span>
+<span class="sd">    model : lsst.ts.scheduler.observatory_model.ObservatoryModel</span>
 <span class="sd">        The instance of the Observatory model from the LSST Scheduler.</span>
 <span class="sd">    param_dict : dict</span>
 <span class="sd">        The configuration parameters for the Observatory model.</span>
@@ -182,32 +185,32 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;observatory.MainObservatory&quot;</span><span class="p">)</span>
         <span class="n">observatory_location</span> <span class="o">=</span> <span class="n">ObservatoryLocation</span><span class="p">()</span>
         <span class="n">observatory_location</span><span class="o">.</span><span class="n">configure</span><span class="p">({</span><span class="s2">&quot;obs_site&quot;</span><span class="p">:</span> <span class="n">obs_site_config</span><span class="o">.</span><span class="n">toDict</span><span class="p">()})</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ObservatoryModel</span><span class="p">(</span><span class="n">observatory_location</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">date_profile</span> <span class="o">=</span> <span class="n">DateProfile</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">observatory_location</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">param_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exposures_made</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">target_exposure_list</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">observation_exposure_list</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">slew_history</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">slew_final_state</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">slew_initial_state</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">slew_activities_list</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_exposure_list</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation_exposure_list</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_history</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_final_state</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_initial_state</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_activities_list</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slew_activities_done</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">slew_maxspeeds</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">variational_model</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slew_maxspeeds</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variational_model</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="MainObservatory.__getattr__"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory.__getattr__">[docs]</a>    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Find attributes in ts_scheduler.observatorModel.ObservatorModel as well as MainObservatory.</span>
+        <span class="sd">&quot;&quot;&quot;Find attributes in lsst.ts.scheduler.observator_model.ObservatorModel as well as MainObservatory.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="n">cclass_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
             <span class="n">aclass_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;{}&#39; and &#39;{}&#39; objects have no attribute &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cclass_name</span><span class="p">,</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; and &#39;</span><span class="si">{}</span><span class="s2">&#39; objects have no attribute &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cclass_name</span><span class="p">,</span>
                                                                                        <span class="n">aclass_name</span><span class="p">,</span>
                                                                                        <span class="n">name</span><span class="p">))</span></div>
 
@@ -238,7 +241,7 @@
         <span class="n">shutter_time</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">camera_config</span><span class="o">.</span><span class="n">shutter_time</span><span class="p">)</span>
 
         <span class="n">visit_time</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">num_exposures</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">num_exposures</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">exposures_made</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">effective_exposure_time</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">exposure_times</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">target_exposure_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TargetExposure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exposures_made</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
@@ -274,8 +277,9 @@
         <span class="sd">&quot;&quot;&quot;Get the slew activities for the given slew.</span>
 
 <span class="sd">        This function retrieved the list of slew activities from the model after</span>
-<span class="sd">        ts_scheduler.ObservatoryModel::slew is called. The activites are stored in an internal structure so</span>
-<span class="sd">        parameters nor returns are necessary.</span>
+<span class="sd">        lsst.ts.scheduler.observatory_model.ObservatoryModel::slew is called. The</span>
+<span class="sd">        activites are stored in an internal structure so parameters nor returns are</span>
+<span class="sd">        necessary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slew_activities_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">critical_activities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lastslew_criticalpath</span>
@@ -293,7 +297,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        slew_state_info : ts_scheduler.observatoryModel.ObservatoryState</span>
+<span class="sd">        slew_state_info : lsst.ts.scheduler.observatory_model.ObservatoryState</span>
 <span class="sd">            The current slew state instance.</span>
 
 <span class="sd">        Returns</span>
@@ -331,7 +335,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                     <span class="s2">&quot;Starting observation {} for target {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span><span class="p">,</span>
+                     <span class="s2">&quot;Starting observation </span><span class="si">{}</span><span class="s2"> for target </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span><span class="p">,</span>
                                                                      <span class="n">target</span><span class="o">.</span><span class="n">targetId</span><span class="p">))</span>
 
         <span class="n">slew_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slew</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
@@ -355,10 +359,10 @@
         <span class="n">observation</span><span class="o">.</span><span class="n">num_exposures</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">num_exposures</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                     <span class="s2">&quot;Exposure Times for Target {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">targetId</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">exposure_times</span><span class="p">)))</span>
+                     <span class="s2">&quot;Exposure Times for Target </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">targetId</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">exposure_times</span><span class="p">)))</span>
         <span class="n">visit_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_visit_time</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">time_handler</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                     <span class="s2">&quot;Visit Time for Target {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">targetId</span><span class="p">,</span> <span class="n">visit_time</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                     <span class="s2">&quot;Visit Time for Target </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">targetId</span><span class="p">,</span> <span class="n">visit_time</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
         <span class="n">observation</span><span class="o">.</span><span class="n">visit_time</span> <span class="o">=</span> <span class="n">visit_time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">exposure</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_exposure_list</span><span class="p">):</span>
@@ -367,7 +371,7 @@
         <span class="n">time_handler</span><span class="o">.</span><span class="n">update_time</span><span class="p">(</span><span class="o">*</span><span class="n">visit_time</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                     <span class="s2">&quot;Observation {} completed at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span><span class="p">,</span>
+                     <span class="s2">&quot;Observation </span><span class="si">{}</span><span class="s2"> completed at </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observations_made</span><span class="p">,</span>
                                                               <span class="n">time_handler</span><span class="o">.</span><span class="n">current_timestring</span><span class="p">))</span>
 
         <span class="n">slew_info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;slew_history&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">slew_history</span><span class="p">,</span> <span class="s2">&quot;slew_initial_state&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">slew_initial_state</span><span class="p">,</span>
@@ -393,16 +397,16 @@
 <span class="sd">            The time to slew the telescope from its current position to the target position.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Slew count: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Slew count: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span><span class="p">))</span>
         <span class="n">initial_slew_state</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">currentState</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Initial slew state: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">initial_slew_state</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Initial slew state: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">initial_slew_state</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slew_initial_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_slew_state</span><span class="p">(</span><span class="n">initial_slew_state</span><span class="p">)</span>
 
         <span class="n">sched_target</span> <span class="o">=</span> <span class="n">Target</span><span class="o">.</span><span class="n">from_topic</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">slew</span><span class="p">(</span><span class="n">sched_target</span><span class="p">)</span>
 
         <span class="n">final_slew_state</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">currentState</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Final slew state: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">final_slew_state</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Final slew state: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">final_slew_state</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slew_final_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_slew_state</span><span class="p">(</span><span class="n">final_slew_state</span><span class="p">)</span>
 
         <span class="n">slew_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">final_slew_state</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="n">initial_slew_state</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
@@ -449,7 +453,7 @@
 <span class="sd">        filter_to_unmount : str</span>
 <span class="sd">            The filter requested for unmounting.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Swap out {} filter.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filter_to_unmount</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Swap out </span><span class="si">{}</span><span class="s2"> filter.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filter_to_unmount</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">swap_filter</span><span class="p">(</span><span class="n">filter_to_unmount</span><span class="p">)</span></div></div>
 </pre></div>
 
@@ -484,7 +488,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

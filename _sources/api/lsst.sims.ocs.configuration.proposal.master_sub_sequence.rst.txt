@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.proposal.master_sub_sequence module
+===============================================================
+
+.. automodule:: lsst.sims.ocs.configuration.proposal.master_sub_sequence
+    :members:
+    :undoc-members:
+    :show-inheritance:

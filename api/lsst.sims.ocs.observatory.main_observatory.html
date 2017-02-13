@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.observatory.main_observatory module &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.observatory.main_observatory module &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../index.html"/>
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.observatory package" href="lsst.sims.ocs.observatory.html"/>
         <link rel="next" title="lsst.sims.ocs.observatory.slew_information module" href="lsst.sims.ocs.observatory.slew_information.html"/>
         <link rel="prev" title="lsst.sims.ocs.observatory.exposure_information module" href="lsst.sims.ocs.observatory.exposure_information.html"/> 
@@ -64,7 +67,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -151,7 +154,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/lsst.sims.ocs.observatory.main_observatory.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/lsst.sims.ocs.observatory.main_observatory.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -181,7 +184,7 @@ the model calculates to simulate real world behaviors.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.observatory.main_observatory.MainObservatory.model">
 <code class="descname">model</code><a class="headerlink" href="#lsst.sims.ocs.observatory.main_observatory.MainObservatory.model" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>ts_scheduler.observatoryModel</em> &#8211; The instance of the Observatory model from the LSST Scheduler.</p>
+<dd><p><em>lsst.ts.scheduler.observatory_model.ObservatoryModel</em> &#8211; The instance of the Observatory model from the LSST Scheduler.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -202,7 +205,7 @@ the model calculates to simulate real world behaviors.</p>
 <dl class="method">
 <dt id="lsst.sims.ocs.observatory.main_observatory.MainObservatory.__getattr__">
 <code class="descname">__getattr__</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/observatory/main_observatory.html#MainObservatory.__getattr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.observatory.main_observatory.MainObservatory.__getattr__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find attributes in ts_scheduler.observatorModel.ObservatorModel as well as MainObservatory.</p>
+<dd><p>Find attributes in lsst.ts.scheduler.observator_model.ObservatorModel as well as MainObservatory.</p>
 </dd></dl>
 
 <dl class="method">
@@ -245,8 +248,9 @@ visit_time += (number of exposures - 1) * camera readout time</p>
 <code class="descname">get_slew_activities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/observatory/main_observatory.html#MainObservatory.get_slew_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.observatory.main_observatory.MainObservatory.get_slew_activities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the slew activities for the given slew.</p>
 <p>This function retrieved the list of slew activities from the model after
-ts_scheduler.ObservatoryModel::slew is called. The activites are stored in an internal structure so
-parameters nor returns are necessary.</p>
+lsst.ts.scheduler.observatory_model.ObservatoryModel::slew is called. The
+activites are stored in an internal structure so parameters nor returns are
+necessary.</p>
 </dd></dl>
 
 <dl class="method">
@@ -259,7 +263,7 @@ that will allow it to be transferred to the database.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>slew_state_info</strong> (<em>ts_scheduler.observatoryModel.ObservatoryState</em>) &#8211; The current slew state instance.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>slew_state_info</strong> (<em>lsst.ts.scheduler.observatory_model.ObservatoryState</em>) &#8211; The current slew state instance.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewState" title="lsst.sims.ocs.observatory.slew_information.SlewState"><code class="xref py py-class docutils literal"><span class="pre">SlewState</span></code></a> &#8211; The copied slew state information.</td>
 </tr>
@@ -389,7 +393,7 @@ is on the list, a filter swap is performed.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.proposal.general_band_filter module
+===============================================================
+
+.. automodule:: lsst.sims.ocs.configuration.proposal.general_band_filter
+    :members:
+    :undoc-members:
+    :show-inheritance:

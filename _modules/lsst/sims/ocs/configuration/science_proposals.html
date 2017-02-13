@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.science_proposals &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.configuration.science_proposals &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +65,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -140,18 +143,20 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
+<span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="k">as</span> <span class="nn">pexConfig</span>
 
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration</span> <span class="kn">import</span> <span class="n">load_config</span>
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">general_prop_reg</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration</span> <span class="k">import</span> <span class="n">load_config</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="k">import</span> <span class="n">general_prop_reg</span><span class="p">,</span> <span class="n">sequence_prop_reg</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.utilities.socs_exceptions</span> <span class="k">import</span> <span class="n">NoProposalsConfiguredError</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ScienceProposals&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="ScienceProposals"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.science_proposals.html#lsst.sims.ocs.configuration.science_proposals.ScienceProposals">[docs]</a><span class="k">class</span> <span class="nc">ScienceProposals</span><span class="p">(</span><span class="n">pexConfig</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Configuration for the science propsals.</span>
+    <span class="sd">&quot;&quot;&quot;Configuration for the science proposals.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">general_props</span> <span class="o">=</span> <span class="n">general_prop_reg</span><span class="o">.</span><span class="n">makeField</span><span class="p">(</span><span class="s1">&#39;The list of general proposals.&#39;</span><span class="p">,</span> <span class="n">multi</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">general_props</span> <span class="o">=</span> <span class="n">general_prop_reg</span><span class="o">.</span><span class="n">makeField</span><span class="p">(</span><span class="s1">&#39;The list of general proposals.&#39;</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">multi</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">sequence_props</span> <span class="o">=</span> <span class="n">sequence_prop_reg</span><span class="o">.</span><span class="n">makeField</span><span class="p">(</span><span class="s1">&#39;The list of sequence proposals.&#39;</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">multi</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">general_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -164,6 +169,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">general_props</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sequence_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Listing of available sequence proposals.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[str]</span>
+<span class="sd">           The available sequence proposals.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence_props</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
 <div class="viewcode-block" id="ScienceProposals.load"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.science_proposals.html#lsst.sims.ocs.configuration.science_proposals.ScienceProposals.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_files</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Load the configuration override files.</span>
 
@@ -173,13 +189,15 @@
 <span class="sd">            A set of configuration override files.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">general_props</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">load_config</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_props</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">load_config</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">config_files</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ScienceProposals.load_proposals"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.science_proposals.html#lsst.sims.ocs.configuration.science_proposals.ScienceProposals.load_proposals">[docs]</a>    <span class="k">def</span> <span class="nf">load_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proposals</span><span class="p">,</span> <span class="n">alternate_proposals</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ScienceProposals.load_proposals"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.science_proposals.html#lsst.sims.ocs.configuration.science_proposals.ScienceProposals.load_proposals">[docs]</a>    <span class="k">def</span> <span class="nf">load_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proposals</span><span class="p">,</span> <span class="n">alternate_proposals</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Load given proposals.</span>
 
 <span class="sd">        This function loads the propsals requested from the function argument.</span>
-<span class="sd">        The argument is a dictionary with two keys: GEN or SS and a comma-delimited</span>
+<span class="sd">        The argument is a dictionary with two keys: GEN or SEQ and a comma-delimited</span>
 <span class="sd">        list of proposal names associated with each key.</span>
 
 <span class="sd">        Parameters</span>
@@ -191,19 +209,23 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Listing of all the things related to a proposal but not including the</span>
         <span class="c1"># actual class name,</span>
-        <span class="n">proposal_related</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;General&#39;</span><span class="p">,</span> <span class="s1">&#39;BandFilter&#39;</span><span class="p">,</span> <span class="s1">&#39;SELECTION_LIMIT_TYPES&#39;</span><span class="p">,</span>
-                            <span class="s1">&#39;Selection&#39;</span><span class="p">,</span> <span class="s1">&#39;general_prop_reg&#39;</span><span class="p">,</span> <span class="s1">&#39;pexConfig&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">alternate_proposals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">proposal_related</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;General&#39;</span><span class="p">,</span> <span class="s1">&#39;BandFilter&#39;</span><span class="p">,</span> <span class="s1">&#39;SELECTION_LIMIT_TYPES&#39;</span><span class="p">,</span> <span class="s1">&#39;Selection&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;Sequence&#39;</span><span class="p">,</span> <span class="s1">&#39;general_prop_reg&#39;</span><span class="p">,</span> <span class="s1">&#39;sequence_prop_reg&#39;</span><span class="p">,</span> <span class="s1">&#39;pexConfig&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;SelectionList&#39;</span><span class="p">,</span> <span class="s1">&#39;TimeRange&#39;</span><span class="p">,</span> <span class="s1">&#39;GeneralBandFilter&#39;</span><span class="p">,</span> <span class="s1">&#39;SubSequence&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;MasterSubSequence&#39;</span><span class="p">,</span> <span class="s1">&#39;BaseSequence&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">alternate_proposals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alternate_proposals</span><span class="p">)</span>
             <span class="n">prop_files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">alternate_proposals</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">prop_file</span> <span class="ow">in</span> <span class="n">prop_files</span><span class="p">:</span>
-                <span class="k">if</span> <span class="s2">&quot;.pyc&quot;</span> <span class="ow">in</span> <span class="n">prop_file</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">prop_file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.py&quot;</span><span class="p">):</span>
                     <span class="k">continue</span>
                 <span class="n">prop_mod</span> <span class="o">=</span> <span class="n">prop_file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">prop_mod</span><span class="p">)</span>
                 <span class="n">all_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">module</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)]</span>
                 <span class="k">if</span> <span class="s2">&quot;General&quot;</span> <span class="ow">in</span> <span class="n">all_names</span><span class="p">:</span>
                     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;GEN&quot;</span>
+                <span class="k">if</span> <span class="s2">&quot;Sequence&quot;</span> <span class="ow">in</span> <span class="n">all_names</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;SEQ&quot;</span>
                 <span class="n">prop_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">all_names</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">proposal_related</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">proposals</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
                     <span class="n">proposals</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
@@ -211,7 +233,12 @@
                     <span class="n">proposals</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">prop_name</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">proposals</span><span class="p">[</span><span class="s2">&quot;GEN&quot;</span><span class="p">]):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">general_props</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">proposals</span><span class="p">[</span><span class="s2">&quot;GEN&quot;</span><span class="p">]</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">general_props</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">proposals</span><span class="p">[</span><span class="s2">&quot;GEN&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">proposals</span><span class="p">[</span><span class="s2">&quot;SEQ&quot;</span><span class="p">]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence_props</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">proposals</span><span class="p">[</span><span class="s2">&quot;SEQ&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">proposals</span><span class="p">[</span><span class="s2">&quot;GEN&quot;</span><span class="p">])</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">proposals</span><span class="p">[</span><span class="s2">&quot;SEQ&quot;</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="n">NoProposalsConfiguredError</span><span class="p">(</span><span class="s2">&quot;Please run at least one science proposal!&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ScienceProposals.save_as"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.science_proposals.html#lsst.sims.ocs.configuration.science_proposals.ScienceProposals.save_as">[docs]</a>    <span class="k">def</span> <span class="nf">save_as</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the configuration objects to separate files.</span>
@@ -223,6 +250,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">prop_name</span><span class="p">,</span> <span class="n">prop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">general_props</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">prop_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">general_props</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+                <span class="n">prop</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="n">prop_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;_prop.py&quot;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">prop_name</span><span class="p">,</span> <span class="n">prop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_props</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">prop_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_props</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
                 <span class="n">prop</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="n">prop_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;_prop.py&quot;</span><span class="p">))</span></div></div>
 </pre></div>
 
@@ -257,7 +287,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

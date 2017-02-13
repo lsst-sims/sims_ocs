@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.kernel.time_handler &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.kernel.time_handler &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +65,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -136,8 +139,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for lsst.sims.ocs.kernel.time_handler</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">timedelta</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TimeHandler&quot;</span><span class="p">]</span>
 
@@ -166,7 +169,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">initial_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">initial_date</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_dt</span>
 
-    <span class="k">def</span> <span class="nf">_time_difference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datetime1</span><span class="p">,</span> <span class="n">datetime2</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_time_difference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datetime1</span><span class="p">,</span> <span class="n">datetime2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate the difference in seconds between two times.</span>
 
 <span class="sd">        This function calculates the difference in seconds between two given :class:`datetime` instances. If</span>
@@ -184,7 +187,7 @@
 <span class="sd">        float</span>
 <span class="sd">            The difference in seconds between the two datetime instances.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">datetime2</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">datetime2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">datetime2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unix_start</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">datetime1</span> <span class="o">-</span> <span class="n">datetime2</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
 
@@ -262,7 +265,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">time_span</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_dt</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TimeHandler.future_datetime"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_datetime">[docs]</a>    <span class="k">def</span> <span class="nf">future_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeHandler.future_datetime"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_datetime">[docs]</a>    <span class="k">def</span> <span class="nf">future_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a future datetime object.</span>
 
 <span class="sd">        This function adds the requested time increment to the current date/time to get a future date/time</span>
@@ -283,14 +286,14 @@
 <span class="sd">        datetime.datetime</span>
 <span class="sd">            The datetime object for the future date/time.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_dt</span>
         <span class="n">time_delta_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">time_units</span><span class="p">:</span> <span class="n">time_increment</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="o">**</span><span class="n">time_delta_dict</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TimeHandler.future_timestamp"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_timestamp">[docs]</a>    <span class="k">def</span> <span class="nf">future_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeHandler.future_timestamp"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_timestamp">[docs]</a>    <span class="k">def</span> <span class="nf">future_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the UNIX timestamp for the future date/time.</span>
 
 <span class="sd">        This function adds the requested time increment to the current date/time to get a future date/time</span>
@@ -312,7 +315,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">future_datetime</span><span class="p">(</span><span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="TimeHandler.future_timestring"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_timestring">[docs]</a>    <span class="k">def</span> <span class="nf">future_timestring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeHandler.future_timestring"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.future_timestring">[docs]</a>    <span class="k">def</span> <span class="nf">future_timestring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_increment</span><span class="p">,</span> <span class="n">time_units</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the ISO-8601 representation of the future date/time.</span>
 
 <span class="sd">        This function adds the requested time increment to the current date/time to get a future date/time</span>
@@ -386,7 +389,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

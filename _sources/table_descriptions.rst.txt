@@ -5,8 +5,6 @@ Database Tables
 .. toctree::
    :maxdepth: 2
 
-   tables/cloud
-
    tables/config
 
    tables/field
@@ -21,8 +19,6 @@ Database Tables
 
    tables/scheduleddowntime
 
-   tables/seeing
-
    tables/session
 
    tables/slewactivities
@@ -34,6 +30,8 @@ Database Tables
    tables/slewinitialstate
 
    tables/slewmaxspeeds
+
+   tables/summaryallprops
 
    tables/targetexposures
 

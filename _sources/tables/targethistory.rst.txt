@@ -73,5 +73,5 @@ This table keeps a record of the information from the requested targets during a
       -  The altitude (units=degrees) of the sun.
     * -  sunAz
       -  The azimuth (units=degrees) of the sun.
-    * -  sunElong
+    * -  solarElong
       -  The elongation (units=degrees) of the sun.

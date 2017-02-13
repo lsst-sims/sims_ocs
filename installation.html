@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>Installation &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="index.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="index.html"/>
         <link rel="next" title="Usage" href="usage.html"/>
         <link rel="prev" title="Simulated Observatory Control System" href="index.html"/> 
 
@@ -63,7 +66,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -92,9 +95,10 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#scheduler-and-socs-source-code">Scheduler and SOCS Source Code</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#conda-installation">Conda Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lsst-stack-installation">LSST Stack Installation</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#sky-brightness-model-data">Sky Brightness Model Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#database-setup">Database Setup</a></li>
 </ul>
 </li>
@@ -138,7 +142,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/installation.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -159,7 +163,7 @@
 <p>If performing the installation on a virtual machine, it needs the following minimum requirements:</p>
 <blockquote class="last">
 <div><ul class="simple">
-<li>Memory: 1 GB (4 GB recommended)</li>
+<li>Memory: 10 GB (minimum)</li>
 <li>Number of processors: 3 (4 recommended)</li>
 <li>Network: Bridged adapter</li>
 </ul>
@@ -205,6 +209,10 @@ cp scheduler/cpp/libsacpp_scheduler_types.so $HOME/dds/lib
 </div>
 <div class="section" id="scheduler-and-socs-source-code">
 <h2>Scheduler and SOCS Source Code<a class="headerlink" href="#scheduler-and-socs-source-code" title="Permalink to this headline">¶</a></h2>
+<p>There is a prerequisite repository for the system that needs to be downloaded. Create a <code class="docutils literal"><span class="pre">gitdir/lsst</span></code> directory, go into that and run:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">/</span><span class="n">sims_skybrightness_pre</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
 <p>The Scheduler repository should also be cloned to <code class="docutils literal"><span class="pre">gitdir/ts</span></code> via the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_scheduler</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
@@ -213,61 +221,70 @@ cp scheduler/cpp/libsacpp_scheduler_types.so $HOME/dds/lib
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">sims</span><span class="o">/</span><span class="n">sims_ocs</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-<div class="section" id="conda-installation">
-<h3>Conda Installation<a class="headerlink" href="#conda-installation" title="Permalink to this headline">¶</a></h3>
-<p>The SOCS and Scheduler installation require a set of Python modules. It is recommended to install a clean version of Python via a mechanism like
-<a class="reference external" href="http://conda.pydata.org/miniconda.html">Miniconda</a>. A configuration module is also necessary from the LSST Stack for SOCS, so this will need to be setup as well. Going forward, all the prerequisites will be installed via the conda mechanism.</p>
-<p>Install miniconda from the above link. It is assumed that the <code class="docutils literal"><span class="pre">bin</span></code> directory from the installation will make it into the <code class="docutils literal"><span class="pre">$PATH</span></code> somehow. This is one of the few places where the user gets to choose how to do this. After the installation, it&#8217;s a good idea to update it, so do the following:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">update</span> <span class="n">conda</span>
-</pre></div>
-</div>
-<p>Next, create a Conda environment and activate it:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">opsim4</span> <span class="n">python</span><span class="o">=</span><span class="mi">2</span>
+<div class="section" id="lsst-stack-installation">
+<h3>LSST Stack Installation<a class="headerlink" href="#lsst-stack-installation" title="Permalink to this headline">¶</a></h3>
+<p>The SOCS and Scheduler installation require a set of packages from Python and the LSST Science Pipelines.
+Follow the installation instructions from <a class="reference external" href="https://pipelines.lsst.io/install/newinstall.html#installing-from-source-with-newinstall-sh">here</a> to get a minimal setup. Go ahead and let the stack software provide Python unless you feel comfortable providing your own. Follow the instructions to get into the stack environment. The instructions will refere to the stack installation directory as <code class="docutils literal"><span class="pre">stack_install_dir</span></code>. It is recommended to use a conda environment especially if you are going to use the stack for other reasons. To create an environment, do the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">opsim4</span> <span class="o">--</span><span class="n">clone</span><span class="o">=</span><span class="n">root</span>
 <span class="n">source</span> <span class="n">activate</span> <span class="n">opsim4</span>
+<span class="n">conda</span> <span class="n">remove</span> <span class="n">conda</span><span class="o">-</span><span class="n">env</span>
 </pre></div>
 </div>
-<p>Next, add the LSST Conda package channel by doing the following:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">add</span> <span class="n">channels</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">conda</span><span class="o">.</span><span class="n">lsst</span><span class="o">.</span><span class="n">codes</span><span class="o">/</span><span class="n">sims</span>
+<p>The last line is necessary since the create complains about that package being duplicated. Next, install the following stack packages:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">eups</span> <span class="n">distrib</span> <span class="n">install</span> <span class="n">sims_utils</span> <span class="o">-</span><span class="n">t</span> <span class="n">sims</span>
+<span class="n">eups</span> <span class="n">distrib</span> <span class="n">install</span> <span class="n">pex_config</span> <span class="o">-</span><span class="n">t</span> <span class="n">sims</span>
 </pre></div>
 </div>
-<p>In order to run the Operations Simulator (SOCS/Scheduler), the following need to be installed:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">lsst</span><span class="o">-</span><span class="n">sims</span><span class="o">-</span><span class="n">skybrightness</span> <span class="n">lsst</span><span class="o">-</span><span class="n">pex</span><span class="o">-</span><span class="n">config</span> <span class="n">enum34</span> <span class="n">pytz</span> <span class="n">mysql</span><span class="o">-</span><span class="n">python</span> <span class="n">requests</span> <span class="n">sqlalchemy</span>
+<p>Once this is complete, perform the following operations:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">update</span> <span class="n">sqlalchemy</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="n">mysql</span><span class="o">-</span><span class="n">python</span>
 </pre></div>
 </div>
 <p>If one wishes to develop the code, being able to run the unit tests, check style compliance and generate the documentation is a must. To do this, these packages need to be installed:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">mock</span> <span class="n">sphinx</span> <span class="n">sphinx_rtd_theme</span> <span class="n">flake8</span> <span class="n">coverage</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">mock</span> <span class="n">sphinx</span> <span class="n">sphinx_rtd_theme</span> <span class="n">flake8</span> <span class="n">coverage</span> <span class="n">pytest</span>
 </pre></div>
 </div>
 <p>There is one package that is required for the documentation but is not available via the conda packaging system. To get this package, do:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">rst</span>
 </pre></div>
 </div>
-<p>Once the above is complete, setup the environment by doing:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">eups</span><span class="o">-</span><span class="n">setups</span><span class="o">.</span><span class="n">sh</span>
+<p>With the environment setup, we need to declare and setup the prerequisite repos and then SOCS and Scheduler packages so they can be used.</p>
+<p>Declare the pre-calculated sky brightness model:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">lsst</span><span class="o">/</span><span class="n">sims_skybrightness_pre</span>
+<span class="n">eups</span> <span class="n">declare</span> <span class="n">sims_skybrightness_pre</span> <span class="n">git</span> <span class="o">-</span><span class="n">r</span> <span class="o">.</span> <span class="o">-</span><span class="n">c</span>
+<span class="n">setup</span> <span class="n">sims_skybrightness_pre</span> <span class="n">git</span>
+<span class="n">scons</span>
 </pre></div>
 </div>
-<p><strong>NOTE</strong>: If you are using CSH, you&#8217;ll need the full path to the appropriate setup file (<code class="docutils literal"><span class="pre">eups-setups.csh</span></code>). To get this, execute the following command and a helpful message will tell you where to look:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">eups</span>
-</pre></div>
-</div>
-<p>With the environment setup, we need to declare and setup the SOCS and Scheduler packages so they can be used. Declare the Scheduler:</p>
+<p>Declare the Scheduler:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_scheduler</span>
 <span class="n">eups</span> <span class="n">declare</span> <span class="n">ts_scheduler</span> <span class="n">git</span> <span class="o">-</span><span class="n">r</span> <span class="o">.</span> <span class="o">-</span><span class="n">c</span>
+<span class="n">setup</span> <span class="n">ts_scheduler</span>
+<span class="n">scons</span>
 </pre></div>
 </div>
 <p>To declare and setup SOCS, do:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">sims</span><span class="o">/</span><span class="n">sims_ocs</span>
 <span class="n">eups</span> <span class="n">declare</span> <span class="n">sims_ocs</span> <span class="n">git</span> <span class="o">-</span><span class="n">r</span> <span class="o">.</span> <span class="o">-</span><span class="n">c</span>
 <span class="n">setup</span> <span class="n">sims_ocs</span>
-<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">develop</span>
+<span class="n">scons</span>
 </pre></div>
 </div>
 <p><strong>NOTE</strong>: The declaration steps only need to be done once. After that, when returning to the same conda environment, do:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">eups</span><span class="o">-</span><span class="n">setups</span><span class="o">.</span><span class="n">sh</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">stack_install_dir</span><span class="o">/</span><span class="n">loadLSST</span><span class="o">.&lt;</span><span class="n">shell</span><span class="o">&gt;</span>
+<span class="n">source</span> <span class="n">activate</span> <span class="n">opsim4</span>
 <span class="n">setup</span> <span class="n">sims_ocs</span>
 </pre></div>
 </div>
 </div>
+</div>
+<div class="section" id="sky-brightness-model-data">
+<h2>Sky Brightness Model Data<a class="headerlink" href="#sky-brightness-model-data" title="Permalink to this headline">¶</a></h2>
+<p>In the previous section, the pre-calculated sky brightness model was installed, but it does not come with the data required to run. The required data is ~65 GB in size, so create a directory for it. The instructions will assume one was created as <code class="docutils literal"><span class="pre">$HOME/sky_brightness_data</span></code>. After running the <code class="docutils literal"><span class="pre">setup</span> <span class="pre">sims_ocs</span></code> command, change to this directory and execute the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$SIMS_SKYBRIGHTNESS_PRE_DIR/data/data_down.sh -o
+</pre></div>
+</div>
+<p>While this instruction is executing, the instructions may continue to be followed, but OpSim will not function correctly until the data is done downloading.</p>
 </div>
 <div class="section" id="database-setup">
 <span id="installation-database"></span><h2>Database Setup<a class="headerlink" href="#database-setup" title="Permalink to this headline">¶</a></h2>
@@ -326,7 +343,7 @@ where you left off, this task can be accomplished. The <code class="docutils lit
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

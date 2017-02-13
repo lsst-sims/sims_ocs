@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.setup.log module &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.setup.log module &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../index.html"/>
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.setup package" href="lsst.sims.ocs.setup.html"/>
         <link rel="next" title="lsst.sims.ocs.setup.parser module" href="lsst.sims.ocs.setup.parser.html"/>
         <link rel="prev" title="lsst.sims.ocs.setup package" href="lsst.sims.ocs.setup.html"/> 
@@ -64,7 +67,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -151,7 +154,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/lsst.sims.ocs.setup.log.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/lsst.sims.ocs.setup.log.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -170,31 +173,36 @@
 <p>Handle some extra logging levels.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.log.LoggingLevel.EXTENSIVE">
-<code class="descname">EXTENSIVE</code><em class="property"> = &lt;LoggingLevel.EXTENSIVE: 5&gt;</em><a class="headerlink" href="#lsst.sims.ocs.setup.log.LoggingLevel.EXTENSIVE" title="Permalink to this definition">¶</a></dt>
+<code class="descname">EXTENSIVE</code><em class="property"> = 5</em><a class="headerlink" href="#lsst.sims.ocs.setup.log.LoggingLevel.EXTENSIVE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.log.LoggingLevel.TRACE">
-<code class="descname">TRACE</code><em class="property"> = &lt;LoggingLevel.TRACE: 2&gt;</em><a class="headerlink" href="#lsst.sims.ocs.setup.log.LoggingLevel.TRACE" title="Permalink to this definition">¶</a></dt>
+<code class="descname">TRACE</code><em class="property"> = 2</em><a class="headerlink" href="#lsst.sims.ocs.setup.log.LoggingLevel.TRACE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.log.LoggingLevel.WORDY">
-<code class="descname">WORDY</code><em class="property"> = &lt;LoggingLevel.WORDY: 15&gt;</em><a class="headerlink" href="#lsst.sims.ocs.setup.log.LoggingLevel.WORDY" title="Permalink to this definition">¶</a></dt>
+<code class="descname">WORDY</code><em class="property"> = 15</em><a class="headerlink" href="#lsst.sims.ocs.setup.log.LoggingLevel.WORDY" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="lsst.sims.ocs.setup.log.configure_logging">
-<code class="descclassname">lsst.sims.ocs.setup.log.</code><code class="descname">configure_logging</code><span class="sig-paren">(</span><em>console_detail</em>, <em>file_detail</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/setup/log.html#configure_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.setup.log.configure_logging" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lsst.sims.ocs.setup.log.</code><code class="descname">configure_logging</code><span class="sig-paren">(</span><em>console_detail</em>, <em>file_detail</em>, <em>log_port=9020</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/setup/log.html#configure_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.setup.log.configure_logging" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configure logging for the application.</p>
 <p>Configuration for both the console and file (via socket) logging for the application.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>console_detail</strong> (<em>int</em>) &#8211; The requested detail level for the console logger.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>console_detail</strong> (<em>int</em>) &#8211; The requested detail level for the console logger.</li>
+<li><strong>file_detail</strong> (<em>int</em>) &#8211; The requested detail level for the socket (file) logger.</li>
+<li><strong>log_port</strong> (<em>int</em><em>, </em><em>optional</em>) &#8211; An alternate port for the socker logger.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -209,8 +217,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>log_file_path</strong> (<em>str, optional</em>) &#8211; The location to write the log file.</li>
-<li><strong>session_id</strong> (<em>str, optional</em>) &#8211; The OpSim session ID tag.</li>
+<li><strong>log_file_path</strong> (<em>str</em><em>, </em><em>optional</em>) &#8211; The location to write the log file.</li>
+<li><strong>session_id</strong> (<em>str</em><em>, </em><em>optional</em>) &#8211; The OpSim session ID tag.</li>
 </ul>
 </td>
 </tr>
@@ -282,7 +290,7 @@ levels are keys into the DETAIL_LEVEL dictionary.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

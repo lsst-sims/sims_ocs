@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.proposal.general_scheduling module
+==============================================================
+
+.. automodule:: lsst.sims.ocs.configuration.proposal.general_scheduling
+    :members:
+    :undoc-members:
+    :show-inheritance:

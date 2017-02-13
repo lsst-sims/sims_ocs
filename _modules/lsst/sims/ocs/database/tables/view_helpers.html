@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.database.tables.view_helpers &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.database.tables.view_helpers &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../../index.html"/> 
 
   
@@ -62,7 +65,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -136,9 +139,9 @@
            <div itemprop="articleBody">
             
   <h1>Source code for lsst.sims.ocs.database.tables.view_helpers</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">sqlalchemy.ext</span> <span class="kn">import</span> <span class="n">compiler</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy.schema</span> <span class="kn">import</span> <span class="n">DDLElement</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy.sql</span> <span class="kn">import</span> <span class="n">table</span>
+<span></span><span class="kn">from</span> <span class="nn">sqlalchemy.ext</span> <span class="k">import</span> <span class="n">compiler</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.schema</span> <span class="k">import</span> <span class="n">DDLElement</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.sql</span> <span class="k">import</span> <span class="n">table</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;view&quot;</span><span class="p">]</span>
 
@@ -151,11 +154,11 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
-<span class="nd">@compiler.compiles</span><span class="p">(</span><span class="n">CreateView</span><span class="p">)</span>
+<span class="nd">@compiler</span><span class="o">.</span><span class="n">compiles</span><span class="p">(</span><span class="n">CreateView</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">compile</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">compiler</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
     <span class="k">return</span> <span class="s2">&quot;CREATE VIEW </span><span class="si">%s</span><span class="s2"> AS </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">compiler</span><span class="o">.</span><span class="n">sql_compiler</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">selectable</span><span class="p">))</span>
 
-<span class="nd">@compiler.compiles</span><span class="p">(</span><span class="n">DropView</span><span class="p">)</span>  <span class="c1"># noqa</span>
+<span class="nd">@compiler</span><span class="o">.</span><span class="n">compiles</span><span class="p">(</span><span class="n">DropView</span><span class="p">)</span>  <span class="c1"># noqa</span>
 <span class="k">def</span> <span class="nf">compile</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">compiler</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
     <span class="k">return</span> <span class="s2">&quot;DROP VIEW </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
@@ -201,7 +204,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

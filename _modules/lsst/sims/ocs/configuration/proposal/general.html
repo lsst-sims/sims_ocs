@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.proposal.general &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.configuration.proposal.general &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../../index.html"/> 
 
   
@@ -62,7 +65,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -136,10 +139,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for lsst.sims.ocs.configuration.proposal.general</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="kn">as</span> <span class="nn">pexConfig</span>
+<span></span><span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="k">as</span> <span class="nn">pexConfig</span>
 
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">BandFilter</span><span class="p">,</span> <span class="n">Scheduling</span>
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="kn">import</span> <span class="n">SkyConstraints</span><span class="p">,</span> <span class="n">SkyExclusion</span><span class="p">,</span> <span class="n">SkyNightlyBounds</span><span class="p">,</span> <span class="n">SkyRegion</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="k">import</span> <span class="n">GeneralBandFilter</span><span class="p">,</span> <span class="n">GeneralScheduling</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="k">import</span> <span class="n">SkyConstraints</span><span class="p">,</span> <span class="n">SkyExclusion</span><span class="p">,</span> <span class="n">SkyNightlyBounds</span><span class="p">,</span> <span class="n">SkyRegion</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;General&quot;</span><span class="p">]</span>
 
@@ -149,36 +152,38 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">name</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Name for the proposal.&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
-    <span class="n">sky_region</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s1">&#39;Sky region selectionfor the proposal.&#39;</span><span class="p">,</span> <span class="n">SkyRegion</span><span class="p">)</span>
-    <span class="n">sky_exclusion</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s1">&#39;Sky region selectionfor the proposal.&#39;</span><span class="p">,</span> <span class="n">SkyExclusion</span><span class="p">)</span>
-    <span class="n">sky_nightly_bounds</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s1">&#39;Sky region selectionfor the proposal.&#39;</span><span class="p">,</span> <span class="n">SkyNightlyBounds</span><span class="p">)</span>
-    <span class="n">sky_constraints</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s1">&#39;Sky region selectionfor the proposal.&#39;</span><span class="p">,</span> <span class="n">SkyConstraints</span><span class="p">)</span>
-    <span class="n">filters</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigDictField</span><span class="p">(</span><span class="s1">&#39;Filter configuration for the proposal.&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">BandFilter</span><span class="p">)</span>
-    <span class="n">scheduling</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s1">&#39;Scheduling configuration for the proposal.&#39;</span><span class="p">,</span> <span class="n">Scheduling</span><span class="p">)</span>
+    <span class="n">sky_region</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s1">&#39;Sky region selection for the proposal.&#39;</span><span class="p">,</span> <span class="n">SkyRegion</span><span class="p">)</span>
+    <span class="n">sky_exclusion</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s1">&#39;Sky region selection for the proposal.&#39;</span><span class="p">,</span> <span class="n">SkyExclusion</span><span class="p">)</span>
+    <span class="n">sky_nightly_bounds</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s1">&#39;Sky region selection for the proposal.&#39;</span><span class="p">,</span> <span class="n">SkyNightlyBounds</span><span class="p">)</span>
+    <span class="n">sky_constraints</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s1">&#39;Sky region selection for the proposal.&#39;</span><span class="p">,</span> <span class="n">SkyConstraints</span><span class="p">)</span>
+    <span class="n">filters</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigDictField</span><span class="p">(</span><span class="s1">&#39;Filter configuration for the proposal.&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">GeneralBandFilter</span><span class="p">)</span>
+    <span class="n">scheduling</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">ConfigField</span><span class="p">(</span><span class="s1">&#39;Scheduling configuration for the proposal.&#39;</span><span class="p">,</span> <span class="n">GeneralScheduling</span><span class="p">)</span>
 
 <div class="viewcode-block" id="General.set_topic"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.general.html#lsst.sims.ocs.configuration.proposal.general.General.set_topic">[docs]</a>    <span class="k">def</span> <span class="nf">set_topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the information on a DDS topic instance.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        topic : SALPY_scheduler.scheduler_genPropConfigC</span>
+<span class="sd">        topic : SALPY_scheduler.scheduler_generalPropConfigC</span>
 <span class="sd">            The instance of the DDS topic to set information on.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        SALPY_scheduler.scheduler_genPropConfigC</span>
+<span class="sd">        SALPY_scheduler.scheduler_generalPropConfigC</span>
 <span class="sd">            The topic with current information set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">topic</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="s2">&quot;None&quot;</span>
+        <span class="n">topic</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;None&quot;</span>
 
         <span class="n">topic</span><span class="o">.</span><span class="n">twilight_boundary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_nightly_bounds</span><span class="o">.</span><span class="n">twilight_boundary</span>
         <span class="n">topic</span><span class="o">.</span><span class="n">delta_lst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_nightly_bounds</span><span class="o">.</span><span class="n">delta_lst</span>
         <span class="n">topic</span><span class="o">.</span><span class="n">dec_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_exclusion</span><span class="o">.</span><span class="n">dec_window</span>
         <span class="n">topic</span><span class="o">.</span><span class="n">max_airmass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_constraints</span><span class="o">.</span><span class="n">max_airmass</span>
         <span class="n">topic</span><span class="o">.</span><span class="n">max_cloud</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_constraints</span><span class="o">.</span><span class="n">max_cloud</span>
+        <span class="n">topic</span><span class="o">.</span><span class="n">min_distance_moon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_constraints</span><span class="o">.</span><span class="n">min_distance_moon</span>
+        <span class="n">topic</span><span class="o">.</span><span class="n">exclude_planets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_constraints</span><span class="o">.</span><span class="n">exclude_planets</span>
 
         <span class="n">num_region_selections</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">selections</span><span class="p">)</span> \
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">selections</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">selections</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
         <span class="n">topic</span><span class="o">.</span><span class="n">num_region_selections</span> <span class="o">=</span> <span class="n">num_region_selections</span>
         <span class="k">if</span> <span class="n">num_region_selections</span><span class="p">:</span>
             <span class="n">limit_types</span> <span class="o">=</span> <span class="p">[]</span>
@@ -191,7 +196,7 @@
 
         <span class="n">topic</span><span class="o">.</span><span class="n">region_combiners</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">combiners</span><span class="p">)</span>
 
-        <span class="n">num_time_ranges</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">time_ranges</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">time_ranges</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">num_time_ranges</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">time_ranges</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">time_ranges</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
         <span class="n">topic</span><span class="o">.</span><span class="n">num_time_ranges</span> <span class="o">=</span> <span class="n">num_time_ranges</span>
         <span class="k">if</span> <span class="n">num_time_ranges</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">time_ranges</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
@@ -199,7 +204,7 @@
                 <span class="n">topic</span><span class="o">.</span><span class="n">time_range_ends</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">end</span>
 
         <span class="n">num_selection_mappings</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">selection_mapping</span><span class="p">)</span> \
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">selection_mapping</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">selection_mapping</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="n">num_selection_mappings</span><span class="p">:</span>
             <span class="n">selection_index</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">selection_mapping</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
@@ -209,7 +214,7 @@
                     <span class="n">selection_index</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="n">num_exclusion_selections</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sky_exclusion</span><span class="o">.</span><span class="n">selections</span><span class="p">)</span> \
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_exclusion</span><span class="o">.</span><span class="n">selections</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_exclusion</span><span class="o">.</span><span class="n">selections</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
         <span class="n">topic</span><span class="o">.</span><span class="n">num_exclusion_selections</span> <span class="o">=</span> <span class="n">num_exclusion_selections</span>
         <span class="k">if</span> <span class="n">num_exclusion_selections</span><span class="p">:</span>
             <span class="n">limit_types</span> <span class="o">=</span> <span class="p">[]</span>
@@ -220,7 +225,7 @@
                 <span class="n">topic</span><span class="o">.</span><span class="n">exclusion_bounds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">bounds_limit</span>
             <span class="n">topic</span><span class="o">.</span><span class="n">exclusion_types</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">limit_types</span><span class="p">)</span>
 
-        <span class="n">topic</span><span class="o">.</span><span class="n">num_filters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">topic</span><span class="o">.</span><span class="n">num_filters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="n">topic</span><span class="o">.</span><span class="n">num_filters</span><span class="p">:</span>
             <span class="n">filter_names</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">exp_index</span> <span class="o">=</span> <span class="mi">0</span>
@@ -282,7 +287,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

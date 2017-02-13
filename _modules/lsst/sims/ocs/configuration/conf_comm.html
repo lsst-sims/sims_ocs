@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.conf_comm &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.configuration.conf_comm &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +65,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -159,8 +162,8 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;configuration.ConfigurationCommunicator&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ConfigurationCommunicator.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.conf_comm.html#lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sal</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
@@ -324,15 +327,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span><span class="o">.</span><span class="n">dome_azimuth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">park</span><span class="o">.</span><span class="n">dome_azimuth</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span><span class="o">.</span><span class="n">filter_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observatory</span><span class="o">.</span><span class="n">park</span><span class="o">.</span><span class="n">filter_position</span>
 
-    <span class="k">def</span> <span class="nf">_configure_general_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Publish the general proposals.</span>
+    <span class="k">def</span> <span class="nf">_configure_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Publish the general and sequence proposals.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;generalPropConfig&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;sequencePropConfig&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ConfigurationCommunicator.configure"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.conf_comm.html#lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator.configure">[docs]</a>    <span class="k">def</span> <span class="nf">configure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configure all publish topics for the configuration communicator.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Running configuration communication&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configure_scheduler</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configure_scheduler_driver</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configure_observing_site</span><span class="p">()</span>
@@ -343,11 +346,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_configure_slew</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configure_optics_loop_corr</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configure_park</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_general_proposals</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configure_proposals</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ConfigurationCommunicator.run"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.configuration.conf_comm.html#lsst.sims.ocs.configuration.conf_comm.ConfigurationCommunicator.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Send all of the configuration topics.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Running configuration communication&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sched_conf</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sched_driver_conf</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_site_conf</span><span class="p">)</span>
@@ -359,12 +363,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">olc_conf</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">park_conf</span><span class="p">)</span>
         <span class="n">num_proposals</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">general_config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">general_props</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
-            <span class="n">general_topic</span> <span class="o">=</span> <span class="n">general_config</span><span class="o">.</span><span class="n">set_topic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">get_topic</span><span class="p">(</span><span class="s2">&quot;generalPropConfig&quot;</span><span class="p">))</span>
-            <span class="n">general_topic</span><span class="o">.</span><span class="n">prop_id</span> <span class="o">=</span> <span class="n">num_proposals</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">general_topic</span><span class="p">)</span>
-            <span class="n">num_proposals</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Sent configuration for {} general proposals.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_proposals</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span></div></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">general_props</span><span class="o">.</span><span class="n">active</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">general_config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">general_props</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+                <span class="n">general_topic</span> <span class="o">=</span> <span class="n">general_config</span><span class="o">.</span><span class="n">set_topic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">get_topic</span><span class="p">(</span><span class="s2">&quot;generalPropConfig&quot;</span><span class="p">))</span>
+                <span class="n">general_topic</span><span class="o">.</span><span class="n">prop_id</span> <span class="o">=</span> <span class="n">num_proposals</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">general_topic</span><span class="p">)</span>
+                <span class="n">num_proposals</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># if self.config.science.sequence_props.active is not None:</span>
+        <span class="c1">#     for sequence_config in self.config.science.sequence_props.active:</span>
+        <span class="c1">#         sequence_topic = sequence_config.set_topic(self.sal.get_topic(&quot;sequencePropConfig&quot;))</span>
+        <span class="c1">#         sequence_topic.prop_id = num_proposals</span>
+        <span class="c1">#         self.sal.put(sequence_topic)</span>
+        <span class="c1">#         num_proposals += 1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Sent configuration for </span><span class="si">{}</span><span class="s2"> proposals.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_proposals</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>
@@ -398,7 +409,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

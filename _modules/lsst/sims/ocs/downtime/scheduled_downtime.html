@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.downtime.scheduled_downtime &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.downtime.scheduled_downtime &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +65,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -150,7 +153,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">downtime_file</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">downtime_file</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">downtimes</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="ScheduledDowntime.__call__"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.downtime.scheduled_downtime.html#lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -159,7 +162,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">downtimes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">None</span></div>
+            <span class="k">return</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="ScheduledDowntime.__len__"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.downtime.scheduled_downtime.html#lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime.__len__">[docs]</a>    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return number of scheduled downtimes.</span>
@@ -196,7 +199,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">rsman</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">ResourceManager</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">downtime_file</span> <span class="o">=</span> <span class="n">rsman</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;lsst.sims.ocs&quot;</span><span class="p">,</span>
-                                                         <span class="s2">&quot;downtime/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEDULED_DOWNTIME_DB</span><span class="p">))</span>
+                                                         <span class="s2">&quot;downtime/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEDULED_DOWNTIME_DB</span><span class="p">))</span>
 
         <span class="k">with</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">downtime_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
@@ -237,7 +240,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

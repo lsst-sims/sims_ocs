@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.science_proposals module &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.configuration.science_proposals module &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../index.html"/>
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.configuration package" href="lsst.sims.ocs.configuration.html"/>
         <link rel="next" title="lsst.sims.ocs.configuration.sim_config module" href="lsst.sims.ocs.configuration.sim_config.html"/>
         <link rel="prev" title="lsst.sims.ocs.configuration.scheduler_driver module" href="lsst.sims.ocs.configuration.scheduler_driver.html"/> 
@@ -64,7 +67,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -152,7 +155,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/lsst.sims.ocs.configuration.science_proposals.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/lsst.sims.ocs.configuration.science_proposals.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -168,7 +171,7 @@
 <dt id="lsst.sims.ocs.configuration.science_proposals.ScienceProposals">
 <em class="property">class </em><code class="descclassname">lsst.sims.ocs.configuration.science_proposals.</code><code class="descname">ScienceProposals</code><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/science_proposals.html#ScienceProposals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.science_proposals.ScienceProposals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">lsst.pex.config.config.Config</span></code></p>
-<p>Configuration for the science propsals.</p>
+<p>Configuration for the science proposals.</p>
 <p>!Allocate a new Config object.</p>
 <p>In order to ensure that all Config object are always in a proper
 state when handed to users or to derived Config classes, some
@@ -184,7 +187,7 @@ should call the base Config.__init__</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config_files</strong> (<em>list[str]</em>) &#8211; A set of configuration override files.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config_files</strong> (<em>list</em><em>[</em><em>str</em><em>]</em><em></em>) &#8211; A set of configuration override files.</td>
 </tr>
 </tbody>
 </table>
@@ -195,14 +198,14 @@ should call the base Config.__init__</p>
 <code class="descname">load_proposals</code><span class="sig-paren">(</span><em>proposals</em>, <em>alternate_proposals=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/science_proposals.html#ScienceProposals.load_proposals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.science_proposals.ScienceProposals.load_proposals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load given proposals.</p>
 <p>This function loads the propsals requested from the function argument.
-The argument is a dictionary with two keys: GEN or SS and a comma-delimited
+The argument is a dictionary with two keys: GEN or SEQ and a comma-delimited
 list of proposal names associated with each key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>proposals</strong> (<em>dict[str: list[str]]</em>) &#8211; The set of proposals to load.</li>
+<li><strong>proposals</strong> (<em>dict</em><em>[</em><em>str: list</em><em>[</em><em>str</em><em>]</em><em></em><em>]</em><em></em>) &#8211; The set of proposals to load.</li>
 <li><strong>alternate_proposals</strong> (<em>str</em>) &#8211; A directory location containing alternate proposals to load.</li>
 </ul>
 </td>
@@ -243,6 +246,26 @@ list of proposal names associated with each key.</p>
 <dt id="lsst.sims.ocs.configuration.science_proposals.ScienceProposals.general_props">
 <code class="descname">general_props</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science_proposals.ScienceProposals.general_props" title="Permalink to this definition">¶</a></dt>
 <dd><p>The list of general proposals.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.science_proposals.ScienceProposals.sequence_proposals">
+<code class="descname">sequence_proposals</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science_proposals.ScienceProposals.sequence_proposals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Listing of available sequence proposals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>list[str]</em> &#8211; The available sequence proposals.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.science_proposals.ScienceProposals.sequence_props">
+<code class="descname">sequence_props</code><a class="headerlink" href="#lsst.sims.ocs.configuration.science_proposals.ScienceProposals.sequence_props" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list of sequence proposals.</p>
 </dd></dl>
 
 </dd></dl>
@@ -290,7 +313,7 @@ list of proposal names associated with each key.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

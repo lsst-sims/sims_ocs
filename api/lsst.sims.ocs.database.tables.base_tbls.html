@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.database.tables.base_tbls module &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.database.tables.base_tbls module &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../index.html"/>
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.database.tables package" href="lsst.sims.ocs.database.tables.html"/>
         <link rel="next" title="lsst.sims.ocs.database.tables.view_helpers module" href="lsst.sims.ocs.database.tables.view_helpers.html"/>
         <link rel="prev" title="lsst.sims.ocs.database.tables package" href="lsst.sims.ocs.database.tables.html"/> 
@@ -64,7 +67,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -154,7 +157,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/lsst.sims.ocs.database.tables.base_tbls.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/lsst.sims.ocs.database.tables.base_tbls.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -166,25 +169,6 @@
             
   <div class="section" id="module-lsst.sims.ocs.database.tables.base_tbls">
 <span id="lsst-sims-ocs-database-tables-base-tbls-module"></span><h1>lsst.sims.ocs.database.tables.base_tbls module<a class="headerlink" href="#module-lsst.sims.ocs.database.tables.base_tbls" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="lsst.sims.ocs.database.tables.base_tbls.create_cloud">
-<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_cloud</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_cloud"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_cloud" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create the Cloud table.</p>
-<p>This function creates the Cloud table containing the nominal cloud values for the simulation.</p>
-<p>Table Description:</p>
-<p>This table contains the cloud information from observations taken from Cerro Tololo for ten years.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The Cloud table object.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="function">
 <dt id="lsst.sims.ocs.database.tables.base_tbls.create_config">
 <code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_config</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_config" title="Permalink to this definition">¶</a></dt>
@@ -327,25 +311,6 @@ actual downtime used in the simulation maybe different depending on the length o
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The ScheduledDowntime table object.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="lsst.sims.ocs.database.tables.base_tbls.create_seeing">
-<code class="descclassname">lsst.sims.ocs.database.tables.base_tbls.</code><code class="descname">create_seeing</code><span class="sig-paren">(</span><em>metadata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/tables/base_tbls.html#create_seeing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.tables.base_tbls.create_seeing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create the Seeing table.</p>
-<p>This function creates the Seeing table containing the nominal seeing values for the simulation.</p>
-<p>Table Description:</p>
-<p>This table contains the seeing information from observations taken from Cerro Pachon for one year.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>sqlalchemy.MetaData</em>) &#8211; The database object that collects the tables.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>sqlalchemy.Table</em> &#8211; The Seeing table object.</td>
 </tr>
 </tbody>
 </table>
@@ -607,7 +572,7 @@ actual downtime used in the simulation maybe different depending on the length o
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

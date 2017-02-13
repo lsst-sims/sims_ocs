@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.environment.cloud_model &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.environment.cloud_model &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +65,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -140,8 +143,6 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
 
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.database.tables</span> <span class="kn">import</span> <span class="n">write_cloud</span>
-
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CloudModel&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="CloudModel"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.environment.cloud_model.html#lsst.sims.ocs.environment.cloud_model.CloudModel">[docs]</a><span class="k">class</span> <span class="nc">CloudModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -157,9 +158,9 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cloud_db</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cloud_dates</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cloud_values</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cloud_db</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cloud_dates</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cloud_values</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="CloudModel.get_cloud"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.environment.cloud_model.html#lsst.sims.ocs.environment.cloud_model.CloudModel.get_cloud">[docs]</a>    <span class="k">def</span> <span class="nf">get_cloud</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta_time</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the cloud for the specified time.</span>
@@ -224,21 +225,7 @@
 <span class="sd">            An instance of the cloud topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">topic</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">current_timestamp</span>
-        <span class="n">topic</span><span class="o">.</span><span class="n">cloud</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cloud</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">time_since_start</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="CloudModel.write_to_db"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.environment.cloud_model.html#lsst.sims.ocs.environment.cloud_model.CloudModel.write_to_db">[docs]</a>    <span class="k">def</span> <span class="nf">write_to_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Write all the cloud information to the survey database.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        db : :class:`.SocsDatabase`</span>
-<span class="sd">            The instance of the survey database.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">indicies</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cloud_dates</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">cloud_info</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">indicies</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cloud_dates</span><span class="p">,</span>
-                                                  <span class="bp">self</span><span class="o">.</span><span class="n">cloud_values</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
-        <span class="n">cloud</span> <span class="o">=</span> <span class="p">[</span><span class="n">write_cloud</span><span class="p">(</span><span class="n">ci</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">session_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">ci</span> <span class="ow">in</span> <span class="n">cloud_info</span><span class="p">]</span>
-        <span class="n">db</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="s2">&quot;cloud&quot;</span><span class="p">,</span> <span class="n">cloud</span><span class="p">)</span></div></div>
+        <span class="n">topic</span><span class="o">.</span><span class="n">cloud</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cloud</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">time_since_start</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -272,7 +259,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -1,0 +1,7 @@
+lsst.sims.ocs.configuration.science.deep_drilling_cosmology1 module
+===================================================================
+
+.. automodule:: lsst.sims.ocs.configuration.science.deep_drilling_cosmology1
+    :members:
+    :undoc-members:
+    :show-inheritance:

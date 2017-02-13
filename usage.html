@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Usage &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>Usage &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="index.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="index.html"/>
         <link rel="next" title="Survey Database" href="database.html"/>
         <link rel="prev" title="Installation" href="installation.html"/> 
 
@@ -63,7 +66,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -126,7 +129,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/usage.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -145,7 +148,25 @@
 </div>
 <p>The Operations Simulator consists of running the SOCS and Scheduler. Due to the nature of the setup, a wrapper script is recommended when launching the driver script. If you have followed the installation recommendations, a highly recommended example is below.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash
-export LSST_DDS_DOMAIN=MyDomain
+set -e
+
+while getopts t: c; do
+    case $c in
+            t) TAG=&quot;$OPTARG&quot; ;;
+            \?) exit 1 ;;
+    esac
+done
+
+shift &quot;$((OPTIND-1))&quot;
+
+if [ -z $TAG ] ; then
+    extra_tag=$(date +%s)
+else
+    extra_tag=${TAG}
+fi
+echo ${extra_tag}
+
+export LSST_DDS_DOMAIN=MyDomain_${extra_tag}
 export NDDS_DISCOVERY_PEERS=builtin.shmem://
 
 export OPENSPLICE_LOC=${HOME}/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
@@ -156,12 +177,15 @@ export SCHED_TOPIC_LIB=${HOME}/dds/lib
 export LD_LIBRARY_PATH=${OPENSPLICE_LOC}/lib:${SCHED_TOPIC_LIB}:${LD_LIBRARY_PATH}
 export PYTHONPATH=${SCHED_TOPIC_LIB}:${PYTHONPATH}
 
+export SIMS_SKYBRIGHTNESS_DATA=${HOME}/sky_brightness_data
+
 $@
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">LSST_DDS_DOMAIN</span></code> is important so that messages from other instances using DDS do not pollute the currently running process. It needs to be a unique name within the user&#8217;s network environment. The following instructions will refer to this wrapper script as <code class="docutils literal"><span class="pre">drun</span></code>.</p>
-<p>The SOCS driver can be run from anywhere if the setup from the installation instructions were followed. We&#8217;ll assume that you are running from <code class="docutils literal"><span class="pre">$HOME/run_local</span></code>. In this directory, it is recommended to have <code class="docutils literal"><span class="pre">config</span></code> and <code class="docutils literal"><span class="pre">log</span></code> sub-directories available. This will be helpful in containing all of the various outputs when running multiple simulations. To invoke a basic instance of SOCS, do the following:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>drun opsim4 -l $PWD/log -c &quot;Running a one year sim.&quot; -v
+<p>The <code class="docutils literal"><span class="pre">SIMS_SKYBRIGHTNESS_DATA</span></code> is needed to tell the sky brightness model code where its data is stored.</p>
+<p>The SOCS driver can be run from anywhere if the setup from the installation instructions were followed. We&#8217;ll assume that you are running from <code class="docutils literal"><span class="pre">$HOME/run_local</span></code>. In this directory, it is recommended to have <code class="docutils literal"><span class="pre">configs</span></code> and <code class="docutils literal"><span class="pre">log</span></code> sub-directories available. This will be helpful in containing all of the various outputs when running multiple simulations. To invoke a basic instance of SOCS, do the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">drun</span> <span class="n">opsim4</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;Running a one year sim.&quot;</span> <span class="o">-</span><span class="n">v</span>
 </pre></div>
 </div>
 <p>This will run a one year simulation while passing messages between SOCS and the Scheduler via SAL/DDS. The SOCS driver script launches a central process for log messages coming from the SOCS and Scheduler drivers. It then launches the Scheduler driver.</p>
@@ -212,7 +236,7 @@ $@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

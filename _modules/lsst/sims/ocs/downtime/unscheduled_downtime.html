@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.downtime.unscheduled_downtime &mdash; Simulated OCS 0.7.1 documentation</title>
+  <title>lsst.sims.ocs.downtime.unscheduled_downtime &mdash; Simulated OCS unknown documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Simulated OCS 0.7.1 documentation" href="../../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="Simulated OCS unknown documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -62,7 +65,7 @@
             
             
               <div class="version">
-                0.7.1
+                unknown
               </div>
             
           
@@ -140,7 +143,7 @@
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.setup</span> <span class="kn">import</span> <span class="n">LoggingLevel</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.setup</span> <span class="k">import</span> <span class="n">LoggingLevel</span>
 
 <div class="viewcode-block" id="UnscheduledDowntime"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime">[docs]</a><span class="k">class</span> <span class="nc">UnscheduledDowntime</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Handle creating the unscheduled downtime information.</span>
@@ -166,7 +169,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">downtimes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">None</span></div>
+            <span class="k">return</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="UnscheduledDowntime.__len__"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.__len__">[docs]</a>    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return number of scheduled downtimes.</span>
@@ -187,7 +190,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">downtimes</span><span class="p">])</span>
 
-<div class="viewcode-block" id="UnscheduledDowntime.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_random_seed</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">survey_length</span><span class="o">=</span><span class="mi">7300</span><span class="p">):</span>
+<div class="viewcode-block" id="UnscheduledDowntime.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_random_seed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">survey_length</span><span class="o">=</span><span class="mi">7300</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configure the set of unscheduled downtimes.</span>
 
 <span class="sd">        This function creates the unscheduled downtimes based on a set of probabilities</span>
@@ -249,7 +252,7 @@
             <span class="n">nights</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">WORDY</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                     <span class="s2">&quot;Total unscheduled downtime: {} days in {} days.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_downtime</span><span class="p">,</span>
+                     <span class="s2">&quot;Total unscheduled downtime: </span><span class="si">{}</span><span class="s2"> days in </span><span class="si">{}</span><span class="s2"> days.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_downtime</span><span class="p">,</span>
                                                                               <span class="n">survey_length</span><span class="p">))</span></div></div>
 </pre></div>
 
@@ -284,7 +287,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.7.1',
+            VERSION:'unknown',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
