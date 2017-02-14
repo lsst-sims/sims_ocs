@@ -1,13 +1,13 @@
-FROM lsst/opsim4:base
+FROM lsst/opsim4:base-src
 MAINTAINER Michael Reuter <mareuter@lsst.org>
 
-ARG SIMS_VERSION
+ARG INSTALL_MINICONDA=Y
 ARG SOCS_VERSION
-ARG SCHED_VERSION
-ARG CONFUI_VERSION
-ARG USER
-ENV USER ${USER:-opsim}
-ENV HOME /home/opsim
+ARG	SCHED_VERSION 
+ARG	CONFUI_VERSION
+ARG	USER
+ENV USER ${USER:-opsim} \
+	HOME /home/opsim
 
 # Create user and group
 RUN groupadd opsim && adduser -m -g opsim -s /bin/bash opsim
@@ -15,28 +15,26 @@ RUN groupadd opsim && adduser -m -g opsim -s /bin/bash opsim
 USER opsim
 WORKDIR /home/opsim
 
-RUN mkdir dds && mkdir repos
+RUN mkdir dds repos stack
 
-# Install Conda for python
-RUN curl -Ok ftp://ftp.noao.edu/pub/lsst/mareuter/sched_stuff/Miniconda2-latest-Linux-x86_64.sh && bash Miniconda2-latest-Linux-x86_64.sh -b -p miniconda && \
-  rm Miniconda2-latest-Linux-x86_64.sh
+WORKDIR /home/opsim/stack
 
-# Update Conda, set SIMS channel and install dependencies
-RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
-    conda config --add channels http://conda.lsst.codes/sims && \
-    conda update -y conda && \
-    conda install -y enum34 lsst-pex-config lsst-sims-skybrightness mysql-python pandas pytz requests sqlalchemy && \
-    rm -rf miniconda/pkgs"
+RUN curl -OL https://raw.githubusercontent.com/lsst/lsst/master/scripts/newinstall.sh && \
+		bash newinstall.sh -b && \
+		bash -c "source loadLSST.bash && \
+		eups distrib install sims_skybrightness -t sims && \
+		eups distrib install pex_config && \
+		conda update -y conda && \
+		conda update -y pyqt && \
+		conda install -y enum34 mysql-python pandas pytz requests sqlalchemy && \
+		rm -rf miniconda/pkgs && \
+		python -c 'import matplotlib.pyplot'"
 
 # Create a UUID file for Qt's DBUS
 USER root
-RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
+RUN bash -c "source /home/opsim/stack/loadLSST.bash && \
     dbus-uuidgen > /etc/machine-id"
 USER opsim
-
-# Setup matplotlib's font cache
-RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
-    python -c 'import matplotlib.pyplot'"
 
 # Install Scheduler DDS topic library
 WORKDIR /home/opsim/dds
@@ -52,8 +50,7 @@ RUN git clone https://github.com/lsst-ts/ts_opensplice.git && \
     git clone https://github.com/lsst-sims/opsim4_tools.git
 
 # Declare repos to EUPS and perform setup
-RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
-    source eups-setups.sh && \
+RUN bash -c "source /home/opsim/stack/loadLSST.bash && \
     eups declare ts_scheduler git -r ./ts_scheduler -c && \
     eups declare sims_ocs git -r ./sims_ocs -c && \
     eups declare opsim4_config_ui git -r ./opsim4_config_ui -c && \

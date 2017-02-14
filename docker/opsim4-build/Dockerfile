@@ -1,4 +1,4 @@
-FROM mareuter/opsim4:opsim4
+FROM lsst/opsim4:opsim4-latest
 MAINTAINER Michael Reuter <mareuter@lsst.org>
 
 USER root

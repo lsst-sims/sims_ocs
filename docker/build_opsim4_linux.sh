@@ -27,7 +27,7 @@
 
 set -e
 
-PACKAGE_NAME="lsst/opsim4:opsim4"
+PACKAGE_NAME="lsst/opsim4:linux"
 DEFAULT_SOCS_VERSION="master"
 DEFAULT_SCHED_VERSION="master"
 DEFAULT_CONFUI_VERSION="master"
@@ -98,12 +98,12 @@ fi
 
 printf "Building Opsim4 image with tag: %s\n" $TAG
 docker build --no-cache=${NOCACHE} \
-             --build-arg SIMS_VERSION="$SIMS_VERSION" \
-             --build-arg SOCS_VERSION="$SOCS_VERSION" \
-             --build-arg SCHED_VERSION="$SCHED_VERSION" \
-             --build-arg CONFUI_VERSION="$CONFUI_VERSION" \
-             --tag="$TAG" opsim4
-
+			 --tag="$TAG" opsim4_linux
+#             --build-arg SIMS_VERSION="$SIMS_VERSION" \
+#             --build-arg SOCS_VERSION="$SOCS_VERSION" \
+#             --build-arg SCHED_VERSION="$SCHED_VERSION" \
+#             --build-arg CONFUI_VERSION="$CONFUI_VERSION" \
+             
 if [ $PUSH ] ; then
     printf "Pushing to Docker hub\n"
     docker push "$TAG"
