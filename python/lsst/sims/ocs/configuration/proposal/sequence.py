@@ -47,6 +47,8 @@ class Sequence(pexConfig.Config):
         topic.dec_window = self.sky_exclusion.dec_window
         topic.max_airmass = self.sky_constraints.max_airmass
         topic.max_cloud = self.sky_constraints.max_cloud
+        topic.min_distance_moon = self.sky_constraints.min_distance_moon
+        topic.exclude_planets = self.sky_constraints.exclude_planets
 
         num_sky_user_regions = len(self.sky_user_regions)
         topic.num_user_regions = num_sky_user_regions

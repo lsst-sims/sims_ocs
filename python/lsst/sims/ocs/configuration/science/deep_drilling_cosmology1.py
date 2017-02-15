@@ -54,9 +54,9 @@ class DeepDrillingCosmology1(Sequence):
         sseq0.num_events = 27
         sseq0.num_max_missed = 0
         sseq0.time_interval = 3 * 24 * 60 * 60
-        sseq0.time_window_start = -0.2
-        sseq0.time_window_max = 0.5
-        sseq0.time_window_end = 0.7
+        sseq0.time_window_start = 0.0
+        sseq0.time_window_max = 0.7
+        sseq0.time_window_end = 0.9
         sseq0.time_weight = 1.0
 
         sseq1 = SubSequence()
@@ -66,9 +66,9 @@ class DeepDrillingCosmology1(Sequence):
         sseq1.num_events = 7
         sseq1.num_max_missed = 0
         sseq1.time_interval = 1 * 24 * 60 * 60
-        sseq1.time_window_start = -0.2
-        sseq1.time_window_max = 0.5
-        sseq1.time_window_end = 0.7
+        sseq1.time_window_start = 0.0
+        sseq1.time_window_max = 0.7
+        sseq1.time_window_end = 0.9
         sseq1.time_weight = 1.0
 
         self.sub_sequences = {0: sseq0, 1: sseq1}
