@@ -6,7 +6,7 @@ ARG	SCHED_VERSION
 ARG	CONFUI_VERSION
 ARG	USER
 ENV USER ${USER:-opsim}
-#HOME /home/opsim
+ENV HOME /home/opsim
 
 # Create user and group
 RUN groupadd opsim && adduser -m -g opsim -s /bin/bash opsim
