@@ -72,9 +72,9 @@ fi
 
 if [ -z $SOCS_VERSION ] ; then
     SOCS_VERSION=$DEFAULT_SOCS_VERSION
-    TAG="${PACKAGE_NAME}:latest-src"
+    TAG="${PACKAGE_NAME}:latest"
 else
-    TAG="${PACKAGE_NAME}:${SOCS_VERSION}-src"
+    TAG="${PACKAGE_NAME}:${SOCS_VERSION}"
 fi 
 
 if [ -z $SCHED_VERSION ] ; then
@@ -94,7 +94,7 @@ docker build --no-cache=${NOCACHE} \
              --build-arg SOCS_VERSION="$SOCS_VERSION" \
              --build-arg SCHED_VERSION="$SCHED_VERSION" \
              --build-arg CONFUI_VERSION="$CONFUI_VERSION" \
-             --tag="$TAG" opsim4_src
+             --tag="$TAG" opsim4
 
 if [ $PUSH ] ; then
     printf "Pushing to Docker hub\n"

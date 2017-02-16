@@ -1,4 +1,4 @@
-FROM lsst/opsim4:base-src
+FROM lsst/opsim4:base
 MAINTAINER Michael Reuter <mareuter@lsst.org>
 
 ARG SOCS_VERSION
