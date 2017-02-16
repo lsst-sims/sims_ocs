@@ -78,11 +78,11 @@ WORKDIR /home/opsim
 
 ENV NDDS_DISCOVERY_PEERS=builtin.shmem:// \
     OPENSPLICE_LOC=${HOME}/repos/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux \
-    OSPL_URI=file://${OPENSPLICE_LOC}/etc/config/ospl.xml \
     SCHED_TOPIC_LIB=${HOME}/dds/lib \
-    LD_LIBRARY_PATH=${OPENSPLICE_LOC}/lib:${SCHED_TOPIC_LIB}:${LD_LIBRARY_PATH} \
-    PYTHONPATH=${SCHED_TOPIC_LIB}:${PYTHONPATH} \
     SIMS_SKYBRIGHTNESS_DATA=${HOME}/sky_brightness_data
+ENV OSPL_URI=file://${OPENSPLICE_LOC}/etc/config/ospl.xml \
+    LD_LIBRARY_PATH=${OPENSPLICE_LOC}/lib:${SCHED_TOPIC_LIB}:${LD_LIBRARY_PATH} \
+    PYTHONPATH=${SCHED_TOPIC_LIB}:${PYTHONPATH}
 
 ADD ./startup.sh /home/opsim/startup.sh
 ADD ./.opsim4_profile /home/opsim/.opsim4_profile

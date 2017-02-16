@@ -1,5 +1,4 @@
 if [ -f ~/.bashrc ]; then
     . ~/.bashrc
 fi
-
 source /home/opsim/stack/loadLSST.bash
