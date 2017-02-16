@@ -16,6 +16,8 @@ from lsst.sims.ocs.setup import create_parser, configure_logging, generate_logfi
 from lsst.sims.ocs.setup import apply_file_config, read_file_config, set_log_levels, Tracking
 from lsst.sims.ocs.utilities import expand_path
 
+DDS_DOMAIN_ENV = "LSST_DDS_DOMAIN"
+
 def get_port_address():
     """Check available ports for the central logger.
     """
@@ -61,6 +63,8 @@ def main(args):
         log_pid = sp.Popen(["central_logger", "--filename={}".format(log_file),
                             "--level={}".format(file_detail),
                             "--log-port={}".format(log_port)]).pid
+        # Need time for the central logger to startup to catch all the log messages.
+        time.sleep(5)
 
         tracking = Tracking(session_id, args.session_code, args.startup_comment)
         if args.track_session:
@@ -69,6 +73,10 @@ def main(args):
             tracking.track_session()
 
         logger = logging.getLogger("opsim4")
+
+        if DDS_DOMAIN_ENV in os.environ:
+            logger.info("{} = {}".format(DDS_DOMAIN_ENV,
+                                         os.environ[DDS_DOMAIN_ENV]))
 
         start_time = datetime.now()
 
