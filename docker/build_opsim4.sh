@@ -27,11 +27,10 @@
 
 set -e
 
-PACKAGE_NAME="lsst/opsim4:opsim4"
+PACKAGE_NAME="lsst/opsim4"
 DEFAULT_SOCS_VERSION="master"
 DEFAULT_SCHED_VERSION="master"
 DEFAULT_CONFUI_VERSION="master"
-DEFAULT_SIMS_VERSION="2.3.1"
 NOCACHE=true
 
 usage() {
@@ -44,7 +43,6 @@ usage() {
   Available options:
     -h          this message
     -p          Push to dockerhub after build
-    -s          Version number for SIMS Conda channel. Defaults to $DEFAULT_SIMS_VERSION
     -o          Version for the SOCS code. Defaults to $DEFAULT_SOCS_VERSION
     -d          Version for the Scheduler code. Defaults to $DEFAULT_SCHED_VERSION
     -u          Version for the Configuration UI code. Defaults to $DEFAULT_CONFUI_VERSION
@@ -54,11 +52,10 @@ EOD
 }
 
 # get the options
-while getopts hps:o:d:u:n c; do
+while getopts hpo:d:u:n c; do
     case $c in
             h) usage ; exit 0 ;;
             p) PUSH=1 ;;
-            s) SIMS_VERSION="$OPTARG" ;;
             o) SOCS_VERSION="$OPTARG" ;;
             d) SCHED_VERSION="$OPTARG" ;;
             u) CONFUI_VERSION="$OPTARG" ;;
@@ -75,13 +72,9 @@ fi
 
 if [ -z $SOCS_VERSION ] ; then
     SOCS_VERSION=$DEFAULT_SOCS_VERSION
-    TAG="${PACKAGE_NAME}-latest"
+    TAG="${PACKAGE_NAME}:latest-src"
 else
-    TAG="${PACKAGE_NAME}-${SOCS_VERSION}"
-fi
-
-if [ -z $SIMS_VERSION ] ; then
-    SIMS_VERSION=$DEFAULT_SIMS_VERSION
+    TAG="${PACKAGE_NAME}:${SOCS_VERSION}-src"
 fi 
 
 if [ -z $SCHED_VERSION ] ; then
@@ -98,11 +91,10 @@ fi
 
 printf "Building Opsim4 image with tag: %s\n" $TAG
 docker build --no-cache=${NOCACHE} \
-             --build-arg SIMS_VERSION="$SIMS_VERSION" \
              --build-arg SOCS_VERSION="$SOCS_VERSION" \
              --build-arg SCHED_VERSION="$SCHED_VERSION" \
              --build-arg CONFUI_VERSION="$CONFUI_VERSION" \
-             --tag="$TAG" opsim4
+             --tag="$TAG" opsim4_src
 
 if [ $PUSH ] ; then
     printf "Pushing to Docker hub\n"

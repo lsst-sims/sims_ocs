@@ -27,7 +27,7 @@
 
 set -e
 
-DEFAULT_TAG="lsst/opsim4:base"
+DEFAULT_TAG="lsst/opsim4:base-src"
 
 usage() {
   cat << EOD
@@ -69,7 +69,7 @@ fi
 # Build the release image
 
 printf "Building base image with tag: %s\n" $TAG
-docker build  --tag="$TAG" base
+docker build  --tag="$TAG" base_src
 
 if [ $PUSH ] ; then
     printf "Pushing to Docker hub\n"
