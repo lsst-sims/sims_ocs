@@ -1,20 +1,20 @@
-FROM lsst/opsim4:base
+FROM lsst/opsim4:stack
 MAINTAINER Michael Reuter <mareuter@lsst.org>
 
 ARG SOCS_VERSION
 ARG	SCHED_VERSION 
 ARG	CONFUI_VERSION
-ARG	USER
-ENV USER ${USER:-opsim}
-ENV HOME /home/opsim
+#ARG	USER
+#ENV USER ${USER:-opsim}
+#ENV HOME /home/opsim
 
 # Create user and group
-RUN groupadd opsim && adduser -m -g opsim -s /bin/bash opsim
+#RUN groupadd opsim && adduser -m -g opsim -s /bin/bash opsim
 
 USER opsim
 WORKDIR /home/opsim
 
-RUN mkdir dds repos stack && \
+RUN mkdir dds repos && \
     cd dds && \
     curl -Ok ftp://ftp.noao.edu/pub/lsst/mareuter/sched_stuff/scheduler_ddslibs.tar.gz && \
     tar zxvf scheduler_ddslibs.tar.gz && \
@@ -29,16 +29,7 @@ RUN mkdir dds repos stack && \
     git clone https://github.com/lsst-sims/opsim4_config_ui.git && \
     git clone https://github.com/lsst-sims/opsim4_tools.git && \
     cd ../ && \
-    cd stack && \
-    curl -OL https://raw.githubusercontent.com/lsst/lsst/master/scripts/newinstall.sh && \
-	bash newinstall.sh -b && \
-	bash -c "source loadLSST.bash && \
-	eups distrib install sims_utils -t sims && \
-	eups distrib install pex_config -t sims && \
-	conda update -y conda && \
-	conda update -y pyqt fontconfig sqlalchemy && \
-	conda install -y mysql-python pandas && \
-    cd ../ && \
+    bash -c "source stack/loadLSST.bash && \
     eups declare sims_utils git -r ./repos/sims_utils -c && \
     eups declare sims_skybrightness_pre git -r ./repos/sims_skybrightness_pre -c && \
     eups declare ts_scheduler git -r ./repos/ts_scheduler -c && \
@@ -64,17 +55,7 @@ RUN mkdir dds repos stack && \
     cd opsim4_config_ui && \
     git checkout $CONFUI_VERSION && \
     scons && \
-    cd .. && \
-    python -c 'import matplotlib.pyplot' && \
-    rm -rfv /home/opsim/stack/Linux64/miniconda2/*/pkgs"
-
-# Create a UUID file for Qt's DBUS
-USER root
-RUN bash -c "source /home/opsim/stack/loadLSST.bash && \
-    dbus-uuidgen > /etc/machine-id"
-USER opsim
-
-WORKDIR /home/opsim
+    cd .."
 
 ENV NDDS_DISCOVERY_PEERS=builtin.shmem:// \
     OPENSPLICE_LOC=${HOME}/repos/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux \
