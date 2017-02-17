@@ -13,13 +13,13 @@ WORKDIR /home/opsim
 RUN mkdir stack && \
     cd stack && \
     curl -OL https://raw.githubusercontent.com/lsst/lsst/master/scripts/newinstall.sh && \
-	bash newinstall.sh -b && \
-	bash -c "source loadLSST.bash && \
-	eups distrib install sims_utils -t sims && \
-	eups distrib install pex_config -t sims && \
-	conda update -y conda && \
-	conda update -y pyqt fontconfig sqlalchemy && \
-	conda install -y mysql-python pandas && \
+  	bash newinstall.sh -b && \
+  	bash -c "source loadLSST.bash && \
+  	eups distrib install sims_utils -t sims && \
+  	eups distrib install pex_config -t sims && \
+  	conda update -y conda && \
+  	conda update -y pyqt fontconfig sqlalchemy && \
+  	conda install -y mysql-python pandas && \
     cd ../ && \
     python -c 'import matplotlib.pyplot' && \
     conda clean -ay && \
