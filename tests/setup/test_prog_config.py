@@ -22,10 +22,10 @@ class ProgConfigTest(unittest.TestCase):
 
         sample_config = """
 [Database]
-type = mysql
+type = sqlite
 
-[mysql]
-config_path = /home/demouser/mysql
+[sqlite]
+save_directory = /home/demouser/run/output
         """
         cls.config_file = "opsim4_testing"
         with open(os.path.join(cls.config_dir, cls.config_file), 'w') as cfile:
@@ -43,10 +43,6 @@ config_path = /home/demouser/mysql
         self.options.save_dir = "/home/demouser/run/output"
         self.options.session_id_start = "1040"
 
-    def mysql_options(self):
-        self.options.type = "mysql"
-        self.options.config_path = "/home/demouser/mydb"
-
     def check_written_file(self):
         file_path = os.path.join(self.config_dir, "opsim4")
         self.assertTrue(os.path.exists(file_path))
@@ -57,21 +53,16 @@ config_path = /home/demouser/mysql
         write_file_config(self.options, self.config_dir)
         self.check_written_file()
 
-    def test_write_mysql_file(self):
-        self.mysql_options()
-        write_file_config(self.options, self.config_dir)
-        self.check_written_file()
-
     def test_write_file_no_config_dir(self):
         with mock.patch.dict('os.environ', {"HOME": '.'}, clear=True):
-            self.mysql_options()
+            self.sqlite_options()
             write_file_config(self.options)
             self.check_written_file()
 
     def test_read_file(self):
         parser = read_file_config(self.config_file, self.config_dir)
-        self.assertEqual(parser.get("Database", "type"), "mysql")
-        self.assertEqual(parser.get("mysql", "config_path"), "/home/demouser/mysql")
+        self.assertEqual(parser.get("Database", "type"), "sqlite")
+        self.assertEqual(parser.get("sqlite", "save_directory"), "/home/demouser/run/output")
 
     def test_read_no_file(self):
         parser = read_file_config("opsim3", self.config_dir)
@@ -84,17 +75,17 @@ config_path = /home/demouser/mysql
     def test_read_file_no_config_dir(self):
         with mock.patch.dict('os.environ', {"HOME": '.'}, clear=True):
             parser = read_file_config(self.config_file)
-            self.assertEqual(parser.get("Database", "type"), "mysql")
+            self.assertEqual(parser.get("Database", "type"), "sqlite")
 
     def test_read_file_no_section(self):
         parser = read_file_config(self.config_file, self.config_dir)
         with self.assertRaises(configparser.NoSectionError):
-            parser.get("sqlite", "save_directory")
+            parser.get("mysql", "save_directory")
 
     def test_read_file_section_no_option(self):
         parser = read_file_config(self.config_file, self.config_dir)
         with self.assertRaises(configparser.NoOptionError):
-            parser.get("mysql", "save_directory")
+            parser.get("sqlite", "config_path")
 
     def test_option_override_with_sqlite_as_db(self):
         sample_config = """
@@ -129,35 +120,5 @@ tracking_db = http://fun.new.machine.edu/tracking
         self.assertEqual(options.session_id_start, 2345)
         self.assertTrue(options.track_session)
         self.assertEqual(options.tracking_db, "http://fun.new.machine.edu/tracking")
-
-        os.remove(config_file)
-
-    def test_option_override_with_mysql_as_db(self):
-        sample_config = """
-[Database]
-type = mysql
-
-[mysql]
-config_path = /home/demouser/mysql
-        """
-        config_file = "opsim4_options_with_mysql_testing"
-        with open(os.path.join('.', config_file), 'w') as cfile:
-            cfile.write(sample_config)
-
-        config = read_file_config(config_file, '.')
-
-        options = collections.namedtuple("options", ["db_type", "mysql_config_path",
-                                                     "track_session", "tracking_db"])
-        # Set option defaults
-        options.db_type = "mysql"
-        options.mysql_config_path = None
-        options.track_session = False
-        options.tracking_db = None
-
-        apply_file_config(config, options)
-        self.assertEqual(options.db_type, "mysql")
-        self.assertEqual(options.mysql_config_path, "/home/demouser/mysql")
-        self.assertFalse(options.track_session)
-        self.assertIsNone(options.tracking_db)
 
         os.remove(config_file)

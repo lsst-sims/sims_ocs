@@ -27,23 +27,9 @@ def create_parser():
     parser.add_argument("--profile", dest="profile", action="store_true", help="Run the profiler on SOCS and"
                         "Scheduler code.")
 
-    db_group_descr = ["This group of arguments controls the behavior of the simulation database."]
-    db_group_descr.append("The simulation database is available through MySQL or SQLite.")
-    db_group_descr.append("It is assumed that you have already setup the appropriate database using the")
-    db_group_descr.append("manage_db script that came with this package.")
-    db_group = parser.add_argument_group("database", " ".join(db_group_descr))
-    db_group.add_argument("--db-type", dest="db_type", choices=["mysql", "sqlite"], default="mysql",
-                          help="Type of database to create. MySQL assumes that a .my.cnf file is available "
-                          "and contains the appropriate connection information.")
-
-    mysql_group_descr = ["This group of arguments is for dealing with a MySQL database."]
-    mysql_group = parser.add_argument_group("mysql", " ".join(mysql_group_descr))
-    mysql_group.add_argument("--mysql-config-path", dest="mysql_config_path", help="For MySQL, the path to a "
-                             ".my.cnf file if one is not present in $HOME.")
-
     sqlite_group_descr = ["This group of arguments is for dealing with a SQLite database."]
     sqlite_group = parser.add_argument_group("sqlite", " ".join(sqlite_group_descr))
-    sqlite_group.add_argument("--sqlite-save-dir", dest="sqlite_save_dir", help="A directory to save the "
+    sqlite_group.add_argument("--save-dir", dest="sqlite_save_dir", help="A directory to save the "
                               "SQLite session tracking database.")
     sqlite_group.add_argument("-s", "--session-id-start", dest="session_id_start",
                               help="Set a new value for the starting session ID.")

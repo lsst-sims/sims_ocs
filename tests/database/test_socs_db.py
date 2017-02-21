@@ -12,67 +12,6 @@ from lsst.sims.ocs.database.socs_db import SocsDatabase
 from lsst.sims.ocs.database.tables import write_target_history
 import topic_helpers
 
-class SocsDatabaseMySqlTest(unittest.TestCase):
-
-    def setUp(self):
-        self.db = SocsDatabase()
-
-    def test_basic_information_after_creation(self):
-        self.assertEqual(self.db.db_dialect, "mysql")
-        self.assertIsNotNone(self.db.engine)
-        self.assertIsNotNone(self.db.metadata)
-        self.assertEqual(self.db.session_id, -1)
-        self.assertTrue(hasattr(self.db, "session"))
-        self.assertTrue(hasattr(self.db, "target_history"))
-        self.assertTrue(hasattr(self.db, "observation_history"))
-        self.assertTrue(hasattr(self.db, "slew_history"))
-        self.assertTrue(hasattr(self.db, "slew_initial_state"))
-        self.assertTrue(hasattr(self.db, "slew_final_state"))
-        self.assertTrue(hasattr(self.db, "slew_activities"))
-        self.assertTrue(hasattr(self.db, "slew_maxspeeds"))
-        self.assertTrue(hasattr(self.db, "target_exposures"))
-        self.assertTrue(hasattr(self.db, "observation_exposures"))
-        self.assertTrue(hasattr(self.db, "scheduled_downtime"))
-        self.assertTrue(hasattr(self.db, "unscheduled_downtime"))
-        self.assertTrue(hasattr(self.db, "proposal"))
-        self.assertTrue(hasattr(self.db, "observation_proposal_history"))
-        self.assertTrue(hasattr(self.db, "target_proposal_history"))
-        self.assertTrue(hasattr(self.db, "config"))
-        self.assertTrue(hasattr(self.db, "summary_all_props"))
-
-    @mock.patch("sqlalchemy.MetaData.create_all")
-    def test_database_creation(self, mock_create_all):
-        self.db.create_db()
-        self.assertIsNotNone(self.db.engine)
-        mock_create_all.called_once_with(self.db.engine)
-
-    @mock.patch("sqlalchemy.MetaData.drop_all")
-    def test_database_deletion(self, mock_drop_all):
-        self.db.delete_db()
-        self.assertIsNotNone(self.db.engine)
-        mock_drop_all.called_once_with(self.db.engine)
-
-    @mock.patch("sqlalchemy.engine.Connection", autospec=True)
-    @mock.patch("sqlalchemy.engine.Engine", autospec=True)
-    @mock.patch("lsst.sims.ocs.database.socs_db.create_engine")
-    def test_new_session(self, mock_create_engine, mock_engine, mock_conn):
-        # Need all the mocks to avoid writing to a real DB.
-        session_id_truth = 2000
-        mock_create_engine.return_value = mock_engine
-        mock_engine.connect.return_value = mock_conn
-        mock_result = mock.Mock()
-        mock_result.lastrowid = session_id_truth
-        mock_conn.execute.return_value = mock_result
-
-        # Need a fresh DB object with this one!
-        db = SocsDatabase()
-        startup_comment = "This is my cool test!"
-        session_id = db.new_session(startup_comment)
-
-        self.assertEqual(mock_conn.execute.call_count, 1)
-        self.assertEqual(session_id, session_id_truth)
-        self.assertEqual(db.session_id, session_id_truth)
-
 class SocsDatabaseSqliteTest(unittest.TestCase):
 
     @mock.patch("lsst.sims.ocs.database.socs_db.get_hostname")
@@ -81,7 +20,7 @@ class SocsDatabaseSqliteTest(unittest.TestCase):
         self.db_name = "{}_sessions.db".format(self.hostname)
         mock_get_hostname.return_value = self.hostname
 
-        self.db = SocsDatabase("sqlite")
+        self.db = SocsDatabase()
         self.session_id = -1
 
     def tearDown(self):
@@ -192,8 +131,7 @@ class SocsDatabaseSqliteWithSavePathTest(unittest.TestCase):
         self.hostname = "tester"
         self.db_name = "{}_sessions.db".format(self.hostname)
         mock_get_hostname.return_value = self.hostname
-
-        self.db = SocsDatabase("sqlite", sqlite_save_path=self.save_path)
+        self.db = SocsDatabase(sqlite_save_path=self.save_path)
 
     def test_basic_information_after_creation(self):
         self.assertIsNotNone(self.db.sqlite_save_path)
