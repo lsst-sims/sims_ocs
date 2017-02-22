@@ -140,15 +140,15 @@ While this instruction is executing, the instructions may continue to be followe
 Database Setup
 --------------
 
-SOCS provides two mechanisms for simulation information storage: MySQL or SQLite. A script, ``manage_db`` has been created to help setup the necessary simulation related items for either case. In the case of MySQL, it is assumed that a running instance is already present and you have a ``.my.cnf`` file in ``$HOME`` that contains the connection information for a non-privileged user. It's also assumed you know the root password to the database as this will be required during setup. To see the options available::
+SOCS provides a SQLite interface for simulation information storage. A script, ``manage_db`` has been created to help setup the necessary simulation related items. To see the options available::
 
 	manage_db -h
 
-The installation will cover a SQLite storage option. The following assumes a ``$HOME/run_local`` directory with an ``output`` sub-directory already available. To create the SQLite setup, run the following::
+The following assumes a ``$HOME/run_local`` directory with an ``output`` sub-directory already available. To create the SQLite setup, run the following::
 
-	manage_db -c --type=sqlite --save-dir=$HOME/run_local/output
+	manage_db --save-dir=$HOME/run_local/output
 
 This process creates in ``$HOME/run_local/output`` a ``<hostname>_session.db`` file where ``<hostname>`` is the name of your computer. If you have a DNS provided hostname and would like to have a more "normal" name, add the ``$OPSIM_HOSTNAME`` environmental variable to the session before running the above command. The script also creates a configuration file in ``$HOME/.config`` called ``opsim4`` and it contains the database setup information. This will allow you to not have to provide that information to the main simulation driver script.
 
 If you wish to clear out your database and start over, but begin at the next run number from 
-where you left off, this task can be accomplished. The ``-s`` flag to the ``manage_db`` will adjust the starting point for the run numbers. You will need the last run number generated and then pass that number incremented by one to the flag. For MySQL, this will set the base point for the autoincremented sessionId column in the Session table. For SQLite, the run number is written into the configuration file for later use when running the simulation.
+where you left off, this task can be accomplished. The ``-s`` flag to the ``manage_db`` will adjust the starting point for the run numbers. You will need the last run number generated and then pass that number incremented by one to the flag. The run number is written into the configuration file for later use when running the simulation.
