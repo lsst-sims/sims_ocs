@@ -50,6 +50,8 @@ duplicated information, except proposal Id, are created.
       -  "Geometrical" full-width at half-maximum, actual half width at maximum brightness. This can be used to represent the FWHM of a double Gaussian representing the physical width of a PSF.
     * -  seeingFwhmEff
       -  "Effective" full-width at half-maximum, typically ~15% larger than seeingFwhmGeom. This can be used to calculate SNR for point sources, using seeingFwhmEff as the FWHM of a single Gaussian describing the PSF.
+    * -  fiveSigmaDepth
+      -  The magnitude of a point source that would be a 5-sigma detection (units=magnitudes)
     * -  slewTime
       -  The duration of the slew (units=seconds).
     * -  slewDistance
