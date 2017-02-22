@@ -1,0 +1,61 @@
+#!/bin/bash
+set -e
+####################################
+# Set local system configuration
+####################################
+# Run directory
+run_dir=changeme
+# Configuration directory
+config_dir=changeme
+# Sky Brightness data directory
+sky_brightness_data_dir=changeme
+# IP address for machine
+host_ip=changeme
+
+
+TAG="latest"
+usage() {
+  cat << EOD
+
+  Usage: $(basename "$0") [options] <container name>
+
+  This command starts up a OpSim4 docker container.
+
+  Available options:
+    -h          this message
+    -i          IP address for machine if override needed
+    -t          Tag for docker image. Default is $TAG
+
+EOD
+}
+
+# get the options
+while getopts hi:t: c; do
+    case $c in
+            h) usage ; exit 0 ;;
+            i) host_ip="$OPTARG" ;;
+            t) TAG="$OPTARG" ;;
+            \?) usage ; exit 2 ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+if [ $# -ne 1 ] ; then
+    usage
+    exit 2
+fi
+
+if [[ -z ${OPSIM_HOSTNAME} ]]; then
+  host_name=$(hostname)
+else
+  host_name=${OPSIM_HOSTNAME}
+fi
+
+docker run -it --name "$1" \
+           -v ${run_dir}:/home/opsim/run-local \
+           -v ${config_dir}:/home/opsim/other-configs \
+           -v ${sky_brightness_data_dir}:/home/opsim/sky_brightness_data \
+           -v $HOME/.config:/home/opsim/.config \
+           -e OPSIM_HOSTNAME=${host_name} \
+           -e DISPLAY=${host_ip}:0 \
+           lsst/opsim4:${TAG}
