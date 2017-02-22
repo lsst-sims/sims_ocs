@@ -1,6 +1,5 @@
-============
-Installation
-============
+Source Installation
++++++++++++++++++++
 
 .. warning::
 
