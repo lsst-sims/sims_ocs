@@ -4,7 +4,7 @@ Usage
 
 We start this section by assuming you have followed the installation instructions and are within the created Conda environment. To setup the environment for running the Operations Simulator, do::
 
-	source eups-setups.sh
+	source stack_install_dir/loadLSST.<shell>
 	setup sims_ocs
 
 The Operations Simulator consists of running the SOCS and Scheduler. Due to the nature of the setup, a wrapper script is recommended when launching the driver script. If you have followed the installation recommendations, a highly recommended example is below.
