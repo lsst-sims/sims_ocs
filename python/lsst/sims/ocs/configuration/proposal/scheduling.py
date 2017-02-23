@@ -10,8 +10,10 @@ class Scheduling(pexConfig.Config):
     accept_serendipity = pexConfig.Field('Flag to determine if observations other than proposal\'s top '
                                          'target are accepted.', bool)
     accept_consecutive_visits = pexConfig.Field('Flag to determine if consecutive visits are accepted.', bool)
-    airmass_bonus = pexConfig.Field('Bonus to apply to fields giving precidence to low arimass ones. '
+    airmass_bonus = pexConfig.Field('Bonus to apply to fields giving precedence to low arimass ones. '
                                     'Bonus runs from 0 to 1.', float)
+    hour_angle_bonus = pexConfig.Field('Bonus to apply to fields giving precedence to fields near the '
+                                       'meridian. Bonus runs from 0 to 1.', float)
 
     def setDefaults(self):
         """Default specification for scheduling information.
@@ -21,3 +23,4 @@ class Scheduling(pexConfig.Config):
         self.accept_serendipity = True
         self.accept_consecutive_visits = True
         self.airmass_bonus = 0.5
+        self.hour_angle_bonus = 0.0

@@ -12,3 +12,4 @@ class SchedulingTest(unittest.TestCase):
         self.assertTrue(self.sched.accept_consecutive_visits)
         self.assertTrue(self.sched.accept_serendipity)
         self.assertEqual(self.sched.airmass_bonus, 0.5)
+        self.assertEqual(self.sched.hour_angle_bonus, 0.0)
