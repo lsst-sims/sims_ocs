@@ -125,6 +125,8 @@ To declare and setup SOCS, do::
 	source activate opsim4
 	setup sims_ocs
 
+.. _skymodel-data:
+
 Sky Brightness Model Data
 -------------------------
 

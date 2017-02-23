@@ -49,6 +49,8 @@ The ``LSST_DDS_DOMAIN`` is important so that messages from other instances using
 
 The ``SIMS_SKYBRIGHTNESS_DATA`` is needed to tell the sky brightness model code where its data is stored. 
 
+.. _running-opsim4:
+
 The SOCS driver can be run from anywhere if the setup from the installation instructions were followed. We'll assume that you are running from ``$HOME/run_local``. In this directory, it is recommended to have ``configs`` and ``log`` sub-directories available. This will be helpful in containing all of the various outputs when running multiple simulations. To invoke a basic instance of SOCS, do the following::
 
 	drun opsim4 -c "Running a one year sim." -v
