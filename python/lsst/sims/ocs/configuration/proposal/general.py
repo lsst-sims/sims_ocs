@@ -106,6 +106,7 @@ class General(pexConfig.Config):
         topic.accept_consecutive_visits = self.scheduling.accept_consecutive_visits
         topic.airmass_bonus = self.scheduling.airmass_bonus
         topic.hour_angle_bonus = self.scheduling.hour_angle_bonus
+        topic.hour_angle_max = self.scheduling.hour_angle_max
         topic.restrict_grouped_visits = self.scheduling.restrict_grouped_visits
         topic.time_interval = self.scheduling.time_interval
         topic.time_window_start = self.scheduling.time_window_start

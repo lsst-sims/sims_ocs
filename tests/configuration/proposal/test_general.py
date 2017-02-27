@@ -75,6 +75,7 @@ class GeneralTest(unittest.TestCase):
         self.assertEqual(out_topic.num_grouped_visits[idx1], 1)
         self.assertEqual(out_topic.num_grouped_visits[idx2], 2)
         self.assertEqual(out_topic.hour_angle_bonus, 0.5)
+        self.assertEqual(out_topic.hour_angle_max, 9.0)
         self.assertFalse(out_topic.restrict_grouped_visits)
         self.assertEqual(out_topic.time_interval, 30 * 60)
         self.assertEqual(out_topic.time_window_start, -0.5)

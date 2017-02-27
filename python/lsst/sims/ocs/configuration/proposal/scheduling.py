@@ -14,6 +14,9 @@ class Scheduling(pexConfig.Config):
                                     'Bonus runs from 0 to 1.', float)
     hour_angle_bonus = pexConfig.Field('Bonus to apply to fields giving precedence to fields near the '
                                        'meridian. Bonus runs from 0 to 1.', float)
+    hour_angle_max = pexConfig.Field('Maximum hour angle (units=hours) for the bonus factor calculation. '
+                                     'Hour angles larger will cause the bonus to be negative. Range is '
+                                     '0.1 to 12.', float)
 
     def setDefaults(self):
         """Default specification for scheduling information.
@@ -24,3 +27,4 @@ class Scheduling(pexConfig.Config):
         self.accept_consecutive_visits = True
         self.airmass_bonus = 0.5
         self.hour_angle_bonus = 0.0
+        self.hour_angle_max = 6.0

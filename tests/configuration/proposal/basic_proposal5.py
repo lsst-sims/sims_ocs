@@ -72,6 +72,7 @@ class BasicProposal5(Sequence):
         self.scheduling.accept_serendipity = False
         self.scheduling.accept_consecutive_visits = True
         self.scheduling.hour_angle_bonus = 0.5
+        self.scheduling.hour_angle_max = 4.0
 
         # --------------------------
         # Band Filter specifications

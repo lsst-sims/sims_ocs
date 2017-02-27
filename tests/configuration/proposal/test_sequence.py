@@ -53,6 +53,7 @@ class SequenceTest(unittest.TestCase):
         self.assertEqual(out_topic.num_master_sub_sequences, 0)
         self.assertTrue(out_topic.accept_consecutive_visits)
         self.assertEqual(out_topic.hour_angle_bonus, 0.5)
+        self.assertEqual(out_topic.hour_angle_max, 4.0)
         self.assertEqual(out_topic.num_filters, 4)
         filter_names = out_topic.filter_names.split(',')
         self.assertEqual(len(filter_names), 4)
