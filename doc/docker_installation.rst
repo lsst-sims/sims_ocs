@@ -1,11 +1,11 @@
 Docker Installation
 +++++++++++++++++++
 
-First, install Docker for Mac from :ref:`the main Docker site<Docker>`. Once installed use the Preferences menu, General tab to set the number of CPUs to 4 and the Memory at least 12 GB. To get the docker image for OpSim4, do::
+First, install Docker for Mac from Docker_. Once installed use the Preferences menu, General tab to set the number of CPUs to 4 and the Memory at least 12 GB. To get the docker image for OpSim4, do::
 
 	docker pull lsst/opsim4
 
-This will pull the latest version of the image down. Be warned, however, that this image may contain unvetted features and may not work properly. The best thing to do is grab a versioned image. The list of versions, include latest, can be found :ref:`here<OpSimVersions`. A versioned image is retrieved by doing the following::
+This will pull the latest version of the image down. Be warned, however, that this image may contain unvetted features and may not work properly. The best thing to do is grab a versioned image. The list of versions, include latest, can be found at the OpSimVersions_ docker page. A versioned image is retrieved by doing the following::
 
 	docker pull lsst/opsim4:version
 
@@ -29,7 +29,7 @@ The simulator will not run just yet, however. The sky brightness model data need
 
 	docker exec -it <container name> /home/opsim/startup.sh
 
-You can now follow the instructions in the :ref:`database installation<installation-database>` section and the :ref:`running OpSim4<running-opsim4>` part to setup the rest of the simulator. Only when the sky brightness data is done downloading will the simulator function properly.
+You can now follow the instructions in the :ref:`database installation<installation-database>` section and the :ref:`running OpSim4<running-opsim4>` part to setup the rest of the simulator. Please ignore all other parts above this section as well as the ``drun`` in front of the OpSim4 execution examples. The container already is setup properly and does not require the use of the ``drun`` wrapper script. Only when the sky brightness data is done downloading will the simulator function properly.
 
 .. _Docker: https://www.docker.com/products/docker
 .. _OpSimDocker: https://hub.docker.com/r/lsst/opsim4/
