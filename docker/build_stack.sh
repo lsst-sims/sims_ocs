@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # LSST Simulations
-# Copyright 2016 LSST Corporation.
+# Copyright 2017 LSST Corporation.
 #
 # This product includes software developed by the
 # LSST Project (http://www.lsst.org/).
@@ -21,20 +21,20 @@
 # see <http://www.lsstcorp.org/LegalNotices/>.
 
 
-# Create a base image with prerequisites
+# Create a stack image
 # @author Michael Reuter, LSST
 # Special thanks to Brian Van Klaveren, SLAC for the nice build scripts
 
 set -e
 
-DEFAULT_TAG="lsst/opsim4:base-src"
+DEFAULT_TAG="lsst/opsim4:stack"
 
 usage() {
   cat << EOD
 
   Usage: $(basename "$0") [options]
 
-  This command builds a base image which includes only stack prerequisites.
+  This command builds a LSST stack image.
 
   Available options:
     -h          this message
@@ -69,7 +69,7 @@ fi
 # Build the release image
 
 printf "Building base image with tag: %s\n" $TAG
-docker build  --tag="$TAG" base_src
+docker build  --tag="$TAG" stack
 
 if [ $PUSH ] ; then
     printf "Pushing to Docker hub\n"

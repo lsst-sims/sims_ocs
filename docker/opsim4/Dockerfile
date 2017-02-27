@@ -1,85 +1,70 @@
-FROM lsst/opsim4:base
+FROM lsst/opsim4:stack
 MAINTAINER Michael Reuter <mareuter@lsst.org>
 
-ARG SIMS_VERSION
 ARG SOCS_VERSION
-ARG SCHED_VERSION
-ARG CONFUI_VERSION
-ARG USER
-ENV USER ${USER:-opsim}
-ENV HOME /home/opsim
+ARG	SCHED_VERSION 
+ARG	CONFUI_VERSION
+#ARG	USER
+#ENV USER ${USER:-opsim}
+#ENV HOME /home/opsim
 
 # Create user and group
-RUN groupadd opsim && adduser -m -g opsim -s /bin/bash opsim
+#RUN groupadd opsim && adduser -m -g opsim -s /bin/bash opsim
 
 USER opsim
 WORKDIR /home/opsim
 
-RUN mkdir dds && mkdir repos
-
-# Install Conda for python
-RUN curl -Ok ftp://ftp.noao.edu/pub/lsst/mareuter/sched_stuff/Miniconda2-latest-Linux-x86_64.sh && bash Miniconda2-latest-Linux-x86_64.sh -b -p miniconda && \
-  rm Miniconda2-latest-Linux-x86_64.sh
-
-# Update Conda, set SIMS channel and install dependencies
-RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
-    conda config --add channels http://conda.lsst.codes/sims && \
-    conda update -y conda && \
-    conda install -y enum34 lsst-pex-config lsst-sims-skybrightness mysql-python pandas pytz requests sqlalchemy && \
-    rm -rf miniconda/pkgs"
-
-# Create a UUID file for Qt's DBUS
-USER root
-RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
-    dbus-uuidgen > /etc/machine-id"
-USER opsim
-
-# Setup matplotlib's font cache
-RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
-    python -c 'import matplotlib.pyplot'"
-
-# Install Scheduler DDS topic library
-WORKDIR /home/opsim/dds
-RUN curl -Ok ftp://ftp.noao.edu/pub/lsst/mareuter/sched_stuff/scheduler_ddslibs.tar.gz && \
-  tar zxvf scheduler_ddslibs.tar.gz && rm scheduler_ddslibs.tar.gz
-
-# Clone all repos
-WORKDIR /home/opsim/repos
-RUN git clone https://github.com/lsst-ts/ts_opensplice.git && \
+RUN mkdir dds repos && \
+    cd dds && \
+    curl -Ok ftp://ftp.noao.edu/pub/lsst/mareuter/sched_stuff/scheduler_ddslibs.tar.gz && \
+    tar zxvf scheduler_ddslibs.tar.gz && \
+    rm scheduler_ddslibs.tar.gz && \
+    cd ../ && \
+    cd repos && \
+    git clone https://github.com/lsst-ts/ts_opensplice.git && \
     git clone https://github.com/lsst-ts/ts_scheduler.git && \
+    git clone https://github.com/lsst/sims_utils.git && \
+    git clone https://github.com/lsst/sims_skybrightness_pre.git && \
     git clone https://github.com/lsst-sims/sims_ocs.git && \
     git clone https://github.com/lsst-sims/opsim4_config_ui.git && \
-    git clone https://github.com/lsst-sims/opsim4_tools.git
-
-# Declare repos to EUPS and perform setup
-RUN bash -c "export PATH=/home/opsim/miniconda/bin:$PATH && \
-    source eups-setups.sh && \
-    eups declare ts_scheduler git -r ./ts_scheduler -c && \
-    eups declare sims_ocs git -r ./sims_ocs -c && \
-    eups declare opsim4_config_ui git -r ./opsim4_config_ui -c && \
-    setup sims_ocs && \
+    git clone https://github.com/lsst-sims/opsim4_tools.git && \
+    cd ../ && \
+    bash -c "source stack/loadLSST.bash && \
+    eups declare sims_utils git -r ./repos/sims_utils -c && \
+    eups declare sims_skybrightness_pre git -r ./repos/sims_skybrightness_pre -c && \
+    eups declare ts_scheduler git -r ./repos/ts_scheduler -c && \
+    eups declare sims_ocs git -r ./repos/sims_ocs -c && \
+    eups declare opsim4_config_ui git -r ./repos/opsim4_config_ui -c && \
+    setup sims_ocs git && \
+    cd repos && \
+    cd sims_utils && \
+    scons && \
+    cd ../ && \
+    cd sims_skybrightness_pre && \
+    scons && \
+    cd ../ && \
     cd sims_ocs && \
     git checkout $SOCS_VERSION && \
-    python setup.py develop && \
+    scons && \
     cd ../ && \
-    setup ts_scheduler && \
     cd ts_scheduler && \
     git checkout $SCHED_VERSION && \
+    scons && \
     cd .. && \
-    setup opsim4_config_ui && \
+    setup opsim4_config_ui git && \
     cd opsim4_config_ui && \
     git checkout $CONFUI_VERSION && \
-    python setup.py build_rcc && cd .."
-
-WORKDIR /home/opsim
+    scons && \
+    cd .."
 
 ENV NDDS_DISCOVERY_PEERS=builtin.shmem:// \
     OPENSPLICE_LOC=${HOME}/repos/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux \
-    OSPL_URI=file://${OPENSPLICE_LOC}/etc/config/ospl.xml \
     SCHED_TOPIC_LIB=${HOME}/dds/lib \
+    SIMS_SKYBRIGHTNESS_DATA=${HOME}/sky_brightness_data
+ENV OSPL_URI=file://${OPENSPLICE_LOC}/etc/config/ospl.xml \
     LD_LIBRARY_PATH=${OPENSPLICE_LOC}/lib:${SCHED_TOPIC_LIB}:${LD_LIBRARY_PATH} \
-    PYTHONPATH=${SCHED_TOPIC_LIB}:${PYTHONPATH} \
-    PATH=$HOME/miniconda/bin:$PATH
+    PYTHONPATH=${SCHED_TOPIC_LIB}:${PYTHONPATH}
 
 ADD ./startup.sh /home/opsim/startup.sh
+ADD ./.opsim4_profile /home/opsim/.opsim4_profile
 CMD ["/bin/bash", "/home/opsim/startup.sh"]
