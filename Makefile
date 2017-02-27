@@ -67,11 +67,13 @@ docs:
 	#open doc/_build/html/index.html
 
 gh-pages:
+	scons
+	cp python/lsst/sims/ocs/version.py doc_ver.py
 	git checkout gh-pages
 	rm -rf api build _modules _sources _static tables
 	git checkout $(BRANCH) $(GH_PAGES_SOURCES)
 	git reset HEAD
-	scons
+	mv doc_ver.py python/lsst/sims/ocs/version.py
 	$(MAKE) docs
 	mv -fv doc/_build/html/* ./
 	rm -rf $(GH_PAGES_SOURCES) sims_ocs.egg-info .cache ospl-info.log .coverage htmlcov $(SCONS_STUFF)
