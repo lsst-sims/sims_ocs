@@ -51,7 +51,8 @@ def main(args):
     sched_pid = None
     try:
         db = SocsDatabase(sqlite_save_path=args.sqlite_save_dir,
-                          session_id_start=args.session_id_start)
+                          session_id_start=args.session_id_start,
+                          sqlite_session_save_path=args.sqlite_session_save_dir)
 
         session_id = db.new_session(args.startup_comment)
         # args.session_id_start = session_id

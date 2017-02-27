@@ -29,8 +29,11 @@ def create_parser():
 
     sqlite_group_descr = ["This group of arguments is for dealing with a SQLite database."]
     sqlite_group = parser.add_argument_group("sqlite", " ".join(sqlite_group_descr))
-    sqlite_group.add_argument("--save-dir", dest="sqlite_save_dir", help="A directory to save the "
-                              "SQLite session tracking database.")
+    sqlite_group.add_argument("--save-dir", dest="sqlite_save_dir", help="A directory to save all the "
+                              "SQLite simulation output including session tracking database.")
+    sqlite_group.add_argument("--session-save-dir", dest="sqlite_session_save_dir",
+                              help="An alternate directory to save just the SQLite session "
+                              "tracking database.")
     sqlite_group.add_argument("-s", "--session-id-start", dest="session_id_start",
                               help="Set a new value for the starting session ID.")
 

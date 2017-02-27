@@ -135,8 +135,77 @@ class SocsDatabaseSqliteWithSavePathTest(unittest.TestCase):
 
     def test_basic_information_after_creation(self):
         self.assertIsNotNone(self.db.sqlite_save_path)
+        self.assertIsNone(self.db.sqlite_session_save_path)
         self.assertEqual(self.db.sqlite_save_path, self.save_path)
 
     def test_database_creation(self):
         self.db.create_db()
         self.assertTrue(os.path.exists(os.path.join(self.save_path, self.db_name)))
+
+class SocsDatabaseSqliteWithDifferentSavePathsTest(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.save_path = "output2"
+        cls.session_save_path = "output3"
+        os.mkdir(cls.save_path)
+        os.mkdir(cls.session_save_path)
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.save_path)
+        shutil.rmtree(cls.session_save_path)
+
+    @mock.patch("lsst.sims.ocs.database.socs_db.get_hostname")
+    def setUp(self, mock_get_hostname):
+        self.hostname = "tester{:02d}".format(random.randrange(19, 39))
+        self.db_name = "{}_sessions.db".format(self.hostname)
+        mock_get_hostname.return_value = self.hostname
+        self.db = SocsDatabase(sqlite_save_path=self.save_path,
+                               sqlite_session_save_path=self.session_save_path)
+        self.session_id = -1
+
+    def tearDown(self):
+        session_db_name = "{}_{}.db".format(self.hostname, self.session_id)
+        if os.path.exists(session_db_name):
+            os.remove(session_db_name)
+        if os.path.exists(self.db_name):
+            os.remove(self.db_name)
+
+    @mock.patch("lsst.sims.ocs.database.socs_db.get_hostname")
+    def setup_db(self, startup_comment, mock_get_hostname):
+        mock_get_hostname.return_value = self.hostname
+        self.db.create_db()
+        self.session_id = self.db.new_session(startup_comment)
+
+    def create_append_data(self):
+        target = topic_helpers.target
+        self.db.append_data("target_history", target)
+
+    def check_db_file_for_target_info(self):
+        session_db_name = "{}_{}.db".format(self.hostname, self.session_id)
+        engine = create_engine("sqlite:///{}".format(os.path.join(self.save_path, session_db_name)))
+        conn = engine.connect()
+        th = getattr(self.db, "target_history")
+        s = select([th])
+        result = conn.execute(s)
+        row = result.fetchone()
+        self.assertEqual(len(row), len(th.c))
+        target = topic_helpers.target
+        self.assertEqual(row['Field_fieldId'], target.fieldId)
+
+    def test_basic_information_after_creation(self):
+        self.assertIsNotNone(self.db.sqlite_save_path)
+        self.assertIsNotNone(self.db.sqlite_session_save_path)
+        self.assertEqual(self.db.sqlite_save_path, self.save_path)
+        self.assertEqual(self.db.sqlite_session_save_path, self.session_save_path)
+
+    def test_database_creation(self):
+        self.db.create_db()
+        self.assertTrue(os.path.exists(os.path.join(self.session_save_path, self.db_name)))
+
+    def test_run_database_creation(self):
+        self.setup_db("This is my cool test!")
+        self.create_append_data()
+        self.db.write()
+        self.check_db_file_for_target_info()
