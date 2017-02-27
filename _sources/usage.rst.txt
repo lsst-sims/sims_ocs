@@ -4,7 +4,7 @@ Usage
 
 We start this section by assuming you have followed the installation instructions and are within the created Conda environment. To setup the environment for running the Operations Simulator, do::
 
-	source eups-setups.sh
+	source stack_install_dir/loadLSST.<shell>
 	setup sims_ocs
 
 The Operations Simulator consists of running the SOCS and Scheduler. Due to the nature of the setup, a wrapper script is recommended when launching the driver script. If you have followed the installation recommendations, a highly recommended example is below.
@@ -48,6 +48,11 @@ The Operations Simulator consists of running the SOCS and Scheduler. Due to the 
 The ``LSST_DDS_DOMAIN`` is important so that messages from other instances using DDS do not pollute the currently running process. It needs to be a unique name within the user's network environment. The following instructions will refer to this wrapper script as ``drun``. 
 
 The ``SIMS_SKYBRIGHTNESS_DATA`` is needed to tell the sky brightness model code where its data is stored. 
+
+.. _running-opsim4:
+
+Running OpSim
+~~~~~~~~~~~~~
 
 The SOCS driver can be run from anywhere if the setup from the installation instructions were followed. We'll assume that you are running from ``$HOME/run_local``. In this directory, it is recommended to have ``configs`` and ``log`` sub-directories available. This will be helpful in containing all of the various outputs when running multiple simulations. To invoke a basic instance of SOCS, do the following::
 

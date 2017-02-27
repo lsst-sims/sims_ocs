@@ -172,10 +172,6 @@
     <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">options</span><span class="o">.</span><span class="n">mysql_config_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">db_type</span><span class="p">,</span> <span class="s2">&quot;config_path&quot;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">:</span>
-        <span class="k">pass</span>
-    <span class="k">try</span><span class="p">:</span>
         <span class="n">options</span><span class="o">.</span><span class="n">track_session</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="s2">&quot;tracking&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoSectionError</span><span class="p">:</span>
         <span class="k">pass</span>
@@ -199,12 +195,9 @@
     <span class="n">parser</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="s2">&quot;Database&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;Database&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;sqlite&quot;</span><span class="p">:</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="s2">&quot;save_directory&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">save_dir</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">session_id_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="s2">&quot;session_id_start&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">session_id_start</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;mysql&quot;</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">config_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="s2">&quot;config_path&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">config_path</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="s2">&quot;save_directory&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">save_dir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">session_id_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="s2">&quot;session_id_start&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">session_id_start</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">conf_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">conf_dir</span> <span class="o">=</span> <span class="n">expand_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;$HOME&quot;</span><span class="p">,</span> <span class="s2">&quot;.config&quot;</span><span class="p">))</span>
@@ -244,7 +237,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, LSST Systems Engineering.
+        &copy; Copyright 2015-2017, LSST Systems Engineering.
 
     </p>
   </div>

@@ -89,17 +89,21 @@
             
                 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#general-installation-notes">General Installation Notes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#sal-installation">SAL Installation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#build-scheduler-topic-library">Build Scheduler Topic Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#source-installation">Source Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general-installation-notes">General Installation Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sal-installation">SAL Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#build-scheduler-topic-library">Build Scheduler Topic Library</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#scheduler-and-socs-source-code">Scheduler and SOCS Source Code</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#lsst-stack-installation">LSST Stack Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scheduler-and-socs-source-code">Scheduler and SOCS Source Code</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lsst-stack-installation">LSST Stack Installation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#sky-brightness-model-data">Sky Brightness Model Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#database-setup">Database Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sky-brightness-model-data">Sky Brightness Model Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#database-setup">Database Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-installation">Docker Installation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
@@ -154,6 +158,9 @@
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Installation of the Operations Simulator can be done via a <a class="reference internal" href="#source-installation"><span class="std std-ref">source installation</span></a> for Linux systems and via <a class="reference internal" href="#docker-installation"><span class="std std-ref">Docker installation</span></a> for macOS systems. The Docker route is <strong>NOT</strong> recommended for Linux due to bind volume permission issues.</p>
+<div class="section" id="source-installation">
+<span id="id1"></span><h2>Source Installation<a class="headerlink" href="#source-installation" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">The current installation requires multiple repositories and a mixture of environments. It also only works on a Linux operating system. It has been tested only CentOS 7.</p>
@@ -170,11 +177,11 @@
 </div></blockquote>
 </div>
 <div class="section" id="general-installation-notes">
-<h2>General Installation Notes<a class="headerlink" href="#general-installation-notes" title="Permalink to this headline">¶</a></h2>
+<h3>General Installation Notes<a class="headerlink" href="#general-installation-notes" title="Permalink to this headline">¶</a></h3>
 <p>Due to the heavy use of repositories for this installation, the instructions will assume you have created a <code class="docutils literal"><span class="pre">git</span></code> directory in your <code class="docutils literal"><span class="pre">$HOME</span></code> directory. This will be referenced as <code class="docutils literal"><span class="pre">gitdir</span></code>. The individual repository installation instructions will give further advice on directory names. This is intended to make the usage &#8220;easier&#8221;. Also, all instructions are based around using the code, not developing it.</p>
 </div>
 <div class="section" id="sal-installation">
-<h2>SAL Installation<a class="headerlink" href="#sal-installation" title="Permalink to this headline">¶</a></h2>
+<h3>SAL Installation<a class="headerlink" href="#sal-installation" title="Permalink to this headline">¶</a></h3>
 <p>The SAL (Software Abstraction Layer) is a wrapper around the DDS (Data Distribution Service) layer and provides binding to Python. This requires the OpenSplice and SAL repositories from Telescope and Site. Inside the <code class="docutils literal"><span class="pre">gitdir</span></code> create a directory called <code class="docutils literal"><span class="pre">ts</span></code>. Go into this directory and run the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_opensplice</span><span class="o">.</span><span class="n">git</span>
 <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_sal</span><span class="o">.</span><span class="n">git</span>
@@ -182,7 +189,7 @@
 </div>
 <p>In the SAL clone, there is a user guide that documents installation and setup of SAL. Its location is <code class="docutils literal"><span class="pre">gitdir/ts/ts_sal/SAL_User_Guide.pdf</span></code>. Follow section 1 and the main part of section 2. Sub-sections (those colored blue) 2.1 and 2.2 are redundant as we&#8217;ve already installed the SAL. Sub-section 2.3 is replaced by the following documentation that is specific to this SOCS/Scheduler setup.</p>
 <div class="section" id="build-scheduler-topic-library">
-<h3>Build Scheduler Topic Library<a class="headerlink" href="#build-scheduler-topic-library" title="Permalink to this headline">¶</a></h3>
+<h4>Build Scheduler Topic Library<a class="headerlink" href="#build-scheduler-topic-library" title="Permalink to this headline">¶</a></h4>
 <p>Create a <code class="docutils literal"><span class="pre">$HOME/dds</span></code> directory and copy the <code class="docutils literal"><span class="pre">gitdir/ts/ts_sal/setup.env</span></code> to it. Also, create a <code class="docutils literal"><span class="pre">$HOME/dds/lib</span></code> directory for later. The following variables need to be edited in <code class="docutils literal"><span class="pre">setup.env</span></code> to reflect your setup:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>export LSST_SDK_INSTALL=$HOME/git/ts/ts_sal
 export OSPL_HOME=$HOME/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
@@ -208,7 +215,7 @@ cp scheduler/cpp/libsacpp_scheduler_types.so $HOME/dds/lib
 </div>
 </div>
 <div class="section" id="scheduler-and-socs-source-code">
-<h2>Scheduler and SOCS Source Code<a class="headerlink" href="#scheduler-and-socs-source-code" title="Permalink to this headline">¶</a></h2>
+<h3>Scheduler and SOCS Source Code<a class="headerlink" href="#scheduler-and-socs-source-code" title="Permalink to this headline">¶</a></h3>
 <p>There is a prerequisite repository for the system that needs to be downloaded. Create a <code class="docutils literal"><span class="pre">gitdir/lsst</span></code> directory, go into that and run:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">/</span><span class="n">sims_skybrightness_pre</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
@@ -222,7 +229,7 @@ cp scheduler/cpp/libsacpp_scheduler_types.so $HOME/dds/lib
 </pre></div>
 </div>
 <div class="section" id="lsst-stack-installation">
-<h3>LSST Stack Installation<a class="headerlink" href="#lsst-stack-installation" title="Permalink to this headline">¶</a></h3>
+<h4>LSST Stack Installation<a class="headerlink" href="#lsst-stack-installation" title="Permalink to this headline">¶</a></h4>
 <p>The SOCS and Scheduler installation require a set of packages from Python and the LSST Science Pipelines.
 Follow the installation instructions from <a class="reference external" href="https://pipelines.lsst.io/install/newinstall.html#installing-from-source-with-newinstall-sh">here</a> to get a minimal setup. Go ahead and let the stack software provide Python unless you feel comfortable providing your own. Follow the instructions to get into the stack environment. The instructions will refere to the stack installation directory as <code class="docutils literal"><span class="pre">stack_install_dir</span></code>. It is recommended to use a conda environment especially if you are going to use the stack for other reasons. To create an environment, do the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">opsim4</span> <span class="o">--</span><span class="n">clone</span><span class="o">=</span><span class="n">root</span>
@@ -279,7 +286,7 @@ Follow the installation instructions from <a class="reference external" href="ht
 </div>
 </div>
 <div class="section" id="sky-brightness-model-data">
-<h2>Sky Brightness Model Data<a class="headerlink" href="#sky-brightness-model-data" title="Permalink to this headline">¶</a></h2>
+<span id="skymodel-data"></span><h3>Sky Brightness Model Data<a class="headerlink" href="#sky-brightness-model-data" title="Permalink to this headline">¶</a></h3>
 <p>In the previous section, the pre-calculated sky brightness model was installed, but it does not come with the data required to run. The required data is ~65 GB in size, so create a directory for it. The instructions will assume one was created as <code class="docutils literal"><span class="pre">$HOME/sky_brightness_data</span></code>. After running the <code class="docutils literal"><span class="pre">setup</span> <span class="pre">sims_ocs</span></code> command, change to this directory and execute the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$SIMS_SKYBRIGHTNESS_PRE_DIR/data/data_down.sh -o
 </pre></div>
@@ -287,18 +294,51 @@ Follow the installation instructions from <a class="reference external" href="ht
 <p>While this instruction is executing, the instructions may continue to be followed, but OpSim will not function correctly until the data is done downloading.</p>
 </div>
 <div class="section" id="database-setup">
-<span id="installation-database"></span><h2>Database Setup<a class="headerlink" href="#database-setup" title="Permalink to this headline">¶</a></h2>
-<p>SOCS provides two mechanisms for simulation information storage: MySQL or SQLite. A script, <code class="docutils literal"><span class="pre">manage_db</span></code> has been created to help setup the necessary simulation related items for either case. In the case of MySQL, it is assumed that a running instance is already present and you have a <code class="docutils literal"><span class="pre">.my.cnf</span></code> file in <code class="docutils literal"><span class="pre">$HOME</span></code> that contains the connection information for a non-privileged user. It&#8217;s also assumed you know the root password to the database as this will be required during setup. To see the options available:</p>
+<span id="installation-database"></span><h3>Database Setup<a class="headerlink" href="#database-setup" title="Permalink to this headline">¶</a></h3>
+<p>SOCS provides a SQLite interface for simulation information storage. A script, <code class="docutils literal"><span class="pre">manage_db</span></code> has been created to help setup the necessary simulation related items. To see the options available:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">manage_db</span> <span class="o">-</span><span class="n">h</span>
 </pre></div>
 </div>
-<p>The installation will cover a SQLite storage option. The following assumes a <code class="docutils literal"><span class="pre">$HOME/run_local</span></code> directory with an <code class="docutils literal"><span class="pre">output</span></code> sub-directory already available. To create the SQLite setup, run the following:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>manage_db -c --type=sqlite --save-dir=$HOME/run_local/output
+<p>The following assumes a <code class="docutils literal"><span class="pre">$HOME/run_local</span></code> directory with an <code class="docutils literal"><span class="pre">output</span></code> sub-directory already available. To create the SQLite setup, run the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>manage_db --save-dir=$HOME/run_local/output
 </pre></div>
 </div>
 <p>This process creates in <code class="docutils literal"><span class="pre">$HOME/run_local/output</span></code> a <code class="docutils literal"><span class="pre">&lt;hostname&gt;_session.db</span></code> file where <code class="docutils literal"><span class="pre">&lt;hostname&gt;</span></code> is the name of your computer. If you have a DNS provided hostname and would like to have a more &#8220;normal&#8221; name, add the <code class="docutils literal"><span class="pre">$OPSIM_HOSTNAME</span></code> environmental variable to the session before running the above command. The script also creates a configuration file in <code class="docutils literal"><span class="pre">$HOME/.config</span></code> called <code class="docutils literal"><span class="pre">opsim4</span></code> and it contains the database setup information. This will allow you to not have to provide that information to the main simulation driver script.</p>
 <p>If you wish to clear out your database and start over, but begin at the next run number from
-where you left off, this task can be accomplished. The <code class="docutils literal"><span class="pre">-s</span></code> flag to the <code class="docutils literal"><span class="pre">manage_db</span></code> will adjust the starting point for the run numbers. You will need the last run number generated and then pass that number incremented by one to the flag. For MySQL, this will set the base point for the autoincremented sessionId column in the Session table. For SQLite, the run number is written into the configuration file for later use when running the simulation.</p>
+where you left off, this task can be accomplished. The <code class="docutils literal"><span class="pre">-s</span></code> flag to the <code class="docutils literal"><span class="pre">manage_db</span></code> will adjust the starting point for the run numbers. You will need the last run number generated and then pass that number incremented by one to the flag. The run number is written into the configuration file for later use when running the simulation.</p>
+</div>
+</div>
+<div class="section" id="docker-installation">
+<span id="id2"></span><h2>Docker Installation<a class="headerlink" href="#docker-installation" title="Permalink to this headline">¶</a></h2>
+<p>First, install Docker for Mac from <a class="reference external" href="https://www.docker.com/products/docker">Docker</a>. Once installed use the Preferences menu, General tab to set the number of CPUs to 4 and the Memory at least 12 GB. To get the docker image for OpSim4, do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">lsst</span><span class="o">/</span><span class="n">opsim4</span>
+</pre></div>
+</div>
+<p>This will pull the latest version of the image down. Be warned, however, that this image may contain unvetted features and may not work properly. The best thing to do is grab a versioned image. The list of versions, include latest, can be found at the <a class="reference external" href="https://hub.docker.com/r/lsst/opsim4/tags/">OpSimVersions</a> docker page. A versioned image is retrieved by doing the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">lsst</span><span class="o">/</span><span class="n">opsim4</span><span class="p">:</span><span class="n">version</span>
+</pre></div>
+</div>
+<p>Where, <code class="docutils literal"><span class="pre">version</span></code> is a tag listed in the referenced page. While the image is retrieved, fetch the provided script for running an OpSim4 container by doing:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">OL</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">sims</span><span class="o">/</span><span class="n">sims_ocs</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">docker</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">run_opsim4</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>Place the script in a location that is visible from your <code class="docutils literal"><span class="pre">$PATH</span></code>. The script needs to be edited to map local directory on your machine to ones in the container. Anything in the script with <code class="docutils literal"><span class="pre">changeme</span></code> needs to be replaced. To run the container, do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">run_opsim4</span> <span class="o">&lt;</span><span class="n">container</span> <span class="n">name</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal"><span class="pre">container</span> <span class="pre">name</span></code> is any name you want to give to the container. The script defaults to <em>latest</em> for the version. If you have a tagged image, use the following method:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">run_opsim4</span> <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="n">version</span> <span class="n">name</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">container</span> <span class="n">name</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The container is designed to start with the LSST stack environment, so to setup OpSim4 do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">setup</span> <span class="n">sims_ocs</span>
+</pre></div>
+</div>
+<p>The simulator will not run just yet, however. The sky brightness model data needs to be downloaded. Follow the instructions <a class="reference internal" href="#skymodel-data"><span class="std std-ref">here</span></a> to get things going. While the data is downloading, you can reenter the container to continue the setup process. This action is completed by doing the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">container</span> <span class="n">name</span><span class="o">&gt;</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">opsim</span><span class="o">/</span><span class="n">startup</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>You can now follow the instructions in the <a class="reference internal" href="#installation-database"><span class="std std-ref">database installation</span></a> section and the <a class="reference internal" href="usage.html#running-opsim4"><span class="std std-ref">running OpSim4</span></a> part to setup the rest of the simulator. Please ignore all other parts above this section as well as the <code class="docutils literal"><span class="pre">drun</span></code> in front of the OpSim4 execution examples. The container already is setup properly and does not require the use of the <code class="docutils literal"><span class="pre">drun</span></code> wrapper script. Only when the sky brightness data is done downloading will the simulator function properly.</p>
 </div>
 </div>
 
@@ -321,7 +361,7 @@ where you left off, this task can be accomplished. The <code class="docutils lit
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, LSST Systems Engineering.
+        &copy; Copyright 2015-2017, LSST Systems Engineering.
 
     </p>
   </div>

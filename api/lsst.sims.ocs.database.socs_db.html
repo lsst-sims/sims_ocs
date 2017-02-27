@@ -169,22 +169,16 @@
 <span id="lsst-sims-ocs-database-socs-db-module"></span><h1>lsst.sims.ocs.database.socs_db module<a class="headerlink" href="#module-lsst.sims.ocs.database.socs_db" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase">
-<em class="property">class </em><code class="descclassname">lsst.sims.ocs.database.socs_db.</code><code class="descname">SocsDatabase</code><span class="sig-paren">(</span><em>dialect='mysql'</em>, <em>mysql_config_path=None</em>, <em>sqlite_save_path=None</em>, <em>session_id_start=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/socs_db.html#SocsDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">lsst.sims.ocs.database.socs_db.</code><code class="descname">SocsDatabase</code><span class="sig-paren">(</span><em>sqlite_save_path=None</em>, <em>session_id_start=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/socs_db.html#SocsDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Main class for simulation database interaction.</p>
-<p>This class is responsible for interacting with the main simulation database. For MySQL, this is a central
-database containing all the relevant tables. For SQLite, this consists of a machine session tracking
-database and individual database files for each run session of the simulation.</p>
-<dl class="attribute">
-<dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.db_name">
-<code class="descname">db_name</code><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.db_name" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The name of the database. Applies to MySQL only.</p>
-</dd></dl>
-
+<p>This class is responsible for interacting with the main SQLite simulation database.
+This consists of a machine session tracking database and individual database files
+for each run session of the simulation.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.db_dialect">
 <code class="descname">db_dialect</code><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.db_dialect" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The flavor of the database to use. Options: mysql or sqlite.</p>
+<dd><p><em>str</em> &#8211; The flavor of the database to use. Options: sqlite.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -197,12 +191,6 @@ database and individual database files for each run session of the simulation.</
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.engine">
 <code class="descname">engine</code><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.engine" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>sqlalchemy.engine.Engine</em> &#8211; The instance of the database engine.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.mysql_config_path">
-<code class="descname">mysql_config_path</code><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.mysql_config_path" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; An alternate path for the .my.cnf configuration file for MySQL.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -235,8 +223,6 @@ database and individual database files for each run session of the simulation.</
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dialect</strong> (<em>str</em>) &#8211; The flavor of the database to use. Options: mysql or sqlite.</li>
-<li><strong>mysql_config_path</strong> (<em>str</em>) &#8211; An alternate path for the .my.cnf configuration file for MySQL.</li>
 <li><strong>sqlite_save_path</strong> (<em>str</em>) &#8211; A path to save all resulting database files for SQLite.</li>
 <li><strong>session_id_start</strong> (<em>int</em>) &#8211; A new starting session Id for counting new simulations.</li>
 </ul>
@@ -272,30 +258,19 @@ database and individual database files for each run session of the simulation.</
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.create_db">
 <code class="descname">create_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/socs_db.html#SocsDatabase.create_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.create_db" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the database tables.</p>
-<p>This function does the actual work of creating all the relevant database tables. For MySQL, these
-go into the central database. For SQLite, this creates the session tracking database with the Session
-table.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.delete_db">
-<code class="descname">delete_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/socs_db.html#SocsDatabase.delete_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.delete_db" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delete all database tables.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This function only works for MySQL. It will have no effect on SQLite.</p>
-</div>
+<p>This function does the actual work of creating all the relevant database tables.
+This creates the session tracking database with the Session table.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="lsst.sims.ocs.database.socs_db.SocsDatabase.new_session">
 <code class="descname">new_session</code><span class="sig-paren">(</span><em>run_comment</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/database/socs_db.html#SocsDatabase.new_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.database.socs_db.SocsDatabase.new_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Log a new session to the database and return the ID.</p>
-<p>This function logs a new session to the database and returns the session ID. For MySQL, this writes
-to the Session table in the central database. For SQLite, this writes an entry to the session tracking
-database. Then a session ID specific database is created and the information is replicated in that
-Session table. Since SQLite auto increment values always start at one, an offset is applied to make
-the session IDs commensurate with MySQL.</p>
+<p>This function logs a new session to the database and returns the session ID.
+This writes an entry to the session tracking database. Then a session ID
+specific database is created and the information is replicated in that
+Session table. Since SQLite auto increment values always start at one, an
+offset is applied to make the session IDs commensurate with OpSim3 style ones.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -361,7 +336,7 @@ the session IDs commensurate with MySQL.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, LSST Systems Engineering.
+        &copy; Copyright 2015-2017, LSST Systems Engineering.
 
     </p>
   </div>
