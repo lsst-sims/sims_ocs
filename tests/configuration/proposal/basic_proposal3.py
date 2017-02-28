@@ -57,6 +57,8 @@ class BasicProposal3(General):
         self.scheduling.max_num_targets = 100
         self.scheduling.accept_serendipity = False
         self.scheduling.accept_consecutive_visits = False
+        self.scheduling.hour_angle_bonus = 0.5
+        self.scheduling.hour_angle_max = 9.0
         self.scheduling.restrict_grouped_visits = False
         self.scheduling.time_interval = 30 * 60
         self.scheduling.time_window_start = -0.5

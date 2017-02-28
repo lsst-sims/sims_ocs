@@ -137,5 +137,7 @@ class Sequence(pexConfig.Config):
         topic.accept_serendipity = self.scheduling.accept_serendipity
         topic.accept_consecutive_visits = self.scheduling.accept_consecutive_visits
         topic.airmass_bonus = self.scheduling.airmass_bonus
+        topic.hour_angle_bonus = self.scheduling.hour_angle_bonus
+        topic.hour_angle_max = self.scheduling.hour_angle_max
 
         return topic
