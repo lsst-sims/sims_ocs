@@ -86,7 +86,6 @@ The last line is necessary since the create complains about that package being d
 Once this is complete, perform the following operations::
 
     conda update sqlalchemy
-    conda install mysql-python
 
 If one wishes to develop the code, being able to run the unit tests, check style compliance and generate the documentation is a must. To do this, these packages need to be installed::
 
