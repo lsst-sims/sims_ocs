@@ -9,7 +9,7 @@ Source Installation
 
 	If performing the installation on a virtual machine, it needs the following minimum requirements:
 
-		* Memory: 10 GB (minimum)
+		* Memory: 12 GB (minimum)
 		* Number of processors: 3 (4 recommended)
 		* Network: Bridged adapter
 
