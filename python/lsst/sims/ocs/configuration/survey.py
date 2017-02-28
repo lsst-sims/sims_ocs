@@ -1,7 +1,7 @@
 import lsst.pex.config as pexConfig
 
 from lsst.sims.ocs.configuration import ScienceProposals
-from lsst.sims.ocs.utilities.constants import BASELINE_SURVEY_DURATION
+from lsst.sims.ocs.utilities.constants import BASELINE_SURVEY_DURATION, DAYS_IN_YEAR
 
 __all__ = ["Survey"]
 
@@ -20,7 +20,7 @@ class Survey(pexConfig.Config):
         """Set defaults for the survey.
         """
         self.start_date = "2022-01-01"
-        self.duration = 1.0
+        self.duration = 10.0
         self.idle_delay = 60.0
         sci_prop = ScienceProposals()
         self.general_proposals = sci_prop.general_proposals
@@ -28,13 +28,14 @@ class Survey(pexConfig.Config):
 
     @property
     def full_duration(self):
-        """The full duration of the survey.
+        """The full duration of the survey in days.
 
         Returns
         -------
         double
         """
-        if self.duration > BASELINE_SURVEY_DURATION:
-            return self.duration
+        days_duration = self.duration * DAYS_IN_YEAR
+        if days_duration > BASELINE_SURVEY_DURATION:
+            return days_duration
         else:
             return BASELINE_SURVEY_DURATION

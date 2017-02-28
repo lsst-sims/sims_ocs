@@ -70,7 +70,7 @@ class SimulatorTest(unittest.TestCase):
         configuration.load_proposals()
         self.options.frac_duration = -1
         sim = Simulator(self.options, configuration, self.mock_socs_db)
-        self.assertEquals(sim.duration, 365.0)
+        self.assertEquals(sim.duration, 3650.0)
 
     @mock.patch("lsst.sims.ocs.kernel.sequencer.Sequencer.initialize")
     def test_initialization(self, mock_sequencer_init):
