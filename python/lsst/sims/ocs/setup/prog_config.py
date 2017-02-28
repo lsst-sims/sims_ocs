@@ -27,6 +27,10 @@ def apply_file_config(config, options):
     except configparser.NoOptionError:
         pass
     try:
+        options.sqlite_session_save_dir = config.get(options.db_type, "session_save_directory")
+    except configparser.NoOptionError:
+        pass
+    try:
         options.session_id_start = int(config.get(options.db_type, "session_id_start"))
     except configparser.NoOptionError:
         pass
@@ -55,6 +59,8 @@ def write_file_config(options, conf_dir=None):
     parser.set("Database", "type", options.type)
     parser.add_section(options.type)
     parser.set(options.type, "save_directory", options.save_dir)
+    if options.session_save_dir is not None:
+        parser.set(options.type, "session_save_directory", options.session_save_dir)
     if options.session_id_start is not None:
         parser.set(options.type, "session_id_start", options.session_id_start)
 

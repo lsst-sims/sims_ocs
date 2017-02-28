@@ -29,6 +29,8 @@ class SocsDatabase(object):
         The instance of the database engine.
     sqlite_save_path : str
         A path to save all resulting database files for SQLite.
+    sqlite_session_save_path : str
+        A path to save the SQLite session tracking database.
     session_engine : sqlalchemy.engine.Engine
         The session specific instance of the database engine. SQLite only.
     session_metadata : sqlalchemy.MetaData
@@ -37,7 +39,7 @@ class SocsDatabase(object):
         A new starting session Id for counting new simulations.
     """
 
-    def __init__(self, sqlite_save_path=None, session_id_start=None):
+    def __init__(self, sqlite_save_path=None, session_id_start=None, sqlite_session_save_path=None):
         """Initialize the class.
 
         Parameters
@@ -54,6 +56,7 @@ class SocsDatabase(object):
         self.metadata = MetaData()
         self.engine = None
         self.sqlite_save_path = sqlite_save_path
+        self.sqlite_session_save_path = sqlite_session_save_path
 
         # Parameters for SQLite operations
         self.session_engine = None
@@ -61,7 +64,7 @@ class SocsDatabase(object):
 
         self.session_tracking = tables.create_session(self.metadata, autoincrement=False)
         sqlite_session_tracking_db = "{}_sessions.db".format(get_hostname())
-        self.engine = self._make_engine(sqlite_session_tracking_db)
+        self.engine = self._make_engine(sqlite_session_tracking_db, self.sqlite_session_save_path)
 
         # Parameter for holding data lists
         self.data_list = collections.defaultdict(list)
@@ -109,17 +112,23 @@ class SocsDatabase(object):
                                                                  self.observation_proposal_history,
                                                                  self.field)
 
-    def _make_engine(self, sqlite_db=None):
+    def _make_engine(self, sqlite_db=None, alternate_save_path=None):
         """Create the engine for database interactions.
 
         Parameters
         ----------
         sqlite_db : str
             The name of the database file for SQLite.
+        alternate_save_path : str, optional
+            Specify an alternate path to save the database.
         """
+        save_path = None
         if self.sqlite_save_path is not None:
-            self.sqlite_save_path = expand_path(self.sqlite_save_path)
-            sqlite_db = os.path.join(self.sqlite_save_path, sqlite_db)
+            save_path = expand_path(self.sqlite_save_path)
+        if alternate_save_path is not None:
+            save_path = expand_path(alternate_save_path)
+        if save_path is not None:
+            sqlite_db = os.path.join(save_path, sqlite_db)
         return create_engine("sqlite:///{}".format(sqlite_db))
 
     def create_db(self):

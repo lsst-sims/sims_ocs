@@ -25,6 +25,7 @@ class ArgParserTest(unittest.TestCase):
         self.assertEqual(args.startup_comment, "No comment was entered.")
         self.assertEqual(args.session_code, "science")
         self.assertIsNone(args.sqlite_save_dir)
+        self.assertIsNone(args.sqlite_session_save_dir)
         self.assertIsNone(args.session_id_start)
         self.assertFalse(args.profile)
 
@@ -88,3 +89,8 @@ class ArgParserTest(unittest.TestCase):
     def test_profile(self):
         args = self.parser.parse_args(["--profile"])
         self.assertTrue(args.profile)
+
+    def test_sqlite_session_save_dir(self):
+        save_dir = "/path/to/save"
+        args = self.parser.parse_args(["--session-save-dir", save_dir])
+        self.assertEqual(args.sqlite_session_save_dir, save_dir)

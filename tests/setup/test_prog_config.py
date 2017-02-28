@@ -36,11 +36,12 @@ save_directory = /home/demouser/run/output
         shutil.rmtree(cls.config_dir)
 
     def setUp(self):
-        self.options = collections.namedtuple("options", ["type", "save_dir"])
+        self.options = collections.namedtuple("options", ["type", "save_dir", "session_save_dir"])
 
     def sqlite_options(self):
         self.options.type = "sqlite"
         self.options.save_dir = "/home/demouser/run/output"
+        self.options.session_save_dir = None
         self.options.session_id_start = "1040"
 
     def check_written_file(self):
@@ -94,6 +95,7 @@ type = sqlite
 
 [sqlite]
 save_directory = /home/demouser/storage
+session_save_directory = /home/demouser/output
 session_id_start = 2345
 
 [tracking]
@@ -105,11 +107,13 @@ tracking_db = http://fun.new.machine.edu/tracking
 
         config = read_file_config(config_file, '.')
 
-        options = collections.namedtuple("options", ["db_type", "sqlite_save_dir", "session_id_start",
+        options = collections.namedtuple("options", ["db_type", "sqlite_save_dir",
+                                                     "sqlite_session_save_dir", "session_id_start",
                                                      "track_session", "tracking_db"])
         # Set option defaults
         options.db_type = "mysql"
         options.sqlite_save_dir = None
+        options.sqlite_session_save_dir = None
         options.session_id_start = None
         options.track_session = False
         options.tracking_db = None
@@ -117,6 +121,7 @@ tracking_db = http://fun.new.machine.edu/tracking
         apply_file_config(config, options)
         self.assertEqual(options.db_type, "sqlite")
         self.assertEqual(options.sqlite_save_dir, "/home/demouser/storage")
+        self.assertEqual(options.sqlite_session_save_dir, "/home/demouser/output")
         self.assertEqual(options.session_id_start, 2345)
         self.assertTrue(options.track_session)
         self.assertEqual(options.tracking_db, "http://fun.new.machine.edu/tracking")

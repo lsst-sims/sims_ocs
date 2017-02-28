@@ -6,7 +6,8 @@ from lsst.sims.ocs.setup import write_file_config
 
 def main(args):
     db = SocsDatabase(sqlite_save_path=args.save_dir,
-                      session_id_start=args.session_id_start)
+                      session_id_start=args.session_id_start,
+                      sqlite_session_save_path=args.session_save_dir)
 
     args.type = "sqlite"
     write_file_config(args)
@@ -24,8 +25,10 @@ if __name__ == '__main__':
 
     parser.add_argument("-s", "--session-id-start", dest="session_id_start",
                         help="Set the session Id to start new runs counting from.")
-    parser.add_argument("--save-dir", dest="save_dir", help="A directory to save the SQLite session "
-                        "tracking database.")
+    parser.add_argument("--save-dir", dest="save_dir", help="A directory to save the all SQLite output "
+                        "from the simulator including the session tracking database.")
+    parser.add_argument("--session-save-dir", dest="session_save_dir", help="A directory to save the SQLite "
+                        "session tracking database only.")
 
     args = parser.parse_args()
     main(args)
