@@ -228,10 +228,20 @@ class ConfigurationCommunicator(object):
                 general_topic.prop_id = num_proposals
                 self.sal.put(general_topic)
                 num_proposals += 1
+        else:
+            general_topic = self.sal.get_topic("generalPropConfig")
+            general_topic.prop_id = -1
+            general_topic.name = "NULL"
+            self.sal.put(general_topic)
         if self.config.science.sequence_props.active is not None:
             for sequence_config in self.config.science.sequence_props.active:
                 sequence_topic = sequence_config.set_topic(self.sal.get_topic("sequencePropConfig"))
                 sequence_topic.prop_id = num_proposals
                 self.sal.put(sequence_topic)
                 num_proposals += 1
+        else:
+            sequence_topic = self.sal.get_topic("sequencePropConfig")
+            sequence_topic.prop_id = -1
+            sequence_topic.name = "NULL"
+            self.sal.put(sequence_topic)
         self.log.info("Sent configuration for {} proposals.".format(num_proposals - 1))
