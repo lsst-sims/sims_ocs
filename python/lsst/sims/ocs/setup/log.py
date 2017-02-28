@@ -23,7 +23,7 @@ class LoggingLevel(Enum):
     TRACE = 2
 
 DETAIL_LEVEL = {
-    0: logging.WARN,
+    0: logging.ERROR,
     1: logging.INFO,
     2: LoggingLevel.WORDY.value,
     3: logging.DEBUG,
@@ -47,6 +47,7 @@ def configure_logging(console_detail, file_detail, log_port=logging.handlers.DEF
     """
     main_level = max(console_detail, file_detail)
     logging.basicConfig(level=DETAIL_LEVEL[main_level], format=CONSOLE_FORMAT)
+    logging.captureWarnings(True)
     # Remove old console logger as it will double up messages when levels match.
     logging.getLogger().removeHandler(logging.getLogger().handlers[0])
 
