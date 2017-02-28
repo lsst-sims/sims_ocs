@@ -3,7 +3,7 @@
 History
 -------
 
-1.0 (in progress)
+1.0 (2017-02-28)
 ~~~~~~~~~~~~~~~~~
 
 This release of SOCS is designed to replace version 3 of the Operations Simulator.
@@ -14,6 +14,7 @@ This release of SOCS is designed to replace version 3 of the Operations Simulato
   * North Ecliptic Spur
   * Galactic Plane
   * South Celestial Pole
+  * Deep Drilling Cosmology 1
 
 * Science proposals can be configured to have time dependent sky region selections
 
