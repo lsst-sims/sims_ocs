@@ -8,7 +8,7 @@ class SurveyTest(unittest.TestCase):
 
     def setUp(self):
         self.survey = Survey()
-        self.truth_start_date = "2022-01-01"
+        self.truth_start_date = "2022-10-01"
 
     def test_basic_information_from_creation(self):
         self.assertEqual(self.survey.start_date, self.truth_start_date)

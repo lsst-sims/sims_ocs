@@ -19,7 +19,7 @@ class Survey(pexConfig.Config):
     def setDefaults(self):
         """Set defaults for the survey.
         """
-        self.start_date = "2022-01-01"
+        self.start_date = "2022-10-01"
         self.duration = 10.0
         self.idle_delay = 60.0
         sci_prop = ScienceProposals()
