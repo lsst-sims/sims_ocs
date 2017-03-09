@@ -20,7 +20,7 @@ class SimulatorTest(unittest.TestCase):
 
     def setUp(self):
         self.time_tolerance = 1e-6
-        self.starting_timestamp = 1640995200.0
+        self.starting_timestamp = 1664582400.0
 
         patcher1 = mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.set_publish_topic")
         self.addCleanup(patcher1.stop)
