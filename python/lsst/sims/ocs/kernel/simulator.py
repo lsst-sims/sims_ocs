@@ -151,7 +151,7 @@ class Simulator(object):
                 break
             else:
                 tf = time.time()
-                if (tf - lasttime) > 60.0:
+                if (tf - lasttime) > 180.0:
                     raise SchedulerTimeoutError("The Scheduler is not serving targets!")
 
     def initialize(self):
@@ -260,6 +260,7 @@ class Simulator(object):
                                                            observation.airmass)
 
                 # Pass observation back to scheduler
+                self.log.log(LoggingLevel.EXTENSIVE.value, "tx: observation")
                 self.sal.put(observation)
 
                 # Wait for interested proposal information
