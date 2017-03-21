@@ -98,7 +98,8 @@ save_directory = /home/demouser/storage
 session_save_directory = /home/demouser/output
 session_id_start = 2345
 
-[tracking]
+[track_session]
+track = True
 tracking_db = http://fun.new.machine.edu/tracking
         """
         config_file = "opsim4_options_with_sqlite_testing"
