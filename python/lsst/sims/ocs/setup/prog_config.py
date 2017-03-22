@@ -35,11 +35,11 @@ def apply_file_config(config, options):
     except configparser.NoOptionError:
         pass
     try:
-        options.track_session = config.has_section("tracking")
-    except configparser.NoSectionError:
+        options.track_session = config.get("track_session", "track")
+    except (configparser.NoSectionError, configparser.NoOptionError):
         pass
     try:
-        options.tracking_db = config.get("tracking", "tracking_db")
+        options.tracking_db = config.get("track_session", "tracking_db")
     except (configparser.NoOptionError, configparser.NoSectionError):
         pass
 
