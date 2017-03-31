@@ -3,6 +3,13 @@
 History
 -------
 
+1.0.1 (2017-03-31)
+~~~~~~~~~~~~~~~~~~
+
+* Fixed Deep Drilling Cosmology 1 time window parameters
+* Changed survey start date to 2022-10-01
+* Fixed session tracking issue
+
 1.0 (2017-02-28)
 ~~~~~~~~~~~~~~~~~
 
