@@ -29,6 +29,8 @@ class DeepDrillingCosmology1Test(unittest.TestCase):
         self.assertEqual(self.prop.sub_sequences[0].time_weight, 1.0)
         self.assertEqual(len(self.prop.master_sub_sequences), 0)
         self.assertTrue(self.prop.scheduling.accept_consecutive_visits)
+        self.assertTrue(self.prop.scheduling.restart_lost_sequences)
+        self.assertTrue(self.prop.scheduling.restart_complete_sequences)
         self.assertEqual(self.prop.filters['u'].max_seeing, 1.5)
         self.assertEqual(self.prop.filters['g'].bright_limit, 19.5)
         self.assertEqual(self.prop.filters['r'].bright_limit, 19.5)
@@ -58,7 +60,8 @@ class DeepDrillingCosmology1Test(unittest.TestCase):
         self.assertListEqual(list(out_topic.sub_sequence_time_window_ends)[:nss], [1.4, 1.4])
         self.assertListEqual(list(out_topic.sub_sequence_time_weights)[:nss], [1.0, 1.0])
         self.assertEqual(out_topic.num_master_sub_sequences, 0)
-
+        self.assertTrue(out_topic.restart_lost_sequences)
+        self.assertTrue(out_topic.restart_complete_sequences)
         self.assertEqual(out_topic.num_filters, 6)
         filter_names = out_topic.filter_names.split(',')
         idx1 = filter_names.index('g')

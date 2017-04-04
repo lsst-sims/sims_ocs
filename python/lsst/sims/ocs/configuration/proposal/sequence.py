@@ -1,7 +1,7 @@
 import lsst.pex.config as pexConfig
 
-from lsst.sims.ocs.configuration.proposal import BandFilter, MasterSubSequence, Scheduling, SkyConstraints
-from lsst.sims.ocs.configuration.proposal import SkyExclusion, SkyNightlyBounds, SubSequence
+from lsst.sims.ocs.configuration.proposal import BandFilter, MasterSubSequence, SequenceScheduling
+from lsst.sims.ocs.configuration.proposal import SkyConstraints, SkyExclusion, SkyNightlyBounds, SubSequence
 
 __all__ = ["Sequence"]
 
@@ -18,7 +18,7 @@ class Sequence(pexConfig.Config):
     sub_sequences = pexConfig.ConfigDictField('Set of sub-sequences.', int, SubSequence)
     master_sub_sequences = pexConfig.ConfigDictField('Set of master sub-sequences.', int, MasterSubSequence)
     filters = pexConfig.ConfigDictField('Filter configuration for the proposal.', str, BandFilter)
-    scheduling = pexConfig.ConfigField('Scheduling configuration for the proposal.', Scheduling)
+    scheduling = pexConfig.ConfigField('Scheduling configuration for the proposal.', SequenceScheduling)
 
     def setDefaults(self):
         """Default specification for a sequence proposal.
@@ -139,5 +139,7 @@ class Sequence(pexConfig.Config):
         topic.airmass_bonus = self.scheduling.airmass_bonus
         topic.hour_angle_bonus = self.scheduling.hour_angle_bonus
         topic.hour_angle_max = self.scheduling.hour_angle_max
+        topic.restart_lost_sequences = self.scheduling.restart_lost_sequences
+        topic.restart_complete_sequences = self.scheduling.restart_complete_sequences
 
         return topic

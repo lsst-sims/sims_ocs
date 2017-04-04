@@ -94,3 +94,4 @@ class SequenceTest(unittest.TestCase):
         self.assertListEqual(list(out_topic.nested_sub_sequence_time_window_maximums)[:nss], [1.0, 1.0])
         self.assertListEqual(list(out_topic.nested_sub_sequence_time_window_ends)[:nss], [2.0, 2.0])
         self.assertListEqual(list(out_topic.nested_sub_sequence_time_weights)[:nss], [1.0, 1.0])
+        self.assertFalse(out_topic.restart_complete_sequences)
