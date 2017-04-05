@@ -101,6 +101,7 @@ class BasicProposal6(Sequence):
         self.scheduling.max_num_targets = 100
         self.scheduling.accept_serendipity = False
         self.scheduling.accept_consecutive_visits = True
+        self.scheduling.restart_complete_sequences = False
 
         # --------------------------
         # Band Filter specifications
