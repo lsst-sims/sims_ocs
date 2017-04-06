@@ -17,6 +17,7 @@ from lsst.sims.ocs.setup import apply_file_config, read_file_config, set_log_lev
 from lsst.sims.ocs.utilities import expand_path
 
 DDS_DOMAIN_ENV = "LSST_DDS_DOMAIN"
+OSPL_URI_ENV = "OSPL_URI"
 
 def get_port_address():
     """Check available ports for the central logger.
@@ -78,6 +79,9 @@ def main(args):
         if DDS_DOMAIN_ENV in os.environ:
             logger.info("{} = {}".format(DDS_DOMAIN_ENV,
                                          os.environ[DDS_DOMAIN_ENV]))
+        if OSPL_URI_ENV in os.environ:
+            logger.info("{} = {}".format(OSPL_URI_ENV,
+                                         os.environ[OSPL_URI_ENV]))
 
         start_time = datetime.now()
 
