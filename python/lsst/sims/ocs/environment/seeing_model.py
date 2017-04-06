@@ -1,4 +1,5 @@
 from __future__ import division
+from datetime import datetime
 import numpy
 import os
 import sqlite3
@@ -18,8 +19,13 @@ class SeeingModel(object):
     FILTER_WAVELENGTH_CORRECTION_POWER = 0.3
     RAW_SEEING_WAVELENGTH = 500  # nm
 
-    def __init__(self):
+    def __init__(self, time_handler):
         """Initialize the class.
+
+        Parameters
+        ----------
+        time_handler : :class:`.TimeHandler`
+            The instance of the simulation time handler.
         """
         self.seeing_db = None
         self.seeing_dates = None
@@ -27,6 +33,9 @@ class SeeingModel(object):
         self.environment_config = None
         self.filters_config = None
         self.seeing_fwhm_system_zenith = None
+        model_time_start = datetime(time_handler.initial_dt.year, 1, 1)
+        self.offset = time_handler.time_since_given_datetime(model_time_start,
+                                                             reverse=True)
 
     def calculate_seeing(self, delta_time, filter_name, airmass):
         """Calculate the geometric and effective seeing values.
@@ -72,6 +81,7 @@ class SeeingModel(object):
         float
             The seeing (arcseconds) closest to the specified time.
         """
+        delta_time += self.offset
         date = delta_time % self.seeing_dates[-1]
         date_delta = numpy.abs(self.seeing_dates - date)
         idx = numpy.where(date_delta == numpy.min(date_delta))

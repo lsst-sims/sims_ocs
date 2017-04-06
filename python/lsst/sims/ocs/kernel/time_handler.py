@@ -215,3 +215,27 @@ class TimeHandler(object):
         """
         dt = datetime.utcfromtimestamp(timestamp)
         return self._time_difference(dt, self.initial_dt)
+
+    def time_since_given_datetime(self, given_datetime, reverse=False):
+        """Return the elapsed time (seconds).
+
+        This function takes a given datetime object and calculates the elapsed time in seconds
+        between it and the initial timestamp in the handler. If the given datetime is prior to
+        the initial timestamp in the handler, use the reverse flag.
+
+        Parameters
+        ----------
+        given_datetime : datetime
+            The given timestamp.
+        reverse : bool, optional
+            Flag to make the difference in reverse. Default is False.
+
+        Returns
+        -------
+        float
+            The elapsed time (seconds) between the given timestamp and the initial timestamp
+        """
+        if reverse:
+            return self._time_difference(self.initial_dt, given_datetime)
+        else:
+            return self._time_difference(given_datetime, self.initial_dt)

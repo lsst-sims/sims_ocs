@@ -16,7 +16,8 @@ from lsst.sims.ocs.kernel import TimeHandler
 class TestSeeingModel(unittest.TestCase):
 
     def setUp(self):
-        self.seeing = SeeingModel()
+        self.th = TimeHandler("2020-01-01")
+        self.seeing = SeeingModel(self.th)
         self.environment_config = Environment()
         self.num_original_values = 210384
         self.elapsed_time = 8 * 24 * 3600
@@ -37,6 +38,7 @@ class TestSeeingModel(unittest.TestCase):
         self.assertIsNone(self.seeing.environment_config)
         self.assertIsNone(self.seeing.filters_config)
         self.assertIsNone(self.seeing.seeing_fwhm_system_zenith)
+        self.assertEqual(self.seeing.offset, 0)
 
     def test_information_after_initialization(self):
         self.initialize()
@@ -52,6 +54,15 @@ class TestSeeingModel(unittest.TestCase):
         self.assertEqual(self.seeing.get_seeing(76700), 0.646009027957916)
         self.assertEqual(self.seeing.get_seeing(63190400), 0.64860999584198)
         self.assertEqual(self.seeing.get_seeing(189424900), 0.699440002441406)
+
+    def test_get_seeing_using_different_start_month(self):
+        seeing1 = SeeingModel(TimeHandler("2020-05-24"))
+        self.assertEqual(seeing1.offset, 12441600)
+        seeing1.initialize(self.environment_config, Filters())
+        self.assertEqual(seeing1.get_seeing(75400), 0.437314003705978)
+        self.assertEqual(seeing1.get_seeing(76700), 0.510206997394562)
+        self.assertEqual(seeing1.get_seeing(63190400), 0.453994989395142)
+        self.assertEqual(seeing1.get_seeing(189424900), 0.386815994977951)
 
     def test_alternate_db(self):
         seeing_dbfile = "alternate_seeing.db"
@@ -77,11 +88,10 @@ class TestSeeingModel(unittest.TestCase):
 
     def test_topic_setting(self):
         seeing_topic = SALPY_scheduler.scheduler_seeingC()
-        th = TimeHandler("2020-05-24")
-        th.update_time(8, "days")
+        self.th.update_time(8, "days")
         self.initialize()
-        self.seeing.set_topic(th, seeing_topic)
-        self.assertEqual(seeing_topic.timestamp, 1590969600.0)
+        self.seeing.set_topic(self.th, seeing_topic)
+        self.assertEqual(seeing_topic.timestamp, 1578528000.0)
         self.assertEqual(seeing_topic.seeing, 0.715884983539581)
 
     def test_calculation_perfect_seeing_perfect_airmass_in_g_band(self):

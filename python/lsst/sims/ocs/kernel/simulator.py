@@ -77,8 +77,8 @@ class Simulator(object):
         self.dh = DowntimeHandler()
         self.conf_comm = ConfigurationCommunicator()
         self.sun = Sun()
-        self.cloud_model = CloudModel()
-        self.seeing_model = SeeingModel()
+        self.cloud_model = CloudModel(self.time_handler)
+        self.seeing_model = SeeingModel(self.time_handler)
         self.obs_site_info = (self.conf.observing_site.longitude, self.conf.observing_site.latitude)
         self.wait_for_scheduler = not self.opts.no_scheduler
         self.observation_proposals_counted = 1
