@@ -1,3 +1,4 @@
+from datetime import datetime
 import numpy
 import os
 import sqlite3
@@ -14,12 +15,20 @@ class CloudModel(object):
     CLOUD_DB = "cloud.db"
     """Filename of the internal cloud observation database."""
 
-    def __init__(self):
+    def __init__(self, time_handler):
         """Initialize the class.
+
+        Parameters
+        ----------
+        time_handler : :class:`.TimeHandler`
+            The instance of the simulation time handler.
         """
         self.cloud_db = None
         self.cloud_dates = None
         self.cloud_values = None
+        model_time_start = datetime(time_handler.initial_dt.year, 1, 1)
+        self.offset = time_handler.time_since_given_datetime(model_time_start,
+                                                             reverse=True)
 
     def get_cloud(self, delta_time):
         """Get the cloud for the specified time.
@@ -32,8 +41,9 @@ class CloudModel(object):
         Returns
         -------
         float
-            The cloud (arcseconds) closest to the specified time.
+            The cloud (fraction of sky in 8ths) closest to the specified time.
         """
+        delta_time += self.offset
         date = delta_time % self.cloud_dates[-1]
         date_delta = numpy.abs(self.cloud_dates - date)
         idx = numpy.where(date_delta == numpy.min(date_delta))
@@ -79,7 +89,7 @@ class CloudModel(object):
         Parameters
         ----------
         th : :class:`TimeHandler`
-            A time hadnling instance.
+            A time handling instance.
         topic : SALPY_scheduler.scheduler_cloudC
             An instance of the cloud topic.
         """

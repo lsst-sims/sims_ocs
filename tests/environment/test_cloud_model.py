@@ -10,13 +10,15 @@ from lsst.sims.ocs.kernel import TimeHandler
 class TestCloudModel(unittest.TestCase):
 
     def setUp(self):
-        self.cloud = CloudModel()
+        self.th = TimeHandler("2020-01-01")
+        self.cloud = CloudModel(self.th)
         self.num_original_values = 29200
 
     def test_basic_information_after_creation(self):
         self.assertIsNone(self.cloud.cloud_db)
         self.assertIsNone(self.cloud.cloud_dates)
         self.assertIsNone(self.cloud.cloud_values)
+        self.assertEqual(self.cloud.offset, 0)
 
     def test_information_after_initialization(self):
         self.cloud.initialize()
@@ -29,6 +31,15 @@ class TestCloudModel(unittest.TestCase):
         self.assertEqual(self.cloud.get_cloud(701500), 0.5)
         self.assertEqual(self.cloud.get_cloud(705000), 0.375)
         self.assertEqual(self.cloud.get_cloud(630684000), 0.0)
+
+    def test_get_clouds_using_different_start_month(self):
+        cloud1 = CloudModel(TimeHandler("2020-05-24"))
+        self.assertEqual(cloud1.offset, 12441600)
+        cloud1.initialize()
+        self.assertEqual(cloud1.get_cloud(700000), 0.0)
+        self.assertEqual(cloud1.get_cloud(701500), 0.0)
+        self.assertEqual(cloud1.get_cloud(705000), 0.0)
+        self.assertEqual(cloud1.get_cloud(630684000), 0.25)
 
     def test_alternate_db(self):
         cloud_dbfile = "alternate_cloud.db"
@@ -53,9 +64,8 @@ class TestCloudModel(unittest.TestCase):
 
     def test_topic_setting(self):
         cloud_topic = SALPY_scheduler.scheduler_cloudC()
-        th = TimeHandler("2020-05-24")
-        th.update_time(8, "days")
+        self.th.update_time(8, "days")
         self.cloud.initialize()
-        self.cloud.set_topic(th, cloud_topic)
-        self.assertEqual(cloud_topic.timestamp, 1590969600.0)
+        self.cloud.set_topic(self.th, cloud_topic)
+        self.assertEqual(cloud_topic.timestamp, 1578528000.0)
         self.assertEqual(cloud_topic.cloud, 0.5)

@@ -88,3 +88,11 @@ class TimeHandlerTest(unittest.TestCase):
 
     def test_time_since_given(self):
         self.assertEqual(self.th.time_since_given(1590364800), 86400)
+
+    def test_time_since_given_datetime(self):
+        future_given_date = datetime(self.th.initial_dt.year, 6, 10)
+        self.assertEqual(self.th.time_since_given_datetime(future_given_date), 1468800)
+        past_given_date = datetime(self.th.initial_dt.year, 4, 20)
+        self.assertEqual(self.th.time_since_given_datetime(past_given_date, reverse=True), 2937600)
+        same_given_date = datetime(self.th.initial_dt.year, 5, 24)
+        self.assertEqual(self.th.time_since_given_datetime(same_given_date, reverse=True), 0)
