@@ -3,6 +3,13 @@
 History
 -------
 
+1.0.2 (2017-04-20)
+~~~~~~~~~~~~~~~~~~
+
+* Handling restart lost and complete sequences parameters for Sequence proposals
+* Ensuring cloud and seeing models have concept of year
+* Log OSPL_URI to file
+
 1.0.1 (2017-03-31)
 ~~~~~~~~~~~~~~~~~~
 
