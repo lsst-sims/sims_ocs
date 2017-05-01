@@ -28,6 +28,7 @@ class ArgParserTest(unittest.TestCase):
         self.assertIsNone(args.sqlite_session_save_dir)
         self.assertIsNone(args.session_id_start)
         self.assertFalse(args.profile)
+        self.assertIsNone(args.scheduler_timeout)
 
     def test_fractional_duration_flag(self):
         args = self.parser.parse_args(["--frac-duration", "0.0027397260273972603"])
@@ -94,3 +95,9 @@ class ArgParserTest(unittest.TestCase):
         save_dir = "/path/to/save"
         args = self.parser.parse_args(["--session-save-dir", save_dir])
         self.assertEqual(args.sqlite_session_save_dir, save_dir)
+
+    def test_scheduler_timeout(self):
+        timeout = "180.0"
+        args = self.parser.parse_args(["--scheduler-timeout", timeout])
+        self.assertEqual(args.scheduler_timeout, timeout)
+
