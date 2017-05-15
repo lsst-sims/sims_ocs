@@ -4,6 +4,10 @@ import time
 
 from lsst.ts.astrosky.model import Sun
 
+from lsst.ts.astrosky.model import version as astrosky_version
+from lsst.ts.dateloc import version as dateloc_version
+from lsst.ts.observatory.model import version as obs_mod_version
+
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
 from lsst.sims.ocs.database.tables import write_config, write_field, write_proposal
 from lsst.sims.ocs.environment import CloudModel, SeeingModel
@@ -306,6 +310,9 @@ class Simulator(object):
         c = self.conf.config_list()
         c.extend(self.seq.sky_brightness_config())
         c.append(("scheduler/version", self.opts.scheduler_version))
+        c.append(("dateloc/version", dateloc_version.__version__))
+        c.append(("astrosky_model/version", astrosky_version.__version__))
+        c.append(("observatory_model/version", obs_mod_version.__version__))
         config_list = [write_config((i + 1, x[0], x[1]), self.db.session_id) for i, x in enumerate(c)]
         self.db.write_table("config", config_list)
 
