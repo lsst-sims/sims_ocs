@@ -107,7 +107,7 @@ class SequencerTest(unittest.TestCase):
         self.seq.observe_target(target, time_handler)
         self.seq.end_night()
 
-        obs_current_state = self.seq.observatory_model.currentState
+        obs_current_state = self.seq.observatory_model.current_state
 
         self.assertEqual(obs_current_state.telalt, 86.5)
         self.assertEqual(obs_current_state.telaz, 0.0)
