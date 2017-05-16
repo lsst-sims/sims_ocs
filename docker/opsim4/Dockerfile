@@ -44,37 +44,43 @@ RUN mkdir dds repos && \
     eups declare ts_scheduler git -r ./repos/ts_scheduler -c && \
     eups declare sims_ocs git -r ./repos/sims_ocs -c && \
     eups declare opsim4_config_ui git -r ./repos/opsim4_config_ui -c && \
-    setup sims_ocs git && \
     cd repos && \
     cd sims_utils && \
+    setup sims_utils git && \
     scons && \
     cd ../ && \
     cd sims_skybrightness_pre && \
+    setup sims_skybrightness_pre git && \
     scons && \
     cd ../ && \
     cd ts_dateloc && \
     git checkout $DATELOC_VERSION && \
+    setup ts_dateloc git && \
     scons && \
     cd ../ && \
     cd ts_astrosky_model && \
     git checkout $ASTROSKY_VERSION && \
+    setup ts_astrosky_model git && \
     scons && \
     cd ../ && \
     cd ts_observatory_model && \
     git checkout $OBSMOD_VERSION && \
+    setup ts_observatory_model git && \
     scons && \
     cd ../ && \
     cd sims_ocs && \
     git checkout $SOCS_VERSION && \
+    setup sims_ocs git && \
     scons && \
     cd ../ && \
     cd ts_scheduler && \
     git checkout $SCHED_VERSION && \
+    setup ts_scheduler git && \
     scons && \
     cd .. && \
-    setup opsim4_config_ui git && \
     cd opsim4_config_ui && \
     git checkout $CONFUI_VERSION && \
+    setup opsim4_config_ui git && \
     scons && \
     cd .."
 
