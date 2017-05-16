@@ -65,10 +65,10 @@ while getopts hpo:s:u:d:a:m:n c; do
             o) SOCS_VERSION="$OPTARG" ;;
             s) SCHED_VERSION="$OPTARG" ;;
             u) CONFUI_VERSION="$OPTARG" ;;
-			d) DATELOC_VERSION="$OPTARG" ;;
-			a) ASTROSKY_VERSION="$OPTARG" ;;
-			m) OBSMODEL_VERSION="$OPTARG" ;;
-			n) NOCACHE=false ;;
+            d) DATELOC_VERSION="$OPTARG" ;;
+            a) ASTROSKY_VERSION="$OPTARG" ;;
+            m) OBSMODEL_VERSION="$OPTARG" ;;
+            n) NOCACHE=false ;;
             \?) usage ; exit 2 ;;
     esac
 done
