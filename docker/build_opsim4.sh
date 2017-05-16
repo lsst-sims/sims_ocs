@@ -83,13 +83,19 @@ if [ -z $SOCS_VERSION ] ; then
     SOCS_VERSION=$DEFAULT_SOCS_VERSION
     TAG="${PACKAGE_NAME}:latest"
 else
-    TAG="${PACKAGE_NAME}:${SOCS_VERSION}"
+    if [[ $SOCS_VERSION =~ ^[[:digit:]] ]] ; then
+        TAG="${PACKAGE_NAME}:${SOCS_VERSION}"
+    else
+        TAG="${PACKAGE_NAME}:branch"
+    fi
 fi 
 
 if [ -z $SCHED_VERSION ] ; then
     SCHED_VERSION=$DEFAULT_SCHED_VERSION
 else
-    SCHED_VERSION="v$SCHED_VERSION"
+    if [[ $SCHED_VERSION =~ ^[[:digit:]] ]] ; then
+        SCHED_VERSION="v$SCHED_VERSION"
+    fi
 fi 
 
 if [ -z $CONFUI_VERSION ] ; then
