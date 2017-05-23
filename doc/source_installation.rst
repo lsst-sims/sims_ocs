@@ -110,18 +110,21 @@ Declare the pre-calculated sky brightness model::
 	scons
 
 Declare the date and location package::
+
 	cd gitdir/ts_dateloc
 	eups declare ts_dateloc git -r . -c
 	setup ts_dateloc git
 	scons
 
 Declare the astronomical sky model::
+
 	cd gitdir/ts_astrosky_model
 	eups declare ts_astrosky_model git -r . -c
 	setup ts_astrosky_model git
 	scons
 
 Declare the observatory model::
+
 	cd gitdir/ts_observatory_model
 	eups declare ts_observatory_model git -r . -c
 	setup ts_observatory_model git
@@ -134,7 +137,7 @@ Declare the Scheduler::
 	setup ts_scheduler
 	scons
 
-To declare and setup SOCS, do::
+Declare SOCS::
 
 	cd gitdir/sims_ocs
 	eups declare sims_ocs git -r . -c
