@@ -3,8 +3,8 @@ import numpy
 
 from lsst.sims.ocs.observatory import MainObservatory
 from lsst.sims.ocs.setup import LoggingLevel
-from lsst.ts.scheduler.observatory_model import ObservatoryLocation
-from lsst.ts.scheduler.sky_model import AstronomicalSkyModel
+from lsst.ts.astrosky.model import AstronomicalSkyModel
+from lsst.ts.dateloc import ObservatoryLocation
 
 __all__ = ["Sequencer"]
 
@@ -85,7 +85,7 @@ class Sequencer(object):
         SALPY_scheduler.observatoryStateC
         """
         self.observatory_model.update_state(timestamp)
-        obs_current_state = self.observatory_model.currentState
+        obs_current_state = self.observatory_model.current_state
 
         self.observatory_state.timestamp = timestamp
         self.observatory_state.pointing_ra = obs_current_state.ra

@@ -19,7 +19,6 @@ RUN mkdir stack && \
   	eups distrib install pex_config -t sims && \
   	conda update -y conda && \
   	conda update -y pyqt fontconfig sqlalchemy && \
-  	conda install -y mysql-python pandas && \
     cd ../ && \
     python -c 'import matplotlib.pyplot' && \
     conda clean -ay && \

@@ -28,6 +28,9 @@
 set -e
 
 PACKAGE_NAME="lsst/opsim4"
+DEFAULT_DATELOC_VERSION="master"
+DEFAULT_ASTROSKY_VERSION="master"
+DEFAULT_OBSMOD_VERSION="master"
 DEFAULT_SOCS_VERSION="master"
 DEFAULT_SCHED_VERSION="master"
 DEFAULT_CONFUI_VERSION="master"
@@ -41,25 +44,31 @@ usage() {
   This command builds an OpSim4 image.
 
   Available options:
-    -h          this message
-    -p          Push to dockerhub after build
+    -a          Version for the Astronomical Sky Model package. Defaults to $DEFAULT_ASTROSKY_VERSION
+    -d          Version for the Date/Location package. Defaults to $DEFAULT_DATELOC_VERSION
+    -h          This message
+    -m          Version for the Observatory Model package. Defaults to $DEFAULT_OBSMOD_VERSION
+    -n          Turn off no-cache option
     -o          Version for the SOCS code. Defaults to $DEFAULT_SOCS_VERSION
-    -d          Version for the Scheduler code. Defaults to $DEFAULT_SCHED_VERSION
+    -p          Push to dockerhub after build
+    -s          Version for the Scheduler code. Defaults to $DEFAULT_SCHED_VERSION
     -u          Version for the Configuration UI code. Defaults to $DEFAULT_CONFUI_VERSION
-    -n          Turn off no-cache option.
 
 EOD
 }
 
 # get the options
-while getopts hpo:d:u:n c; do
+while getopts hpo:s:u:d:a:m:n c; do
     case $c in
             h) usage ; exit 0 ;;
             p) PUSH=1 ;;
             o) SOCS_VERSION="$OPTARG" ;;
-            d) SCHED_VERSION="$OPTARG" ;;
+            s) SCHED_VERSION="$OPTARG" ;;
             u) CONFUI_VERSION="$OPTARG" ;;
-			n) NOCACHE=false ;;
+            d) DATELOC_VERSION="$OPTARG" ;;
+            a) ASTROSKY_VERSION="$OPTARG" ;;
+            m) OBSMODEL_VERSION="$OPTARG" ;;
+            n) NOCACHE=false ;;
             \?) usage ; exit 2 ;;
     esac
 done
@@ -74,17 +83,41 @@ if [ -z $SOCS_VERSION ] ; then
     SOCS_VERSION=$DEFAULT_SOCS_VERSION
     TAG="${PACKAGE_NAME}:latest"
 else
-    TAG="${PACKAGE_NAME}:${SOCS_VERSION}"
+    if [[ $SOCS_VERSION =~ ^[[:digit:]] ]] ; then
+        TAG="${PACKAGE_NAME}:${SOCS_VERSION}"
+    else
+        TAG="${PACKAGE_NAME}:branch"
+    fi
 fi 
 
 if [ -z $SCHED_VERSION ] ; then
     SCHED_VERSION=$DEFAULT_SCHED_VERSION
 else
-    SCHED_VERSION="v$SCHED_VERSION"
+    if [[ $SCHED_VERSION =~ ^[[:digit:]] ]] ; then
+        SCHED_VERSION="v$SCHED_VERSION"
+    fi
 fi 
 
 if [ -z $CONFUI_VERSION ] ; then
     CONFUI_VERSION=$DEFAULT_CONFUI_VERSION
+fi 
+
+if [ -z $DATELOC_VERSION ] ; then
+    DATELOC_VERSION=$DEFAULT_DATELOC_VERSION
+else
+    DATELOC_VERSION="v$DATELOC_VERSION"
+fi 
+
+if [ -z $ASTROSKY_VERSION ] ; then
+    ASTROSKY_VERSION=$DEFAULT_ASTROSKY_VERSION
+else
+    ASTROSKY_VERSION="v$ASTROSKY_VERSION"
+fi 
+
+if [ -z $OBSMOD_VERSION ] ; then
+    OBSMOD_VERSION=$DEFAULT_OBSMOD_VERSION
+else
+    OBSMOD_VERSION="v$OBSMOD_VERSION"
 fi 
 
 # Build the release image
@@ -94,6 +127,9 @@ docker build --no-cache=${NOCACHE} \
              --build-arg SOCS_VERSION="$SOCS_VERSION" \
              --build-arg SCHED_VERSION="$SCHED_VERSION" \
              --build-arg CONFUI_VERSION="$CONFUI_VERSION" \
+             --build-arg DATELOC_VERSION="$DATELOC_VERSION" \
+             --build-arg ASTROSKY_VERSION="$ASTROSKY_VERSION" \
+             --build-arg OBSMOD_VERSION="$OBSMOD_VERSION" \
              --tag="$TAG" opsim4
 
 if [ $PUSH ] ; then

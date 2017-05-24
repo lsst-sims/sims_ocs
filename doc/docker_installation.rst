@@ -23,6 +23,7 @@ where ``container name`` is any name you want to give to the container. The scri
 
 The container is designed to start with the LSST stack environment, so to setup OpSim4 do::
 
+	setup ts_scheduler
 	setup sims_ocs
 
 The simulator will not run just yet, however. The sky brightness model data needs to be downloaded. Follow the instructions :ref:`here<skymodel-data>` to get things going. While the data is downloading, you can reenter the container to continue the setup process. This action is completed by doing the following::

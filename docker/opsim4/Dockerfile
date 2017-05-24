@@ -4,6 +4,9 @@ MAINTAINER Michael Reuter <mareuter@lsst.org>
 ARG SOCS_VERSION
 ARG	SCHED_VERSION 
 ARG	CONFUI_VERSION
+ARG	DATELOC_VERSION
+ARG	ASTROSKY_VERSION
+ARG	OBSMOD_VERSION
 #ARG	USER
 #ENV USER ${USER:-opsim}
 #ENV HOME /home/opsim
@@ -22,6 +25,9 @@ RUN mkdir dds repos && \
     cd ../ && \
     cd repos && \
     git clone https://github.com/lsst-ts/ts_opensplice.git && \
+    git clone https://github.com/lsst-ts/ts_dateloc.git && \
+    git clone https://github.com/lsst-ts/ts_astrosky_model.git && \
+    git clone https://github.com/lsst-ts/ts_observatory_model.git && \
     git clone https://github.com/lsst-ts/ts_scheduler.git && \
     git clone https://github.com/lsst/sims_utils.git && \
     git clone https://github.com/lsst/sims_skybrightness_pre.git && \
@@ -32,28 +38,49 @@ RUN mkdir dds repos && \
     bash -c "source stack/loadLSST.bash && \
     eups declare sims_utils git -r ./repos/sims_utils -c && \
     eups declare sims_skybrightness_pre git -r ./repos/sims_skybrightness_pre -c && \
+    eups declare ts_dateloc git -r ./repos/ts_dateloc -c && \
+    eups declare ts_astrosky_model git -r ./repos/ts_astrosky_model -c && \
+	eups declare ts_observatory_model git -r ./repos/ts_observatory_model -c && \
     eups declare ts_scheduler git -r ./repos/ts_scheduler -c && \
     eups declare sims_ocs git -r ./repos/sims_ocs -c && \
     eups declare opsim4_config_ui git -r ./repos/opsim4_config_ui -c && \
-    setup sims_ocs git && \
     cd repos && \
     cd sims_utils && \
+    setup sims_utils git && \
     scons && \
     cd ../ && \
     cd sims_skybrightness_pre && \
+    setup sims_skybrightness_pre git && \
+    scons && \
+    cd ../ && \
+    cd ts_dateloc && \
+    git checkout $DATELOC_VERSION && \
+    setup ts_dateloc git && \
+    scons && \
+    cd ../ && \
+    cd ts_astrosky_model && \
+    git checkout $ASTROSKY_VERSION && \
+    setup ts_astrosky_model git && \
+    scons && \
+    cd ../ && \
+    cd ts_observatory_model && \
+    git checkout $OBSMOD_VERSION && \
+    setup ts_observatory_model git && \
     scons && \
     cd ../ && \
     cd sims_ocs && \
     git checkout $SOCS_VERSION && \
+    setup sims_ocs git && \
     scons && \
     cd ../ && \
     cd ts_scheduler && \
     git checkout $SCHED_VERSION && \
+    setup ts_scheduler git && \
     scons && \
     cd .. && \
-    setup opsim4_config_ui git && \
     cd opsim4_config_ui && \
     git checkout $CONFUI_VERSION && \
+    setup opsim4_config_ui git && \
     scons && \
     cd .."
 

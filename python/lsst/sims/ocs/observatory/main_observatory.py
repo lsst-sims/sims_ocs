@@ -4,9 +4,8 @@ import math
 
 import palpy
 
-from lsst.ts.scheduler.observatory_model import ObservatoryLocation, ObservatoryModel
-from lsst.ts.scheduler.kernel import Target
-from lsst.ts.scheduler.sky_model import DateProfile
+from lsst.ts.dateloc import DateProfile, ObservatoryLocation
+from lsst.ts.observatory.model import ObservatoryModel, Target
 
 from lsst.sims.ocs.setup import LoggingLevel
 from lsst.sims.ocs.observatory import ObsExposure, TargetExposure
@@ -45,7 +44,7 @@ class MainObservatory(object):
         observatory_location = ObservatoryLocation()
         observatory_location.configure({"obs_site": obs_site_config.toDict()})
         self.config = None
-        self.model = ObservatoryModel(observatory_location)
+        self.model = ObservatoryModel(observatory_location, LoggingLevel.WORDY.value)
         self.date_profile = DateProfile(0, observatory_location)
         self.param_dict = {}
         self.slew_count = 0
@@ -257,14 +256,14 @@ class MainObservatory(object):
         """
         self.slew_count += 1
         self.log.log(LoggingLevel.TRACE.value, "Slew count: {}".format(self.slew_count))
-        initial_slew_state = copy.deepcopy(self.model.currentState)
+        initial_slew_state = copy.deepcopy(self.model.current_state)
         self.log.log(LoggingLevel.TRACE.value, "Initial slew state: {}".format(initial_slew_state))
         self.slew_initial_state = self.get_slew_state(initial_slew_state)
 
         sched_target = Target.from_topic(target)
         self.model.slew(sched_target)
 
-        final_slew_state = copy.deepcopy(self.model.currentState)
+        final_slew_state = copy.deepcopy(self.model.current_state)
         self.log.log(LoggingLevel.TRACE.value, "Final slew state: {}".format(final_slew_state))
         self.slew_final_state = self.get_slew_state(final_slew_state)
 

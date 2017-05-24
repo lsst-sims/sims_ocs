@@ -35,8 +35,8 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertIsNone(self.observatory.config)
         self.assertEqual(len(self.observatory.param_dict), 0)
         self.assertEqual(self.observatory.model.location.latitude_rad, math.radians(-30.2444))
-        self.assertFalse(self.observatory.model.parkState.tracking)
-        self.assertEqual(len(self.observatory.model.currentState.mountedfilters), 5)
+        self.assertFalse(self.observatory.model.park_state.tracking)
+        self.assertEqual(len(self.observatory.model.current_state.mountedfilters), 5)
         self.assertEqual(self.observatory.exposures_made, 0)
         self.assertIsNone(self.observatory.target_exposure_list)
         self.assertIsNone(self.observatory.observation_exposure_list)
@@ -51,9 +51,9 @@ class MainObservatoryTest(unittest.TestCase):
     def test_information_after_configuration(self):
         self.observatory_configure()
         self.assertEqual(len(self.observatory.param_dict), 9)
-        self.assertEqual(self.observatory.model.params.TelAz_MaxSpeed_rad, math.radians(7.0))
-        self.assertEqual(self.observatory.model.parkState.alt_rad, math.radians(86.5))
-        self.assertFalse(self.observatory.model.params.Rotator_FollowSky)
+        self.assertEqual(self.observatory.model.params.telaz_maxspeed_rad, math.radians(7.0))
+        self.assertEqual(self.observatory.model.park_state.alt_rad, math.radians(86.5))
+        self.assertFalse(self.observatory.model.params.rotator_followsky)
         self.assertEqual(len(self.observatory.model.params.prerequisites["telsettle"]), 2)
         self.assertIsNotNone(self.observatory.variational_model)
 
@@ -104,7 +104,7 @@ class MainObservatoryTest(unittest.TestCase):
 
     def test_get_slew_state(self):
         self.observatory_configure()
-        current_state = self.observatory.model.currentState
+        current_state = self.observatory.model.current_state
         ss = self.observatory.get_slew_state(current_state)
         self.assertEqual(ss.slewStateId, 0)
         self.assertEqual(ss.telAlt, 86.5)
@@ -120,7 +120,7 @@ class MainObservatoryTest(unittest.TestCase):
     def test_start_night(self):
         self.observatory_configure()
         self.observatory_variational_model_configure()
-        self.assertAlmostEqual(math.degrees(self.observatory.model.params.TelAz_MaxSpeed_rad), 3.5,
+        self.assertAlmostEqual(math.degrees(self.observatory.model.params.telaz_maxspeed_rad), 3.5,
                                delta=1.0e-3)
 
     def test_slew_with_variational_model(self):
@@ -134,10 +134,10 @@ class MainObservatoryTest(unittest.TestCase):
         self.observatory_configure()
         current_mounted_filters = ['g', 'r', 'i', 'z', 'y']
         current_unmounted_filters = ['u']
-        self.assertListEqual(self.observatory.currentState.mountedfilters, current_mounted_filters)
-        self.assertListEqual(self.observatory.currentState.unmountedfilters, current_unmounted_filters)
+        self.assertListEqual(self.observatory.current_state.mountedfilters, current_mounted_filters)
+        self.assertListEqual(self.observatory.current_state.unmountedfilters, current_unmounted_filters)
         swapped_mounted_filters = ['g', 'r', 'i', 'z', 'u']
         swapped_unmounted_filters = ['y']
         self.observatory.swap_filter('y')
-        self.assertListEqual(self.observatory.currentState.mountedfilters, swapped_mounted_filters)
-        self.assertListEqual(self.observatory.currentState.unmountedfilters, swapped_unmounted_filters)
+        self.assertListEqual(self.observatory.current_state.mountedfilters, swapped_mounted_filters)
+        self.assertListEqual(self.observatory.current_state.unmountedfilters, swapped_unmounted_filters)
