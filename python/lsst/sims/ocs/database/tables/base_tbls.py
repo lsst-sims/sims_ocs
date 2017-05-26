@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Float, Index, Integer, String, Table
 from sqlalchemy.types import DATETIME
-from sqlalchemy import DDL, event, ForeignKeyConstraint
+from sqlalchemy import DDL, event
 
 __all__ = ["create_config", "create_field", "create_observation_exposures",
            "create_observation_history", "create_observation_proposal_history", "create_proposal",
@@ -348,12 +348,10 @@ def create_proposal_history(name, metadata):
     """
     if "Obs" in name:
         fkc_name = "ObsHistory_observationId"
-        fkc_column = "ObsHistory.observationId"
         index_key_name = "ObsHistory1"
         help_tag = "observation"
     if "Target" in name:
         fkc_name = "TargetHistory_targetId"
-        fkc_column = "TargetHistory.targetId"
         index_key_name = "TargetHistory1"
         help_tag = "target"
 

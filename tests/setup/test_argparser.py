@@ -100,4 +100,3 @@ class ArgParserTest(unittest.TestCase):
         timeout = "180.0"
         args = self.parser.parse_args(["--scheduler-timeout", timeout])
         self.assertEqual(args.scheduler_timeout, timeout)
-
