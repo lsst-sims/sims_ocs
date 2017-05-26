@@ -1,4 +1,5 @@
 import os
+import sys
 
 import lsst.pex.config as pexConfig
 
@@ -88,6 +89,9 @@ class SimulationConfig(pexConfig.Config):
                         self.survey.alt_proposal_dir = full_dfile
             else:
                 config_files.append(ifile)
+
+        if self.survey.alt_proposal_dir is not None:
+            sys.path.insert(0, self.survey.alt_proposal_dir)
 
         if len(config_files):
             load_config(self.survey, config_files)
