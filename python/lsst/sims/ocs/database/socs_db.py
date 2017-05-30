@@ -103,6 +103,7 @@ class SocsDatabase(object):
         self.scheduled_downtime = tables.create_scheduled_downtime(metadata)
         self.unscheduled_downtime = tables.create_unscheduled_downtime(metadata)
         self.proposal = tables.create_proposal(metadata)
+        self.proposal_field = tables.create_proposal_field(metadata)
         self.observation_proposal_history = tables.create_observation_proposal_history(metadata)
         self.target_proposal_history = tables.create_target_proposal_history(metadata)
         self.config = tables.create_config(metadata)

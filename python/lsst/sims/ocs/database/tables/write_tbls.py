@@ -1,8 +1,8 @@
 import collections
 
 __all__ = ["write_config", "write_field", "write_observation_exposures",
-           "write_observation_history", "write_observation_proposal_history", "write_proposal",
-           "write_scheduled_downtime",
+           "write_observation_history", "write_observation_proposal_history", "write_proposal_field",
+           "write_proposal", "write_scheduled_downtime",
            "write_slew_activities", "write_slew_history",
            "write_slew_final_state", "write_slew_initial_state", "write_slew_maxspeeds",
            "write_target_exposures", "write_target_history", "write_target_proposal_history",
@@ -159,6 +159,23 @@ def write_observation_proposal_history(data, sid):
     ----------
     data : tuple
         The instance containing the observation proposal history information
+    sid : int
+        The current session ID.
+
+    Returns
+    -------
+    collections.OrderedDict
+        A dictionary of the topic data.
+    """
+    return ordered_dict_from_namedtuple(data, sid=sid)
+
+def write_proposal_field(data, sid):
+    """Create a dictionary of data for the ProposalField table.
+
+    Parameters
+    ----------
+    data : tuple
+        The instance containing the proposal field information
     sid : int
         The current session ID.
 

@@ -41,7 +41,7 @@ class ProposalFieldInformationTest(unittest.TestCase):
 
     def test_proposal_field_info(self):
         pfi = ProposalFieldInfo(1, 4, 1545)
-        self.assertEqual(len(pfi.fields), 3)
+        self.assertEqual(len(pfi._fields), 3)
         self.assertEqual(pfi.propFieldId, 1)
-        self.assertEqual(pfi.propId, 4)
-        self.assertEqual(pfi.fieldId, 1545)
+        self.assertEqual(pfi.Proposal_propId, 4)
+        self.assertEqual(pfi.Field_fieldId, 1545)
