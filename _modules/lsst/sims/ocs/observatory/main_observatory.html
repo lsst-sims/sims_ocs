@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.observatory.main_observatory &mdash; Simulated OCS 1.0.0 documentation</title>
+  <title>lsst.sims.ocs.observatory.main_observatory &mdash; Simulated OCS 1.0.3 documentation</title>
   
 
+  
+  
   
   
 
@@ -33,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.3 documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -43,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -65,7 +68,7 @@
             
             
               <div class="version">
-                1.0.0
+                1.0.3
               </div>
             
           
@@ -86,7 +89,10 @@
           
             
             
-                <ul>
+              
+            
+            
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../database.html">Survey Database</a></li>
@@ -106,8 +112,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../../../index.html">Simulated OCS</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Simulated OCS</a>
+        
       </nav>
 
 
@@ -120,19 +128,36 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../../../index.html">Module code</a> &raquo;</li>
-      
-    <li>lsst.sims.ocs.observatory.main_observatory</li>
+        
+      <li>lsst.sims.ocs.observatory.main_observatory</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -145,9 +170,8 @@
 
 <span class="kn">import</span> <span class="nn">palpy</span>
 
-<span class="kn">from</span> <span class="nn">lsst.ts.scheduler.observatory_model</span> <span class="k">import</span> <span class="n">ObservatoryLocation</span><span class="p">,</span> <span class="n">ObservatoryModel</span>
-<span class="kn">from</span> <span class="nn">lsst.ts.scheduler.kernel</span> <span class="k">import</span> <span class="n">Target</span>
-<span class="kn">from</span> <span class="nn">lsst.ts.scheduler.sky_model</span> <span class="k">import</span> <span class="n">DateProfile</span>
+<span class="kn">from</span> <span class="nn">lsst.ts.dateloc</span> <span class="k">import</span> <span class="n">DateProfile</span><span class="p">,</span> <span class="n">ObservatoryLocation</span>
+<span class="kn">from</span> <span class="nn">lsst.ts.observatory.model</span> <span class="k">import</span> <span class="n">ObservatoryModel</span><span class="p">,</span> <span class="n">Target</span>
 
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.setup</span> <span class="k">import</span> <span class="n">LoggingLevel</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.observatory</span> <span class="k">import</span> <span class="n">ObsExposure</span><span class="p">,</span> <span class="n">TargetExposure</span>
@@ -186,7 +210,7 @@
         <span class="n">observatory_location</span> <span class="o">=</span> <span class="n">ObservatoryLocation</span><span class="p">()</span>
         <span class="n">observatory_location</span><span class="o">.</span><span class="n">configure</span><span class="p">({</span><span class="s2">&quot;obs_site&quot;</span><span class="p">:</span> <span class="n">obs_site_config</span><span class="o">.</span><span class="n">toDict</span><span class="p">()})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ObservatoryModel</span><span class="p">(</span><span class="n">observatory_location</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ObservatoryModel</span><span class="p">(</span><span class="n">observatory_location</span><span class="p">,</span> <span class="n">LoggingLevel</span><span class="o">.</span><span class="n">WORDY</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">date_profile</span> <span class="o">=</span> <span class="n">DateProfile</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">observatory_location</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">param_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span> <span class="o">=</span> <span class="mi">0</span>
@@ -208,8 +232,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="n">cclass_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
-            <span class="n">aclass_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+            <span class="n">cclass_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="n">aclass_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; and &#39;</span><span class="si">{}</span><span class="s2">&#39; objects have no attribute &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cclass_name</span><span class="p">,</span>
                                                                                        <span class="n">aclass_name</span><span class="p">,</span>
                                                                                        <span class="n">name</span><span class="p">))</span></div>
@@ -398,14 +422,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Slew count: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slew_count</span><span class="p">))</span>
-        <span class="n">initial_slew_state</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">currentState</span><span class="p">)</span>
+        <span class="n">initial_slew_state</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">current_state</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Initial slew state: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">initial_slew_state</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slew_initial_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_slew_state</span><span class="p">(</span><span class="n">initial_slew_state</span><span class="p">)</span>
 
         <span class="n">sched_target</span> <span class="o">=</span> <span class="n">Target</span><span class="o">.</span><span class="n">from_topic</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">slew</span><span class="p">(</span><span class="n">sched_target</span><span class="p">)</span>
 
-        <span class="n">final_slew_state</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">currentState</span><span class="p">)</span>
+        <span class="n">final_slew_state</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">current_state</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">TRACE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Final slew state: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">final_slew_state</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slew_final_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_slew_state</span><span class="p">(</span><span class="n">final_slew_state</span><span class="p">)</span>
 
@@ -458,6 +482,9 @@
 </pre></div>
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -488,10 +515,11 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'1.0.0',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../../../_static/jquery.js"></script>

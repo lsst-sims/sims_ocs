@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation &mdash; Simulated OCS 1.0.0 documentation</title>
+  <title>Installation &mdash; Simulated OCS 1.0.3 documentation</title>
   
 
+  
+  
   
   
 
@@ -33,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.0 documentation" href="index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.3 documentation" href="index.html"/>
         <link rel="next" title="Usage" href="usage.html"/>
         <link rel="prev" title="Simulated Observatory Control System" href="index.html"/> 
 
@@ -44,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -66,7 +69,7 @@
             
             
               <div class="version">
-                1.0.0
+                1.0.3
               </div>
             
           
@@ -87,7 +90,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#source-installation">Source Installation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#general-installation-notes">General Installation Notes</a></li>
@@ -124,8 +130,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Simulated OCS</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Simulated OCS</a>
+        
       </nav>
 
 
@@ -134,23 +142,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Installation</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Installation</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -178,28 +203,31 @@
 </div>
 <div class="section" id="general-installation-notes">
 <h3>General Installation Notes<a class="headerlink" href="#general-installation-notes" title="Permalink to this headline">¶</a></h3>
-<p>Due to the heavy use of repositories for this installation, the instructions will assume you have created a <code class="docutils literal"><span class="pre">git</span></code> directory in your <code class="docutils literal"><span class="pre">$HOME</span></code> directory. This will be referenced as <code class="docutils literal"><span class="pre">gitdir</span></code>. The individual repository installation instructions will give further advice on directory names. This is intended to make the usage &#8220;easier&#8221;. Also, all instructions are based around using the code, not developing it.</p>
+<p>Due to the heavy use of repositories for this installation, the instructions will assume you have created a directory in your <code class="docutils literal"><span class="pre">$HOME</span></code> directory to house all the git repositories. This will be referenced as <code class="docutils literal"><span class="pre">gitdir</span></code>. Nearly all instructions are based around using the code, not developing it.</p>
 </div>
 <div class="section" id="sal-installation">
 <h3>SAL Installation<a class="headerlink" href="#sal-installation" title="Permalink to this headline">¶</a></h3>
-<p>The SAL (Software Abstraction Layer) is a wrapper around the DDS (Data Distribution Service) layer and provides binding to Python. This requires the OpenSplice and SAL repositories from Telescope and Site. Inside the <code class="docutils literal"><span class="pre">gitdir</span></code> create a directory called <code class="docutils literal"><span class="pre">ts</span></code>. Go into this directory and run the following:</p>
+<p>The SAL (Software Abstraction Layer) is a wrapper around the DDS (Data Distribution Service) layer and provides binding to Python. This requires the OpenSplice and SAL repositories from Telescope and Site. Inside the <code class="docutils literal"><span class="pre">gitdir</span></code>, run the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_opensplice</span><span class="o">.</span><span class="n">git</span>
 <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_sal</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-<p>In the SAL clone, there is a user guide that documents installation and setup of SAL. Its location is <code class="docutils literal"><span class="pre">gitdir/ts/ts_sal/SAL_User_Guide.pdf</span></code>. Follow section 1 and the main part of section 2. Sub-sections (those colored blue) 2.1 and 2.2 are redundant as we&#8217;ve already installed the SAL. Sub-section 2.3 is replaced by the following documentation that is specific to this SOCS/Scheduler setup.</p>
+<p>In the SAL clone, there is a user guide that documents installation and setup of SAL. Its location is <code class="docutils literal"><span class="pre">gitdir/ts_sal/SAL_User_Guide.pdf</span></code>. Follow section 1 and the main part of section 2. Sub-sections (those colored blue) 2.1 and 2.2 are redundant as we&#8217;ve already installed the SAL. Sub-section 2.3 is replaced by the following documentation that is specific to this SOCS/Scheduler setup. <strong>NOTE</strong>: If you wish to support running more than one simulation at a time, the port range specified in the manual needs to be extended to accommodate this. The lowest port number is always 7400. To figure out the highest port number necessary, use this formula:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">7413</span> <span class="o">+</span> <span class="p">(</span><span class="mi">14</span> <span class="o">*</span> <span class="p">(</span><span class="n">Njobs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
 <div class="section" id="build-scheduler-topic-library">
 <h4>Build Scheduler Topic Library<a class="headerlink" href="#build-scheduler-topic-library" title="Permalink to this headline">¶</a></h4>
-<p>Create a <code class="docutils literal"><span class="pre">$HOME/dds</span></code> directory and copy the <code class="docutils literal"><span class="pre">gitdir/ts/ts_sal/setup.env</span></code> to it. Also, create a <code class="docutils literal"><span class="pre">$HOME/dds/lib</span></code> directory for later. The following variables need to be edited in <code class="docutils literal"><span class="pre">setup.env</span></code> to reflect your setup:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>export LSST_SDK_INSTALL=$HOME/git/ts/ts_sal
-export OSPL_HOME=$HOME/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
+<p>Create a <code class="docutils literal"><span class="pre">$HOME/dds</span></code> directory and copy the <code class="docutils literal"><span class="pre">gitdir/ts_sal/setup.env</span></code> to it. Also, create a <code class="docutils literal"><span class="pre">$HOME/dds/lib</span></code> directory for later. The following variables need to be edited in <code class="docutils literal"><span class="pre">setup.env</span></code> to reflect your setup:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">LSST_SDK_INSTALL</span><span class="o">=</span><span class="n">gitdir</span><span class="o">/</span><span class="n">ts_sal</span>
+<span class="n">export</span> <span class="n">OSPL_HOME</span><span class="o">=</span><span class="n">gitdir</span><span class="o">/</span><span class="n">ts_opensplice</span><span class="o">/</span><span class="n">OpenSpliceDDS</span><span class="o">/</span><span class="n">V6</span><span class="o">.</span><span class="mf">4.1</span><span class="o">/</span><span class="n">HDE</span><span class="o">/</span><span class="n">x86_64</span><span class="o">.</span><span class="n">linux</span>
 </pre></div>
 </div>
 <p>All other variables can remain the same. Once the edits are complete, do:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>source $HOME/dds/setup.env
 </pre></div>
 </div>
-<p>The configuration should complete without errors. Go back to <code class="docutils literal"><span class="pre">gitdir/ts/ts_sal</span></code> and do the following:</p>
+<p>The configuration should complete without errors. Go back to <code class="docutils literal"><span class="pre">gitdir/ts_sal</span></code> and do the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">t</span> <span class="n">origin</span><span class="o">/</span><span class="n">feature</span><span class="o">/</span><span class="n">scheduler_xml_devel</span>
 <span class="n">cd</span> <span class="n">test</span>
 <span class="n">salgenerator</span> <span class="n">scheduler</span> <span class="n">validate</span>
@@ -216,22 +244,25 @@ cp scheduler/cpp/libsacpp_scheduler_types.so $HOME/dds/lib
 </div>
 <div class="section" id="scheduler-and-socs-source-code">
 <h3>Scheduler and SOCS Source Code<a class="headerlink" href="#scheduler-and-socs-source-code" title="Permalink to this headline">¶</a></h3>
-<p>There is a prerequisite repository for the system that needs to be downloaded. Create a <code class="docutils literal"><span class="pre">gitdir/lsst</span></code> directory, go into that and run:</p>
+<p>There are prerequisite repositories for the system that need to be downloaded. Go to <code class="docutils literal"><span class="pre">gitdir</span></code> and run:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">/</span><span class="n">sims_skybrightness_pre</span><span class="o">.</span><span class="n">git</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_dateloc</span><span class="o">.</span><span class="n">git</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_astrosky_model</span><span class="o">.</span><span class="n">git</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_observatory_model</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-<p>The Scheduler repository should also be cloned to <code class="docutils literal"><span class="pre">gitdir/ts</span></code> via the following:</p>
+<p>The Scheduler repository should also be cloned to <code class="docutils literal"><span class="pre">gitdir</span></code> via the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_scheduler</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-<p>The SOCS repository should be cloned into the <code class="docutils literal"><span class="pre">gitdir</span></code>. Create a directory there called <code class="docutils literal"><span class="pre">lsst-sims</span></code>, go into that and run the following:</p>
+<p>The SOCS repository should also be cloned into the <code class="docutils literal"><span class="pre">gitdir</span></code> via the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">sims</span><span class="o">/</span><span class="n">sims_ocs</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
 <div class="section" id="lsst-stack-installation">
 <h4>LSST Stack Installation<a class="headerlink" href="#lsst-stack-installation" title="Permalink to this headline">¶</a></h4>
 <p>The SOCS and Scheduler installation require a set of packages from Python and the LSST Science Pipelines.
-Follow the installation instructions from <a class="reference external" href="https://pipelines.lsst.io/install/newinstall.html#installing-from-source-with-newinstall-sh">here</a> to get a minimal setup. Go ahead and let the stack software provide Python unless you feel comfortable providing your own. Follow the instructions to get into the stack environment. The instructions will refere to the stack installation directory as <code class="docutils literal"><span class="pre">stack_install_dir</span></code>. It is recommended to use a conda environment especially if you are going to use the stack for other reasons. To create an environment, do the following:</p>
+Follow the installation instructions from <a class="reference external" href="https://pipelines.lsst.io/install/newinstall.html#installing-from-source-with-newinstall-sh">here</a> to get a minimal setup. Go ahead and let the stack software provide Python unless you feel comfortable providing your own. Follow the instructions to get into the stack environment. The instructions will refer to the stack installation directory as <code class="docutils literal"><span class="pre">stack_install_dir</span></code>. It is recommended to use a conda environment especially if you are going to use the stack for other reasons. To create an environment, do the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">opsim4</span> <span class="o">--</span><span class="n">clone</span><span class="o">=</span><span class="n">root</span>
 <span class="n">source</span> <span class="n">activate</span> <span class="n">opsim4</span>
 <span class="n">conda</span> <span class="n">remove</span> <span class="n">conda</span><span class="o">-</span><span class="n">env</span>
@@ -256,21 +287,42 @@ Follow the installation instructions from <a class="reference external" href="ht
 </div>
 <p>With the environment setup, we need to declare and setup the prerequisite repos and then SOCS and Scheduler packages so they can be used.</p>
 <p>Declare the pre-calculated sky brightness model:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">lsst</span><span class="o">/</span><span class="n">sims_skybrightness_pre</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">sims_skybrightness_pre</span>
 <span class="n">eups</span> <span class="n">declare</span> <span class="n">sims_skybrightness_pre</span> <span class="n">git</span> <span class="o">-</span><span class="n">r</span> <span class="o">.</span> <span class="o">-</span><span class="n">c</span>
 <span class="n">setup</span> <span class="n">sims_skybrightness_pre</span> <span class="n">git</span>
 <span class="n">scons</span>
 </pre></div>
 </div>
+<p>Declare the date and location package:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">ts_dateloc</span>
+<span class="n">eups</span> <span class="n">declare</span> <span class="n">ts_dateloc</span> <span class="n">git</span> <span class="o">-</span><span class="n">r</span> <span class="o">.</span> <span class="o">-</span><span class="n">c</span>
+<span class="n">setup</span> <span class="n">ts_dateloc</span> <span class="n">git</span>
+<span class="n">scons</span>
+</pre></div>
+</div>
+<p>Declare the astronomical sky model:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">ts_astrosky_model</span>
+<span class="n">eups</span> <span class="n">declare</span> <span class="n">ts_astrosky_model</span> <span class="n">git</span> <span class="o">-</span><span class="n">r</span> <span class="o">.</span> <span class="o">-</span><span class="n">c</span>
+<span class="n">setup</span> <span class="n">ts_astrosky_model</span> <span class="n">git</span>
+<span class="n">scons</span>
+</pre></div>
+</div>
+<p>Declare the observatory model:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">ts_observatory_model</span>
+<span class="n">eups</span> <span class="n">declare</span> <span class="n">ts_observatory_model</span> <span class="n">git</span> <span class="o">-</span><span class="n">r</span> <span class="o">.</span> <span class="o">-</span><span class="n">c</span>
+<span class="n">setup</span> <span class="n">ts_observatory_model</span> <span class="n">git</span>
+<span class="n">scons</span>
+</pre></div>
+</div>
 <p>Declare the Scheduler:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_scheduler</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">ts_scheduler</span>
 <span class="n">eups</span> <span class="n">declare</span> <span class="n">ts_scheduler</span> <span class="n">git</span> <span class="o">-</span><span class="n">r</span> <span class="o">.</span> <span class="o">-</span><span class="n">c</span>
 <span class="n">setup</span> <span class="n">ts_scheduler</span>
 <span class="n">scons</span>
 </pre></div>
 </div>
-<p>To declare and setup SOCS, do:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">sims</span><span class="o">/</span><span class="n">sims_ocs</span>
+<p>Declare SOCS:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">sims_ocs</span>
 <span class="n">eups</span> <span class="n">declare</span> <span class="n">sims_ocs</span> <span class="n">git</span> <span class="o">-</span><span class="n">r</span> <span class="o">.</span> <span class="o">-</span><span class="n">c</span>
 <span class="n">setup</span> <span class="n">sims_ocs</span>
 <span class="n">scons</span>
@@ -279,6 +331,7 @@ Follow the installation instructions from <a class="reference external" href="ht
 <p><strong>NOTE</strong>: The declaration steps only need to be done once. After that, when returning to the same conda environment, do:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">stack_install_dir</span><span class="o">/</span><span class="n">loadLSST</span><span class="o">.&lt;</span><span class="n">shell</span><span class="o">&gt;</span>
 <span class="n">source</span> <span class="n">activate</span> <span class="n">opsim4</span>
+<span class="n">setup</span> <span class="n">ts_scheduler</span>
 <span class="n">setup</span> <span class="n">sims_ocs</span>
 </pre></div>
 </div>
@@ -286,11 +339,16 @@ Follow the installation instructions from <a class="reference external" href="ht
 </div>
 <div class="section" id="sky-brightness-model-data">
 <span id="skymodel-data"></span><h3>Sky Brightness Model Data<a class="headerlink" href="#sky-brightness-model-data" title="Permalink to this headline">¶</a></h3>
-<p>In the previous section, the pre-calculated sky brightness model was installed, but it does not come with the data required to run. The required data is ~65 GB in size, so create a directory for it. The instructions will assume one was created as <code class="docutils literal"><span class="pre">$HOME/sky_brightness_data</span></code>. After running the <code class="docutils literal"><span class="pre">setup</span> <span class="pre">sims_ocs</span></code> command, change to this directory and execute the following:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$SIMS_SKYBRIGHTNESS_PRE_DIR/data/data_down.sh -o
+<p>In the previous section, the pre-calculated sky brightness model was installed, but it does not come with the data required to run. The required data is ~65 GB in size. It can be installed either along side the sky brightness model code or in a directory of the user&#8217;s choosing. To install along side the code, do the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">sims_skybrightness_pre</span><span class="o">/</span><span class="n">data</span>
+<span class="o">./</span><span class="n">data_down</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">o</span>
 </pre></div>
 </div>
-<p>While this instruction is executing, the instructions may continue to be followed, but OpSim will not function correctly until the data is done downloading.</p>
+<p>To install in a different directory, go to that directory and run:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">gitdir</span><span class="o">/</span><span class="n">sims_skybrightness_pre</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">data_down</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">o</span>
+</pre></div>
+</div>
+<p>While the download is proceeding, the instructions may continue to be followed, but OpSim will not function correctly until the data is done downloading.</p>
 </div>
 <div class="section" id="database-setup">
 <span id="installation-database"></span><h3>Database Setup<a class="headerlink" href="#database-setup" title="Permalink to this headline">¶</a></h3>
@@ -330,7 +388,8 @@ where you left off, this task can be accomplished. The <code class="docutils lit
 </pre></div>
 </div>
 <p>The container is designed to start with the LSST stack environment, so to setup OpSim4 do:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">setup</span> <span class="n">sims_ocs</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">setup</span> <span class="n">ts_scheduler</span>
+<span class="n">setup</span> <span class="n">sims_ocs</span>
 </pre></div>
 </div>
 <p>The simulator will not run just yet, however. The sky brightness model data needs to be downloaded. Follow the instructions <a class="reference internal" href="#skymodel-data"><span class="std std-ref">here</span></a> to get things going. While the data is downloading, you can reenter the container to continue the setup process. This action is completed by doing the following:</p>
@@ -343,15 +402,18 @@ where you left off, this task can be accomplished. The <code class="docutils lit
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Simulated Observatory Control System" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="Simulated Observatory Control System" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -382,10 +444,11 @@ where you left off, this task can be accomplished. The <code class="docutils lit
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.0',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

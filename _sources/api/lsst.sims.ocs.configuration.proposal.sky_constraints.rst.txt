@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.proposal.sky_constraints module
-===========================================================
+lsst\.sims\.ocs\.configuration\.proposal\.sky\_constraints module
+=================================================================
 
 .. automodule:: lsst.sims.ocs.configuration.proposal.sky_constraints
     :members:

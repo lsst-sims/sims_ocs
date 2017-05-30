@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.science.galactic_plane module
-=========================================================
+lsst\.sims\.ocs\.configuration\.science\.galactic\_plane module
+===============================================================
 
 .. automodule:: lsst.sims.ocs.configuration.science.galactic_plane
     :members:

@@ -1,5 +1,5 @@
-lsst.sims.ocs.utilities.constants module
-========================================
+lsst\.sims\.ocs\.utilities\.constants module
+============================================
 
 .. automodule:: lsst.sims.ocs.utilities.constants
     :members:

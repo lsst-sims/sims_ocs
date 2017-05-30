@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.proposal.sky_region module
-======================================================
+lsst\.sims\.ocs\.configuration\.proposal\.sky\_region module
+============================================================
 
 .. automodule:: lsst.sims.ocs.configuration.proposal.sky_region
     :members:

@@ -1,5 +1,5 @@
-lsst.sims.ocs.database package
-==============================
+lsst\.sims\.ocs\.database package
+=================================
 
 Subpackages
 -----------

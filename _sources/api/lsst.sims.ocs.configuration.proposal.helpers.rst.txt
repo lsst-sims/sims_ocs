@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.proposal.helpers module
-===================================================
+lsst\.sims\.ocs\.configuration\.proposal\.helpers module
+========================================================
 
 .. automodule:: lsst.sims.ocs.configuration.proposal.helpers
     :members:

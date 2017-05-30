@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.science_proposals module
-====================================================
+lsst\.sims\.ocs\.configuration\.science\_proposals module
+=========================================================
 
 .. automodule:: lsst.sims.ocs.configuration.science_proposals
     :members:

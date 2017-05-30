@@ -1,5 +1,5 @@
-lsst.sims.ocs.observatory.exposure_information module
-=====================================================
+lsst\.sims\.ocs\.observatory\.exposure\_information module
+==========================================================
 
 .. automodule:: lsst.sims.ocs.observatory.exposure_information
     :members:

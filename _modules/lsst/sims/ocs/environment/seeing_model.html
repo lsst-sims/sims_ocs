@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.environment.seeing_model &mdash; Simulated OCS 1.0.0 documentation</title>
+  <title>lsst.sims.ocs.environment.seeing_model &mdash; Simulated OCS 1.0.3 documentation</title>
   
 
+  
+  
   
   
 
@@ -33,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.3 documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -43,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -65,7 +68,7 @@
             
             
               <div class="version">
-                1.0.0
+                1.0.3
               </div>
             
           
@@ -86,7 +89,10 @@
           
             
             
-                <ul>
+              
+            
+            
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../database.html">Survey Database</a></li>
@@ -106,8 +112,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../../../index.html">Simulated OCS</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Simulated OCS</a>
+        
       </nav>
 
 
@@ -120,19 +128,36 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../../../index.html">Module code</a> &raquo;</li>
-      
-    <li>lsst.sims.ocs.environment.seeing_model</li>
+        
+      <li>lsst.sims.ocs.environment.seeing_model</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -140,6 +165,7 @@
             
   <h1>Source code for lsst.sims.ocs.environment.seeing_model</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
@@ -159,8 +185,13 @@
     <span class="n">FILTER_WAVELENGTH_CORRECTION_POWER</span> <span class="o">=</span> <span class="mf">0.3</span>
     <span class="n">RAW_SEEING_WAVELENGTH</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># nm</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_handler</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        time_handler : :class:`.TimeHandler`</span>
+<span class="sd">            The instance of the simulation time handler.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seeing_db</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seeing_dates</span> <span class="o">=</span> <span class="kc">None</span>
@@ -168,6 +199,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">environment_config</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filters_config</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seeing_fwhm_system_zenith</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">model_time_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">time_handler</span><span class="o">.</span><span class="n">initial_dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">time_handler</span><span class="o">.</span><span class="n">time_since_given_datetime</span><span class="p">(</span><span class="n">model_time_start</span><span class="p">,</span>
+                                                             <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SeeingModel.calculate_seeing"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.environment.seeing_model.html#lsst.sims.ocs.environment.seeing_model.SeeingModel.calculate_seeing">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_seeing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta_time</span><span class="p">,</span> <span class="n">filter_name</span><span class="p">,</span> <span class="n">airmass</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate the geometric and effective seeing values.</span>
@@ -213,6 +247,7 @@
 <span class="sd">        float</span>
 <span class="sd">            The seeing (arcseconds) closest to the specified time.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">delta_time</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span>
         <span class="n">date</span> <span class="o">=</span> <span class="n">delta_time</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">seeing_dates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">date_delta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seeing_dates</span> <span class="o">-</span> <span class="n">date</span><span class="p">)</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">date_delta</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">date_delta</span><span class="p">))</span>
@@ -251,7 +286,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment_config</span><span class="o">.</span><span class="n">seeing_db</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">seeing_db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment_config</span><span class="o">.</span><span class="n">seeing_db</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">seeing_db</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">SEEING_DB</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">seeing_db</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">SEEING_DB</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seeing_db</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
@@ -276,6 +311,9 @@
         <span class="n">topic</span><span class="o">.</span><span class="n">seeing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_seeing</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">time_since_start</span><span class="p">)</span></div></div>
 </pre></div>
 
+           </div>
+           <div class="articleComments">
+            
            </div>
           </div>
           <footer>
@@ -307,10 +345,11 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'1.0.0',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../../../_static/jquery.js"></script>

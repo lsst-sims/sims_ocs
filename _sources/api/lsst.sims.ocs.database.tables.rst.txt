@@ -1,5 +1,5 @@
-lsst.sims.ocs.database.tables package
-=====================================
+lsst\.sims\.ocs\.database\.tables package
+=========================================
 
 Submodules
 ----------

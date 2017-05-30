@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.instrument.slew module
-==================================================
+lsst\.sims\.ocs\.configuration\.instrument\.slew module
+=======================================================
 
 .. automodule:: lsst.sims.ocs.configuration.instrument.slew
     :members:

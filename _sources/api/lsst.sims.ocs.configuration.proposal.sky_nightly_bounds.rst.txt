@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.proposal.sky_nightly_bounds module
-==============================================================
+lsst\.sims\.ocs\.configuration\.proposal\.sky\_nightly\_bounds module
+=====================================================================
 
 .. automodule:: lsst.sims.ocs.configuration.proposal.sky_nightly_bounds
     :members:

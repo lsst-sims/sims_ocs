@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.field module
-========================================
+lsst\.sims\.ocs\.configuration\.field module
+============================================
 
 .. automodule:: lsst.sims.ocs.configuration.field
     :members:

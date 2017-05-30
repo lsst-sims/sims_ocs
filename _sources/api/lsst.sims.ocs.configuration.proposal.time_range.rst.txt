@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.proposal.time_range module
-======================================================
+lsst\.sims\.ocs\.configuration\.proposal\.time\_range module
+============================================================
 
 .. automodule:: lsst.sims.ocs.configuration.proposal.time_range
     :members:

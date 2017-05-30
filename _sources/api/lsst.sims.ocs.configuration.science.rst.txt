@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.science package
-===========================================
+lsst\.sims\.ocs\.configuration\.science package
+===============================================
 
 Submodules
 ----------

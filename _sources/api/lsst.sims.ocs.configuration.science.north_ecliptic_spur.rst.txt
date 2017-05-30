@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.science.north_ecliptic_spur module
-==============================================================
+lsst\.sims\.ocs\.configuration\.science\.north\_ecliptic\_spur module
+=====================================================================
 
 .. automodule:: lsst.sims.ocs.configuration.science.north_ecliptic_spur
     :members:

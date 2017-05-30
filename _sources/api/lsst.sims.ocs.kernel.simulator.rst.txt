@@ -1,5 +1,5 @@
-lsst.sims.ocs.kernel.simulator module
-=====================================
+lsst\.sims\.ocs\.kernel\.simulator module
+=========================================
 
 .. automodule:: lsst.sims.ocs.kernel.simulator
     :members:

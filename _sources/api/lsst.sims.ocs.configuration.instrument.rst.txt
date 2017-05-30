@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.instrument package
-==============================================
+lsst\.sims\.ocs\.configuration\.instrument package
+==================================================
 
 Submodules
 ----------

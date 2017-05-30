@@ -1,5 +1,5 @@
-lsst.sims.ocs.observatory.main_observatory module
-=================================================
+lsst\.sims\.ocs\.observatory\.main\_observatory module
+======================================================
 
 .. automodule:: lsst.sims.ocs.observatory.main_observatory
     :members:

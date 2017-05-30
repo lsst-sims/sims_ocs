@@ -1,5 +1,5 @@
-lsst.sims.ocs.utilities package
-===============================
+lsst\.sims\.ocs\.utilities package
+==================================
 
 Submodules
 ----------

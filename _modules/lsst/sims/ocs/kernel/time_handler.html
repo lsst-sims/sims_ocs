@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.kernel.time_handler &mdash; Simulated OCS 1.0.0 documentation</title>
+  <title>lsst.sims.ocs.kernel.time_handler &mdash; Simulated OCS 1.0.3 documentation</title>
   
 
+  
+  
   
   
 
@@ -33,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.3 documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -43,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -65,7 +68,7 @@
             
             
               <div class="version">
-                1.0.0
+                1.0.3
               </div>
             
           
@@ -86,7 +89,10 @@
           
             
             
-                <ul>
+              
+            
+            
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../database.html">Survey Database</a></li>
@@ -106,8 +112,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../../../index.html">Simulated OCS</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Simulated OCS</a>
+        
       </nav>
 
 
@@ -120,19 +128,36 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../../../index.html">Module code</a> &raquo;</li>
-      
-    <li>lsst.sims.ocs.kernel.time_handler</li>
+        
+      <li>lsst.sims.ocs.kernel.time_handler</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -355,9 +380,36 @@
 <span class="sd">            The elapsed time (seconds) between the given</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_dt</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_dt</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimeHandler.time_since_given_datetime"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler.time_since_given_datetime">[docs]</a>    <span class="k">def</span> <span class="nf">time_since_given_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">given_datetime</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the elapsed time (seconds).</span>
+
+<span class="sd">        This function takes a given datetime object and calculates the elapsed time in seconds</span>
+<span class="sd">        between it and the initial timestamp in the handler. If the given datetime is prior to</span>
+<span class="sd">        the initial timestamp in the handler, use the reverse flag.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        given_datetime : datetime</span>
+<span class="sd">            The given timestamp.</span>
+<span class="sd">        reverse : bool, optional</span>
+<span class="sd">            Flag to make the difference in reverse. Default is False.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The elapsed time (seconds) between the given timestamp and the initial timestamp</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">reverse</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_dt</span><span class="p">,</span> <span class="n">given_datetime</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_difference</span><span class="p">(</span><span class="n">given_datetime</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_dt</span><span class="p">)</span></div></div>
 </pre></div>
 
+           </div>
+           <div class="articleComments">
+            
            </div>
           </div>
           <footer>
@@ -389,10 +441,11 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'1.0.0',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../../../_static/jquery.js"></script>

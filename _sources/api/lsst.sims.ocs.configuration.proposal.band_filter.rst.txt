@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.proposal.band_filter module
-=======================================================
+lsst\.sims\.ocs\.configuration\.proposal\.band\_filter module
+=============================================================
 
 .. automodule:: lsst.sims.ocs.configuration.proposal.band_filter
     :members:

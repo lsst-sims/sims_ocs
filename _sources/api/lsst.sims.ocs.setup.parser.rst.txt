@@ -1,5 +1,5 @@
-lsst.sims.ocs.setup.parser module
-=================================
+lsst\.sims\.ocs\.setup\.parser module
+=====================================
 
 .. automodule:: lsst.sims.ocs.setup.parser
     :members:

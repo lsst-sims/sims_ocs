@@ -1,5 +1,5 @@
-lsst.sims.ocs.version module
-============================
+lsst\.sims\.ocs\.version module
+===============================
 
 .. automodule:: lsst.sims.ocs.version
     :members:

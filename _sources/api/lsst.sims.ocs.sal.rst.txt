@@ -1,5 +1,5 @@
-lsst.sims.ocs.sal package
-=========================
+lsst\.sims\.ocs\.sal package
+============================
 
 Submodules
 ----------

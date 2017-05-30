@@ -1,5 +1,5 @@
-lsst.sims.ocs.database.tables.base_tbls module
-==============================================
+lsst\.sims\.ocs\.database\.tables\.base\_tbls module
+====================================================
 
 .. automodule:: lsst.sims.ocs.database.tables.base_tbls
     :members:

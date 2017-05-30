@@ -1,5 +1,5 @@
-lsst.sims.ocs.downtime.scheduled_downtime module
-================================================
+lsst\.sims\.ocs\.downtime\.scheduled\_downtime module
+=====================================================
 
 .. automodule:: lsst.sims.ocs.downtime.scheduled_downtime
     :members:

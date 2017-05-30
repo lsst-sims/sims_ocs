@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.proposal.general_scheduling module
-==============================================================
+lsst\.sims\.ocs\.configuration\.proposal\.general\_scheduling module
+====================================================================
 
 .. automodule:: lsst.sims.ocs.configuration.proposal.general_scheduling
     :members:

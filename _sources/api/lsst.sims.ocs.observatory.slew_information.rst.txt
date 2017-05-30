@@ -1,5 +1,5 @@
-lsst.sims.ocs.observatory.slew_information module
-=================================================
+lsst\.sims\.ocs\.observatory\.slew\_information module
+======================================================
 
 .. automodule:: lsst.sims.ocs.observatory.slew_information
     :members:

@@ -1,5 +1,5 @@
-lsst.sims.ocs.database.tables.write_tbls module
-===============================================
+lsst\.sims\.ocs\.database\.tables\.write\_tbls module
+=====================================================
 
 .. automodule:: lsst.sims.ocs.database.tables.write_tbls
     :members:

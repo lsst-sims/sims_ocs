@@ -1,0 +1,7 @@
+lsst\.sims\.ocs\.configuration\.proposal\.sequence\_scheduling module
+=====================================================================
+
+.. automodule:: lsst.sims.ocs.configuration.proposal.sequence_scheduling
+    :members:
+    :undoc-members:
+    :show-inheritance:

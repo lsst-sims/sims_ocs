@@ -1,5 +1,5 @@
-lsst.sims.ocs.kernel.proposal_info module
-=========================================
+lsst\.sims\.ocs\.kernel\.proposal\_info module
+==============================================
 
 .. automodule:: lsst.sims.ocs.kernel.proposal_info
     :members:

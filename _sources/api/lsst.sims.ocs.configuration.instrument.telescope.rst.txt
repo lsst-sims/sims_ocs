@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.instrument.telescope module
-=======================================================
+lsst\.sims\.ocs\.configuration\.instrument\.telescope module
+============================================================
 
 .. automodule:: lsst.sims.ocs.configuration.instrument.telescope
     :members:

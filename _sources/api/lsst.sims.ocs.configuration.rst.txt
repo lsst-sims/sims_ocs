@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration package
-===================================
+lsst\.sims\.ocs\.configuration package
+======================================
 
 Subpackages
 -----------

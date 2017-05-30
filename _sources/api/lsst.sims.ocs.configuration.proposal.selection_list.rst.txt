@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.proposal.selection_list module
-==========================================================
+lsst\.sims\.ocs\.configuration\.proposal\.selection\_list module
+================================================================
 
 .. automodule:: lsst.sims.ocs.configuration.proposal.selection_list
     :members:

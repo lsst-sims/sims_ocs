@@ -1,5 +1,5 @@
-lsst.sims.ocs.database.tables.view_tables module
-================================================
+lsst\.sims\.ocs\.database\.tables\.view\_tables module
+======================================================
 
 .. automodule:: lsst.sims.ocs.database.tables.view_tables
     :members:

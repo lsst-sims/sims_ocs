@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.instrument.rotator module
-=====================================================
+lsst\.sims\.ocs\.configuration\.instrument\.rotator module
+==========================================================
 
 .. automodule:: lsst.sims.ocs.configuration.instrument.rotator
     :members:

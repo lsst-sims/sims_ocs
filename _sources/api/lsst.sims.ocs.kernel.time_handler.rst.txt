@@ -1,5 +1,5 @@
-lsst.sims.ocs.kernel.time_handler module
-========================================
+lsst\.sims\.ocs\.kernel\.time\_handler module
+=============================================
 
 .. automodule:: lsst.sims.ocs.kernel.time_handler
     :members:

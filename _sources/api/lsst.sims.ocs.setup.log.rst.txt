@@ -1,5 +1,5 @@
-lsst.sims.ocs.setup.log module
-==============================
+lsst\.sims\.ocs\.setup\.log module
+==================================
 
 .. automodule:: lsst.sims.ocs.setup.log
     :members:

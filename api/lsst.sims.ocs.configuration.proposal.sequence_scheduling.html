@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.proposal.band_filter module &mdash; Simulated OCS 1.0.3 documentation</title>
+  <title>lsst.sims.ocs.configuration.proposal.sequence_scheduling module &mdash; Simulated OCS 1.0.3 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="Simulated OCS 1.0.3 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.configuration.proposal package" href="lsst.sims.ocs.configuration.proposal.html"/>
-        <link rel="next" title="lsst.sims.ocs.configuration.proposal.base_sequence module" href="lsst.sims.ocs.configuration.proposal.base_sequence.html"/>
-        <link rel="prev" title="lsst.sims.ocs.configuration.proposal package" href="lsst.sims.ocs.configuration.proposal.html"/> 
+        <link rel="next" title="lsst.sims.ocs.configuration.proposal.sky_constraints module" href="lsst.sims.ocs.configuration.proposal.sky_constraints.html"/>
+        <link rel="prev" title="lsst.sims.ocs.configuration.proposal.sequence module" href="lsst.sims.ocs.configuration.proposal.sequence.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -173,13 +173,13 @@
         
           <li><a href="lsst.sims.ocs.configuration.proposal.html">lsst.sims.ocs.configuration.proposal package</a> &raquo;</li>
         
-      <li>lsst.sims.ocs.configuration.proposal.band_filter module</li>
+      <li>lsst.sims.ocs.configuration.proposal.sequence_scheduling module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/api/lsst.sims.ocs.configuration.proposal.band_filter.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/lsst.sims.ocs.configuration.proposal.sequence_scheduling.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -192,13 +192,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-lsst.sims.ocs.configuration.proposal.band_filter">
-<span id="lsst-sims-ocs-configuration-proposal-band-filter-module"></span><h1>lsst.sims.ocs.configuration.proposal.band_filter module<a class="headerlink" href="#module-lsst.sims.ocs.configuration.proposal.band_filter" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-lsst.sims.ocs.configuration.proposal.sequence_scheduling">
+<span id="lsst-sims-ocs-configuration-proposal-sequence-scheduling-module"></span><h1>lsst.sims.ocs.configuration.proposal.sequence_scheduling module<a class="headerlink" href="#module-lsst.sims.ocs.configuration.proposal.sequence_scheduling" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="lsst.sims.ocs.configuration.proposal.band_filter.BandFilter">
-<em class="property">class </em><code class="descclassname">lsst.sims.ocs.configuration.proposal.band_filter.</code><code class="descname">BandFilter</code><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/proposal/band_filter.html#BandFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.band_filter.BandFilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">lsst.pex.config.config.Config</span></code></p>
-<p>Configuration for a proposal filter.</p>
+<dt id="lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling">
+<em class="property">class </em><code class="descclassname">lsst.sims.ocs.configuration.proposal.sequence_scheduling.</code><code class="descname">SequenceScheduling</code><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/proposal/sequence_scheduling.html#SequenceScheduling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="lsst.sims.ocs.configuration.proposal.scheduling.html#lsst.sims.ocs.configuration.proposal.scheduling.Scheduling" title="lsst.sims.ocs.configuration.proposal.scheduling.Scheduling"><code class="xref py py-class docutils literal"><span class="pre">lsst.sims.ocs.configuration.proposal.scheduling.Scheduling</span></code></a></p>
+<p>Configuration for a Sequence proposal&#8217;s scheduling needs.</p>
 <p>!Allocate a new Config object.</p>
 <p>In order to ensure that all Config object are always in a proper
 state when handed to users or to derived Config classes, some
@@ -207,45 +207,57 @@ attributes are handled at allocation time rather than at initialization</p>
 the author does not need to be concerned about when or even if he
 should call the base Config.__init__</p>
 <dl class="method">
-<dt id="lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.setDefaults">
-<code class="descname">setDefaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/proposal/band_filter.html#BandFilter.setDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.setDefaults" title="Permalink to this definition">¶</a></dt>
-<dd><p>Default specification for a filter.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.validate">
-<code class="descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/proposal/band_filter.html#BandFilter.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate configuration parameters.</p>
+<dt id="lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.setDefaults">
+<code class="descname">setDefaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/configuration/proposal/sequence_scheduling.html#SequenceScheduling.setDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.setDefaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default specification for scheduling information.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.bright_limit">
-<code class="descname">bright_limit</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.bright_limit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Brightest magnitude limit for filter.</p>
+<dt id="lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.accept_consecutive_visits">
+<code class="descname">accept_consecutive_visits</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.accept_consecutive_visits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag to determine if consecutive visits are accepted.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.dark_limit">
-<code class="descname">dark_limit</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.dark_limit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Darkest magnitude limit for filter.</p>
+<dt id="lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.accept_serendipity">
+<code class="descname">accept_serendipity</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.accept_serendipity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag to determine if observations other than proposal&#8217;s top target are accepted.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.exposures">
-<code class="descname">exposures</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.exposures" title="Permalink to this definition">¶</a></dt>
-<dd><p>The list of exposure times (units=seconds) for the filter</p>
+<dt id="lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.airmass_bonus">
+<code class="descname">airmass_bonus</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.airmass_bonus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bonus to apply to fields giving precedence to low arimass ones. Bonus runs from 0 to 1.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.max_seeing">
-<code class="descname">max_seeing</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.max_seeing" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum seeing limit for filter</p>
+<dt id="lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.hour_angle_bonus">
+<code class="descname">hour_angle_bonus</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.hour_angle_bonus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bonus to apply to fields giving precedence to fields near the meridian. Bonus runs from 0 to 1.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.name">
-<code class="descname">name</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.band_filter.BandFilter.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Band name of the filter.</p>
+<dt id="lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.hour_angle_max">
+<code class="descname">hour_angle_max</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.hour_angle_max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum hour angle (units=hours) for the bonus factor calculation. Hour angles larger will cause the bonus to be negative. Range is 0.1 to 12.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.max_num_targets">
+<code class="descname">max_num_targets</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.max_num_targets" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum number of targets the proposal will propose.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.restart_complete_sequences">
+<code class="descname">restart_complete_sequences</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.restart_complete_sequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag to restart sequences that were already completed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.restart_lost_sequences">
+<code class="descname">restart_lost_sequences</code><a class="headerlink" href="#lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.restart_lost_sequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag to restart sequences that were lost due to observational constraints.</p>
 </dd></dl>
 
 </dd></dl>
@@ -262,10 +274,10 @@ should call the base Config.__init__</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="lsst.sims.ocs.configuration.proposal.base_sequence.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.configuration.proposal.base_sequence module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="lsst.sims.ocs.configuration.proposal.sky_constraints.html" class="btn btn-neutral float-right" title="lsst.sims.ocs.configuration.proposal.sky_constraints module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="lsst.sims.ocs.configuration.proposal.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.proposal package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="lsst.sims.ocs.configuration.proposal.sequence.html" class="btn btn-neutral" title="lsst.sims.ocs.configuration.proposal.sequence module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

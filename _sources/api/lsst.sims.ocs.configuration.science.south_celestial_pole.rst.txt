@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.science.south_celestial_pole module
-===============================================================
+lsst\.sims\.ocs\.configuration\.science\.south\_celestial\_pole module
+======================================================================
 
 .. automodule:: lsst.sims.ocs.configuration.science.south_celestial_pole
     :members:

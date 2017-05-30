@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.survey module
-=========================================
+lsst\.sims\.ocs\.configuration\.survey module
+=============================================
 
 .. automodule:: lsst.sims.ocs.configuration.survey
     :members:

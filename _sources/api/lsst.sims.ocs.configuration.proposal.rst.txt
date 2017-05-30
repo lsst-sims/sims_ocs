@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.proposal package
-============================================
+lsst\.sims\.ocs\.configuration\.proposal package
+================================================
 
 Submodules
 ----------
@@ -17,6 +17,7 @@ Submodules
    lsst.sims.ocs.configuration.proposal.selection
    lsst.sims.ocs.configuration.proposal.selection_list
    lsst.sims.ocs.configuration.proposal.sequence
+   lsst.sims.ocs.configuration.proposal.sequence_scheduling
    lsst.sims.ocs.configuration.proposal.sky_constraints
    lsst.sims.ocs.configuration.proposal.sky_exclusion
    lsst.sims.ocs.configuration.proposal.sky_nightly_bounds

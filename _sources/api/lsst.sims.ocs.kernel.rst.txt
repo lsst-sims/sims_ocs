@@ -1,5 +1,5 @@
-lsst.sims.ocs.kernel package
-============================
+lsst\.sims\.ocs\.kernel package
+===============================
 
 Submodules
 ----------

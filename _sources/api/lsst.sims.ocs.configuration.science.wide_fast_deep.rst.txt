@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.science.wide_fast_deep module
-=========================================================
+lsst\.sims\.ocs\.configuration\.science\.wide\_fast\_deep module
+================================================================
 
 .. automodule:: lsst.sims.ocs.configuration.science.wide_fast_deep
     :members:

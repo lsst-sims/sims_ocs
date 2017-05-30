@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.instrument.dome module
-==================================================
+lsst\.sims\.ocs\.configuration\.instrument\.dome module
+=======================================================
 
 .. automodule:: lsst.sims.ocs.configuration.instrument.dome
     :members:

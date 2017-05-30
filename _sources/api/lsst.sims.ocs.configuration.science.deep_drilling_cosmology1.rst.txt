@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.science.deep_drilling_cosmology1 module
-===================================================================
+lsst\.sims\.ocs\.configuration\.science\.deep\_drilling\_cosmology1 module
+==========================================================================
 
 .. automodule:: lsst.sims.ocs.configuration.science.deep_drilling_cosmology1
     :members:

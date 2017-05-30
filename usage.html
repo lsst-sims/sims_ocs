@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Usage &mdash; Simulated OCS 1.0.0 documentation</title>
+  <title>Usage &mdash; Simulated OCS 1.0.3 documentation</title>
   
 
+  
+  
   
   
 
@@ -33,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.0 documentation" href="index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.3 documentation" href="index.html"/>
         <link rel="next" title="Survey Database" href="database.html"/>
         <link rel="prev" title="Installation" href="installation.html"/> 
 
@@ -44,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -66,7 +69,7 @@
             
             
               <div class="version">
-                1.0.0
+                1.0.3
               </div>
             
           
@@ -87,7 +90,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#running-opsim">Running OpSim</a></li>
@@ -110,8 +116,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Simulated OCS</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Simulated OCS</a>
+        
       </nav>
 
 
@@ -120,23 +128,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Usage</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Usage</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -146,51 +171,18 @@
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
 <p>We start this section by assuming you have followed the installation instructions and are within the created Conda environment. To setup the environment for running the Operations Simulator, do:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">stack_install_dir</span><span class="o">/</span><span class="n">loadLSST</span><span class="o">.&lt;</span><span class="n">shell</span><span class="o">&gt;</span>
+<span class="n">source</span> <span class="n">activate</span> <span class="n">opsim4</span>
+<span class="n">setup</span> <span class="n">ts_scheduler</span>
 <span class="n">setup</span> <span class="n">sims_ocs</span>
 </pre></div>
 </div>
-<p>The Operations Simulator consists of running the SOCS and Scheduler. Due to the nature of the setup, a wrapper script is recommended when launching the driver script. If you have followed the installation recommendations, a highly recommended example is below.</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash
-set -e
-
-while getopts t: c; do
-    case $c in
-            t) TAG=&quot;$OPTARG&quot; ;;
-            \?) exit 1 ;;
-    esac
-done
-
-shift &quot;$((OPTIND-1))&quot;
-
-if [ -z $TAG ] ; then
-    extra_tag=$(date +%s)
-else
-    extra_tag=${TAG}
-fi
-echo ${extra_tag}
-
-export LSST_DDS_DOMAIN=MyDomain_${extra_tag}
-export NDDS_DISCOVERY_PEERS=builtin.shmem://
-
-export OPENSPLICE_LOC=${HOME}/git/ts/ts_opensplice/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
-export OSPL_URI=file://${OPENSPLICE_LOC}/etc/config/ospl.xml
-
-export SCHED_TOPIC_LIB=${HOME}/dds/lib
-
-export LD_LIBRARY_PATH=${OPENSPLICE_LOC}/lib:${SCHED_TOPIC_LIB}:${LD_LIBRARY_PATH}
-export PYTHONPATH=${SCHED_TOPIC_LIB}:${PYTHONPATH}
-
-export SIMS_SKYBRIGHTNESS_DATA=${HOME}/sky_brightness_data
-
-$@
-</pre></div>
-</div>
-<p>The <code class="docutils literal"><span class="pre">LSST_DDS_DOMAIN</span></code> is important so that messages from other instances using DDS do not pollute the currently running process. It needs to be a unique name within the user&#8217;s network environment. The following instructions will refer to this wrapper script as <code class="docutils literal"><span class="pre">drun</span></code>.</p>
-<p>The <code class="docutils literal"><span class="pre">SIMS_SKYBRIGHTNESS_DATA</span></code> is needed to tell the sky brightness model code where its data is stored.</p>
+<p>The Operations Simulator consists of running the SOCS and Scheduler. Due to the nature of the setup, a wrapper script is recommended when launching the driver script. A script has been provided <a class="reference external" href="https://raw.githubusercontent.com/lsst-sims/opsim4_tools/master/scripts/drun">here</a>. The script needs to be edited to provide locations for certain variables. See the comments within the script. This script is intended for use when running multiple simulations simultaneously.</p>
+<p>If you wish to override your computer&#8217;s hostname, the <code class="docutils literal"><span class="pre">$OPSIM_HOSTNAME</span></code> environmental variable can be used to achieve this.</p>
+<p>If you only wish to run one simulation at any given time or want to connect the running simulation to another DDS stream handler, it is necessary to know the <code class="docutils literal"><span class="pre">$OSPL_URI</span></code> file used to execute the job. The <code class="docutils literal"><span class="pre">drun</span></code> script rotates this file for each use, but does provide an override mechanism when using it again. However, <a class="reference external" href="https://raw.githubusercontent.com/lsst-sims/opsim4_tools/master/scripts/drun_static">this</a> script has been provided to remove the need for knowing the <code class="docutils literal"><span class="pre">$OSPL_URI</span></code> file. <strong>However</strong>, when using this script, the simulation run must be the only one running as the DDS domain Id could conflict with another running job.</p>
 <div class="section" id="running-opsim">
 <span id="running-opsim4"></span><h2>Running OpSim<a class="headerlink" href="#running-opsim" title="Permalink to this headline">¶</a></h2>
 <p>The SOCS driver can be run from anywhere if the setup from the installation instructions were followed. We&#8217;ll assume that you are running from <code class="docutils literal"><span class="pre">$HOME/run_local</span></code>. In this directory, it is recommended to have <code class="docutils literal"><span class="pre">configs</span></code> and <code class="docutils literal"><span class="pre">log</span></code> sub-directories available. This will be helpful in containing all of the various outputs when running multiple simulations. To invoke a basic instance of SOCS, do the following:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">drun</span> <span class="n">opsim4</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;Running a one year sim.&quot;</span> <span class="o">-</span><span class="n">v</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">drun</span> <span class="n">opsim4</span> <span class="o">--</span><span class="n">frac</span><span class="o">-</span><span class="n">duration</span><span class="o">=</span><span class="mi">1</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;Running a one year sim.&quot;</span> <span class="o">-</span><span class="n">v</span>
 </pre></div>
 </div>
 <p>This will run a one year simulation while passing messages between SOCS and the Scheduler via SAL/DDS. The SOCS driver script launches a central process for log messages coming from the SOCS and Scheduler drivers. It then launches the Scheduler driver.</p>
@@ -203,15 +195,18 @@ $@
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="database.html" class="btn btn-neutral float-right" title="Survey Database" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="database.html" class="btn btn-neutral float-right" title="Survey Database" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -242,10 +237,11 @@ $@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.0',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

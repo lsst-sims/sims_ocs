@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.obs_site module
-===========================================
+lsst\.sims\.ocs\.configuration\.obs\_site module
+================================================
 
 .. automodule:: lsst.sims.ocs.configuration.obs_site
     :members:

@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.instrument.camera module
-====================================================
+lsst\.sims\.ocs\.configuration\.instrument\.camera module
+=========================================================
 
 .. automodule:: lsst.sims.ocs.configuration.instrument.camera
     :members:

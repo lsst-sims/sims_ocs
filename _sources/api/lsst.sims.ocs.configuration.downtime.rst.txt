@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.downtime module
-===========================================
+lsst\.sims\.ocs\.configuration\.downtime module
+===============================================
 
 .. automodule:: lsst.sims.ocs.configuration.downtime
     :members:

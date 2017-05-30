@@ -1,5 +1,5 @@
-lsst.sims.ocs.utilities.file_helpers module
-===========================================
+lsst\.sims\.ocs\.utilities\.file\_helpers module
+================================================
 
 .. automodule:: lsst.sims.ocs.utilities.file_helpers
     :members:

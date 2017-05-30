@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.sim_config module
-=============================================
+lsst\.sims\.ocs\.configuration\.sim\_config module
+==================================================
 
 .. automodule:: lsst.sims.ocs.configuration.sim_config
     :members:

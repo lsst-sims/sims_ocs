@@ -1,5 +1,5 @@
-lsst.sims.ocs.database.socs_db module
-=====================================
+lsst\.sims\.ocs\.database\.socs\_db module
+==========================================
 
 .. automodule:: lsst.sims.ocs.database.socs_db
     :members:

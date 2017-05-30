@@ -1,5 +1,5 @@
-lsst.sims.ocs.environment package
-=================================
+lsst\.sims\.ocs\.environment package
+====================================
 
 Submodules
 ----------

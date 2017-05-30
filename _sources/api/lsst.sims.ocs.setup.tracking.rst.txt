@@ -1,5 +1,5 @@
-lsst.sims.ocs.setup.tracking module
-===================================
+lsst\.sims\.ocs\.setup\.tracking module
+=======================================
 
 .. automodule:: lsst.sims.ocs.setup.tracking
     :members:

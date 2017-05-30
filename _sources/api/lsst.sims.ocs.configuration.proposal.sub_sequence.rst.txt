@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.proposal.sub_sequence module
-========================================================
+lsst\.sims\.ocs\.configuration\.proposal\.sub\_sequence module
+==============================================================
 
 .. automodule:: lsst.sims.ocs.configuration.proposal.sub_sequence
     :members:

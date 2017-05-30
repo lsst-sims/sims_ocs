@@ -1,5 +1,5 @@
-lsst.sims.ocs.utilities.socs_exceptions module
-==============================================
+lsst\.sims\.ocs\.utilities\.socs\_exceptions module
+===================================================
 
 .. automodule:: lsst.sims.ocs.utilities.socs_exceptions
     :members:

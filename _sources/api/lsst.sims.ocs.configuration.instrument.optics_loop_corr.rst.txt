@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.instrument.optics_loop_corr module
-==============================================================
+lsst\.sims\.ocs\.configuration\.instrument\.optics\_loop\_corr module
+=====================================================================
 
 .. automodule:: lsst.sims.ocs.configuration.instrument.optics_loop_corr
     :members:

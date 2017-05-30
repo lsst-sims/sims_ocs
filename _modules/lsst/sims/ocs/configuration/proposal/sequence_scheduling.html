@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.proposal.time_range &mdash; Simulated OCS 1.0.3 documentation</title>
+  <title>lsst.sims.ocs.configuration.proposal.sequence_scheduling &mdash; Simulated OCS 1.0.3 documentation</title>
   
 
   
@@ -146,7 +146,7 @@
         
           <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
         
-      <li>lsst.sims.ocs.configuration.proposal.time_range</li>
+      <li>lsst.sims.ocs.configuration.proposal.sequence_scheduling</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -163,30 +163,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for lsst.sims.ocs.configuration.proposal.time_range</h1><div class="highlight"><pre>
+  <h1>Source code for lsst.sims.ocs.configuration.proposal.sequence_scheduling</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">lsst.pex.config</span> <span class="k">as</span> <span class="nn">pexConfig</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TimeRange&quot;</span><span class="p">]</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration.proposal</span> <span class="k">import</span> <span class="n">Scheduling</span>
 
-<div class="viewcode-block" id="TimeRange"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.time_range.html#lsst.sims.ocs.configuration.proposal.time_range.TimeRange">[docs]</a><span class="k">class</span> <span class="nc">TimeRange</span><span class="p">(</span><span class="n">pexConfig</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Configuration for a time range.</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SequenceScheduling&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SequenceScheduling"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.sequence_scheduling.html#lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling">[docs]</a><span class="k">class</span> <span class="nc">SequenceScheduling</span><span class="p">(</span><span class="n">Scheduling</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Configuration for a Sequence proposal&#39;s scheduling needs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">start</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s2">&quot;The starting time (units=days) for a time-dependent quantity.&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
-    <span class="n">end</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s2">&quot;The ending time (units=days) for a time-dependent quantity.&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="n">restart_lost_sequences</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to restart sequences that were lost due to &#39;</span>
+                                             <span class="s1">&#39;observational constraints.&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">restart_complete_sequences</span> <span class="o">=</span> <span class="n">pexConfig</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;Flag to restart sequences that were already completed.&#39;</span><span class="p">,</span>
+                                                 <span class="nb">bool</span><span class="p">)</span>
 
-<div class="viewcode-block" id="TimeRange.setDefaults"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.time_range.html#lsst.sims.ocs.configuration.proposal.time_range.TimeRange.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Default specification for a time range.</span>
+<div class="viewcode-block" id="SequenceScheduling.setDefaults"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.sequence_scheduling.html#lsst.sims.ocs.configuration.proposal.sequence_scheduling.SequenceScheduling.setDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Default specification for scheduling information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="mi">0</span></div>
-
-<div class="viewcode-block" id="TimeRange.validate"><a class="viewcode-back" href="../../../../../../api/lsst.sims.ocs.configuration.proposal.time_range.html#lsst.sims.ocs.configuration.proposal.time_range.TimeRange.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Validate configuration parameters.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">pexConfig</span><span class="o">.</span><span class="n">Config</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span></div></div>
+        <span class="n">Scheduling</span><span class="o">.</span><span class="n">setDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restart_lost_sequences</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restart_complete_sequences</span> <span class="o">=</span> <span class="kc">True</span></div></div>
 </pre></div>
 
            </div>

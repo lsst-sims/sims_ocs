@@ -1,5 +1,5 @@
-lsst.sims.ocs.configuration.scheduler_driver module
-===================================================
+lsst\.sims\.ocs\.configuration\.scheduler\_driver module
+========================================================
 
 .. automodule:: lsst.sims.ocs.configuration.scheduler_driver
     :members:
