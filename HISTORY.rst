@@ -3,11 +3,12 @@
 History
 -------
 
-1.0.3 (2017-05-XX)
+1.0.3 (2017-05-30)
 ~~~~~~~~~~~~~~~~~~
 
 * Using new standalone packages for observatory and astronomical sky models
 * Allow SOCS to provide Scheduler with different timeouts
+* Handling override parameters to newly introduced proposals
 
 1.0.2 (2017-04-20)
 ~~~~~~~~~~~~~~~~~~
