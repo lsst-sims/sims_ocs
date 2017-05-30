@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.kernel import ObsProposalHistory, ProposalInfo, TargetProposalHistory
+from lsst.sims.ocs.kernel import ObsProposalHistory, ProposalFieldInfo, ProposalInfo, TargetProposalHistory
 
 class ProposalInformationTest(unittest.TestCase):
 
@@ -36,3 +36,12 @@ class TargetProposalHistoryTest(unittest.TestCase):
         self.assertEqual(ph.proposalBonus, 0.82)
         self.assertEqual(ph.proposalBoost, 0.2)
         self.assertEqual(ph.TargetHistory_targetId, 10)
+
+class ProposalFieldInformationTest(unittest.TestCase):
+
+    def test_proposal_field_info(self):
+        pfi = ProposalFieldInfo(1, 4, 1545)
+        self.assertEqual(len(pfi.fields), 3)
+        self.assertEqual(pfi.propFieldId, 1)
+        self.assertEqual(pfi.propId, 4)
+        self.assertEqual(pfi.fieldId, 1545)

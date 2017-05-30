@@ -128,4 +128,6 @@ target_prop_hist = lsst.sims.ocs.kernel.TargetProposalHistory(propHistId=1, Prop
                                                               proposalBonus=0.82, proposalBoost=0.2,
                                                               TargetHistory_targetId=10)
 
+prop_field_info = lsst.sims.ocs.kernel.PropsalFieldInfo()
+
 config_tuple = (10, "config/test/a", "1.0")
