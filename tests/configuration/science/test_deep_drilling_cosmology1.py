@@ -68,3 +68,7 @@ class DeepDrillingCosmology1Test(unittest.TestCase):
         idx2 = filter_names.index('y')
         self.assertEqual(out_topic.bright_limit[idx1], 19.5)
         self.assertEqual(out_topic.dark_limit[idx2], 30.0)
+
+    def test_proposal_fields(self):
+        ids = self.prop.proposal_fields()
+        self.assertEqual(len(ids), 5)

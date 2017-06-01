@@ -27,6 +27,15 @@ class Sequence(pexConfig.Config):
         self.sub_sequences = {}
         self.master_sub_sequences = {}
 
+    def proposal_fields(self):
+        """Return the list of field Ids for this proposal.
+
+        Returns
+        -------
+        list[int]
+        """
+        return sorted(self.sky_user_regions)
+
     def set_topic(self, topic):
         """Set the information on a DDS topic instance.
 
