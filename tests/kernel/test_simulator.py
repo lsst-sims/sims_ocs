@@ -78,7 +78,7 @@ class SimulatorTest(unittest.TestCase):
         self.sim.initialize()
         expected_calls = CONFIG_COMM_PUT_CALLS + NUM_GEN_PROPS + NUM_SEQ_PROPS
         self.assertEqual(self.mock_salmanager_pub_topic.call_count, expected_calls)
-        self.assertEqual(self.mock_salmanager_sub_topic.call_count, 4)
+        self.assertEqual(self.mock_salmanager_sub_topic.call_count, 3)
         self.assertEqual(mock_sequencer_init.call_count, 1)
 
     @mock.patch("lsst.sims.ocs.sal.sal_manager.SalManager.finalize")
@@ -143,9 +143,6 @@ class SimulatorTest(unittest.TestCase):
         self.sim.initialize()
         # Need to make Scheduler wait break conditions work.
         mock_ss = mock_salscheduler()
-        # Fields
-        mock_ss.getNextSample_field = mock.MagicMock(return_value=0)
-        self.sim.field.ID = -1
         # Targets
         mock_ss.getNextSample_target = mock.MagicMock(return_value=0)
         self.sim.target.num_exposures = 2
@@ -177,7 +174,7 @@ class SimulatorTest(unittest.TestCase):
         self.sim.run()
 
         self.assertEqual(mock_salmanager_put.call_count, self.put_calls)
-        self.assertEqual(mock_ss.getNextSample_field.call_count, 2)
+        # self.assertEqual(mock_ss.getNextSample_field.call_count, 2)
         self.assertEqual(mock_ss.getNextSample_target.call_count, get_calls)
         self.assertEqual(mock_ss.getNextSample_filterSwap.call_count, 1)
         self.assertEqual(self.sim.seq.targets_received, self.num_visits)
@@ -195,9 +192,6 @@ class SimulatorTest(unittest.TestCase):
         self.sim.initialize()
         # Need to make Scheduler wait break conditions work.
         mock_ss = mock_salscheduler()
-        # Fields
-        mock_ss.getNextSample_field = mock.MagicMock(return_value=0)
-        self.sim.field.ID = -1
         # Targets
         mock_ss.getNextSample_target = mock.MagicMock(return_value=0)
         self.sim.target.num_exposures = 2
@@ -232,9 +226,6 @@ class SimulatorTest(unittest.TestCase):
         self.sim.initialize()
         # Need to make Scheduler wait break conditions work.
         mock_ss = mock_salscheduler()
-        # Fields
-        mock_ss.getNextSample_field = mock.MagicMock(return_value=0)
-        self.sim.field.ID = -1
         # Targets
         mock_ss.getNextSample_target = mock.MagicMock(return_value=0)
         self.sim.target.num_exposures = 2
