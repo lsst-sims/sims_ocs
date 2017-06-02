@@ -16,6 +16,7 @@ RUN mkdir stack && \
   	bash newinstall.sh -b && \
   	bash -c "source loadLSST.bash && \
   	eups distrib install sims_utils -t sims && \
+  	eups distrib install sims_survey_fields -t sims && \
   	eups distrib install pex_config -t sims && \
   	conda update -y conda && \
   	conda update -y pyqt fontconfig sqlalchemy && \
