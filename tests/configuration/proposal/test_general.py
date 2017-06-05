@@ -1,6 +1,8 @@
 import math
 import unittest
 
+from lsst.sims.survey.fields import FieldsDatabase, FieldSelection
+
 from lsst.sims.ocs.configuration.proposal import General
 from SALPY_scheduler import scheduler_generalPropConfigC
 
@@ -8,6 +10,7 @@ from tests.configuration.proposal.basic_proposal1 import BasicProposal1
 from tests.configuration.proposal.basic_proposal2 import BasicProposal2
 from tests.configuration.proposal.basic_proposal3 import BasicProposal3
 from tests.configuration.proposal.basic_proposal4 import BasicProposal4
+from tests.configuration.proposal.basic_proposal7 import BasicProposal7
 
 class GeneralTest(unittest.TestCase):
 
@@ -98,3 +101,16 @@ class GeneralTest(unittest.TestCase):
         self.assertEqual(out_topic.num_selection_mappings[1], 1)
         self.assertEqual(out_topic.selection_mappings[0], 0)
         self.assertEqual(out_topic.selection_mappings[1], 1)
+
+    def test_proposal_fields(self):
+        fd = FieldsDatabase()
+        fs = FieldSelection()
+        gen = BasicProposal1()
+        ids = gen.proposal_fields(fd, fs)
+        self.assertEqual(len(ids), 139)
+        gen = BasicProposal4()
+        ids = gen.proposal_fields(fd, fs)
+        self.assertEqual(len(ids), 2285)
+        gen = BasicProposal7()
+        ids = gen.proposal_fields(fd, fs)
+        self.assertEqual(len(ids), 239)

@@ -86,6 +86,7 @@ Follow the installation instructions from `here <https://pipelines.lsst.io/insta
 The last line is necessary since the create complains about that package being duplicated. Next, install the following stack packages::
 
     eups distrib install sims_utils -t sims
+    eups distrib install sims_survey_fields -t sims
     eups distrib install pex_config -t sims
 
 Once this is complete, perform the following operations::

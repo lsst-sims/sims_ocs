@@ -318,3 +318,18 @@ class TablesTest(unittest.TestCase):
         f = tbls.create_field(self.metadata)
         summary = tbls.create_summary_all_props(self.metadata, oh, sh, sfs, p, ph, f)
         self.assertEqual(len(summary.c), 36)
+
+    def test_create_proposal_field_table(self):
+        fields = tbls.create_proposal_field(self.metadata)
+        self.assertEqual(len(fields.c), 4)
+        self.assertEqual(len(fields.indexes), 3)
+
+    def test_write_proposal_field_table(self):
+        prop_field_topic = topic_helpers.prop_field_info
+
+        result = tbls.write_proposal_field(prop_field_topic, 1000)
+        fields = tbls.create_proposal_field(self.metadata)
+        self.check_ordered_dict_to_table(result, fields)
+        self.assertEqual(result['propFieldId'], prop_field_topic[0])
+        self.assertEqual(result['Proposal_propId'], prop_field_topic[1])
+        self.assertEqual(result['Field_fieldId'], prop_field_topic[2])

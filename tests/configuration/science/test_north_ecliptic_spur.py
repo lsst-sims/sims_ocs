@@ -1,5 +1,7 @@
 import unittest
 
+from lsst.sims.survey.fields import FieldsDatabase, FieldSelection
+
 from lsst.sims.ocs.configuration.science import NorthEclipticSpur
 from SALPY_scheduler import scheduler_generalPropConfigC
 
@@ -54,3 +56,9 @@ class NorthEclipticSpurTest(unittest.TestCase):
         self.assertTrue(out_topic.restrict_grouped_visits)
         self.assertEqual(out_topic.time_interval, self.time_interval)
         self.assertEqual(out_topic.time_window_end, 2.0)
+
+    def test_proposal_fields(self):
+        fd = FieldsDatabase()
+        fs = FieldSelection()
+        ids = self.prop.proposal_fields(fd, fs)
+        self.assertEqual(len(ids), 523)

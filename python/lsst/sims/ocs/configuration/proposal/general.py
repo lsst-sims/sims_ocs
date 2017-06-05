@@ -18,6 +18,70 @@ class General(pexConfig.Config):
     filters = pexConfig.ConfigDictField('Filter configuration for the proposal.', str, GeneralBandFilter)
     scheduling = pexConfig.ConfigField('Scheduling configuration for the proposal.', GeneralScheduling)
 
+    def proposal_fields(self, fd, fs):
+        """Return the field Ids for this proposal.
+
+        Parameters
+        ----------
+        fd : lsst.sims.survey.fields.FieldsDatabase
+            An instance of the fields database.
+        fs : lsst.sims.survey.fields.FieldSelection
+            An instance of the field selector.
+
+        Returns
+        -------
+        list[int]
+        """
+        query_list = []
+        combine_list = []
+        region_cuts = []
+
+        # Handle any time dependent cuts
+        try:
+            num_selections = len(self.sky_region.selection_mapping)
+            for i, mapping in self.sky_region.selection_mapping.items():
+                for index in mapping.indexes:
+                    region_cuts.append(self.sky_region.selections[index])
+                try:
+                    combine_list.append(self.sky_region.combiners[i])
+                except IndexError:
+                    # Don't have combiners, must be single selection per time range
+                    pass
+                if i < num_selections - 1:
+                    combine_list.append("or")
+        except TypeError:
+            region_cuts = self.sky_region.selections.values()
+            combine_list.extend(self.sky_region.combiners)
+
+        # Handle the sky region selections
+        for cut in region_cuts:
+            cut_type = cut.limit_type
+            if cut_type != "GP":
+                query_list.append(fs.select_region(cut_type, cut.minimum_limit, cut.maximum_limit))
+            else:
+                query_list.append(fs.galactic_region(cut.maximum_limit, cut.minimum_limit,
+                                                     cut.bounds_limit))
+
+        # Handle the sky exclusion selections
+        exclusion_query = None
+        for cut in self.sky_exclusion.selections.values():
+            cut_type = cut.limit_type
+            if cut_type == "GP":
+                # Need the field Ids, so don't mark it as an exclusion
+                exclusion_query = fs.galactic_region(cut.maximum_limit, cut.minimum_limit,
+                                                     cut.bounds_limit)
+
+        query = fs.combine_queries(*query_list, combiners=combine_list)
+        fields = fd.get_field_set(query)
+        ids = set([x[0] for x in fields])
+        if exclusion_query is not None:
+            equery = fs.combine_queries(exclusion_query)
+            efields = fd.get_field_set(equery)
+            eids = set([x[0] for x in efields])
+            ids.difference_update(eids)
+
+        return sorted(list(ids))
+
     def set_topic(self, topic):
         """Set the information on a DDS topic instance.
 

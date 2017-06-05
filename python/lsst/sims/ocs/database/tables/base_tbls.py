@@ -3,8 +3,8 @@ from sqlalchemy.types import DATETIME
 from sqlalchemy import DDL, event
 
 __all__ = ["create_config", "create_field", "create_observation_exposures",
-           "create_observation_history", "create_observation_proposal_history", "create_proposal",
-           "create_scheduled_downtime",
+           "create_observation_history", "create_observation_proposal_history", "create_proposal_field",
+           "create_proposal", "create_scheduled_downtime",
            "create_session", "create_slew_activities", "create_slew_final_state",
            "create_slew_history", "create_slew_initial_state", "create_slew_maxspeeds",
            "create_target_exposures", "create_target_history", "create_target_proposal_history",
@@ -326,6 +326,40 @@ def create_proposal(metadata):
                   Column("propType", String(50), nullable=False, doc="The type of the science proposal."))
 
     Index("fk_Proposal_Session1", table.c.Session_sessionId)
+
+    return table
+
+def create_proposal_field(metadata):
+    """Create the ProposalField table.
+
+    This function creates the ProposalField table for listing the fields for
+    each science proposal.
+
+    Table Description:
+
+    This table lists all of the field Ids associated with a given science proposal.
+
+    Parameters
+    ----------
+    metadata : sqlalchemy.MetaData
+        The database object that collects the tables.
+
+    Returns
+    -------
+    sqlalchemy.Table
+        The ProposalField table object.
+    """
+    table = Table("ProposalField", metadata,
+                  Column("propFieldId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The numeric identifier for the particular proposal field."),
+                  Column("Session_sessionId", Integer, primary_key=True, autoincrement=False, nullable=False,
+                         doc="The simulation run session Id."),
+                  Column("Proposal_propId", Integer, nullable=False, doc="The science proposal identifier."),
+                  Column("Field_fieldId", Integer, nullable=False, doc="The field identifier."))
+
+    Index("fk_Proposal_Field_Session1", table.c.Session_sessionId)
+    Index("fk_Proposal_Field_Proposal_Id1", table.c.Proposal_propId)
+    Index("fk_Proposal_Field_Field_Id1", table.c.Field_fieldId)
 
     return table
 

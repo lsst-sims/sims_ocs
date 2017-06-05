@@ -1,5 +1,7 @@
 import unittest
 
+from lsst.sims.survey.fields import FieldsDatabase, FieldSelection
+
 from lsst.sims.ocs.configuration.science import SouthCelestialPole
 from SALPY_scheduler import scheduler_generalPropConfigC
 
@@ -40,3 +42,9 @@ class SouthCelestialPoleTest(unittest.TestCase):
         self.assertEqual(out_topic.exposures[11], 15.0)
         self.assertEqual(out_topic.max_cloud, 0.7)
         self.assertEqual(out_topic.airmass_bonus, 0.5)
+
+    def test_proposal_fields(self):
+        fd = FieldsDatabase()
+        fs = FieldSelection()
+        ids = self.prop.proposal_fields(fd, fs)
+        self.assertEqual(len(ids), 293)

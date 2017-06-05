@@ -1,5 +1,7 @@
 import unittest
 
+from lsst.sims.survey.fields import FieldsDatabase, FieldSelection
+
 from lsst.sims.ocs.configuration.science import GalacticPlane
 from SALPY_scheduler import scheduler_generalPropConfigC
 
@@ -35,3 +37,9 @@ class GalacticPlaneTest(unittest.TestCase):
         self.assertEqual(out_topic.max_seeing[5], 2.0)
         self.assertEqual(out_topic.num_filter_exposures[5], 2)
         self.assertEqual(out_topic.exposures[11], 15.0)
+
+    def test_proposal_fields(self):
+        fd = FieldsDatabase()
+        fs = FieldSelection()
+        ids = self.prop.proposal_fields(fd, fs)
+        self.assertEqual(len(ids), 233)

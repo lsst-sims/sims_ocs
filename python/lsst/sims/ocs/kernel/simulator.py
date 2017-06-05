@@ -8,10 +8,14 @@ from lsst.ts.astrosky.model import version as astrosky_version
 from lsst.ts.dateloc import version as dateloc_version
 from lsst.ts.observatory.model import version as obs_mod_version
 
+from lsst.sims.survey.fields import FieldsDatabase, FieldSelection
+
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
-from lsst.sims.ocs.database.tables import write_config, write_field, write_proposal
+from lsst.sims.ocs.database.tables import write_config, write_field
+from lsst.sims.ocs.database.tables import write_proposal, write_proposal_field
 from lsst.sims.ocs.environment import CloudModel, SeeingModel
-from lsst.sims.ocs.kernel import DowntimeHandler, ObsProposalHistory, ProposalInfo
+from lsst.sims.ocs.kernel import DowntimeHandler, ObsProposalHistory
+from lsst.sims.ocs.kernel import ProposalInfo, ProposalFieldInfo
 from lsst.sims.ocs.kernel import Sequencer, TargetProposalHistory, TimeHandler
 from lsst.sims.ocs.sal import SalManager, topic_strdict
 from lsst.sims.ocs.setup import LoggingLevel
@@ -52,6 +56,10 @@ class Simulator(object):
         The cloud model instance.
     seeing_model : :class:`.SeeingModel`
         The seeing model instance.
+    field_database : lsst.sims.survey.fields.FieldsDatabase
+        The instance of the fields database.
+    field_selection : lsst.sims.survey.fields.FieldSelection
+        The instance of the field selector.
     """
 
     def __init__(self, options, configuration, database):
@@ -83,6 +91,8 @@ class Simulator(object):
         self.sun = Sun()
         self.cloud_model = CloudModel(self.time_handler)
         self.seeing_model = SeeingModel(self.time_handler)
+        self.field_database = FieldsDatabase()
+        self.field_selection = FieldSelection()
         self.obs_site_info = (self.conf.observing_site.longitude, self.conf.observing_site.latitude)
         self.wait_for_scheduler = not self.opts.no_scheduler
         self.observation_proposals_counted = 1
@@ -175,7 +185,6 @@ class Simulator(object):
         self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
         self.target = self.sal.set_subscribe_topic("target")
-        self.field = self.sal.set_subscribe_topic("field")
         self.cloud = self.sal.set_publish_topic("cloud")
         self.seeing = self.sal.set_publish_topic("seeing")
         self.filter_swap = self.sal.set_subscribe_topic("filterSwap")
@@ -190,34 +199,7 @@ class Simulator(object):
         self.conf_comm.run()
         self.save_configuration()
         self.save_proposal_information()
-
-        # Get fields from scheduler
-        if self.wait_for_scheduler:
-            self.log.info("Retrieving fields from Scheduler")
-            field_set = set()
-            fields_from_dds = 0
-            end_fields = False
-            while True:
-                rcode = self.sal.manager.getNextSample_field(self.field)
-                if self.field.ID == 0:
-                    continue
-                self.log.log(LoggingLevel.EXTENSIVE.value, self.field.ID)
-                if rcode == 0 and self.field.ID == -1:
-                    if end_fields:
-                        break
-                    else:
-                        end_fields = True
-                        continue
-                field_set.add((self.field.ID, self.field.fov, self.field.ra, self.field.dec,
-                               self.field.gl, self.field.gb, self.field.el, self.field.eb))
-                fields_from_dds += 1
-                time.sleep(0.00001)
-
-            self.log.info("DDS retrieved {} field messages.".format(fields_from_dds))
-            self.field_list = [write_field(field, self.db.session_id) for field in sorted(field_set)]
-            self.log.info("{} fields retrieved".format(len(self.field_list)))
-            self.log.log(LoggingLevel.EXTENSIVE.value, "{}".format(self.field_list))
-            self.db.write_table("field", self.field_list)
+        self.save_field_information()
 
         self.log.debug("Duration = {}".format(self.duration))
         for night in xrange(1, int(self.duration) + 1):
@@ -316,22 +298,35 @@ class Simulator(object):
         config_list = [write_config((i + 1, x[0], x[1]), self.db.session_id) for i, x in enumerate(c)]
         self.db.write_table("config", config_list)
 
+    def save_field_information(self):
+        """Save the field information to the DB.
+        """
+        query = self.field_selection.get_all_fields()
+        fields = self.field_database.get_field_set(query)
+        field_list = [write_field(field, self.db.session_id) for field in sorted(fields)]
+        self.db.write_table("field", field_list)
+
     def save_proposal_information(self):
         """Save the active proposal information to the DB.
         """
         proposals = []
         num_proposals = 1
+        proposal_fields = {}
         if self.conf.science.general_props.active is not None:
             for general_config in self.conf.science.general_props.active:
                 proposals.append(write_proposal(ProposalInfo(num_proposals, general_config.name, "General"),
                                                 self.db.session_id))
+                proposal_fields[num_proposals] = general_config.proposal_fields(self.field_database,
+                                                                                self.field_selection)
                 num_proposals += 1
         if self.conf.science.sequence_props.active is not None:
             for sequence_config in self.conf.science.sequence_props.active:
                 proposals.append(write_proposal(ProposalInfo(num_proposals, sequence_config.name, "Sequence"),
                                                 self.db.session_id))
+                proposal_fields[num_proposals] = sequence_config.proposal_fields()
                 num_proposals += 1
         self.db.write_table("proposal", proposals)
+        self.write_proposal_fields(proposal_fields)
 
     def start_day(self):
         """Perform actions at the start of day.
@@ -410,3 +405,21 @@ class Simulator(object):
         else:
             self.comm_time.is_down = False
             self.comm_time.down_duration = down_days
+
+    def write_proposal_fields(self, prop_fields):
+        """Transform the proposal field information and write to the survey database.
+
+        Parameters
+        ----------
+        prop_fields : dict
+            The set of proposal fields information.
+        """
+        num_proposal_fields = 1
+        data = []
+        for prop_id, field_ids in prop_fields.items():
+            for field_id in field_ids:
+                data.append(write_proposal_field(ProposalFieldInfo(num_proposal_fields,
+                                                                   prop_id, field_id),
+                                                 self.db.session_id))
+                num_proposal_fields += 1
+        self.db.write_table("proposal_field", data)
