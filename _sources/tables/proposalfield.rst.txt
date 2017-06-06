@@ -1,0 +1,21 @@
+.. _database-tables-proposalfield:
+
+=============
+ProposalField
+=============
+
+This table lists all of the field Ids associated with a given science proposal.
+
+.. list-table:: 
+    :header-rows: 1
+
+    * -  Column
+      -  Description
+    * -  propFieldId
+      -  The numeric identifier for the particular proposal field.
+    * -  Session_sessionId
+      -  The simulation run session Id.
+    * -  Proposal_propId
+      -  The science proposal identifier.
+    * -  Field_fieldId
+      -  The field identifier.

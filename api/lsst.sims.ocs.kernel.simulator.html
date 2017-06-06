@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.kernel.simulator module &mdash; Simulated OCS 1.0.3 documentation</title>
+  <title>lsst.sims.ocs.kernel.simulator module &mdash; Simulated OCS 1.0.4 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.3 documentation" href="../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.4 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.kernel package" href="lsst.sims.ocs.kernel.html"/>
         <link rel="next" title="lsst.sims.ocs.kernel.time_handler module" href="lsst.sims.ocs.kernel.time_handler.html"/>
         <link rel="prev" title="lsst.sims.ocs.kernel.sequencer module" href="lsst.sims.ocs.kernel.sequencer.html"/> 
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                1.0.3
+                1.0.4
               </div>
             
           
@@ -269,6 +269,18 @@
 <dd><p><a class="reference internal" href="lsst.sims.ocs.environment.seeing_model.html#lsst.sims.ocs.environment.seeing_model.SeeingModel" title="lsst.sims.ocs.environment.seeing_model.SeeingModel"><code class="xref py py-class docutils literal"><span class="pre">SeeingModel</span></code></a> &#8211; The seeing model instance.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.field_database">
+<code class="descname">field_database</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.field_database" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>lsst.sims.survey.fields.FieldsDatabase</em> &#8211; The instance of the fields database.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.field_selection">
+<code class="descname">field_selection</code><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.field_selection" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>lsst.sims.survey.fields.FieldSelection</em> &#8211; The instance of the field selector.</p>
+</dd></dl>
+
 <p>Initialize the class.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -343,6 +355,12 @@ gathering the necessary telemetry topics.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.save_field_information">
+<code class="descname">save_field_information</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.save_field_information"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.save_field_information" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the field information to the DB.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="lsst.sims.ocs.kernel.simulator.Simulator.save_proposal_information">
 <code class="descname">save_proposal_information</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.save_proposal_information"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.save_proposal_information" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the active proposal information to the DB.</p>
@@ -369,6 +387,20 @@ gathering the necessary telemetry topics.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>night</strong> (<em>int</em>) &#8211; The current night.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.simulator.Simulator.write_proposal_fields">
+<code class="descname">write_proposal_fields</code><span class="sig-paren">(</span><em>prop_fields</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/kernel/simulator.html#Simulator.write_proposal_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.kernel.simulator.Simulator.write_proposal_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform the proposal field information and write to the survey database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop_fields</strong> (<em>dict</em>) &#8211; The set of proposal fields information.</td>
 </tr>
 </tbody>
 </table>
@@ -428,7 +460,7 @@ gathering the necessary telemetry topics.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.3',
+            VERSION:'1.0.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.kernel.proposal_info module &mdash; Simulated OCS 1.0.3 documentation</title>
+  <title>lsst.sims.ocs.kernel.proposal_info module &mdash; Simulated OCS 1.0.4 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.3 documentation" href="../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.4 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.kernel package" href="lsst.sims.ocs.kernel.html"/>
         <link rel="next" title="lsst.sims.ocs.kernel.sequencer module" href="lsst.sims.ocs.kernel.sequencer.html"/>
         <link rel="prev" title="lsst.sims.ocs.kernel.downtime_handler module" href="lsst.sims.ocs.kernel.downtime_handler.html"/> 
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                1.0.3
+                1.0.4
               </div>
             
           
@@ -259,6 +259,49 @@
 </dd></dl>
 
 <dl class="class">
+<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo">
+<em class="property">class </em><code class="descclassname">lsst.sims.ocs.kernel.proposal_info.</code><code class="descname">ProposalFieldInfo</code><span class="sig-paren">(</span><em>propFieldId</em>, <em>Proposal_propId</em>, <em>Field_fieldId</em><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<p>Create new instance of ProposalFieldInfo(propFieldId, Proposal_propId, Field_fieldId)</p>
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo.__getnewargs__">
+<code class="descname">__getnewargs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo.__getnewargs__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self as a plain tuple.  Used by copy and pickle.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo.__getstate__">
+<code class="descname">__getstate__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo.__getstate__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exclude the OrderedDict from pickling</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a nicely formatted representation string</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo.Field_fieldId">
+<code class="descname">Field_fieldId</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo.Field_fieldId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo.Proposal_propId">
+<code class="descname">Proposal_propId</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo.Proposal_propId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo.propFieldId">
+<code class="descname">propFieldId</code><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalFieldInfo.propFieldId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="lsst.sims.ocs.kernel.proposal_info.ProposalInfo">
 <em class="property">class </em><code class="descclassname">lsst.sims.ocs.kernel.proposal_info.</code><code class="descname">ProposalInfo</code><span class="sig-paren">(</span><em>propId</em>, <em>propName</em>, <em>propType</em><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.ProposalInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
@@ -305,7 +348,7 @@
 <dt id="lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory">
 <em class="property">class </em><code class="descclassname">lsst.sims.ocs.kernel.proposal_info.</code><code class="descname">TargetProposalHistory</code><span class="sig-paren">(</span><em>propHistId</em>, <em>Proposal_propId</em>, <em>proposalValue</em>, <em>proposalNeed</em>, <em>proposalBonus</em>, <em>proposalBoost</em>, <em>TargetHistory_targetId</em><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
-<p>Create new instance of TargetProposalHistory(propHistId, Proposal_propId, proposalValue, proposalNeed, proposalBonus, proposalBoost, TargetHistory_targetId)</p>
+<p>Simple tuple for handling proposal field information.</p>
 <dl class="method">
 <dt id="lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.__getnewargs__">
 <code class="descname">__getnewargs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lsst.sims.ocs.kernel.proposal_info.TargetProposalHistory.__getnewargs__" title="Permalink to this definition">¶</a></dt>
@@ -414,7 +457,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.3',
+            VERSION:'1.0.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

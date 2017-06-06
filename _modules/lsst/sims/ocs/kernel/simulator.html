@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.kernel.simulator &mdash; Simulated OCS 1.0.3 documentation</title>
+  <title>lsst.sims.ocs.kernel.simulator &mdash; Simulated OCS 1.0.4 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.3 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.4 documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                1.0.3
+                1.0.4
               </div>
             
           
@@ -174,10 +174,14 @@
 <span class="kn">from</span> <span class="nn">lsst.ts.dateloc</span> <span class="k">import</span> <span class="n">version</span> <span class="k">as</span> <span class="n">dateloc_version</span>
 <span class="kn">from</span> <span class="nn">lsst.ts.observatory.model</span> <span class="k">import</span> <span class="n">version</span> <span class="k">as</span> <span class="n">obs_mod_version</span>
 
+<span class="kn">from</span> <span class="nn">lsst.sims.survey.fields</span> <span class="k">import</span> <span class="n">FieldsDatabase</span><span class="p">,</span> <span class="n">FieldSelection</span>
+
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.configuration</span> <span class="k">import</span> <span class="n">ConfigurationCommunicator</span>
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.database.tables</span> <span class="k">import</span> <span class="n">write_config</span><span class="p">,</span> <span class="n">write_field</span><span class="p">,</span> <span class="n">write_proposal</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.database.tables</span> <span class="k">import</span> <span class="n">write_config</span><span class="p">,</span> <span class="n">write_field</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.database.tables</span> <span class="k">import</span> <span class="n">write_proposal</span><span class="p">,</span> <span class="n">write_proposal_field</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.environment</span> <span class="k">import</span> <span class="n">CloudModel</span><span class="p">,</span> <span class="n">SeeingModel</span>
-<span class="kn">from</span> <span class="nn">lsst.sims.ocs.kernel</span> <span class="k">import</span> <span class="n">DowntimeHandler</span><span class="p">,</span> <span class="n">ObsProposalHistory</span><span class="p">,</span> <span class="n">ProposalInfo</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.kernel</span> <span class="k">import</span> <span class="n">DowntimeHandler</span><span class="p">,</span> <span class="n">ObsProposalHistory</span>
+<span class="kn">from</span> <span class="nn">lsst.sims.ocs.kernel</span> <span class="k">import</span> <span class="n">ProposalInfo</span><span class="p">,</span> <span class="n">ProposalFieldInfo</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.kernel</span> <span class="k">import</span> <span class="n">Sequencer</span><span class="p">,</span> <span class="n">TargetProposalHistory</span><span class="p">,</span> <span class="n">TimeHandler</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.sal</span> <span class="k">import</span> <span class="n">SalManager</span><span class="p">,</span> <span class="n">topic_strdict</span>
 <span class="kn">from</span> <span class="nn">lsst.sims.ocs.setup</span> <span class="k">import</span> <span class="n">LoggingLevel</span>
@@ -218,6 +222,10 @@
 <span class="sd">        The cloud model instance.</span>
 <span class="sd">    seeing_model : :class:`.SeeingModel`</span>
 <span class="sd">        The seeing model instance.</span>
+<span class="sd">    field_database : lsst.sims.survey.fields.FieldsDatabase</span>
+<span class="sd">        The instance of the fields database.</span>
+<span class="sd">    field_selection : lsst.sims.survey.fields.FieldSelection</span>
+<span class="sd">        The instance of the field selector.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">configuration</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
@@ -249,6 +257,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sun</span> <span class="o">=</span> <span class="n">Sun</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cloud_model</span> <span class="o">=</span> <span class="n">CloudModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seeing_model</span> <span class="o">=</span> <span class="n">SeeingModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">field_database</span> <span class="o">=</span> <span class="n">FieldsDatabase</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">field_selection</span> <span class="o">=</span> <span class="n">FieldSelection</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">obs_site_info</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">observing_site</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_scheduler</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">no_scheduler</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observation_proposals_counted</span> <span class="o">=</span> <span class="mi">1</span>
@@ -341,7 +351,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">conf_comm</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">comm_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;timeHandler&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_subscribe_topic</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_subscribe_topic</span><span class="p">(</span><span class="s2">&quot;field&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cloud</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;cloud&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seeing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_publish_topic</span><span class="p">(</span><span class="s2">&quot;seeing&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filter_swap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">set_subscribe_topic</span><span class="p">(</span><span class="s2">&quot;filterSwap&quot;</span><span class="p">)</span>
@@ -356,34 +365,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">conf_comm</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save_configuration</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save_proposal_information</span><span class="p">()</span>
-
-        <span class="c1"># Get fields from scheduler</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_scheduler</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Retrieving fields from Scheduler&quot;</span><span class="p">)</span>
-            <span class="n">field_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-            <span class="n">fields_from_dds</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">end_fields</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">rcode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sal</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">getNextSample_field</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">)</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">ID</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">ID</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">rcode</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">ID</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">end_fields</span><span class="p">:</span>
-                        <span class="k">break</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">end_fields</span> <span class="o">=</span> <span class="kc">True</span>
-                        <span class="k">continue</span>
-                <span class="n">field_set</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">fov</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">ra</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">dec</span><span class="p">,</span>
-                               <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">gl</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">gb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">el</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">eb</span><span class="p">))</span>
-                <span class="n">fields_from_dds</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.00001</span><span class="p">)</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;DDS retrieved </span><span class="si">{}</span><span class="s2"> field messages.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fields_from_dds</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">field_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">write_field</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">session_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">field_set</span><span class="p">)]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> fields retrieved&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_list</span><span class="p">)))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">EXTENSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_list</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="s2">&quot;field&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_field_information</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Duration = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">night</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
@@ -482,22 +464,35 @@
         <span class="n">config_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">write_config</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">session_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">c</span><span class="p">)]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="n">config_list</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Simulator.save_field_information"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.save_field_information">[docs]</a>    <span class="k">def</span> <span class="nf">save_field_information</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save the field information to the DB.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_selection</span><span class="o">.</span><span class="n">get_all_fields</span><span class="p">()</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_database</span><span class="o">.</span><span class="n">get_field_set</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">field_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">write_field</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">session_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">fields</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="s2">&quot;field&quot;</span><span class="p">,</span> <span class="n">field_list</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Simulator.save_proposal_information"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.save_proposal_information">[docs]</a>    <span class="k">def</span> <span class="nf">save_proposal_information</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the active proposal information to the DB.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">proposals</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">num_proposals</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">proposal_fields</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">general_props</span><span class="o">.</span><span class="n">active</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">general_config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">general_props</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
                 <span class="n">proposals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">write_proposal</span><span class="p">(</span><span class="n">ProposalInfo</span><span class="p">(</span><span class="n">num_proposals</span><span class="p">,</span> <span class="n">general_config</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;General&quot;</span><span class="p">),</span>
                                                 <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">session_id</span><span class="p">))</span>
+                <span class="n">proposal_fields</span><span class="p">[</span><span class="n">num_proposals</span><span class="p">]</span> <span class="o">=</span> <span class="n">general_config</span><span class="o">.</span><span class="n">proposal_fields</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_database</span><span class="p">,</span>
+                                                                                <span class="bp">self</span><span class="o">.</span><span class="n">field_selection</span><span class="p">)</span>
                 <span class="n">num_proposals</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">sequence_props</span><span class="o">.</span><span class="n">active</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">sequence_config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">sequence_props</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
                 <span class="n">proposals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">write_proposal</span><span class="p">(</span><span class="n">ProposalInfo</span><span class="p">(</span><span class="n">num_proposals</span><span class="p">,</span> <span class="n">sequence_config</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;Sequence&quot;</span><span class="p">),</span>
                                                 <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">session_id</span><span class="p">))</span>
+                <span class="n">proposal_fields</span><span class="p">[</span><span class="n">num_proposals</span><span class="p">]</span> <span class="o">=</span> <span class="n">sequence_config</span><span class="o">.</span><span class="n">proposal_fields</span><span class="p">()</span>
                 <span class="n">num_proposals</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="s2">&quot;proposal&quot;</span><span class="p">,</span> <span class="n">proposals</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="s2">&quot;proposal&quot;</span><span class="p">,</span> <span class="n">proposals</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_proposal_fields</span><span class="p">(</span><span class="n">proposal_fields</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Simulator.start_day"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.start_day">[docs]</a>    <span class="k">def</span> <span class="nf">start_day</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform actions at the start of day.</span>
@@ -575,7 +570,25 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">time_handler</span><span class="o">.</span><span class="n">update_time</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">comm_time</span><span class="o">.</span><span class="n">is_down</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">comm_time</span><span class="o">.</span><span class="n">down_duration</span> <span class="o">=</span> <span class="n">down_days</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comm_time</span><span class="o">.</span><span class="n">down_duration</span> <span class="o">=</span> <span class="n">down_days</span></div>
+
+<div class="viewcode-block" id="Simulator.write_proposal_fields"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.kernel.simulator.html#lsst.sims.ocs.kernel.simulator.Simulator.write_proposal_fields">[docs]</a>    <span class="k">def</span> <span class="nf">write_proposal_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop_fields</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Transform the proposal field information and write to the survey database.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop_fields : dict</span>
+<span class="sd">            The set of proposal fields information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_proposal_fields</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">prop_id</span><span class="p">,</span> <span class="n">field_ids</span> <span class="ow">in</span> <span class="n">prop_fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">field_id</span> <span class="ow">in</span> <span class="n">field_ids</span><span class="p">:</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">write_proposal_field</span><span class="p">(</span><span class="n">ProposalFieldInfo</span><span class="p">(</span><span class="n">num_proposal_fields</span><span class="p">,</span>
+                                                                   <span class="n">prop_id</span><span class="p">,</span> <span class="n">field_id</span><span class="p">),</span>
+                                                 <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">session_id</span><span class="p">))</span>
+                <span class="n">num_proposal_fields</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="s2">&quot;proposal_field&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -612,7 +625,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'1.0.3',
+            VERSION:'1.0.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

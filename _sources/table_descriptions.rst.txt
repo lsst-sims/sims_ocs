@@ -17,6 +17,8 @@ Database Tables
 
    tables/proposal
 
+   tables/proposalfield
+
    tables/scheduleddowntime
 
    tables/session

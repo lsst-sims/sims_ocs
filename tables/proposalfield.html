@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ObsProposalHistory &mdash; Simulated OCS 1.0.4 documentation</title>
+  <title>ProposalField &mdash; Simulated OCS 1.0.4 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="Simulated OCS 1.0.4 documentation" href="../index.html"/>
         <link rel="up" title="Survey Database" href="../database.html"/>
-        <link rel="next" title="Proposal" href="proposal.html"/>
-        <link rel="prev" title="ObsHistory" href="obshistory.html"/> 
+        <link rel="next" title="ScheduledDowntime" href="scheduleddowntime.html"/>
+        <link rel="prev" title="Proposal" href="proposal.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -148,13 +148,13 @@
         
           <li><a href="../database.html">Survey Database</a> &raquo;</li>
         
-      <li>ObsProposalHistory</li>
+      <li>ProposalField</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/tables/obsproposalhistory.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/tables/proposalfield.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -167,9 +167,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="obsproposalhistory">
-<span id="database-tables-obsproposalhistory"></span><h1>ObsProposalHistory<a class="headerlink" href="#obsproposalhistory" title="Permalink to this headline">¶</a></h1>
-<p>This table records all of the proposals and proposal information for a given observation.</p>
+  <div class="section" id="proposalfield">
+<span id="database-tables-proposalfield"></span><h1>ProposalField<a class="headerlink" href="#proposalfield" title="Permalink to this headline">¶</a></h1>
+<p>This table lists all of the field Ids associated with a given science proposal.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="50%" />
@@ -181,29 +181,17 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>propHistId</td>
-<td>The numeric identifier for the particular proposal history entry.</td>
+<tr class="row-even"><td>propFieldId</td>
+<td>The numeric identifier for the particular proposal field.</td>
 </tr>
 <tr class="row-odd"><td>Session_sessionId</td>
 <td>The simulation run session Id.</td>
 </tr>
 <tr class="row-even"><td>Proposal_propId</td>
-<td>Numeric identifier that relates to an entry in the Proposal table.</td>
+<td>The science proposal identifier.</td>
 </tr>
-<tr class="row-odd"><td>proposalValue</td>
-<td>The value (need + bonus) of the observation assigned by a particular proposal.</td>
-</tr>
-<tr class="row-even"><td>proposalNeed</td>
-<td>The need of the observation assigned by a particular proposal.</td>
-</tr>
-<tr class="row-odd"><td>proposalBonus</td>
-<td>The bonus of the observation assigned by a particular proposal.</td>
-</tr>
-<tr class="row-even"><td>proposalBoost</td>
-<td>The time-balancing boost assigned by a particular proposal.</td>
-</tr>
-<tr class="row-odd"><td>ObsHistory_observationId</td>
-<td>Numeric identifier that relates to an entry in the ObsHistory table.</td>
+<tr class="row-odd"><td>Field_fieldId</td>
+<td>The field identifier.</td>
 </tr>
 </tbody>
 </table>
@@ -219,10 +207,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="proposal.html" class="btn btn-neutral float-right" title="Proposal" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="scheduleddowntime.html" class="btn btn-neutral float-right" title="ScheduledDowntime" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="obshistory.html" class="btn btn-neutral" title="ObsHistory" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="proposal.html" class="btn btn-neutral" title="Proposal" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
