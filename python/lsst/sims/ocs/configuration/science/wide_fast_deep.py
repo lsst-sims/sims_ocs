@@ -60,7 +60,7 @@ class WideFastDeep(General):
         # Scheduling information
         # ----------------------
 
-        self.scheduling.max_num_targets = 100
+        self.scheduling.max_num_targets = 500
         self.scheduling.accept_serendipity = False
         self.scheduling.accept_consecutive_visits = False
         self.scheduling.airmass_bonus = 0.5

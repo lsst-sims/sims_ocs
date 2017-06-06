@@ -13,4 +13,4 @@ class ParkTest(unittest.TestCase):
         self.assertEqual(self.park.telescope_rotator, 0.0)
         self.assertEqual(self.park.dome_altitude, 90.0)
         self.assertEqual(self.park.dome_azimuth, 0.0)
-        self.assertEqual(self.park.filter_position, 'r')
+        self.assertEqual(self.park.filter_position, 'z')

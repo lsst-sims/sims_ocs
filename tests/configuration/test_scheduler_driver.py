@@ -12,7 +12,7 @@ class SchedulerDriverTest(unittest.TestCase):
         self.assertTrue(self.sched_driver.time_balancing)
         self.assertEqual(self.sched_driver.timecost_time_max, 150.0)
         self.assertEqual(self.sched_driver.timecost_time_ref, 5.0)
-        self.assertEqual(self.sched_driver.timecost_cost_ref, 0.033)
+        self.assertEqual(self.sched_driver.timecost_cost_ref, 0.03)
         self.assertEqual(self.sched_driver.timecost_weight, 1.0)
         self.assertEqual(self.sched_driver.filtercost_weight, 1.0)
         self.assertEqual(self.sched_driver.night_boundary, -12.0)

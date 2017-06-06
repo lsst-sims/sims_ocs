@@ -137,7 +137,7 @@ class SequencerTest(unittest.TestCase):
         self.assertEqual(observatory_state.telescope_azimuth, 0.0)
         self.assertEqual(observatory_state.dome_altitude, 90.0)
         self.assertEqual(observatory_state.dome_azimuth, 0.0)
-        self.assertEqual(observatory_state.filter_position, 'r')
+        self.assertEqual(observatory_state.filter_position, 'z')
         self.assertEqual(observatory_state.filter_mounted, 'g,r,i,z,y')
         self.assertEqual(observatory_state.filter_unmounted, 'u')
 
