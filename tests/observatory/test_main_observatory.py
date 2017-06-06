@@ -109,7 +109,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(ss.slewStateId, 0)
         self.assertEqual(ss.telAlt, 86.5)
         self.assertEqual(ss.domeAlt, 90.0)
-        self.assertEqual(ss.filter, 'r')
+        self.assertEqual(ss.filter, 'z')
 
     def test_get_slew_activites(self):
         self.observatory_configure()

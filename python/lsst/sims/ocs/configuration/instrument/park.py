@@ -22,4 +22,4 @@ class Park(pexConfig.Config):
         self.telescope_rotator = 0.0
         self.dome_altitude = 90.0
         self.dome_azimuth = 0.0
-        self.filter_position = 'r'
+        self.filter_position = 'z'

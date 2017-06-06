@@ -35,7 +35,7 @@ class SchedulerDriver(pexConfig.Config):
         self.time_balancing = True
         self.timecost_time_max = 150.0
         self.timecost_time_ref = 5.0
-        self.timecost_cost_ref = 0.033
+        self.timecost_cost_ref = 0.03
         self.timecost_weight = 1.0
         self.filtercost_weight = 1.0
         self.night_boundary = -12.0

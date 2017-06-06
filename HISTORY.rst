@@ -3,6 +3,15 @@
 History
 -------
 
+1.0.4 (2017-06-XX)
+~~~~~~~~~~~~~~~~~~
+
+* Baseline parameter changes
+
+  * WideFastDeep.max_num_targets = 500
+  * Park.filter_position = z
+  * SchedulerDriver.timecost_cost_ref = 0.03 
+
 1.0.3 (2017-05-30)
 ~~~~~~~~~~~~~~~~~~
 
