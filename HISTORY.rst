@@ -3,9 +3,11 @@
 History
 -------
 
-1.0.4 (2017-06-XX)
+1.0.4 (2017-06-06)
 ~~~~~~~~~~~~~~~~~~
 
+* Added ProposalField table to survey database
+* Fields no longer received from Scheduler, internally generated
 * Baseline parameter changes
 
   * WideFastDeep.max_num_targets = 500
