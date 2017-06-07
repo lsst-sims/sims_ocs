@@ -3,6 +3,13 @@
 History
 -------
 
+1.0.5 (2017-06-07)
+~~~~~~~~~~~~~~~~~~
+
+* Baseline parameter changes
+
+  * SchedulerDriver.timecost_cost_ref = 0.3 
+
 1.0.4 (2017-06-06)
 ~~~~~~~~~~~~~~~~~~
 
