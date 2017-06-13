@@ -56,7 +56,6 @@ def main(args):
                           sqlite_session_save_path=args.sqlite_session_save_dir)
 
         session_id = db.new_session(args.startup_comment)
-        # args.session_id_start = session_id
 
         log_file = generate_logfile_path(args.log_path, session_id)
         console_detail, file_detail = set_log_levels(args.verbose)
