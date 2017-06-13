@@ -37,6 +37,7 @@ def write_version(filename="version.py"):
         vfile.write(os.linesep)
         vfile.write("__all__ = ('__version__', '__version_info__')" + os.linesep)
 
+
 if __name__ == "__main__":
     write_version()
 

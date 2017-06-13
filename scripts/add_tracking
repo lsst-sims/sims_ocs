@@ -44,6 +44,7 @@ def main(opts):
 
     tracking.update_session(eng_comment, hostname=hostname)
 
+
 if __name__ == '__main__':
     description = ["This script will add a tracking record to the production tracking database"]
     description.append("in the event one does not get added from a simulation.")

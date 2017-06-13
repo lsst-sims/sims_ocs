@@ -13,6 +13,7 @@ def main(args):
     write_file_config(args)
     db.create_db()
 
+
 if __name__ == '__main__':
     description = ["This script creates session database for version 4 of"]
     description.append("the Operations Simulator. You need to provide a directory")
