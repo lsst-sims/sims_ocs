@@ -143,14 +143,24 @@ def main(args):
         if args.track_session:
             tracking.update_session("Simulation finished successfully in {:.2f} seconds".format(run_time))
 
-    except BaseException:
-        logger.exception("An exception was thrown in SOCS!")
-        if args.track_session:
-            tracking.update_session("Simulation was not completed correctly.")
+    except BaseException as err:
+        try:
+            logger.exception("An exception was thrown in SOCS!")
+            if args.track_session:
+                tracking.update_session("Simulation was not completed correctly.")
+        except UnboundLocalError:
+            # Had issue before logger got setup.
+            print(err.message)
+            print(err.statement)
 
     finally:
-        logger.info("Waiting for Scheduler to finish.")
-        stop_programs(log_pid, sched_pid, logger)
+        try:
+            logger.info("Waiting for Scheduler to finish.")
+            stop_programs(log_pid, sched_pid, logger)
+        except UnboundLocalError:
+            # Had issue before logger got setup, do nothing here since nothing got started.
+            pass
+
 
 if __name__ == "__main__":
     parser = create_parser()
