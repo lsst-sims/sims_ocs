@@ -56,7 +56,6 @@ def main(args):
                           sqlite_session_save_path=args.sqlite_session_save_dir)
 
         session_id = db.new_session(args.startup_comment)
-        # args.session_id_start = session_id
 
         log_file = generate_logfile_path(args.log_path, session_id)
         console_detail, file_detail = set_log_levels(args.verbose)
@@ -118,13 +117,10 @@ def main(args):
         logger.info("SOCS waited {} seconds for Scheduler to complete init.".format(wait_time))
         try:
             sim.run()
-        except:
+        except BaseException:
             if not sim.db.data_empty:
                 sim.db.write()
             sim.finalize()
-            logger.exception("An exception was thrown in SOCS!")
-            if args.track_session:
-                tracking.update_session("Simulation was not completed correctly.")
             raise
 
         sim.finalize()
@@ -146,9 +142,24 @@ def main(args):
         if args.track_session:
             tracking.update_session("Simulation finished successfully in {:.2f} seconds".format(run_time))
 
+    except BaseException as err:
+        try:
+            logger.exception("An exception was thrown in SOCS!")
+            if args.track_session:
+                tracking.update_session("Simulation was not completed correctly.")
+        except UnboundLocalError:
+            # Had issue before logger got setup.
+            print(err.message)
+            print(err.statement)
+
     finally:
-        logger.info("Waiting for Scheduler to finish.")
-        stop_programs(log_pid, sched_pid, logger)
+        try:
+            logger.info("Waiting for Scheduler to finish.")
+            stop_programs(log_pid, sched_pid, logger)
+        except UnboundLocalError:
+            # Had issue before logger got setup, do nothing here since nothing got started.
+            pass
+
 
 if __name__ == "__main__":
     parser = create_parser()
