@@ -22,6 +22,7 @@ class LoggingLevel(Enum):
     EXTENSIVE = 5
     TRACE = 2
 
+
 DETAIL_LEVEL = {
     0: logging.ERROR,
     1: logging.INFO,
