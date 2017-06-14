@@ -3,6 +3,12 @@
 History
 -------
 
+1.0.6 (2017-06-14)
+~~~~~~~~~~~~~~~~~~
+
+* Extended exception handling in driver script to catch startup issues
+* Cleaned up liniting errors
+
 1.0.5 (2017-06-07)
 ~~~~~~~~~~~~~~~~~~
 
