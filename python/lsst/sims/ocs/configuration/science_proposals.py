@@ -108,8 +108,8 @@ class ScienceProposals(pexConfig.Config):
             The directory in which to save the configuration files.
         """
         for prop_name, prop in self.general_props.items():
-            if prop_name in self.general_props.names:
+            if self.general_props.names is not None and prop_name in self.general_props.names:
                 prop.save(os.path.join(save_dir, prop_name.lower() + "_prop.py"))
         for prop_name, prop in self.sequence_props.items():
-            if prop_name in self.sequence_props.names:
+            if self.sequence_props.names is not None and prop_name in self.sequence_props.names:
                 prop.save(os.path.join(save_dir, prop_name.lower() + "_prop.py"))
