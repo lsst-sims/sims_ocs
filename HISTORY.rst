@@ -3,6 +3,12 @@
 History
 -------
 
+1.0.7 (2017-06-19)
+~~~~~~~~~~~~~~~~~~
+
+* Fix crash when saving configuration with only one type of proposal present
+* Synchronize timeouts between SOCS and Scheduler when greater than 180 seconds
+
 1.0.6 (2017-06-14)
 ~~~~~~~~~~~~~~~~~~
 
