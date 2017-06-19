@@ -38,10 +38,11 @@ class SimulatorTest(unittest.TestCase):
         import collections
 
         self.options = collections.namedtuple("options", ["frac_duration", "no_scheduler",
-                                                          "scheduler_version"])
+                                                          "scheduler_version", "scheduler_timeout"])
         self.options.frac_duration = 0.5
         self.options.no_scheduler = True
         self.options.scheduler_version = "v0.8"
+        self.options.scheduler_timeout = 60.0
 
         self.configuration = SimulationConfig()
         self.configuration.load_proposals()

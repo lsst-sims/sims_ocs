@@ -97,6 +97,9 @@ class Simulator(object):
         self.wait_for_scheduler = not self.opts.no_scheduler
         self.observation_proposals_counted = 1
         self.target_proposals_counted = 1
+        self.socs_timeout = 180.0  # seconds
+        if self.opts.scheduler_timeout > self.socs_timeout:
+            self.socs_timeout = self.opts.scheduler_timeout
 
     @property
     def duration(self):
@@ -165,7 +168,7 @@ class Simulator(object):
                 break
             else:
                 tf = time.time()
-                if (tf - lasttime) > 180.0:
+                if (tf - lasttime) > self.socs_timeout:
                     raise SchedulerTimeoutError("The Scheduler is not serving targets!")
 
     def initialize(self):
