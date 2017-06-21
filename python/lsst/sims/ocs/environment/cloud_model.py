@@ -45,9 +45,14 @@ class CloudModel(object):
         """
         delta_time += self.offset
         date = delta_time % self.cloud_dates[-1]
-        date_delta = numpy.abs(self.cloud_dates - date)
-        idx = numpy.where(date_delta == numpy.min(date_delta))
-        return self.cloud_values[idx][0]
+        idx = numpy.searchsorted(self.cloud_dates, date)
+        # searchsorted ensures that left < date < right
+        # but we need to know if date is closer to left or to right
+        left = self.cloud_dates[idx - 1]
+        right = self.cloud_dates[idx]
+        if date - left < right - date:
+            idx -= 1
+        return self.cloud_values[idx]
 
     def initialize(self, cloud_file=""):
         """Configure the cloud information.
@@ -76,7 +81,7 @@ class CloudModel(object):
 
         with sqlite3.connect(self.cloud_db) as conn:
             cur = conn.cursor()
-            query = "select c_date, cloud from Cloud;"
+            query = "select c_date, cloud from Cloud order by c_date;"
             cur.execute(query)
             results = numpy.array(cur.fetchall())
             self.cloud_dates = numpy.hsplit(results, 2)[0].flatten()
