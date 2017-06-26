@@ -158,11 +158,19 @@ class SequencerTest(unittest.TestCase):
         self.initialize_sequencer()
         target, time_handler = self.create_objects()
         target.targetId = -1
+        target.filter = ''
+        target.num_exposures = 1
 
         observation, slew, exposures = self.seq.observe_target(target, time_handler)
 
         self.assertEqual(time_handler.current_timestamp, 60.0)
         self.assertEqual(observation.targetId, target.targetId)
+        self.assertEqual(observation.filter, 'z')
+        self.assertListEqual(list(observation.exposure_times), [15, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        self.assertEqual(observation.num_exposures, 1)
+        self.assertEqual(observation.seeing_fwhm_eff, 0.1)
+        self.assertEqual(observation.sky_brightness, 30.0)
+        self.assertEqual(observation.airmass, 1.0)
         self.assertEqual(self.seq.targets_received, 0)
         self.assertEqual(self.seq.observations_made, 0)
         self.assertEqual(self.seq.targets_missed, 1)

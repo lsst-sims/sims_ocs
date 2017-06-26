@@ -199,6 +199,18 @@ class Sequencer(object):
             self.log.log(LoggingLevel.EXTENSIVE.value, "No target received!")
             self.observation.observationId = target.targetId
             self.observation.targetId = target.targetId
+            if target.filter == '':
+                self.observation.filter = 'z'
+            if target.seeing == 0.0:
+                self.observation.seeing_fwhm_eff = 0.1
+            if sum(target.exposure_times) == 0.0:
+                for i in range(target.num_exposures):
+                    self.observation.exposure_times[i] = 15
+                self.observation.num_exposures = 1
+            if target.airmass == 0.0:
+                self.observation.airmass = 1.0
+            if target.sky_brightness == 0.0:
+                self.observation.sky_brightness = 30.0
             slew_info = None
             exposure_info = None
             th.update_time(*self.idle_delay)
