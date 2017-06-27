@@ -205,7 +205,7 @@ class Simulator(object):
         self.save_field_information()
 
         self.log.debug("Duration = {}".format(self.duration))
-        for night in xrange(1, int(self.duration) + 1):
+        for night in range(1, int(self.duration) + 1):
             self.start_night(night)
 
             while self.time_handler.current_timestamp < self.end_of_night:

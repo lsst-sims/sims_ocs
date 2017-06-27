@@ -96,7 +96,7 @@ def main(args):
 
         sch_cmd = ["scheduler.py", "-s", "--log-port={}".format(log_port),
                    "--console-format=Scheduler: %(message)s"]
-        sch_cmd.extend(["-v" for i in xrange(args.verbose)])
+        sch_cmd.extend(["-v" for i in range(args.verbose)])
         if args.scheduler_timeout is not None:
             sch_cmd.append("--timeout={}".format(args.scheduler_timeout))
         if args.profile:

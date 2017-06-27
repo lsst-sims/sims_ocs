@@ -99,7 +99,7 @@ class MainObservatory(object):
         shutter_time = 2.0 * (0.5 * camera_config.shutter_time)
 
         visit_time = 0.0
-        for i in xrange(target.num_exposures):
+        for i in range(target.num_exposures):
             self.exposures_made += 1
             effective_exposure_time = target.exposure_times[i]
             self.target_exposure_list.append(TargetExposure(self.exposures_made, i + 1,
