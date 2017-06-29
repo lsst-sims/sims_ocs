@@ -1,3 +1,5 @@
+from builtins import object
+from builtins import str
 import SALPY_scheduler
 
 __all__ = ["SalManager"]

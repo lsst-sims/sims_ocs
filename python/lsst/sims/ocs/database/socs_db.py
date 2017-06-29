@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from builtins import object
 import collections
 from datetime import datetime
 import logging
