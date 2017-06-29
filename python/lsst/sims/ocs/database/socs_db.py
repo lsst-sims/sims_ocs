@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import collections
 from datetime import datetime
 import logging
@@ -6,7 +7,7 @@ import os
 from sqlalchemy import create_engine, desc, exc, MetaData
 
 from lsst.sims.ocs.setup import LoggingLevel
-import tables
+from . import tables
 from lsst.sims.ocs.utilities import expand_path, get_hostname, get_user, get_version
 from lsst.sims.ocs.utilities.socs_exceptions import SocsDatabaseError
 

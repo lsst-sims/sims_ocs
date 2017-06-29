@@ -31,7 +31,7 @@ def main():
         doc = rst.Document(table_name)
 
         # Get the table descriptions
-        table_doc = " ".join([l.strip() for l in func.func_doc.split(os.linesep)])
+        table_doc = " ".join([l.strip() for l in func.__doc__.split(os.linesep)])
         try:
             table_descr = table_descr_match.findall(table_doc)[0].strip()
         except IndexError:

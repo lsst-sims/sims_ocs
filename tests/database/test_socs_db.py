@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import os
 import random
 import shutil
@@ -10,7 +11,7 @@ except ImportError:
 
 from lsst.sims.ocs.database.socs_db import SocsDatabase
 from lsst.sims.ocs.database.tables import write_target_history
-import topic_helpers
+from . import topic_helpers
 
 class SocsDatabaseSqliteTest(unittest.TestCase):
 
