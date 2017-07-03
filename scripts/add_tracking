@@ -55,7 +55,8 @@ if __name__ == '__main__':
     parser.add_argument("-v", "--verbose", dest="verbose", action="store_true",
                         help="Flag to print out certain information.")
     parser.add_argument("--session-code", dest="session_code", choices=["science", "code_dev", "system",
-                        "engineering"], default="science", help="Set the type of simulation session for "
+                                                                        "engineering"],
+                        default="science", help="Set the type of simulation session for "
                         "the OpSim tracking database.")
     parser.add_argument("--tracking-db", dest="tracking_db", help="Option to set an alternative URL "
                         "for the OpSim tracking database.")

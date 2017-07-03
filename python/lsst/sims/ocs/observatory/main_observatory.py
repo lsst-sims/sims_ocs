@@ -1,3 +1,6 @@
+from builtins import object
+from builtins import range
+from builtins import str
 import copy
 import logging
 import math

@@ -1,3 +1,4 @@
+from builtins import object
 import pkg_resources
 import sqlite3
 

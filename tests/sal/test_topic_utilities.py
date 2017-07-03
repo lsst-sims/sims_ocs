@@ -1,3 +1,4 @@
+from builtins import str
 import unittest
 
 from lsst.sims.ocs.sal import topic_strdict
@@ -8,7 +9,7 @@ class TopicUtilitiesTest(unittest.TestCase):
 
     def test_topic_string_creation(self):
         output = topic_strdict(target)
-        self.assertEqual(output.keys()[0], "airmass")
+        self.assertEqual(list(output.keys())[0], "airmass")
         self.assertEqual(output["targetId"], str(target.targetId))
         self.assertEqual(output["angle"], "{:.3f}".format(target.angle))
 

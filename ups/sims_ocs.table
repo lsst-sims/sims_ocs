@@ -1,4 +1,5 @@
 setupRequired(python)
+setupRequired(python_future)
 setupRequired(pex_config)
 setupRequired(sconsUtils)
 setupRequired(sims_survey_fields)

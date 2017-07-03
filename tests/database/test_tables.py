@@ -1,10 +1,11 @@
+from __future__ import absolute_import
 import unittest
 
 from sqlalchemy import MetaData
 
 import lsst.sims.ocs.database.tables as tbls
 
-import topic_helpers
+from . import topic_helpers
 
 class TablesTest(unittest.TestCase):
 

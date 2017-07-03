@@ -1,4 +1,5 @@
 from __future__ import division
+from builtins import object
 import logging
 
 __all__ = ["VariationalModel"]
@@ -67,6 +68,6 @@ class VariationalModel(object):
         time_frac : float
             The fraction of survey completion.
         """
-        for key in sub_system.keys():
+        for key in sub_system:
             if "maxspeed" in key or "accel" in key or "decel" in key:
                 sub_system[key] *= (1.0 - (change / 100.) * time_frac)

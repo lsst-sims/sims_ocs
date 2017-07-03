@@ -50,7 +50,7 @@ class General(pexConfig.Config):
                 if i < num_selections - 1:
                     combine_list.append("or")
         except TypeError:
-            region_cuts = self.sky_region.selections.values()
+            region_cuts = list(self.sky_region.selections.values())
             combine_list.extend(self.sky_region.combiners)
 
         # Handle the sky region selections

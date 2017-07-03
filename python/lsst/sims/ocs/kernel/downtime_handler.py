@@ -1,3 +1,5 @@
+from builtins import object
+from builtins import range
 import logging
 
 from lsst.sims.ocs.downtime.scheduled_downtime import ScheduledDowntime

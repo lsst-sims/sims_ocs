@@ -47,7 +47,8 @@ def create_parser():
     track_grp.add_argument("--tracking-db", dest="tracking_db", help="Option to set an alternative URL "
                            "for the OpSim tracking database.")
     track_grp.add_argument("--session-code", dest="session_code", choices=["science", "code_dev", "system",
-                           "engineering"], default="science", help="Set the type of simulation session for "
+                                                                           "engineering"],
+                           default="science", help="Set the type of simulation session for "
                            "the OpSim tracking database.")
 
     config_group_descr = ["This group of arguments controls the configuration of the simulated survey."]
