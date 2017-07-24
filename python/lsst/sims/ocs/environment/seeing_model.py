@@ -84,9 +84,14 @@ class SeeingModel(object):
         """
         delta_time += self.offset
         date = delta_time % self.seeing_dates[-1]
-        date_delta = numpy.abs(self.seeing_dates - date)
-        idx = numpy.where(date_delta == numpy.min(date_delta))
-        return self.seeing_values[idx][0]
+        idx = numpy.searchsorted(self.seeing_dates, date)
+        # searchsorted ensures that left < date < right
+        # but we need to know if date is closer to left or to right
+        left = self.seeing_dates[idx - 1]
+        right = self.seeing_dates[idx]
+        if date - left < right - date:
+            idx -= 1
+        return self.seeing_values[idx]
 
     def initialize(self, environment_config, filters_config):
         """Configure the seeing information.
@@ -125,7 +130,7 @@ class SeeingModel(object):
 
         with sqlite3.connect(self.seeing_db) as conn:
             cur = conn.cursor()
-            query = "select s_date, seeing from Seeing;"
+            query = "select s_date, seeing from Seeing order by s_date;"
             cur.execute(query)
             results = numpy.array(cur.fetchall())
             self.seeing_dates = numpy.hsplit(results, 2)[0].flatten()
