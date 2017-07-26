@@ -77,7 +77,7 @@ LSST Stack Installation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 The SOCS and Scheduler installation require a set of packages from Python and the LSST Science Pipelines. 
-Follow the installation instructions from `here <https://pipelines.lsst.io/install/newinstall.html#installing-from-source-with-newinstall-sh>`_ to get a minimal setup. Go ahead and let the stack software provide Python unless you feel comfortable providing your own. Follow the instructions to get into the stack environment. The instructions will refer to the stack installation directory as ``stack_install_dir``. It is recommended to use a conda environment especially if you are going to use the stack for other reasons. To create an environment, do the following::
+Follow the installation instructions from `here <https://pipelines.lsst.io/install/newinstall.html>`_ to get a minimal setup. In the `step <https://pipelines.lsst.io/install/newinstall.html#installation-set-up>`_ that gets the ``newinstall.sh`` script, replace the numeric version number with ``master``. Go ahead and let the stack software provide Python unless you feel comfortable providing your own. Follow the instructions to get into the stack environment. The instructions will refer to the stack installation directory as ``stack_install_dir``. It is recommended to use a conda environment especially if you are going to use the stack for other reasons. To create an environment, do the following::
 
     conda create -n opsim4 --clone=root
     source activate opsim4
