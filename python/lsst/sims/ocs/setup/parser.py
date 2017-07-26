@@ -57,10 +57,12 @@ def create_parser():
                           "the survey configuration. If a directory is provided, it is assumed all of the "
                           "configuration files reside there.")
     conf_grp.add_argument("--config-save-dir", dest="config_save_dir", default='',
-                          help="Set a directory to save the configuration files in. The default behavior "
-                          "will be to save the files in the execution directory.")
+                          help="Set another directory to save the configuration file directory in (see "
+                          "--save-config). The default behavior will be to save the directory in the "
+                          "execution directory.")
     conf_grp.add_argument("--save-config", dest="save_config", action="store_true",
-                          help="Flag to save the simulation configuration.")
+                          help="Flag to save the simulation configuration. This will create a "
+                          "config_<session Id> directory that will contain the configuration files.")
 
     log_group_descr = ["This group of arguments controls the logging of the application."]
     logging = parser.add_argument_group("logging", " ".join(log_group_descr))
