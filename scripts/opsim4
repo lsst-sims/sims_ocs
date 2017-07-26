@@ -131,8 +131,8 @@ def main(args):
                 args.config_save_dir = config_dir
             else:
                 args.config_save_dir = expand_path(os.path.join(args.config_save_dir, config_dir))
-                if not os.path.exists(args.config_save_dir):
-                    os.mkdir(args.config_save_dir)
+            if not os.path.exists(args.config_save_dir):
+                os.mkdir(args.config_save_dir)
             configuration.save(args.config_save_dir)
             logger.info("Finished saving survey configuration")
 
