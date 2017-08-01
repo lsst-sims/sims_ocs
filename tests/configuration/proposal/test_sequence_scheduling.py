@@ -14,3 +14,9 @@ class SequenceSchedulingTest(unittest.TestCase):
         self.assertEqual(self.sched.airmass_bonus, 0.5)
         self.assertTrue(self.sched.restart_lost_sequences)
         self.assertTrue(self.sched.restart_complete_sequences)
+        self.assertEqual(self.sched.max_visits_goal, 250000)
+
+    def test_max_visits_goal_with_bad_value(self):
+        self.sched.max_visits_goal = 0
+        with self.assertRaises(ValueError):
+            self.sched.validate()
