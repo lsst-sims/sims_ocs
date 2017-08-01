@@ -19,6 +19,8 @@ class SchedulerDriver(pexConfig.Config):
                                       float)
     filtercost_weight = pexConfig.Field('The weighting value to apply to the filter change cost function '
                                         'result.', float)
+    propboost_weight = pexConfig.Field('The weighting value to apply to the time balancing equations. This '
+                                       'parameter should be greater than or equal to zero.', float)
     night_boundary = pexConfig.Field('Solar altitude (degrees) when it is considered night.', float)
     new_moon_phase_threshold = pexConfig.Field('New moon phase threshold for swapping to dark time filter.',
                                                float)
@@ -38,9 +40,17 @@ class SchedulerDriver(pexConfig.Config):
         self.timecost_cost_ref = 0.3
         self.timecost_weight = 1.0
         self.filtercost_weight = 1.0
+        self.propboost_weight = 1.0
         self.night_boundary = -12.0
         self.new_moon_phase_threshold = 20.0
         self.ignore_sky_brightness = False
         self.ignore_airmass = False
         self.ignore_clouds = False
         self.ignore_seeing = False
+
+    def validate(self):
+        """Validate configuration parameters.
+        """
+        pexConfig.Config.validate(self)
+        if self.propboost_weight < 0:
+            raise ValueError("Proposal boost weight must be greater than or equal to zero.")

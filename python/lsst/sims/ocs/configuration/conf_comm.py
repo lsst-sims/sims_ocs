@@ -58,6 +58,7 @@ class ConfigurationCommunicator(object):
         self.sched_driver_conf.timecost_cost_ref = self.config.sched_driver.timecost_cost_ref
         self.sched_driver_conf.timecost_weight = self.config.sched_driver.timecost_weight
         self.sched_driver_conf.filtercost_weight = self.config.sched_driver.filtercost_weight
+        self.sched_driver_conf.propboost_weight = self.config.sched_driver.propboost_weight
         self.sched_driver_conf.night_boundary = self.config.sched_driver.night_boundary
         self.sched_driver_conf.new_moon_phase_threshold = self.config.sched_driver.new_moon_phase_threshold
         self.sched_driver_conf.ignore_sky_brightness = self.config.sched_driver.ignore_sky_brightness
