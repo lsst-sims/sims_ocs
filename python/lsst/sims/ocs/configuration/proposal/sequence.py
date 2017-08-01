@@ -150,5 +150,6 @@ class Sequence(pexConfig.Config):
         topic.hour_angle_max = self.scheduling.hour_angle_max
         topic.restart_lost_sequences = self.scheduling.restart_lost_sequences
         topic.restart_complete_sequences = self.scheduling.restart_complete_sequences
+        topic.max_visits_goal = self.scheduling.max_visits_goal
 
         return topic
