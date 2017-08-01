@@ -3,6 +3,18 @@
 History
 -------
 
+1.0.8 (2017-08-01)
+~~~~~~~~~~~~~~~~~~
+
+* Speed improvement for cloud and seeing lookup (from dhroth)
+* New configuration parameters
+
+  * propboost_weight in SchedulerDriver
+  * max_visits_goal in Sequence
+
+* Fix handling of null target when first target
+* Fix to stack installation directions
+
 1.0.7 (2017-06-19)
 ~~~~~~~~~~~~~~~~~~
 
@@ -13,7 +25,7 @@ History
 ~~~~~~~~~~~~~~~~~~
 
 * Extended exception handling in driver script to catch startup issues
-* Cleaned up liniting errors
+* Cleaned up linting errors
 
 1.0.5 (2017-06-07)
 ~~~~~~~~~~~~~~~~~~
