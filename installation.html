@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation &mdash; Simulated OCS 1.0.7 documentation</title>
+  <title>Installation &mdash; Simulated OCS 1.0.8 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.7 documentation" href="index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.8 documentation" href="index.html"/>
         <link rel="next" title="Usage" href="usage.html"/>
         <link rel="prev" title="Simulated Observatory Control System" href="index.html"/> 
 
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -262,7 +262,7 @@ cp scheduler/cpp/libsacpp_scheduler_types.so $HOME/dds/lib
 <div class="section" id="lsst-stack-installation">
 <h4>LSST Stack Installation<a class="headerlink" href="#lsst-stack-installation" title="Permalink to this headline">¶</a></h4>
 <p>The SOCS and Scheduler installation require a set of packages from Python and the LSST Science Pipelines.
-Follow the installation instructions from <a class="reference external" href="https://pipelines.lsst.io/install/newinstall.html#installing-from-source-with-newinstall-sh">here</a> to get a minimal setup. Go ahead and let the stack software provide Python unless you feel comfortable providing your own. Follow the instructions to get into the stack environment. The instructions will refer to the stack installation directory as <code class="docutils literal"><span class="pre">stack_install_dir</span></code>. It is recommended to use a conda environment especially if you are going to use the stack for other reasons. To create an environment, do the following:</p>
+Follow the installation instructions from <a class="reference external" href="https://pipelines.lsst.io/install/newinstall.html">here</a> to get a minimal setup. In the <a class="reference external" href="https://pipelines.lsst.io/install/newinstall.html#installation-set-up">step</a> that gets the <code class="docutils literal"><span class="pre">newinstall.sh</span></code> script, replace the numeric version number with <code class="docutils literal"><span class="pre">master</span></code>. Go ahead and let the stack software provide Python unless you feel comfortable providing your own. Follow the instructions to get into the stack environment. The instructions will refer to the stack installation directory as <code class="docutils literal"><span class="pre">stack_install_dir</span></code>. It is recommended to use a conda environment especially if you are going to use the stack for other reasons. To create an environment, do the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">opsim4</span> <span class="o">--</span><span class="n">clone</span><span class="o">=</span><span class="n">root</span>
 <span class="n">source</span> <span class="n">activate</span> <span class="n">opsim4</span>
 <span class="n">conda</span> <span class="n">remove</span> <span class="n">conda</span><span class="o">-</span><span class="n">env</span>
@@ -445,7 +445,7 @@ where you left off, this task can be accomplished. The <code class="docutils lit
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.7',
+            VERSION:'1.0.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

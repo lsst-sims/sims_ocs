@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.configuration.proposal.general &mdash; Simulated OCS 1.0.7 documentation</title>
+  <title>lsst.sims.ocs.configuration.proposal.general &mdash; Simulated OCS 1.0.8 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../../../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.7 documentation" href="../../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.8 documentation" href="../../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../../index.html"/> 
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -216,7 +216,7 @@
                 <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_selections</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="n">combine_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;or&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-            <span class="n">region_cuts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">selections</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="n">region_cuts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">selections</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
             <span class="n">combine_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sky_region</span><span class="o">.</span><span class="n">combiners</span><span class="p">)</span>
 
         <span class="c1"># Handle the sky region selections</span>
@@ -381,7 +381,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'1.0.7',
+            VERSION:'1.0.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

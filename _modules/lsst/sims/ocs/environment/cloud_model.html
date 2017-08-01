@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.environment.cloud_model &mdash; Simulated OCS 1.0.7 documentation</title>
+  <title>lsst.sims.ocs.environment.cloud_model &mdash; Simulated OCS 1.0.8 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.7 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.8 documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -164,7 +164,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for lsst.sims.ocs.environment.cloud_model</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span></span><span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">object</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
@@ -211,9 +212,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">delta_time</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span>
         <span class="n">date</span> <span class="o">=</span> <span class="n">delta_time</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">cloud_dates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">date_delta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cloud_dates</span> <span class="o">-</span> <span class="n">date</span><span class="p">)</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">date_delta</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">date_delta</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cloud_values</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cloud_dates</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span>
+        <span class="c1"># searchsorted ensures that left &lt; date &lt; right</span>
+        <span class="c1"># but we need to know if date is closer to left or to right</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cloud_dates</span><span class="p">[</span><span class="n">idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cloud_dates</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">date</span> <span class="o">-</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span> <span class="o">-</span> <span class="n">date</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cloud_values</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="CloudModel.initialize"><a class="viewcode-back" href="../../../../../api/lsst.sims.ocs.environment.cloud_model.html#lsst.sims.ocs.environment.cloud_model.CloudModel.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cloud_file</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configure the cloud information.</span>
@@ -242,7 +248,7 @@
 
         <span class="k">with</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cloud_db</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-            <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;select c_date, cloud from Cloud;&quot;</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;select c_date, cloud from Cloud order by c_date;&quot;</span>
             <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
             <span class="n">results</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cloud_dates</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hsplit</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
@@ -297,7 +303,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'1.0.7',
+            VERSION:'1.0.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
