@@ -20,6 +20,7 @@ class ArgParserTest(unittest.TestCase):
         self.assertFalse(args.no_scheduler)
         self.assertIsNone(args.config)
         self.assertFalse(args.save_config)
+        self.assertEqual(args.config_save_path, '$PWD')
         self.assertFalse(args.track_session)
         self.assertIsNone(args.tracking_db)
         self.assertEqual(args.startup_comment, "No comment was entered.")
