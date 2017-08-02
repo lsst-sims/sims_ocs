@@ -30,3 +30,17 @@ Further options are available to the driver script and can be ascertained by the
 
 	drun opsim4 -h
  
+Saving Configuration
+--------------------
+
+The full configuration used for a particular simulation can be saved after the execution of the simulation. This is accomplished by using ``--save-config`` flag::
+
+	drun opsim4 --frac-duration=0.003 -c "Testing config saving" --save-config
+
+This will cause the creation of a ``config_<session Id>`` directory. More concretely, if the session Id for the above execution was 2100, this will result in a directory called ``config_2100`` being created in the execution directory. Inside ``config_2100`` will be a Python file for each of the configuration classes contained within the SOCS code base. The values in those files will reflect any override values passed in at the beginning of the simulation.
+
+If the configuration saving flag is used regularly, many directories could accumulate in the execution directory. Another directory can be used to organize the numerous ``config_<session Id>`` directories. This is accomplished by using the ``--config-save-path`` flag::
+
+	drun opsim4 --frac-duration=0.003 -c "Testing config saving" --save-config --config-save-path=$PWD/configs
+
+With this flag, the created ``config_<session Id>`` directory will be under ``$PWD/configs``. If any part of the path does not exist, it will be created before the save is executed.
