@@ -127,13 +127,10 @@ def main(args):
 
         if args.save_config:
             config_dir = "config_{}".format(session_id)
-            if args.config_save_dir == '':
-                args.config_save_dir = config_dir
-            else:
-                args.config_save_dir = expand_path(os.path.join(args.config_save_dir, config_dir))
-                if not os.path.exists(args.config_save_dir):
-                    os.mkdir(args.config_save_dir)
-            configuration.save(args.config_save_dir)
+            args.config_save_path = expand_path(os.path.join(args.config_save_path, config_dir))
+            if not os.path.exists(args.config_save_path):
+                os.makedirs(args.config_save_path)
+            configuration.save(args.config_save_path)
             logger.info("Finished saving survey configuration")
 
         end_time = datetime.now()

@@ -56,11 +56,12 @@ def create_parser():
     conf_grp.add_argument("--config", dest="config", nargs='*', help="Provide a set of override files for "
                           "the survey configuration. If a directory is provided, it is assumed all of the "
                           "configuration files reside there.")
-    conf_grp.add_argument("--config-save-dir", dest="config_save_dir", default='',
-                          help="Set a directory to save the configuration files in. The default behavior "
-                          "will be to save the files in the execution directory.")
     conf_grp.add_argument("--save-config", dest="save_config", action="store_true",
-                          help="Flag to save the simulation configuration.")
+                          help="If set, a config_<session Id> directory that will contain the "
+                          "saved configuration will be created at the location of --save-config-dir.")
+    conf_grp.add_argument("--config-save-path", dest="config_save_path", default='$PWD',
+                          help="Set the path to the configuration save directory. The default "
+                          "will be to save in the execution directory.")
 
     log_group_descr = ["This group of arguments controls the logging of the application."]
     logging = parser.add_argument_group("logging", " ".join(log_group_descr))
