@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Usage &mdash; Simulated OCS 1.0.8 documentation</title>
+  <title>Usage &mdash; Simulated OCS 1.0.9 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.8 documentation" href="index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.9 documentation" href="index.html"/>
         <link rel="next" title="Survey Database" href="database.html"/>
         <link rel="prev" title="Installation" href="installation.html"/> 
 
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                1.0.8
+                1.0.9
               </div>
             
           
@@ -96,7 +96,10 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#running-opsim">Running OpSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-opsim">Running OpSim</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#saving-configuration">Saving Configuration</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">Survey Database</a></li>
@@ -190,6 +193,19 @@
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">drun</span> <span class="n">opsim4</span> <span class="o">-</span><span class="n">h</span>
 </pre></div>
 </div>
+<div class="section" id="saving-configuration">
+<h3>Saving Configuration<a class="headerlink" href="#saving-configuration" title="Permalink to this headline">¶</a></h3>
+<p>The full configuration used for a particular simulation can be saved after the execution of the simulation. This is accomplished by using <code class="docutils literal"><span class="pre">--save-config</span></code> flag:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">drun</span> <span class="n">opsim4</span> <span class="o">--</span><span class="n">frac</span><span class="o">-</span><span class="n">duration</span><span class="o">=</span><span class="mf">0.003</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;Testing config saving&quot;</span> <span class="o">--</span><span class="n">save</span><span class="o">-</span><span class="n">config</span>
+</pre></div>
+</div>
+<p>This will cause the creation of a <code class="docutils literal"><span class="pre">config_&lt;session</span> <span class="pre">Id&gt;</span></code> directory. More concretely, if the session Id for the above execution was 2100, this will result in a directory called <code class="docutils literal"><span class="pre">config_2100</span></code> being created in the execution directory. Inside <code class="docutils literal"><span class="pre">config_2100</span></code> will be a Python file for each of the configuration classes contained within the SOCS code base. The values in those files will reflect any override values passed in at the beginning of the simulation.</p>
+<p>If the configuration saving flag is used regularly, many directories could accumulate in the execution directory. Another directory can be used to organize the numerous <code class="docutils literal"><span class="pre">config_&lt;session</span> <span class="pre">Id&gt;</span></code> directories. This is accomplished by using the <code class="docutils literal"><span class="pre">--config-save-path</span></code> flag:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>drun opsim4 --frac-duration=0.003 -c &quot;Testing config saving&quot; --save-config --config-save-path=$PWD/configs
+</pre></div>
+</div>
+<p>With this flag, the created <code class="docutils literal"><span class="pre">config_&lt;session</span> <span class="pre">Id&gt;</span></code> directory will be under <code class="docutils literal"><span class="pre">$PWD/configs</span></code>. If any part of the path does not exist, it will be created before the save is executed.</p>
+</div>
 </div>
 </div>
 
@@ -237,7 +253,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.8',
+            VERSION:'1.0.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
