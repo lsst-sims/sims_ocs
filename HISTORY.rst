@@ -3,10 +3,16 @@
 History
 -------
 
+1.0.9 (2017-08-22)
+~~~~~~~~~~~~~~~~~~
+
+* Clarified use and added documentation for save configuration CLI option
+* Bugfix for init file in downtime module (Peter Yoachim)
+
 1.0.8 (2017-08-01)
 ~~~~~~~~~~~~~~~~~~
 
-* Speed improvement for cloud and seeing lookup (from dhroth)
+* Speed improvement for cloud and seeing lookup (Daniel Rothchild)
 * New configuration parameters
 
   * propboost_weight in SchedulerDriver
