@@ -18,6 +18,8 @@ General Installation Notes
 
 Due to the heavy use of repositories for this installation, the instructions will assume you have created a directory in your ``$HOME`` directory to house all the git repositories. This will be referenced as ``gitdir``. Nearly all instructions are based around using the code, not developing it.
 
+.. _installation-sal_installation:
+
 SAL Installation
 ----------------
 
