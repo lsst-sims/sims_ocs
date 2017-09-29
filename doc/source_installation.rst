@@ -16,7 +16,7 @@ Source Installation
 General Installation Notes
 --------------------------
 
-Due to the heavy use of repositories for this installation, the instructions will assume you have created a directory in your ``$HOME`` directory to house all the git repositories. This will be referenced as ``gitdir``. Nearly all instructions are based around using the code, not developing it.
+Due to the heavy use of repositories for this installation, the instructions will assume you have created a directory in your ``$HOME`` directory to house all the git repositories. This will be referenced as ``gitdir``. Nearly all instructions are based around using the code, not developing it. **NOTE**: Developers need to taken notice of GitHub repositories in the ``lsst-ts`` organization. These are mirror-only repositories and have corresponding counterparts in the LSST Stash ecosystem where the actual developement work takes place.
 
 .. _installation-sal_installation:
 
