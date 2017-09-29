@@ -3,6 +3,12 @@
 History
 -------
 
+1.0.10 (2017-09-29)
+~~~~~~~~~~~~~~~~~~~
+
+* Clarified documentation for wrapper script usage
+* Added developer note about ``lsst-ts`` GitHub repos
+
 1.0.9 (2017-08-22)
 ~~~~~~~~~~~~~~~~~~
 
