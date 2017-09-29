@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation &mdash; Simulated OCS 1.0.9 documentation</title>
+  <title>Installation &mdash; Simulated OCS 1.0.10 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.9 documentation" href="index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.10 documentation" href="index.html"/>
         <link rel="next" title="Usage" href="usage.html"/>
         <link rel="prev" title="Simulated Observatory Control System" href="index.html"/> 
 
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                1.0.9
+                1.0.10
               </div>
             
           
@@ -203,10 +203,10 @@
 </div>
 <div class="section" id="general-installation-notes">
 <h3>General Installation Notes<a class="headerlink" href="#general-installation-notes" title="Permalink to this headline">¶</a></h3>
-<p>Due to the heavy use of repositories for this installation, the instructions will assume you have created a directory in your <code class="docutils literal"><span class="pre">$HOME</span></code> directory to house all the git repositories. This will be referenced as <code class="docutils literal"><span class="pre">gitdir</span></code>. Nearly all instructions are based around using the code, not developing it.</p>
+<p>Due to the heavy use of repositories for this installation, the instructions will assume you have created a directory in your <code class="docutils literal"><span class="pre">$HOME</span></code> directory to house all the git repositories. This will be referenced as <code class="docutils literal"><span class="pre">gitdir</span></code>. Nearly all instructions are based around using the code, not developing it. <strong>NOTE</strong>: Developers need to taken notice of GitHub repositories in the <code class="docutils literal"><span class="pre">lsst-ts</span></code> organization. These are mirror-only repositories and have corresponding counterparts in the LSST Stash ecosystem where the actual developement work takes place.</p>
 </div>
 <div class="section" id="sal-installation">
-<h3>SAL Installation<a class="headerlink" href="#sal-installation" title="Permalink to this headline">¶</a></h3>
+<span id="installation-sal-installation"></span><h3>SAL Installation<a class="headerlink" href="#sal-installation" title="Permalink to this headline">¶</a></h3>
 <p>The SAL (Software Abstraction Layer) is a wrapper around the DDS (Data Distribution Service) layer and provides binding to Python. This requires the OpenSplice and SAL repositories from Telescope and Site. Inside the <code class="docutils literal"><span class="pre">gitdir</span></code>, run the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_opensplice</span><span class="o">.</span><span class="n">git</span>
 <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_sal</span><span class="o">.</span><span class="n">git</span>
@@ -445,7 +445,7 @@ where you left off, this task can be accomplished. The <code class="docutils lit
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.9',
+            VERSION:'1.0.10',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

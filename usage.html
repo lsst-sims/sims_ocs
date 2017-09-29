@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Usage &mdash; Simulated OCS 1.0.9 documentation</title>
+  <title>Usage &mdash; Simulated OCS 1.0.10 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.9 documentation" href="index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.10 documentation" href="index.html"/>
         <link rel="next" title="Survey Database" href="database.html"/>
         <link rel="prev" title="Installation" href="installation.html"/> 
 
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                1.0.9
+                1.0.10
               </div>
             
           
@@ -179,9 +179,9 @@
 <span class="n">setup</span> <span class="n">sims_ocs</span>
 </pre></div>
 </div>
-<p>The Operations Simulator consists of running the SOCS and Scheduler. Due to the nature of the setup, a wrapper script is recommended when launching the driver script. A script has been provided <a class="reference external" href="https://raw.githubusercontent.com/lsst-sims/opsim4_tools/master/scripts/drun">here</a>. The script needs to be edited to provide locations for certain variables. See the comments within the script. This script is intended for use when running multiple simulations simultaneously.</p>
-<p>If you wish to override your computer&#8217;s hostname, the <code class="docutils literal"><span class="pre">$OPSIM_HOSTNAME</span></code> environmental variable can be used to achieve this.</p>
-<p>If you only wish to run one simulation at any given time or want to connect the running simulation to another DDS stream handler, it is necessary to know the <code class="docutils literal"><span class="pre">$OSPL_URI</span></code> file used to execute the job. The <code class="docutils literal"><span class="pre">drun</span></code> script rotates this file for each use, but does provide an override mechanism when using it again. However, <a class="reference external" href="https://raw.githubusercontent.com/lsst-sims/opsim4_tools/master/scripts/drun_static">this</a> script has been provided to remove the need for knowing the <code class="docutils literal"><span class="pre">$OSPL_URI</span></code> file. <strong>However</strong>, when using this script, the simulation run must be the only one running as the DDS domain Id could conflict with another running job.</p>
+<p>The Operations Simulator consists of running the SOCS and Scheduler along with a central logging process. Due to the nature of the setup, a wrapper script is recommended when launching the driver script. Two scripts have been provided in the <code class="docutils literal"><span class="pre">opsim4_tools</span></code> LSST Simulations organization GitHub repository. Both scripts need to be edited to provide locations for certain variables. See the comments within each script.</p>
+<p>The <a class="reference external" href="https://raw.githubusercontent.com/lsst-sims/opsim4_tools/master/scripts/drun">first</a> script, called <code class="docutils literal"><span class="pre">drun</span></code>, is intended for use when running multiple simulations simultaneously. In order to keep the DDS messages from each simulation from potentially killing another running simulation, the <code class="docutils literal"><span class="pre">drun</span></code> script creates a dynamic, local DDS configuration file in the execution directory. The configuration file, called <code class="docutils literal"><span class="pre">.osplN.xml</span></code> where <code class="docutils literal"><span class="pre">N</span></code> is an integer, contains the dynamically allocated DDS domain Id which is represented by the <code class="docutils literal"><span class="pre">N</span></code>. One of these files will be generated for each invocation of <code class="docutils literal"><span class="pre">drun</span></code>. The <code class="docutils literal"><span class="pre">drun</span></code> script increments <code class="docutils literal"><span class="pre">N</span></code> on each invocation by looking at the <code class="docutils literal"><span class="pre">.osplN.xml</span></code> files already present in the execution directory. Under normal circumstances the dynamic configuration file is removed upon completion of <code class="docutils literal"><span class="pre">drun</span></code>. An exception to this is forceably killing a job via <code class="docutils literal"><span class="pre">ctrl+c</span></code> or <code class="docutils literal"><span class="pre">kill</span></code>. In this case, the dynamic configuration file cleanup does not occur and must be completed manually. If the cleanup does not occur, the operator runs the risk of making subsequent jobs access port numbers that are not specified in the firewall rules. Port range setup for multiple jobs was discussed in the <a class="reference internal" href="installation.html#installation-sal-installation"><span class="std std-ref">SAL installation</span></a> instructions and is tied to a given number of jobs for a machine. If the domain Id goes over the number of jobs minus 1, all DDS traffic is blocked for that simulation and message receiving loops will timeout causing the simulation to not work properly. The DDS configuration file that is associated with a given simulation can be found near the top of the corresponding log file and finding the <code class="docutils literal"><span class="pre">$OSPL_URI</span></code> entry. This is important to know if you want to attach a listener process, like a live viewer, to the running simulation or to clean up a killed job without effecting other running jobs.</p>
+<p>The <a class="reference external" href="https://raw.githubusercontent.com/lsst-sims/opsim4_tools/master/scripts/drun_static">second</a> script, called <code class="docutils literal"><span class="pre">drun_static</span></code>, is intended for only running one simulation at any given time. This script points to a DDS configuration file that always has the same domain Id. <strong>HOWEVER</strong>, when using this script, the simulation run must be the only simulation running as the DDS domain Id will conflict with another running simulation. <code class="docutils literal"><span class="pre">drun_static</span></code> can be used to attach a listener process to the running simulation without any issues. The environment created via the <code class="docutils literal"><span class="pre">drun_static</span></code> wrapper is similar to the one inside a running Docker container. In this case, the container environment is preset upon entry, so there is  no need to use the <code class="docutils literal"><span class="pre">drun_static</span></code> wrapper. Also, a container is meant to run a single simulation, so the <code class="docutils literal"><span class="pre">drun</span></code> wrapper should be avoided. The messages from different containers are differentiated via the domain name which contains the container machine name.</p>
 <div class="section" id="running-opsim">
 <span id="running-opsim4"></span><h2>Running OpSim<a class="headerlink" href="#running-opsim" title="Permalink to this headline">¶</a></h2>
 <p>The SOCS driver can be run from anywhere if the setup from the installation instructions were followed. We&#8217;ll assume that you are running from <code class="docutils literal"><span class="pre">$HOME/run_local</span></code>. In this directory, it is recommended to have <code class="docutils literal"><span class="pre">configs</span></code> and <code class="docutils literal"><span class="pre">log</span></code> sub-directories available. This will be helpful in containing all of the various outputs when running multiple simulations. To invoke a basic instance of SOCS, do the following:</p>
@@ -253,7 +253,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.9',
+            VERSION:'1.0.10',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
