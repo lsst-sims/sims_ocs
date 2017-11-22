@@ -48,6 +48,7 @@ config_*
 
 # PyTest
 .cache
+pytest_session.txt
 
 # LSST Stack
 .sconf_temp
