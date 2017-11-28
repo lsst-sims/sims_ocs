@@ -156,6 +156,7 @@ class General(pexConfig.Config):
                 filter_names.append(v.name)
                 topic.num_visits[i] = v.num_visits
                 topic.num_grouped_visits[i] = v.num_grouped_visits
+                topic.max_grouped_visits[i] = v.max_grouped_visits
                 topic.bright_limit[i] = v.bright_limit
                 topic.dark_limit[i] = v.dark_limit
                 topic.max_seeing[i] = v.max_seeing
