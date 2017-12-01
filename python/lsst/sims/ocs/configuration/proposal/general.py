@@ -177,5 +177,6 @@ class General(pexConfig.Config):
         topic.time_window_max = self.scheduling.time_window_max
         topic.time_window_end = self.scheduling.time_window_end
         topic.time_weight = self.scheduling.time_weight
+        topic.field_revisit_limit = self.scheduling.field_revisit_limit
 
         return topic
