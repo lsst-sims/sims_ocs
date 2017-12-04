@@ -20,6 +20,7 @@ class GeneralScheduling(Scheduling):
     time_window_end = pexConfig.Field('Relative time when the window ends for subsequent grouped visits.',
                                       float)
     time_weight = pexConfig.Field('Weighting factor for scaling the shape of the time window.', float)
+    field_revisit_limit = pexConfig.Field('Maximum number of revisits a field may get for the night', int)
 
     def setDefaults(self):
         """Default specification for scheduling information.
@@ -31,3 +32,4 @@ class GeneralScheduling(Scheduling):
         self.time_window_max = 0.0
         self.time_window_end = 0.0
         self.time_weight = 0.0
+        self.field_revisit_limit = 0
