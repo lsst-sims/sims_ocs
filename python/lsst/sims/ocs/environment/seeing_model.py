@@ -7,6 +7,7 @@ import sqlite3
 
 __all__ = ["SeeingModel"]
 
+
 class SeeingModel(object):
     """Handle the seeing information.
 
@@ -19,7 +20,6 @@ class SeeingModel(object):
     AIRMASS_CORRECTION_POWER = 0.6
     FILTER_WAVELENGTH_CORRECTION_POWER = 0.3
     RAW_SEEING_WAVELENGTH = 500  # nm
-    DEFAULT_FILTERLIST = ('u', 'g', 'r', 'i', 'z', 'y')
 
     def __init__(self, time_handler):
         """Initialize the class.
@@ -64,18 +64,19 @@ class SeeingModel(object):
             filter_wavelength_correction = self.filter_wavelength_correction[filter_name]
         except KeyError:
             # Then add this new filter to our dictionary, and remember it for next time.
-            self.filter_wavelength_correction[filter_name] = numpy.power(self.RAW_SEEING_WAVELENGTH /
-                                                                         self.filters_config.get_effective_wavelength(filter_name),
-                                                                         self.FILTER_WAVELENGTH_CORRECTION_POWER)
-            filter_wavelength_correction = self.filter_wavelength_correction[filter_name]
+            filter_wavelength = self.filters_config.get_effective_wavelength(filter_name)
+            filter_wavelength_correction = numpy.power(self.RAW_SEEING_WAVELENGTH / filter_wavelength,
+                                                       self.FILTER__WAVELENGTH_CORRECTION_POWER)
+            self.filter_wavelength_correction[filter_name] = filter_wavelength_correction
 
         seeing_fwhm_system = numpy.sqrt((self.environment_config.telescope_seeing * airmass_correction)**2 +
                                         self.environment_config.optical_design_seeing**2 +
                                         self.environment_config.camera_seeing**2)
         seeing_fwhm_atmos = fwhm_500 * filter_wavelength_correction * airmass_correction
         fwhm_effective = (self.environment_config.scale_to_eff *
-                          numpy.sqrt(seeing_fwhm_system**2 + self.environment_config.geom_eff_factor * seeing_fwhm_atmos**2))
-        fwhm_geometric = 0.822*fwhm_effective + 0.052   # This should probably be picked up from sims_photUtils instead.
+                          numpy.sqrt(seeing_fwhm_system**2 +
+                                     self.environment_config.geom_eff_factor * seeing_fwhm_atmos**2))
+        fwhm_geometric = 0.822 * fwhm_effective + 0.052   # from sims_photUtils instead in future?
 
         return (fwhm_500, fwhm_geometric, fwhm_effective)
 
