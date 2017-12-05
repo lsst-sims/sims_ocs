@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.setup.tracking module &mdash; Simulated OCS 1.0.10 documentation</title>
+  <title>lsst.sims.ocs.setup.tracking module &mdash; Simulated OCS 1.0.11 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.10 documentation" href="../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.11 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.setup package" href="lsst.sims.ocs.setup.html"/>
         <link rel="next" title="lsst.sims.ocs.utilities package" href="lsst.sims.ocs.utilities.html"/>
         <link rel="prev" title="lsst.sims.ocs.setup.prog_config module" href="lsst.sims.ocs.setup.prog_config.html"/> 
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                1.0.10
+                1.0.11
               </div>
             
           
@@ -201,37 +201,37 @@ information to record the simulation session to the tracking database.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.session_id">
 <code class="descname">session_id</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.session_id" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> &#8211; The simulation session ID tag.</p>
+<dd><p><em>int</em> – The simulation session ID tag.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.session_type">
 <code class="descname">session_type</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.session_type" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The simulation session type code.</p>
+<dd><p><em>str</em> – The simulation session type code.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.startup_comment">
 <code class="descname">startup_comment</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.startup_comment" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The startup comment with the associated simulation session.</p>
+<dd><p><em>str</em> – The startup comment with the associated simulation session.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.log">
 <code class="descname">log</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.log" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>logging.Logger</em> &#8211; The logging instance.</p>
+<dd><p><em>logging.Logger</em> – The logging instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.opsim_tracking_url">
 <code class="descname">opsim_tracking_url</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.opsim_tracking_url" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The URL for the Operations Simulator tracking database.</p>
+<dd><p><em>str</em> – The URL for the Operations Simulator tracking database.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.session_type_codes">
 <code class="descname">session_type_codes</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.session_type_codes" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict[str, int]</em> &#8211; The mapping of session type codes to integer values.</p>
+<dd><p><em>dict[str, int]</em> – The mapping of session type codes to integer values.</p>
 </dd></dl>
 
 <p>Initialize the class.</p>
@@ -240,9 +240,9 @@ information to record the simulation session to the tracking database.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>session_id</strong> (<em>int</em>) &#8211; The current value of the simulation session ID.</li>
-<li><strong>session_type</strong> (<em>str</em>) &#8211; The simulation session type code.</li>
-<li><strong>startup_comment</strong> (<em>str</em>) &#8211; The startup comment with the associated simulation session.</li>
+<li><strong>session_id</strong> (<em>int</em>) – The current value of the simulation session ID.</li>
+<li><strong>session_type</strong> (<em>str</em>) – The simulation session type code.</li>
+<li><strong>startup_comment</strong> (<em>str</em>) – The startup comment with the associated simulation session.</li>
 </ul>
 </td>
 </tr>
@@ -257,9 +257,9 @@ information to record the simulation session to the tracking database.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>hostname</strong> (<em>str</em><em>, </em><em>optional</em>) &#8211; An alternate hostname.</li>
-<li><strong>user</strong> (<em>str</em><em>, </em><em>optional</em>) &#8211; An alternate username.</li>
-<li><strong>version</strong> (<em>str</em><em>, </em><em>optional</em>) &#8211; An alternate version number.</li>
+<li><strong>hostname</strong> (<em>str</em><em>, </em><em>optional</em>) – An alternate hostname.</li>
+<li><strong>user</strong> (<em>str</em><em>, </em><em>optional</em>) – An alternate username.</li>
+<li><strong>version</strong> (<em>str</em><em>, </em><em>optional</em>) – An alternate version number.</li>
 </ul>
 </td>
 </tr>
@@ -271,7 +271,7 @@ information to record the simulation session to the tracking database.</p>
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.update_session">
 <code class="descname">update_session</code><span class="sig-paren">(</span><em>eng_comment</em>, <em>hostname=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lsst/sims/ocs/setup/tracking.html#Tracking.update_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.update_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the simulation session in the tracking database with a comment.</p>
-<p>This function allows the simulation session&#8217;s entry in the tracking database to be updated with an
+<p>This function allows the simulation session’s entry in the tracking database to be updated with an
 engineering comment. This is hopefully to record that the simulation has completed successfully, but
 may be used to indicate a simulation failure.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -279,8 +279,8 @@ may be used to indicate a simulation failure.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>eng_comment</strong> (<em>str</em>) &#8211; A comment about the simulation session hopefully for a successful run.</li>
-<li><strong>hostname</strong> (<em>str</em><em>, </em><em>optional</em>) &#8211; An alternate hostname</li>
+<li><strong>eng_comment</strong> (<em>str</em>) – A comment about the simulation session hopefully for a successful run.</li>
+<li><strong>hostname</strong> (<em>str</em><em>, </em><em>optional</em>) – An alternate hostname</li>
 </ul>
 </td>
 </tr>
@@ -291,13 +291,13 @@ may be used to indicate a simulation failure.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.tracking_url">
 <code class="descname">tracking_url</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.tracking_url" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The URL for the tracking call.</p>
+<dd><p><em>str</em> – The URL for the tracking call.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.setup.tracking.Tracking.update_url">
 <code class="descname">update_url</code><a class="headerlink" href="#lsst.sims.ocs.setup.tracking.Tracking.update_url" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The URL for the update call.</p>
+<dd><p><em>str</em> – The URL for the update call.</p>
 </dd></dl>
 
 </dd></dl>
@@ -348,7 +348,7 @@ may be used to indicate a simulation failure.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.10',
+            VERSION:'1.0.11',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

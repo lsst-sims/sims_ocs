@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.environment.seeing_model module &mdash; Simulated OCS 1.0.10 documentation</title>
+  <title>lsst.sims.ocs.environment.seeing_model module &mdash; Simulated OCS 1.0.11 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.10 documentation" href="../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.11 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.environment package" href="lsst.sims.ocs.environment.html"/>
         <link rel="next" title="lsst.sims.ocs.kernel package" href="lsst.sims.ocs.kernel.html"/>
         <link rel="prev" title="lsst.sims.ocs.environment.cloud_model module" href="lsst.sims.ocs.environment.cloud_model.html"/> 
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                1.0.10
+                1.0.11
               </div>
             
           
@@ -203,7 +203,7 @@ OpSim version 3.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time_handler</strong> (<a class="reference internal" href="lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler" title="lsst.sims.ocs.kernel.time_handler.TimeHandler"><code class="xref py py-class docutils literal"><span class="pre">TimeHandler</span></code></a>) &#8211; The instance of the simulation time handler.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time_handler</strong> (<a class="reference internal" href="lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler" title="lsst.sims.ocs.kernel.time_handler.TimeHandler"><code class="xref py py-class docutils literal"><span class="pre">TimeHandler</span></code></a>) – The instance of the simulation time handler.</td>
 </tr>
 </tbody>
 </table>
@@ -216,13 +216,13 @@ OpSim version 3.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>delta_time</strong> (<em>int</em>) &#8211; The time (seconds) from the start of the simulation.</li>
-<li><strong>filter_name</strong> (<em>str</em>) &#8211; The single character filter name for the calculation.</li>
-<li><strong>airmass</strong> (<em>float</em>) &#8211; The airmass for the calculation.</li>
+<li><strong>delta_time</strong> (<em>int</em>) – The time (seconds) from the start of the simulation.</li>
+<li><strong>filter_name</strong> (<em>str</em>) – The single character filter name for the calculation.</li>
+<li><strong>airmass</strong> (<em>float</em>) – The airmass for the calculation.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>tuple</em> &#8211; The FWHM 500nm, FWHM Geometric and FWHM Effective seeing values.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>tuple</em> – The FWHM 500nm, FWHM Geometric and FWHM Effective seeing values.</p>
 </td>
 </tr>
 </tbody>
@@ -237,9 +237,9 @@ OpSim version 3.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>delta_time</strong> (<em>int</em>) &#8211; The time (seconds) from the start of the simulation.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>delta_time</strong> (<em>int</em>) – The time (seconds) from the start of the simulation.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>float</em> &#8211; The seeing (arcseconds) closest to the specified time.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>float</em> – The seeing (arcseconds) closest to the specified time.</td>
 </tr>
 </tbody>
 </table>
@@ -267,8 +267,8 @@ table called <em>Seeing</em> with the following columns:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>environment_config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.environment.html#lsst.sims.ocs.configuration.environment.Environment" title="lsst.sims.ocs.configuration.environment.Environment"><code class="xref py py-class docutils literal"><span class="pre">Environment</span></code></a>) &#8211; The configuration instance for the environment.</li>
-<li><strong>filters_config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.instrument.filters.html#lsst.sims.ocs.configuration.instrument.filters.Filters" title="lsst.sims.ocs.configuration.instrument.filters.Filters"><code class="xref py py-class docutils literal"><span class="pre">Filters</span></code></a>) &#8211; The configuration instance for the filters.</li>
+<li><strong>environment_config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.environment.html#lsst.sims.ocs.configuration.environment.Environment" title="lsst.sims.ocs.configuration.environment.Environment"><code class="xref py py-class docutils literal"><span class="pre">Environment</span></code></a>) – The configuration instance for the environment.</li>
+<li><strong>filters_config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.instrument.filters.html#lsst.sims.ocs.configuration.instrument.filters.Filters" title="lsst.sims.ocs.configuration.instrument.filters.Filters"><code class="xref py py-class docutils literal"><span class="pre">Filters</span></code></a>) – The configuration instance for the filters.</li>
 </ul>
 </td>
 </tr>
@@ -285,8 +285,8 @@ table called <em>Seeing</em> with the following columns:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>th</strong> (<a class="reference internal" href="lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler" title="lsst.sims.ocs.kernel.time_handler.TimeHandler"><code class="xref py py-class docutils literal"><span class="pre">TimeHandler</span></code></a>) &#8211; A time hadnling instance.</li>
-<li><strong>topic</strong> (<em>SALPY_scheduler.scheduler_seeingC</em>) &#8211; An instance of the seeing topic.</li>
+<li><strong>th</strong> (<a class="reference internal" href="lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler" title="lsst.sims.ocs.kernel.time_handler.TimeHandler"><code class="xref py py-class docutils literal"><span class="pre">TimeHandler</span></code></a>) – A time hadnling instance.</li>
+<li><strong>topic</strong> (<em>SALPY_scheduler.scheduler_seeingC</em>) – An instance of the seeing topic.</li>
 </ul>
 </td>
 </tr>
@@ -363,7 +363,7 @@ table called <em>Seeing</em> with the following columns:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.10',
+            VERSION:'1.0.11',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

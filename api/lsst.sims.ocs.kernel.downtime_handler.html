@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.kernel.downtime_handler module &mdash; Simulated OCS 1.0.10 documentation</title>
+  <title>lsst.sims.ocs.kernel.downtime_handler module &mdash; Simulated OCS 1.0.11 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.10 documentation" href="../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.11 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.kernel package" href="lsst.sims.ocs.kernel.html"/>
         <link rel="next" title="lsst.sims.ocs.kernel.proposal_info module" href="lsst.sims.ocs.kernel.proposal_info.html"/>
         <link rel="prev" title="lsst.sims.ocs.kernel package" href="lsst.sims.ocs.kernel.html"/> 
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                1.0.10
+                1.0.11
               </div>
             
           
@@ -201,37 +201,37 @@ downtime information.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.scheduled">
 <code class="descname">scheduled</code><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.scheduled" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="lsst.sims.ocs.downtime.scheduled_downtime.html#lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime" title="lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime"><code class="xref py py-class docutils literal"><span class="pre">ScheduledDowntime</span></code></a> &#8211; The scheduled downtime information instance.</p>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.downtime.scheduled_downtime.html#lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime" title="lsst.sims.ocs.downtime.scheduled_downtime.ScheduledDowntime"><code class="xref py py-class docutils literal"><span class="pre">ScheduledDowntime</span></code></a> – The scheduled downtime information instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.unscheduled">
 <code class="descname">unscheduled</code><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.unscheduled" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime" title="lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime"><code class="xref py py-class docutils literal"><span class="pre">UnscheduledDowntime</span></code></a> &#8211; The unscheduled downtime information instance.</p>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.downtime.unscheduled_downtime.html#lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime" title="lsst.sims.ocs.downtime.unscheduled_downtime.UnscheduledDowntime"><code class="xref py py-class docutils literal"><span class="pre">UnscheduledDowntime</span></code></a> – The unscheduled downtime information instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.current_scheduled">
 <code class="descname">current_scheduled</code><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.current_scheduled" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>tuple or None</em> &#8211; The set of current scheduled downtime information.</p>
+<dd><p><em>tuple or None</em> – The set of current scheduled downtime information.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.current_unscheduled">
 <code class="descname">current_unscheduled</code><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.current_unscheduled" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>tuple or None</em> &#8211; The set of current unscheduled downtime information.</p>
+<dd><p><em>tuple or None</em> – The set of current unscheduled downtime information.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.downtime_days">
 <code class="descname">downtime_days</code><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.downtime_days" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>set</em> &#8211; The holder for the list of downtime days.</p>
+<dd><p><em>set</em> – The holder for the list of downtime days.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.log">
 <code class="descname">log</code><a class="headerlink" href="#lsst.sims.ocs.kernel.downtime_handler.DowntimeHandler.log" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>Logger</em> &#8211; The handle for the logger.</p>
+<dd><p><em>Logger</em> – The handle for the logger.</p>
 </dd></dl>
 
 <p>Initialize the class.</p>
@@ -243,9 +243,9 @@ downtime information.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dt</strong> (<em>tuple</em>) &#8211; The collection of downtime information (start, length, description)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dt</strong> (<em>tuple</em>) – The collection of downtime information (start, length, description)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>set, int</em> &#8211; The list of downtime days as a set and the downtime start night.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>set, int</em> – The list of downtime days as a set and the downtime start night.</td>
 </tr>
 </tbody>
 </table>
@@ -262,9 +262,9 @@ decreasing number of days until no more downtime if found.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>night</strong> (<em>int</em>) &#8211; The night to check the downtime information for.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>night</strong> (<em>int</em>) – The night to check the downtime information for.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>int</em> &#8211; The number of downtime nights.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>int</em> – The number of downtime nights.</td>
 </tr>
 </tbody>
 </table>
@@ -278,7 +278,7 @@ decreasing number of days until no more downtime if found.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.downtime.html#lsst.sims.ocs.configuration.downtime.Downtime" title="lsst.sims.ocs.configuration.downtime.Downtime"><code class="xref py py-class docutils literal"><span class="pre">Downtime</span></code></a>) &#8211; Downtime configuration instance.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.downtime.html#lsst.sims.ocs.configuration.downtime.Downtime" title="lsst.sims.ocs.configuration.downtime.Downtime"><code class="xref py py-class docutils literal"><span class="pre">Downtime</span></code></a>) – Downtime configuration instance.</td>
 </tr>
 </tbody>
 </table>
@@ -298,7 +298,7 @@ decreasing number of days until no more downtime if found.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>db</strong> (<a class="reference internal" href="lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase" title="lsst.sims.ocs.database.socs_db.SocsDatabase"><code class="xref py py-class docutils literal"><span class="pre">SocsDatabase</span></code></a>) &#8211; The instance of the survey database.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>db</strong> (<a class="reference internal" href="lsst.sims.ocs.database.socs_db.html#lsst.sims.ocs.database.socs_db.SocsDatabase" title="lsst.sims.ocs.database.socs_db.SocsDatabase"><code class="xref py py-class docutils literal"><span class="pre">SocsDatabase</span></code></a>) – The instance of the survey database.</td>
 </tr>
 </tbody>
 </table>
@@ -352,7 +352,7 @@ decreasing number of days until no more downtime if found.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.10',
+            VERSION:'1.0.11',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

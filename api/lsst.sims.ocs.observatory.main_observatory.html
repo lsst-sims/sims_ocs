@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.observatory.main_observatory module &mdash; Simulated OCS 1.0.10 documentation</title>
+  <title>lsst.sims.ocs.observatory.main_observatory module &mdash; Simulated OCS 1.0.11 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.10 documentation" href="../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.11 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.observatory package" href="lsst.sims.ocs.observatory.html"/>
         <link rel="next" title="lsst.sims.ocs.observatory.slew_information module" href="lsst.sims.ocs.observatory.slew_information.html"/>
         <link rel="prev" title="lsst.sims.ocs.observatory.exposure_information module" href="lsst.sims.ocs.observatory.exposure_information.html"/> 
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                1.0.10
+                1.0.11
               </div>
             
           
@@ -203,19 +203,19 @@ the model calculates to simulate real world behaviors.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.observatory.main_observatory.MainObservatory.log">
 <code class="descname">log</code><a class="headerlink" href="#lsst.sims.ocs.observatory.main_observatory.MainObservatory.log" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>logging.Logger</em> &#8211; The logging instance.</p>
+<dd><p><em>logging.Logger</em> – The logging instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.observatory.main_observatory.MainObservatory.model">
 <code class="descname">model</code><a class="headerlink" href="#lsst.sims.ocs.observatory.main_observatory.MainObservatory.model" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>lsst.ts.scheduler.observatory_model.ObservatoryModel</em> &#8211; The instance of the Observatory model from the LSST Scheduler.</p>
+<dd><p><em>lsst.ts.scheduler.observatory_model.ObservatoryModel</em> – The instance of the Observatory model from the LSST Scheduler.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.observatory.main_observatory.MainObservatory.param_dict">
 <code class="descname">param_dict</code><a class="headerlink" href="#lsst.sims.ocs.observatory.main_observatory.MainObservatory.param_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict</em> &#8211; The configuration parameters for the Observatory model.</p>
+<dd><p><em>dict</em> – The configuration parameters for the Observatory model.</p>
 </dd></dl>
 
 <p>Initialize the class.</p>
@@ -223,7 +223,7 @@ the model calculates to simulate real world behaviors.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>obs_site_config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.obs_site.html#lsst.sims.ocs.configuration.obs_site.ObservingSite" title="lsst.sims.ocs.configuration.obs_site.ObservingSite"><code class="xref py py-class docutils literal"><span class="pre">ObservingSite</span></code></a>) &#8211; The instance of the observing site configuration.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>obs_site_config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.obs_site.html#lsst.sims.ocs.configuration.obs_site.ObservingSite" title="lsst.sims.ocs.configuration.obs_site.ObservingSite"><code class="xref py py-class docutils literal"><span class="pre">ObservingSite</span></code></a>) – The instance of the observing site configuration.</td>
 </tr>
 </tbody>
 </table>
@@ -246,9 +246,9 @@ visit_time += (number of exposures - 1) * camera readout time</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target</strong> (<em>SALPY_scheduler.targetC</em>) &#8211; The Scheduler topic instance holding the target information.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target</strong> (<em>SALPY_scheduler.targetC</em>) – The Scheduler topic instance holding the target information.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>(float, str)</em> &#8211; The calculated visit time and a unit string (default it seconds).</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>(float, str)</em> – The calculated visit time and a unit string (default it seconds).</td>
 </tr>
 </tbody>
 </table>
@@ -262,7 +262,7 @@ visit_time += (number of exposures - 1) * camera readout time</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>obs_config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.observatory.html#lsst.sims.ocs.configuration.observatory.Observatory" title="lsst.sims.ocs.configuration.observatory.Observatory"><code class="xref py py-class docutils literal"><span class="pre">Observatory</span></code></a>) &#8211; The instance of the observatory configuration.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>obs_config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.observatory.html#lsst.sims.ocs.configuration.observatory.Observatory" title="lsst.sims.ocs.configuration.observatory.Observatory"><code class="xref py py-class docutils literal"><span class="pre">Observatory</span></code></a>) – The instance of the observatory configuration.</td>
 </tr>
 </tbody>
 </table>
@@ -288,9 +288,9 @@ that will allow it to be transferred to the database.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>slew_state_info</strong> (<em>lsst.ts.scheduler.observatory_model.ObservatoryState</em>) &#8211; The current slew state instance.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>slew_state_info</strong> (<em>lsst.ts.scheduler.observatory_model.ObservatoryState</em>) – The current slew state instance.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewState" title="lsst.sims.ocs.observatory.slew_information.SlewState"><code class="xref py py-class docutils literal"><span class="pre">SlewState</span></code></a> &#8211; The copied slew state information.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewState" title="lsst.sims.ocs.observatory.slew_information.SlewState"><code class="xref py py-class docutils literal"><span class="pre">SlewState</span></code></a> – The copied slew state information.</td>
 </tr>
 </tbody>
 </table>
@@ -305,15 +305,15 @@ that will allow it to be transferred to the database.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>time_handler</strong> (<a class="reference internal" href="lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler" title="lsst.sims.ocs.kernel.time_handler.TimeHandler"><code class="xref py py-class docutils literal"><span class="pre">TimeHandler</span></code></a>) &#8211; An instance of the simulation&#8217;s TimeHandler.</li>
-<li><strong>target</strong> (<em>SALPY_scheduler.targetC</em>) &#8211; The Scheduler topic instance holding the target information.</li>
-<li><strong>observation</strong> (<em>SALPY_scheduler.observationC</em>) &#8211; The Scheduler topic instance for recording the observation information.</li>
+<li><strong>time_handler</strong> (<a class="reference internal" href="lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler" title="lsst.sims.ocs.kernel.time_handler.TimeHandler"><code class="xref py py-class docutils literal"><span class="pre">TimeHandler</span></code></a>) – An instance of the simulation’s TimeHandler.</li>
+<li><strong>target</strong> (<em>SALPY_scheduler.targetC</em>) – The Scheduler topic instance holding the target information.</li>
+<li><strong>observation</strong> (<em>SALPY_scheduler.observationC</em>) – The Scheduler topic instance for recording the observation information.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li>dict(<a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewHistory" title="lsst.sims.ocs.observatory.slew_information.SlewHistory"><code class="xref py py-class docutils literal"><span class="pre">SlewHistory</span></code></a>, <a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewState" title="lsst.sims.ocs.observatory.slew_information.SlewState"><code class="xref py py-class docutils literal"><span class="pre">SlewState</span></code></a>, <a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewState" title="lsst.sims.ocs.observatory.slew_information.SlewState"><code class="xref py py-class docutils literal"><span class="pre">SlewState</span></code></a>, list[<a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewActivity" title="lsst.sims.ocs.observatory.slew_information.SlewActivity"><code class="xref py py-class docutils literal"><span class="pre">SlewActivity</span></code></a>]) &#8211; A dictionanry of all the slew information from the visit.</li>
-<li>dict(list[<a class="reference internal" href="lsst.sims.ocs.observatory.exposure_information.html#lsst.sims.ocs.observatory.exposure_information.TargetExposure" title="lsst.sims.ocs.observatory.exposure_information.TargetExposure"><code class="xref py py-class docutils literal"><span class="pre">TargetExposure</span></code></a>], list[<a class="reference internal" href="lsst.sims.ocs.observatory.exposure_information.html#lsst.sims.ocs.observatory.exposure_information.ObsExposure" title="lsst.sims.ocs.observatory.exposure_information.ObsExposure"><code class="xref py py-class docutils literal"><span class="pre">ObsExposure</span></code></a>]) &#8211; A dictionary of all the exposure information from the visit.</li>
+<li>dict(<a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewHistory" title="lsst.sims.ocs.observatory.slew_information.SlewHistory"><code class="xref py py-class docutils literal"><span class="pre">SlewHistory</span></code></a>, <a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewState" title="lsst.sims.ocs.observatory.slew_information.SlewState"><code class="xref py py-class docutils literal"><span class="pre">SlewState</span></code></a>, <a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewState" title="lsst.sims.ocs.observatory.slew_information.SlewState"><code class="xref py py-class docutils literal"><span class="pre">SlewState</span></code></a>, list[<a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewActivity" title="lsst.sims.ocs.observatory.slew_information.SlewActivity"><code class="xref py py-class docutils literal"><span class="pre">SlewActivity</span></code></a>]) – A dictionanry of all the slew information from the visit.</li>
+<li>dict(list[<a class="reference internal" href="lsst.sims.ocs.observatory.exposure_information.html#lsst.sims.ocs.observatory.exposure_information.TargetExposure" title="lsst.sims.ocs.observatory.exposure_information.TargetExposure"><code class="xref py py-class docutils literal"><span class="pre">TargetExposure</span></code></a>], list[<a class="reference internal" href="lsst.sims.ocs.observatory.exposure_information.html#lsst.sims.ocs.observatory.exposure_information.ObsExposure" title="lsst.sims.ocs.observatory.exposure_information.ObsExposure"><code class="xref py py-class docutils literal"><span class="pre">ObsExposure</span></code></a>]) – A dictionary of all the exposure information from the visit.</li>
 </ul>
 </p>
 </td>
@@ -330,9 +330,9 @@ that will allow it to be transferred to the database.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target</strong> (<em>SALPY_scheduler.targetC</em>) &#8211; The Scheduler topic instance holding the target information.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target</strong> (<em>SALPY_scheduler.targetC</em>) – The Scheduler topic instance holding the target information.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>float</em> &#8211; The time to slew the telescope from its current position to the target position.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>float</em> – The time to slew the telescope from its current position to the target position.</td>
 </tr>
 </tbody>
 </table>
@@ -347,8 +347,8 @@ that will allow it to be transferred to the database.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>night</strong> (<em>int</em>) &#8211; The current survey observing night.</li>
-<li><strong>duration</strong> (<em>int</em>) &#8211; The survey duration in days.</li>
+<li><strong>night</strong> (<em>int</em>) – The current survey observing night.</li>
+<li><strong>duration</strong> (<em>int</em>) – The survey duration in days.</li>
 </ul>
 </td>
 </tr>
@@ -367,7 +367,7 @@ is on the list, a filter swap is performed.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filter_to_unmount</strong> (<em>str</em>) &#8211; The filter requested for unmounting.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filter_to_unmount</strong> (<em>str</em>) – The filter requested for unmounting.</td>
 </tr>
 </tbody>
 </table>
@@ -421,7 +421,7 @@ is on the list, a filter swap is performed.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.10',
+            VERSION:'1.0.11',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

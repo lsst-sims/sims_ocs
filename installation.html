@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation &mdash; Simulated OCS 1.0.10 documentation</title>
+  <title>Installation &mdash; Simulated OCS 1.0.11 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.10 documentation" href="index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.11 documentation" href="index.html"/>
         <link rel="next" title="Usage" href="usage.html"/>
         <link rel="prev" title="Simulated Observatory Control System" href="index.html"/> 
 
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                1.0.10
+                1.0.11
               </div>
             
           
@@ -207,12 +207,13 @@
 </div>
 <div class="section" id="sal-installation">
 <span id="installation-sal-installation"></span><h3>SAL Installation<a class="headerlink" href="#sal-installation" title="Permalink to this headline">¶</a></h3>
-<p>The SAL (Software Abstraction Layer) is a wrapper around the DDS (Data Distribution Service) layer and provides binding to Python. This requires the OpenSplice and SAL repositories from Telescope and Site. Inside the <code class="docutils literal"><span class="pre">gitdir</span></code>, run the following:</p>
+<p>The SAL (Software Abstraction Layer) is a wrapper around the DDS (Data Distribution Service) layer and provides binding to Python. This requires the OpenSplice and SAL repositories from Telescope and Site. The <code class="docutils literal"><span class="pre">ts_xml</span></code> package contains all the XML files we will use to derive the DDS libraries from. Inside the <code class="docutils literal"><span class="pre">gitdir</span></code>, run the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_opensplice</span><span class="o">.</span><span class="n">git</span>
 <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_sal</span><span class="o">.</span><span class="n">git</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lsst</span><span class="o">-</span><span class="n">ts</span><span class="o">/</span><span class="n">ts_xml</span>
 </pre></div>
 </div>
-<p>In the SAL clone, there is a user guide that documents installation and setup of SAL. Its location is <code class="docutils literal"><span class="pre">gitdir/ts_sal/SAL_User_Guide.pdf</span></code>. Follow section 1 and the main part of section 2. Sub-sections (those colored blue) 2.1 and 2.2 are redundant as we&#8217;ve already installed the SAL. Sub-section 2.3 is replaced by the following documentation that is specific to this SOCS/Scheduler setup. <strong>NOTE</strong>: If you wish to support running more than one simulation at a time, the port range specified in the manual needs to be extended to accommodate this. The lowest port number is always 7400. To figure out the highest port number necessary, use this formula:</p>
+<p>In the SAL clone, there is a user guide that documents installation and setup of SAL. Its location is <code class="docutils literal"><span class="pre">gitdir/ts_sal/SAL_User_Guide.pdf</span></code>. Follow section 1 and the main part of section 2. Sub-sections (those colored blue) 2.1 and 2.2 are redundant as we’ve already installed the SAL. Sub-section 2.3 is replaced by the following documentation that is specific to this SOCS/Scheduler setup. <strong>NOTE</strong>: If you wish to support running more than one simulation at a time, the port range specified in the manual needs to be extended to accommodate this. The lowest port number is always 7400. To figure out the highest port number necessary, use this formula:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">7413</span> <span class="o">+</span> <span class="p">(</span><span class="mi">14</span> <span class="o">*</span> <span class="p">(</span><span class="n">Njobs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -227,9 +228,8 @@
 <div class="highlight-default"><div class="highlight"><pre><span></span>source $HOME/dds/setup.env
 </pre></div>
 </div>
-<p>The configuration should complete without errors. Go back to <code class="docutils literal"><span class="pre">gitdir/ts_sal</span></code> and do the following:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">t</span> <span class="n">origin</span><span class="o">/</span><span class="n">feature</span><span class="o">/</span><span class="n">scheduler_xml_devel</span>
-<span class="n">cd</span> <span class="n">test</span>
+<p>The configuration should complete without errors. Copy the XML files from <code class="docutils literal"><span class="pre">gitdir/ts_xml/sal_interfaces</span></code> you wish your topic and supporting library to contain. For example if the only topics we wanted to use are scheduler telemetry ones we would do <code class="docutils literal"><span class="pre">cp</span> <span class="pre">$HOME/gitdir/ts_xml/sal_interfaces/scheduler/scheduler_Telemetry.xml</span> <span class="pre">$HOME/gitdir/ts_sal/test</span></code>. Go back to <code class="docutils literal"><span class="pre">gitdir/ts_sal</span></code> and do the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">test</span>
 <span class="n">salgenerator</span> <span class="n">scheduler</span> <span class="n">validate</span>
 <span class="n">salgenerator</span> <span class="n">scheduler</span> <span class="n">sal</span> <span class="n">cpp</span>
 <span class="n">salgenerator</span> <span class="n">scheduler</span> <span class="n">sal</span> <span class="n">python</span>
@@ -340,7 +340,7 @@ Follow the installation instructions from <a class="reference external" href="ht
 </div>
 <div class="section" id="sky-brightness-model-data">
 <span id="skymodel-data"></span><h3>Sky Brightness Model Data<a class="headerlink" href="#sky-brightness-model-data" title="Permalink to this headline">¶</a></h3>
-<p>In the previous section, the pre-calculated sky brightness model was installed, but it does not come with the data required to run. The required data is ~65 GB in size. It can be installed either along side the sky brightness model code or in a directory of the user&#8217;s choosing. To install along side the code, do the following:</p>
+<p>In the previous section, the pre-calculated sky brightness model was installed, but it does not come with the data required to run. The required data is ~65 GB in size. It can be installed either along side the sky brightness model code or in a directory of the user’s choosing. To install along side the code, do the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gitdir</span><span class="o">/</span><span class="n">sims_skybrightness_pre</span><span class="o">/</span><span class="n">data</span>
 <span class="o">./</span><span class="n">data_down</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">o</span>
 </pre></div>
@@ -361,7 +361,7 @@ Follow the installation instructions from <a class="reference external" href="ht
 <div class="highlight-default"><div class="highlight"><pre><span></span>manage_db --save-dir=$HOME/run_local/output
 </pre></div>
 </div>
-<p>This process creates in <code class="docutils literal"><span class="pre">$HOME/run_local/output</span></code> a <code class="docutils literal"><span class="pre">&lt;hostname&gt;_session.db</span></code> file where <code class="docutils literal"><span class="pre">&lt;hostname&gt;</span></code> is the name of your computer. If you have a DNS provided hostname and would like to have a more &#8220;normal&#8221; name, add the <code class="docutils literal"><span class="pre">$OPSIM_HOSTNAME</span></code> environmental variable to the session before running the above command. The script also creates a configuration file in <code class="docutils literal"><span class="pre">$HOME/.config</span></code> called <code class="docutils literal"><span class="pre">opsim4</span></code> and it contains the database setup information. This will allow you to not have to provide that information to the main simulation driver script.</p>
+<p>This process creates in <code class="docutils literal"><span class="pre">$HOME/run_local/output</span></code> a <code class="docutils literal"><span class="pre">&lt;hostname&gt;_session.db</span></code> file where <code class="docutils literal"><span class="pre">&lt;hostname&gt;</span></code> is the name of your computer. If you have a DNS provided hostname and would like to have a more “normal” name, add the <code class="docutils literal"><span class="pre">$OPSIM_HOSTNAME</span></code> environmental variable to the session before running the above command. The script also creates a configuration file in <code class="docutils literal"><span class="pre">$HOME/.config</span></code> called <code class="docutils literal"><span class="pre">opsim4</span></code> and it contains the database setup information. This will allow you to not have to provide that information to the main simulation driver script.</p>
 <p>If you wish to clear out your database and start over, but begin at the next run number from
 where you left off, this task can be accomplished. The <code class="docutils literal"><span class="pre">-s</span></code> flag to the <code class="docutils literal"><span class="pre">manage_db</span></code> will adjust the starting point for the run numbers. You will need the last run number generated and then pass that number incremented by one to the flag. The run number is written into the configuration file for later use when running the simulation.</p>
 </div>
@@ -445,7 +445,7 @@ where you left off, this task can be accomplished. The <code class="docutils lit
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.10',
+            VERSION:'1.0.11',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

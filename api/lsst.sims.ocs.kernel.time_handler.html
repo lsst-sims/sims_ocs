@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.kernel.time_handler module &mdash; Simulated OCS 1.0.10 documentation</title>
+  <title>lsst.sims.ocs.kernel.time_handler module &mdash; Simulated OCS 1.0.11 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.10 documentation" href="../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.11 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.kernel package" href="lsst.sims.ocs.kernel.html"/>
         <link rel="next" title="lsst.sims.ocs.observatory package" href="lsst.sims.ocs.observatory.html"/>
         <link rel="prev" title="lsst.sims.ocs.kernel.simulator module" href="lsst.sims.ocs.kernel.simulator.html"/> 
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                1.0.10
+                1.0.11
               </div>
             
           
@@ -199,19 +199,19 @@
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler._unix_start">
 <code class="descname">_unix_start</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler._unix_start" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>datetime.datetime</em> &#8211; Holder for the start of the UNIX epoch</p>
+<dd><p><em>datetime.datetime</em> – Holder for the start of the UNIX epoch</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.initial_dt">
 <code class="descname">initial_dt</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.initial_dt" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>datetime.datetime</em> &#8211; The date/time of the simulation start.</p>
+<dd><p><em>datetime.datetime</em> – The date/time of the simulation start.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.current_dt">
 <code class="descname">current_dt</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.current_dt" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>datetime.datetime</em> &#8211; The current simulation date/time.</p>
+<dd><p><em>datetime.datetime</em> – The current simulation date/time.</p>
 </dd></dl>
 
 <p>Initialize the class.</p>
@@ -219,7 +219,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>initial_date</strong> (<em>str</em>) &#8211; The inital date in the format of YYYY-MM-DD.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>initial_date</strong> (<em>str</em>) – The inital date in the format of YYYY-MM-DD.</td>
 </tr>
 </tbody>
 </table>
@@ -235,13 +235,13 @@ be applied to that instead. This function does not update the internal timestamp
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>time_increment</strong> (<em>float</em>) &#8211; The increment to adjust the current time.</li>
-<li><strong>time_units</strong> (<em>str</em>) &#8211; The time unit for the increment value.</li>
-<li><strong>timestamp</strong> (<em>float</em><em>, </em><em>optional</em>) &#8211; An alternative timestamp to apply the time increment to.</li>
+<li><strong>time_increment</strong> (<em>float</em>) – The increment to adjust the current time.</li>
+<li><strong>time_units</strong> (<em>str</em>) – The time unit for the increment value.</li>
+<li><strong>timestamp</strong> (<em>float</em><em>, </em><em>optional</em>) – An alternative timestamp to apply the time increment to.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>datetime.datetime</em> &#8211; The datetime object for the future date/time.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>datetime.datetime</em> – The datetime object for the future date/time.</p>
 </td>
 </tr>
 </tbody>
@@ -259,13 +259,13 @@ and returns the UNIX timestamp for that date/time. It does not update the intern
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>time_increment</strong> (<em>float</em>) &#8211; The increment to adjust the current time.</li>
-<li><strong>time_units</strong> (<em>str</em>) &#8211; The time unit for the increment value.</li>
-<li><strong>timestamp</strong> (<em>float</em><em>, </em><em>optional</em>) &#8211; An alternative timestamp to apply the time increment to.</li>
+<li><strong>time_increment</strong> (<em>float</em>) – The increment to adjust the current time.</li>
+<li><strong>time_units</strong> (<em>str</em>) – The time unit for the increment value.</li>
+<li><strong>timestamp</strong> (<em>float</em><em>, </em><em>optional</em>) – An alternative timestamp to apply the time increment to.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>float</em> &#8211; The future UNIX timestamp.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>float</em> – The future UNIX timestamp.</p>
 </td>
 </tr>
 </tbody>
@@ -284,13 +284,13 @@ timestamp.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>time_increment</strong> (<em>float</em>) &#8211; The increment to adjust the current time.</li>
-<li><strong>time_units</strong> (<em>str</em>) &#8211; The time unit for the increment value.</li>
-<li><strong>timestamp</strong> (<em>float</em><em>, </em><em>optional</em>) &#8211; An alternative timestamp to apply the time increment to.</li>
+<li><strong>time_increment</strong> (<em>float</em>) – The increment to adjust the current time.</li>
+<li><strong>time_units</strong> (<em>str</em>) – The time unit for the increment value.</li>
+<li><strong>timestamp</strong> (<em>float</em><em>, </em><em>optional</em>) – An alternative timestamp to apply the time increment to.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str</em> &#8211; The future date/time in ISO-8601.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str</em> – The future date/time in ISO-8601.</p>
 </td>
 </tr>
 </tbody>
@@ -308,9 +308,9 @@ is greater than or equal the elapsed time and false if less than the elapsed tim
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time_span</strong> (<em>float</em>) &#8211; The requested time span in seconds.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time_span</strong> (<em>float</em>) – The requested time span in seconds.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>bool</em> &#8211; True if the time elapsed is greater or False if less than the time span.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>bool</em> – True if the time elapsed is greater or False if less than the time span.</td>
 </tr>
 </tbody>
 </table>
@@ -326,9 +326,9 @@ between it and the initial timestamp in the handler.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timestamp</strong> (<em>float</em>) &#8211; A UNIX timestamp</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timestamp</strong> (<em>float</em>) – A UNIX timestamp</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>float</em> &#8211; The elapsed time (seconds) between the given</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>float</em> – The elapsed time (seconds) between the given</td>
 </tr>
 </tbody>
 </table>
@@ -346,12 +346,12 @@ the initial timestamp in the handler, use the reverse flag.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>given_datetime</strong> (<em>datetime</em>) &#8211; The given timestamp.</li>
-<li><strong>reverse</strong> (<em>bool</em><em>, </em><em>optional</em>) &#8211; Flag to make the difference in reverse. Default is False.</li>
+<li><strong>given_datetime</strong> (<em>datetime</em>) – The given timestamp.</li>
+<li><strong>reverse</strong> (<em>bool</em><em>, </em><em>optional</em>) – Flag to make the difference in reverse. Default is False.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>float</em> &#8211; The elapsed time (seconds) between the given timestamp and the initial timestamp</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>float</em> – The elapsed time (seconds) between the given timestamp and the initial timestamp</p>
 </td>
 </tr>
 </tbody>
@@ -369,8 +369,8 @@ units.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>time_increment</strong> (<em>float</em>) &#8211; The increment to adjust the current time.</li>
-<li><strong>time_units</strong> (<em>str</em>) &#8211; The time unit for the increment value.</li>
+<li><strong>time_increment</strong> (<em>float</em>) – The increment to adjust the current time.</li>
+<li><strong>time_units</strong> (<em>str</em>) – The time unit for the increment value.</li>
 </ul>
 </td>
 </tr>
@@ -381,37 +381,37 @@ units.</p>
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.current_midnight_timestamp">
 <code class="descname">current_midnight_timestamp</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.current_midnight_timestamp" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em> &#8211; Return the UNIX timestamp of midnight for the current date.</p>
+<dd><p><em>float</em> – Return the UNIX timestamp of midnight for the current date.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.current_timestamp">
 <code class="descname">current_timestamp</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.current_timestamp" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em> &#8211; Return the UNIX timestamp for the current date/time.</p>
+<dd><p><em>float</em> – Return the UNIX timestamp for the current date/time.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.current_timestring">
 <code class="descname">current_timestring</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.current_timestring" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; Return the ISO-8601 representation of the current date/time.</p>
+<dd><p><em>str</em> – Return the ISO-8601 representation of the current date/time.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.initial_timestamp">
 <code class="descname">initial_timestamp</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.initial_timestamp" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em> &#8211; Return the UNIX timestamp for the initial date/time.</p>
+<dd><p><em>float</em> – Return the UNIX timestamp for the initial date/time.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.next_midnight_timestamp">
 <code class="descname">next_midnight_timestamp</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.next_midnight_timestamp" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em> &#8211; Return the UNIX timestamp of midnight for the next day after current date.</p>
+<dd><p><em>float</em> – Return the UNIX timestamp of midnight for the next day after current date.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.time_handler.TimeHandler.time_since_start">
 <code class="descname">time_since_start</code><a class="headerlink" href="#lsst.sims.ocs.kernel.time_handler.TimeHandler.time_since_start" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em> &#8211; The number of seconds since the start date.</p>
+<dd><p><em>float</em> – The number of seconds since the start date.</p>
 </dd></dl>
 
 </dd></dl>
@@ -462,7 +462,7 @@ units.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.10',
+            VERSION:'1.0.11',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

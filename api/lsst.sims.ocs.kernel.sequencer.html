@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lsst.sims.ocs.kernel.sequencer module &mdash; Simulated OCS 1.0.10 documentation</title>
+  <title>lsst.sims.ocs.kernel.sequencer module &mdash; Simulated OCS 1.0.11 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Simulated OCS 1.0.10 documentation" href="../index.html"/>
+    <link rel="top" title="Simulated OCS 1.0.11 documentation" href="../index.html"/>
         <link rel="up" title="lsst.sims.ocs.kernel package" href="lsst.sims.ocs.kernel.html"/>
         <link rel="next" title="lsst.sims.ocs.kernel.simulator module" href="lsst.sims.ocs.kernel.simulator.html"/>
         <link rel="prev" title="lsst.sims.ocs.kernel.proposal_info module" href="lsst.sims.ocs.kernel.proposal_info.html"/> 
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                1.0.10
+                1.0.11
               </div>
             
           
@@ -201,49 +201,49 @@ make an astronomical observation. It is then responsible for handing that observ
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.targets_received">
 <code class="descname">targets_received</code><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.targets_received" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> &#8211; Counter for the number of targets received by the sequencer.</p>
+<dd><p><em>int</em> – Counter for the number of targets received by the sequencer.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.targets_missed">
 <code class="descname">targets_missed</code><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.targets_missed" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> &#8211; Counter for the number of targets that were actually observed due to scheduler rejection.</p>
+<dd><p><em>int</em> – Counter for the number of targets that were actually observed due to scheduler rejection.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.observations_made">
 <code class="descname">observations_made</code><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.observations_made" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> &#8211; Counter for the number of observations made by the sequencer.</p>
+<dd><p><em>int</em> – Counter for the number of observations made by the sequencer.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.observation">
 <code class="descname">observation</code><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.observation" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>SALPY_scheduler.observationC</em> &#8211; DDS topic instance for the observation information.</p>
+<dd><p><em>SALPY_scheduler.observationC</em> – DDS topic instance for the observation information.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.observatory_model">
 <code class="descname">observatory_model</code><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.observatory_model" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory" title="lsst.sims.ocs.observatory.main_observatory.MainObservatory"><code class="xref py py-class docutils literal"><span class="pre">MainObservatory</span></code></a> &#8211; Instance of the SOCS observatory model.</p>
+<dd><p><a class="reference internal" href="lsst.sims.ocs.observatory.main_observatory.html#lsst.sims.ocs.observatory.main_observatory.MainObservatory" title="lsst.sims.ocs.observatory.main_observatory.MainObservatory"><code class="xref py py-class docutils literal"><span class="pre">MainObservatory</span></code></a> – Instance of the SOCS observatory model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.observatory_state">
 <code class="descname">observatory_state</code><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.observatory_state" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>SALPY_scheduler.observatoryStateC</em> &#8211; DDS topic instance for the observatory state information.</p>
+<dd><p><em>SALPY_scheduler.observatoryStateC</em> – DDS topic instance for the observatory state information.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.idle_delay">
 <code class="descname">idle_delay</code><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.idle_delay" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em> &#8211; Time (units=seconds) to wait when a missed target is received.</p>
+<dd><p><em>float</em> – Time (units=seconds) to wait when a missed target is received.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="lsst.sims.ocs.kernel.sequencer.Sequencer.log">
 <code class="descname">log</code><a class="headerlink" href="#lsst.sims.ocs.kernel.sequencer.Sequencer.log" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>logging.Logger</em> &#8211; The logging instance.</p>
+<dd><p><em>logging.Logger</em> – The logging instance.</p>
 </dd></dl>
 
 <p>Initialize the class.</p>
@@ -252,8 +252,8 @@ make an astronomical observation. It is then responsible for handing that observ
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>obs_site_config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.obs_site.html#lsst.sims.ocs.configuration.obs_site.ObservingSite" title="lsst.sims.ocs.configuration.obs_site.ObservingSite"><code class="xref py py-class docutils literal"><span class="pre">ObservingSite</span></code></a>) &#8211; The instance of the observing site configuration.</li>
-<li><strong>idle_delay</strong> (<em>float</em>) &#8211; The delay time (seconds) to skip forward when no target is received.</li>
+<li><strong>obs_site_config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.obs_site.html#lsst.sims.ocs.configuration.obs_site.ObservingSite" title="lsst.sims.ocs.configuration.obs_site.ObservingSite"><code class="xref py py-class docutils literal"><span class="pre">ObservingSite</span></code></a>) – The instance of the observing site configuration.</li>
+<li><strong>idle_delay</strong> (<em>float</em>) – The delay time (seconds) to skip forward when no target is received.</li>
 </ul>
 </td>
 </tr>
@@ -280,7 +280,7 @@ make an astronomical observation. It is then responsible for handing that observ
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timestamp</strong> (<em>float</em>) &#8211; The current timestamp at the state retrieval request.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timestamp</strong> (<em>float</em>) – The current timestamp at the state retrieval request.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>SALPY_scheduler.observatoryStateC</em></td>
 </tr>
@@ -298,8 +298,8 @@ make an astronomical observation. It is then responsible for handing that observ
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>sal</strong> (<a class="reference internal" href="lsst.sims.ocs.sal.sal_manager.html#lsst.sims.ocs.sal.sal_manager.SalManager" title="lsst.sims.ocs.sal.sal_manager.SalManager"><code class="xref py py-class docutils literal"><span class="pre">SalManager</span></code></a>) &#8211; A SalManager instance.</li>
-<li><strong>obs_config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.observatory.html#lsst.sims.ocs.configuration.observatory.Observatory" title="lsst.sims.ocs.configuration.observatory.Observatory"><code class="xref py py-class docutils literal"><span class="pre">Observatory</span></code></a>) &#8211; The instance of the observatory configuration.</li>
+<li><strong>sal</strong> (<a class="reference internal" href="lsst.sims.ocs.sal.sal_manager.html#lsst.sims.ocs.sal.sal_manager.SalManager" title="lsst.sims.ocs.sal.sal_manager.SalManager"><code class="xref py py-class docutils literal"><span class="pre">SalManager</span></code></a>) – A SalManager instance.</li>
+<li><strong>obs_config</strong> (<a class="reference internal" href="lsst.sims.ocs.configuration.observatory.html#lsst.sims.ocs.configuration.observatory.Observatory" title="lsst.sims.ocs.configuration.observatory.Observatory"><code class="xref py py-class docutils literal"><span class="pre">Observatory</span></code></a>) – The instance of the observatory configuration.</li>
 </ul>
 </td>
 </tr>
@@ -314,28 +314,28 @@ make an astronomical observation. It is then responsible for handing that observ
 <p>This function performs the necessary steps to observe the given target. The current steps are:</p>
 <blockquote>
 <div><ul class="simple">
-<li>Update the simulation time after &#8220;slewing&#8221;</li>
+<li>Update the simulation time after “slewing”</li>
 <li>Copy target information to observation</li>
-<li>Update the simulation time after &#8220;visit&#8221;</li>
+<li>Update the simulation time after “visit”</li>
 </ul>
 </div></blockquote>
 <p>If the targetId is -1, this means a target was not offered by the Scheduler. Time is forwarded
 by the idle delay time and slew and exposure information are set to None. The observation takes the
-target&#8217;s Id.</p>
+target’s Id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>target</strong> (<em>SALPY_scheduler.targetC</em>) &#8211; A target telemetry topic containing the current target information.</li>
-<li><strong>th</strong> (<a class="reference internal" href="lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler" title="lsst.sims.ocs.kernel.time_handler.TimeHandler"><code class="xref py py-class docutils literal"><span class="pre">TimeHandler</span></code></a>) &#8211; An instance of the simulation&#8217;s TimeHandler.</li>
+<li><strong>target</strong> (<em>SALPY_scheduler.targetC</em>) – A target telemetry topic containing the current target information.</li>
+<li><strong>th</strong> (<a class="reference internal" href="lsst.sims.ocs.kernel.time_handler.html#lsst.sims.ocs.kernel.time_handler.TimeHandler" title="lsst.sims.ocs.kernel.time_handler.TimeHandler"><code class="xref py py-class docutils literal"><span class="pre">TimeHandler</span></code></a>) – An instance of the simulation’s TimeHandler.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>SALPY_scheduler.observationC</em> &#8211; An observation telemetry topic containing the observed target parameters.</li>
-<li>dict(<a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewHistory" title="lsst.sims.ocs.observatory.slew_information.SlewHistory"><code class="xref py py-class docutils literal"><span class="pre">SlewHistory</span></code></a>, <a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewState" title="lsst.sims.ocs.observatory.slew_information.SlewState"><code class="xref py py-class docutils literal"><span class="pre">SlewState</span></code></a>, <a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewState" title="lsst.sims.ocs.observatory.slew_information.SlewState"><code class="xref py py-class docutils literal"><span class="pre">SlewState</span></code></a>, list[<a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewActivity" title="lsst.sims.ocs.observatory.slew_information.SlewActivity"><code class="xref py py-class docutils literal"><span class="pre">SlewActivity</span></code></a>]) &#8211; A dictionanry of all the slew information from the visit.</li>
-<li>dict(list[<a class="reference internal" href="lsst.sims.ocs.observatory.exposure_information.html#lsst.sims.ocs.observatory.exposure_information.TargetExposure" title="lsst.sims.ocs.observatory.exposure_information.TargetExposure"><code class="xref py py-class docutils literal"><span class="pre">TargetExposure</span></code></a>], list[<a class="reference internal" href="lsst.sims.ocs.observatory.exposure_information.html#lsst.sims.ocs.observatory.exposure_information.ObsExposure" title="lsst.sims.ocs.observatory.exposure_information.ObsExposure"><code class="xref py py-class docutils literal"><span class="pre">ObsExposure</span></code></a>]) &#8211; A dictionary of all the exposure information from the visit.</li>
+<li><em>SALPY_scheduler.observationC</em> – An observation telemetry topic containing the observed target parameters.</li>
+<li>dict(<a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewHistory" title="lsst.sims.ocs.observatory.slew_information.SlewHistory"><code class="xref py py-class docutils literal"><span class="pre">SlewHistory</span></code></a>, <a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewState" title="lsst.sims.ocs.observatory.slew_information.SlewState"><code class="xref py py-class docutils literal"><span class="pre">SlewState</span></code></a>, <a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewState" title="lsst.sims.ocs.observatory.slew_information.SlewState"><code class="xref py py-class docutils literal"><span class="pre">SlewState</span></code></a>, list[<a class="reference internal" href="lsst.sims.ocs.observatory.slew_information.html#lsst.sims.ocs.observatory.slew_information.SlewActivity" title="lsst.sims.ocs.observatory.slew_information.SlewActivity"><code class="xref py py-class docutils literal"><span class="pre">SlewActivity</span></code></a>]) – A dictionanry of all the slew information from the visit.</li>
+<li>dict(list[<a class="reference internal" href="lsst.sims.ocs.observatory.exposure_information.html#lsst.sims.ocs.observatory.exposure_information.TargetExposure" title="lsst.sims.ocs.observatory.exposure_information.TargetExposure"><code class="xref py py-class docutils literal"><span class="pre">TargetExposure</span></code></a>], list[<a class="reference internal" href="lsst.sims.ocs.observatory.exposure_information.html#lsst.sims.ocs.observatory.exposure_information.ObsExposure" title="lsst.sims.ocs.observatory.exposure_information.ObsExposure"><code class="xref py py-class docutils literal"><span class="pre">ObsExposure</span></code></a>]) – A dictionary of all the exposure information from the visit.</li>
 </ul>
 </p>
 </td>
@@ -366,7 +366,7 @@ target&#8217;s Id.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filter_swap</strong> (<em>scheduler_filterSwapC</em>) &#8211; The instance of the filter swap information.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filter_swap</strong> (<em>scheduler_filterSwapC</em>) – The instance of the filter swap information.</td>
 </tr>
 </tbody>
 </table>
@@ -381,8 +381,8 @@ target&#8217;s Id.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>night</strong> (<em>int</em>) &#8211; The current survey observing night.</li>
-<li><strong>duration</strong> (<em>int</em>) &#8211; The survey duration in days.</li>
+<li><strong>night</strong> (<em>int</em>) – The current survey observing night.</li>
+<li><strong>duration</strong> (<em>int</em>) – The survey duration in days.</li>
 </ul>
 </td>
 </tr>
@@ -452,7 +452,7 @@ target&#8217;s Id.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.10',
+            VERSION:'1.0.11',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
