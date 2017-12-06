@@ -33,6 +33,7 @@ class SeeingModel(object):
         self.seeing_dates = None
         self.seeing_values = None
         self.environment_config = None
+        self.fwhm_system_zenith = None
         self.filters_config = None
         self.filter_wavelength_correction = {}
         model_time_start = datetime(time_handler.initial_dt.year, 1, 1)
@@ -66,12 +67,10 @@ class SeeingModel(object):
             # Then add this new filter to our dictionary, and remember it for next time.
             filter_wavelength = self.filters_config.get_effective_wavelength(filter_name)
             filter_wavelength_correction = numpy.power(self.RAW_SEEING_WAVELENGTH / filter_wavelength,
-                                                       self.FILTER__WAVELENGTH_CORRECTION_POWER)
+                                                       self.FILTER_WAVELENGTH_CORRECTION_POWER)
             self.filter_wavelength_correction[filter_name] = filter_wavelength_correction
 
-        seeing_fwhm_system = numpy.sqrt((self.environment_config.telescope_seeing * airmass_correction)**2 +
-                                        self.environment_config.optical_design_seeing**2 +
-                                        self.environment_config.camera_seeing**2)
+        seeing_fwhm_system = self.fwhm_system_zenith * airmass_correction
         seeing_fwhm_atmos = fwhm_500 * filter_wavelength_correction * airmass_correction
         fwhm_effective = (self.environment_config.scale_to_eff *
                           numpy.sqrt(seeing_fwhm_system**2 +
@@ -129,6 +128,11 @@ class SeeingModel(object):
         """
         self.environment_config = environment_config
         self.filters_config = filters_config
+
+
+        self.fwhm_system_zenith = numpy.sqrt(self.environment_config.telescope_seeing**2 +
+                                             self.environment_config.optical_design_seeing**2 +
+                                             self.environment_config.camera_seeing**2)
 
         if self.environment_config.seeing_db != "":
             self.seeing_db = self.environment_config.seeing_db
