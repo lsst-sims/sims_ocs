@@ -7,6 +7,7 @@ import sqlite3
 
 __all__ = ["SeeingModel"]
 
+
 class SeeingModel(object):
     """Handle the seeing information.
 
@@ -32,8 +33,9 @@ class SeeingModel(object):
         self.seeing_dates = None
         self.seeing_values = None
         self.environment_config = None
+        self.fwhm_system_zenith = None
         self.filters_config = None
-        self.seeing_fwhm_system_zenith = None
+        self.filter_wavelength_correction = {}
         model_time_start = datetime(time_handler.initial_dt.year, 1, 1)
         self.offset = time_handler.time_since_given_datetime(model_time_start,
                                                              reverse=True)
@@ -59,13 +61,21 @@ class SeeingModel(object):
             return (-1.0, -1.0, -1.0)
         fwhm_500 = self.get_seeing(delta_time)
         airmass_correction = numpy.power(airmass, self.AIRMASS_CORRECTION_POWER)
-        filter_wavelength_correction = numpy.power(self.RAW_SEEING_WAVELENGTH /
-                                                   self.filters_config.get_effective_wavelength(filter_name),
-                                                   self.FILTER_WAVELENGTH_CORRECTION_POWER)
-        fwhm_system = self.seeing_fwhm_system_zenith * airmass_correction
-        fwhm_geometric = fwhm_500 * filter_wavelength_correction * airmass_correction
-        temp1 = numpy.sqrt(fwhm_system**2 + self.environment_config.geom_eff_factor * fwhm_geometric**2)
-        fwhm_effective = self.environment_config.scale_to_eff * temp1
+        try:
+            filter_wavelength_correction = self.filter_wavelength_correction[filter_name]
+        except KeyError:
+            # Then add this new filter to our dictionary, and remember it for next time.
+            filter_wavelength = self.filters_config.get_effective_wavelength(filter_name)
+            filter_wavelength_correction = numpy.power(self.RAW_SEEING_WAVELENGTH / filter_wavelength,
+                                                       self.FILTER_WAVELENGTH_CORRECTION_POWER)
+            self.filter_wavelength_correction[filter_name] = filter_wavelength_correction
+
+        seeing_fwhm_system = self.fwhm_system_zenith * airmass_correction
+        seeing_fwhm_atmos = fwhm_500 * filter_wavelength_correction * airmass_correction
+        fwhm_effective = (self.environment_config.scale_to_eff *
+                          numpy.sqrt(seeing_fwhm_system**2 +
+                                     self.environment_config.geom_eff_factor * seeing_fwhm_atmos**2))
+        fwhm_geometric = 0.822 * fwhm_effective + 0.052   # from sims_photUtils instead in future?
 
         return (fwhm_500, fwhm_geometric, fwhm_effective)
 
@@ -96,8 +106,8 @@ class SeeingModel(object):
     def initialize(self, environment_config, filters_config):
         """Configure the seeing information.
 
-        This function gets the environment and filters configuration, calculates the FWHM system
-        seeing at zenith and creates the seeing information from the appropriate database.
+        This function gets the environment and filters configuration
+        and creates the seeing information from the appropriate database.
         The default behavior is to use the module stored database. However, an
         alternate database file can be provided. The alternate database file needs to have a
         table called *Seeing* with the following columns:
@@ -119,9 +129,10 @@ class SeeingModel(object):
         self.environment_config = environment_config
         self.filters_config = filters_config
 
-        self.seeing_fwhm_system_zenith = numpy.sqrt(self.environment_config.telescope_seeing**2 +
-                                                    self.environment_config.optical_design_seeing**2 +
-                                                    self.environment_config.camera_seeing**2)
+
+        self.fwhm_system_zenith = numpy.sqrt(self.environment_config.telescope_seeing**2 +
+                                             self.environment_config.optical_design_seeing**2 +
+                                             self.environment_config.camera_seeing**2)
 
         if self.environment_config.seeing_db != "":
             self.seeing_db = self.environment_config.seeing_db
