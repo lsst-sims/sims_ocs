@@ -396,7 +396,7 @@ def make_area_proposal_dict(config_dict):
     confdict["scheduling"]["time_window_max"] = topic_areapropconf.time_window_max
     confdict["scheduling"]["time_window_end"] = topic_areapropconf.time_window_end
     confdict["scheduling"]["time_weight"] = topic_areapropconf.time_weight
-
+    confdict["scheduling"]["field_revisit_limit"] = topic_areapropconf.field_revisit_limit
     # prop_dict = {'sky_region': {},
     #              'sky_exclusions': {},
     #              'sky_nightly_bounds': {},
