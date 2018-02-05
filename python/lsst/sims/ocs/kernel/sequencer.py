@@ -173,13 +173,12 @@ class Sequencer(object):
             slew_info, exposure_info = self.observatory_model.observe(th, target, self.observation)
             self.sky_model.update(self.observation.observation_start_time)
 
-            nid = numpy.array([target.fieldId])
             nra = numpy.radians(numpy.array([self.observation.ra]))
             ndec = numpy.radians(numpy.array([self.observation.decl]))
 
-            sky_mags = self.sky_model.get_sky_brightness(nid, extrapolate=True,
+            sky_mags = self.sky_model.get_sky_brightness(nra, ndec, extrapolate=True,
                                                          override_exclude_planets=False)
-            attrs = self.sky_model.get_target_information(nid, nra, ndec)
+            attrs = self.sky_model.get_target_information(nra, ndec)
             msi = self.sky_model.get_moon_sun_info(nra, ndec)
 
             self.observation.sky_brightness = sky_mags[self.observation.filter][0]
