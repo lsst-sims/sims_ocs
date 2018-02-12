@@ -212,7 +212,9 @@ class ConfigurationCommunicator(object):
         self._configure_proposals()
 
     def run(self):
-        """Send all of the configuration topics.
+        """Send all of the configuration topics. Evey sal `put` method will 
+        eventually be a command asking for the subsytem to configure itself and
+        reply with and acknowledgement. 
         """
         self.log.info("Running configuration communication")
         self.sal.put(self.sched_conf)
