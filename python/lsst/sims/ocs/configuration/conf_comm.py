@@ -214,7 +214,10 @@ class ConfigurationCommunicator(object):
     def run(self):
         """Send all of the configuration topics. Evey sal `put` method will 
         eventually be a command asking for the subsytem to configure itself and
-        reply with and acknowledgement. 
+        reply with and acknowledgement. This acknowledgment will have a payload
+        that will give some information as to how the scheduler is configuring.
+        For example, if we just it down and is starting again from a 2 year warm
+        start. This would require a much longer timeout.  
         """
         self.log.info("Running configuration communication")
         self.sal.put(self.sched_conf)
