@@ -217,7 +217,19 @@ class ConfigurationCommunicator(object):
         reply with and acknowledgement. This acknowledgment will have a payload
         that will give some information as to how the scheduler is configuring.
         For example, if we just it down and is starting again from a 2 year warm
-        start. This would require a much longer timeout.  
+        start. This would require a much longer timeout.
+
+        Current code index
+        ------------------
+        200 - ts_scheduler, good, new start
+        201 - ts_scheduler, good, warm start
+        250 - ts_scheduler, fail, new start
+        251 - ts_scheduler, fail, warm start
+
+        300 - feature_based, good, new start
+        301 - feature_based, good, warm start
+        350 - feature_based, fail, new start
+        351 - feature_based, fail, warm start
         """
         self.log.info("Running configuration communication")
         self.sal.put(self.sched_conf)
@@ -230,27 +242,67 @@ class ConfigurationCommunicator(object):
         self.sal.put(self.slew_conf)
         self.sal.put(self.olc_conf)
         self.sal.put(self.park_conf)
-        num_proposals = 1
-        if self.config.science.general_props.active is not None:
-            for general_config in self.config.science.general_props.active:
-                general_topic = general_config.set_topic(self.sal.get_topic("generalPropConfig"))
-                general_topic.prop_id = num_proposals
+
+        # Command the scheduler to configure the proposals.
+        self.sal.manager.salCommand("scheduler_command_configureProposals")
+        myData = self.sal.command_configureProposals
+        myData.configure_proposals = "Configure proposals"
+
+        # Respond according to the listed index codes
+        cmdId = self.sal.manager.issueCommand_configureProposals(myData)
+        retval = self.sal.manager.waitForCompletion_configureProposals(cmdId,5)
+        print("cmdId" + str(retval))
+        # ts_scheduler, good, new start
+        if retval == 200:
+            num_proposals = 1
+            if self.config.science.general_props.active is not None:
+                for general_config in self.config.science.general_props.active:
+                    general_topic = general_config.set_topic(self.sal.get_topic("generalPropConfig"))
+                    general_topic.prop_id = num_proposals
+                    self.sal.put(general_topic)
+                    num_proposals += 1
+            else:
+                general_topic = self.sal.get_topic("generalPropConfig")
+                general_topic.prop_id = -1
+                general_topic.name = "NULL"
                 self.sal.put(general_topic)
-                num_proposals += 1
-        else:
-            general_topic = self.sal.get_topic("generalPropConfig")
-            general_topic.prop_id = -1
-            general_topic.name = "NULL"
-            self.sal.put(general_topic)
-        if self.config.science.sequence_props.active is not None:
-            for sequence_config in self.config.science.sequence_props.active:
-                sequence_topic = sequence_config.set_topic(self.sal.get_topic("sequencePropConfig"))
-                sequence_topic.prop_id = num_proposals
+            if self.config.science.sequence_props.active is not None:
+                for sequence_config in self.config.science.sequence_props.active:
+                    sequence_topic = sequence_config.set_topic(self.sal.get_topic("sequencePropConfig"))
+                    sequence_topic.prop_id = num_proposals
+                    self.sal.put(sequence_topic)
+                    num_proposals += 1
+            else:
+                sequence_topic = self.sal.get_topic("sequencePropConfig")
+                sequence_topic.prop_id = -1
+                sequence_topic.name = "NULL"
                 self.sal.put(sequence_topic)
-                num_proposals += 1
-        else:
-            sequence_topic = self.sal.get_topic("sequencePropConfig")
-            sequence_topic.prop_id = -1
-            sequence_topic.name = "NULL"
-            self.sal.put(sequence_topic)
-        self.log.info("Sent configuration for {} proposals.".format(num_proposals - 1))
+            self.log.info("Sent configuration for {} proposals.".format(num_proposals - 1))
+        
+        # ts_scheduler, good, warm start
+        elif retval == 201:
+            print("TODO")
+        
+        # ts_scheduler, bad, new start
+        elif retval == 250:
+            print("TODO")
+        
+        # ts_scheduler, bad, warm start
+        elif retval == 251:
+            print("TODO")
+        
+        # feature_based, good, new start
+        elif retval == 300:
+            print("TODO")
+        
+        # feature_based, good, warm start
+        elif retval == 301:
+            print("TODO")
+
+        # feature_based, bad, new start
+        elif retval == 350:
+            print("TODO")
+
+        # feature_based, bad, warm start
+        elif retval == 351:
+            print("TODO")

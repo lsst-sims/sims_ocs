@@ -1,6 +1,8 @@
+import SALPY_scheduler
+
 from builtins import object
 from builtins import str
-import SALPY_scheduler
+from SALPY_scheduler import scheduler_command_configureProposalsC
 
 __all__ = ["SalManager"]
 
@@ -20,6 +22,8 @@ class SalManager(object):
         """
         self.debug_level = debug_level
         self.manager = None
+
+        self.command_configureProposals = scheduler_command_configureProposalsC()
 
     def initialize(self):
         """Perform initialization steps.
@@ -54,6 +58,7 @@ class SalManager(object):
         topic_name = "scheduler_{}".format(topic_short_name)
         topic = getattr(SALPY_scheduler, "{}C".format(topic_name))
         return topic()
+
 
     def set_publish_topic(self, topic_short_name):
         """Set the given topic for publishing.
