@@ -175,7 +175,7 @@ class Sequencer(object):
 
             nid = numpy.array([target.fieldId])
             nra = numpy.radians(numpy.array([self.observation.ra]))
-            ndec = numpy.radians(numpy.array([self.observation.dec]))
+            ndec = numpy.radians(numpy.array([self.observation.decl]))
 
             sky_mags = self.sky_model.get_sky_brightness(nid, extrapolate=True,
                                                          override_exclude_planets=False)
