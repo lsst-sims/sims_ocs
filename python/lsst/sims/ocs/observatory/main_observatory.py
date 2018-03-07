@@ -215,7 +215,7 @@ class MainObservatory(object):
         observation.groupId = target.groupId
         observation.filter = target.filter
         observation.ra = target.ra
-        observation.dec = target.dec
+        observation.decl = target.decl
         observation.angle = target.angle
         observation.num_exposures = target.num_exposures
 

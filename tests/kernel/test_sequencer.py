@@ -34,7 +34,7 @@ class SequencerTest(unittest.TestCase):
         target.fieldId = 300
         target.filter = "i"
         target.ra = 0.4244
-        target.dec = -0.5314
+        target.decl = -0.5314
         target.num_exposures = 2
 
         # Make it so initial timestamp is 0
