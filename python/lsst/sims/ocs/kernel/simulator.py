@@ -107,7 +107,7 @@ class Simulator(object):
     def duration(self):
         """int: The duration of the simulation in days.
         """
-        return round(self.fractional_duration * DAYS_IN_YEAR)
+        return math.floor(self.fractional_duration * DAYS_IN_YEAR)
 
     def end_night(self):
         """Perform actions at the end of the night.
