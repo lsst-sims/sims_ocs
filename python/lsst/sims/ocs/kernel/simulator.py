@@ -15,7 +15,7 @@ from lsst.sims.survey.fields import FieldsDatabase, FieldSelection
 from lsst.sims.ocs.configuration import ConfigurationCommunicator
 from lsst.sims.ocs.database.tables import write_config, write_field
 from lsst.sims.ocs.database.tables import write_proposal, write_proposal_field
-from lsst.sims.ocs.environment import CloudModel, SeeingModel
+from lsst.sims.ocs.environment import CloudInterface, SeeingInterface
 from lsst.sims.ocs.kernel import DowntimeHandler, ObsProposalHistory
 from lsst.sims.ocs.kernel import ProposalInfo, ProposalFieldInfo
 from lsst.sims.ocs.kernel import Sequencer, TargetProposalHistory, TimeHandler
@@ -91,8 +91,8 @@ class Simulator(object):
         self.dh = DowntimeHandler()
         self.conf_comm = ConfigurationCommunicator()
         self.sun = Sun()
-        self.cloud_model = CloudModel(self.time_handler)
-        self.seeing_model = SeeingModel(self.time_handler)
+        self.cloud_interface = CloudInterface(self.time_handler)
+        self.seeing_interface = SeeingInterface(self.time_handler)
         self.field_database = FieldsDatabase()
         self.field_selection = FieldSelection()
         self.obs_site_info = (self.conf.observing_site.longitude, self.conf.observing_site.latitude)
@@ -185,8 +185,8 @@ class Simulator(object):
         self.seq.initialize(self.sal, self.conf.observatory)
         self.dh.initialize(self.conf.downtime)
         self.dh.write_downtime_to_db(self.db)
-        self.cloud_model.initialize(self.conf.environment.cloud_db)
-        self.seeing_model.initialize(self.conf.environment, self.conf.observatory.filters)
+        self.cloud_interface.initialize(self.conf.environment.cloud_db)
+        self.seeing_interface.initialize(self.conf.environment, self.conf.observatory.filters)
         self.conf_comm.initialize(self.sal, self.conf)
         self.comm_time = self.sal.set_publish_topic("timeHandler")
         self.target = self.sal.set_subscribe_topic("target")
@@ -222,10 +222,10 @@ class Simulator(object):
                              "Observatory State: {}".format(topic_strdict(observatory_state)))
                 self.sal.put(observatory_state)
 
-                self.cloud_model.set_topic(self.time_handler, self.cloud)
+                self.cloud_interface.set_topic(self.time_handler, self.cloud)
                 self.sal.put(self.cloud)
 
-                self.seeing_model.set_topic(self.time_handler, self.seeing)
+                self.seeing_interface.set_topic(self.time_handler, self.seeing)
                 self.sal.put(self.seeing)
 
                 self.get_target_from_scheduler()
@@ -235,8 +235,8 @@ class Simulator(object):
                 # Add a few more things to the observation
                 observation.night = night
                 elapsed_time = self.time_handler.time_since_given(observation.observation_start_time)
-                observation.cloud = self.cloud_model.get_cloud(elapsed_time)
-                seeing_values = self.seeing_model.calculate_seeing(elapsed_time, observation.filter,
+                observation.cloud = self.cloud_interface.get_cloud(elapsed_time)
+                seeing_values = self.seeing_interface.calculate_seeing(elapsed_time, observation.filter,
                                                                    observation.airmass)
                 observation.seeing_fwhm_500 = seeing_values[0]
                 observation.seeing_fwhm_geom = seeing_values[1]

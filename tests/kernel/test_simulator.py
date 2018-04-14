@@ -120,8 +120,8 @@ class SimulatorTest(unittest.TestCase):
         self.sim.seq.observatory_model.observation_exposure_list = [exposure_coll3, exposure_coll4]
         self.sim.seq.observatory_model.slew_activities_list = [slew_activity_coll]
         self.sim.dh.write_downtime_to_db = mock.Mock()
-        self.sim.cloud_model.write_to_db = mock.Mock()
-        self.sim.seeing_model.write_to_db = mock.Mock()
+        self.sim.cloud_interface.write_to_db = mock.Mock()
+        self.sim.seeing_interface.write_to_db = mock.Mock()
 
         self.assertEqual(self.sim.duration, 1.0)
 
