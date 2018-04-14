@@ -1,5 +1,5 @@
 """
 Module for classes handling the scheduled and unscheduled downtime.
 """
-from .scheduled_downtime import *
-from .unscheduled_downtime import *
+from .scheduledDowntime_interface import *
+from .unscheduledDowntime_interface import *
