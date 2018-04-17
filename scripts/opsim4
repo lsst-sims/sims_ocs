@@ -75,12 +75,14 @@ def main(args):
 
         logger = logging.getLogger("opsim4")
 
-        if DDS_DOMAIN_ENV in os.environ:
-            logger.info("{} = {}".format(DDS_DOMAIN_ENV,
-                                         os.environ[DDS_DOMAIN_ENV]))
-        if OSPL_URI_ENV in os.environ:
-            logger.info("{} = {}".format(OSPL_URI_ENV,
-                                         os.environ[OSPL_URI_ENV]))
+        if args.dds_comm:
+
+            if DDS_DOMAIN_ENV in os.environ:
+                logger.info("{} = {}".format(DDS_DOMAIN_ENV,
+                                             os.environ[DDS_DOMAIN_ENV]))
+            if OSPL_URI_ENV in os.environ:
+                logger.info("{} = {}".format(OSPL_URI_ENV,
+                                             os.environ[OSPL_URI_ENV]))
 
         start_time = datetime.now()
 
@@ -90,31 +92,41 @@ def main(args):
         logger.info("{} proposals active.".format(configuration.num_proposals))
         configuration.validate()
 
-        # Get scheduler version number
-        output = sp.Popen(["scheduler.py", "--version"], stdout=sp.PIPE, stderr=sp.PIPE).communicate()
-        args.scheduler_version = output[1].strip()
+        if args.dds_comm:
+            # Get scheduler version number
+            output = sp.Popen(["scheduler.py", "--version"], stdout=sp.PIPE, stderr=sp.PIPE).communicate()
+            args.scheduler_version = output[1].strip()
 
-        sch_cmd = ["scheduler.py", "-s", "--log-port={}".format(log_port),
-                   "--console-format=Scheduler: %(message)s"]
-        sch_cmd.extend(["-v" for i in range(args.verbose)])
-        if args.scheduler_timeout is not None:
-            sch_cmd.append("--timeout={}".format(args.scheduler_timeout))
-        if args.profile:
-            sch_cmd.append("--profile")
+            sch_cmd = ["scheduler.py", "-s", "--log-port={}".format(log_port),
+                       "--console-format=Scheduler: %(message)s"]
+            sch_cmd.extend(["-v" for i in range(args.verbose)])
+            if args.scheduler_timeout is not None:
+                sch_cmd.append("--timeout={}".format(args.scheduler_timeout))
+            if args.profile:
+                sch_cmd.append("--profile")
 
-        logger.debug("Scheduler Command: {}".format(sch_cmd))
-        sched_pid = sp.Popen(sch_cmd).pid
+            logger.debug("Scheduler Command: {}".format(sch_cmd))
+            sched_pid = sp.Popen(sch_cmd).pid
 
-        breadcrumb = ".scheduler_{}".format(log_port)
+            breadcrumb = ".scheduler_{}".format(log_port)
+            driver = None
+        else:
+            if args.scheduler_type is "feature":
+                from lsst.sims.featureScheduler.driver import FeatureSchedulerDriver as Driver
+            elif args.scheduler_type is "proposal":
+                from lsst.ts.scheduler import Driver
+            driver = Driver()
 
-        sim = Simulator(args, configuration, db)
+        sim = Simulator(args, configuration, db, driver=driver)
         sim.initialize()
-        wait_time = 0
-        while not os.path.exists(breadcrumb):
-            time.sleep(1)
-            wait_time += 1
-        os.remove(breadcrumb)
-        logger.info("SOCS waited {} seconds for Scheduler to complete init.".format(wait_time))
+        if args.dds_comm:
+            wait_time = 0
+            while not os.path.exists(breadcrumb):
+                time.sleep(1)
+                wait_time += 1
+            os.remove(breadcrumb)
+            logger.info("SOCS waited {} seconds for Scheduler to complete init.".format(wait_time))
+
         try:
             sim.run()
         except BaseException:

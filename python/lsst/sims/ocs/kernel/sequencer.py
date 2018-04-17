@@ -36,7 +36,7 @@ class Sequencer(object):
         The logging instance.
     """
 
-    def __init__(self, obs_site_config, idle_delay):
+    def __init__(self, obs_site_config, idle_delay, no_dds=False):
         """Initialize the class.
 
         Parameters
@@ -57,6 +57,7 @@ class Sequencer(object):
         self.log = logging.getLogger("kernel.Sequencer")
         self.idle_delay = (idle_delay, "seconds")
         self.sky_model = AstronomicalSkyModel(self.observatory_location)
+        self.no_dds = no_dds
 
     @property
     def observations_made(self):
@@ -121,9 +122,16 @@ class Sequencer(object):
         obs_config : :class:`.Observatory`
             The instance of the observatory configuration.
         """
-        self.observation = sal.set_publish_topic("observation")
-        self.observatory_state = sal.set_publish_topic("observatoryState")
-        self.observatory_model.configure(obs_config)
+        if self.no_dds:
+            from SALPY_scheduler import scheduler_observationC
+            self.observation = scheduler_observationC()
+            self.observatory_model.configure(obs_config)
+            self.observatory_state = self.observatory_model.current_state
+        else:
+            self.observation = sal.set_publish_topic("observation")
+            self.observatory_state = sal.set_publish_topic("observatoryState")
+            self.observatory_model.configure(obs_config)
+
 
     def finalize(self):
         """Perform finalization steps.

@@ -3,6 +3,7 @@ from builtins import range
 import logging
 import math
 import time
+import collections
 
 from lsst.ts.astrosky.model import Sun
 
@@ -23,9 +24,12 @@ from lsst.sims.ocs.sal import SalManager, topic_strdict
 from lsst.sims.ocs.setup import LoggingLevel
 from lsst.sims.ocs.utilities.constants import DAYS_IN_YEAR, SECONDS_IN_MINUTE
 from lsst.sims.ocs.utilities.socs_exceptions import SchedulerTimeoutError
+from lsst.ts.scheduler import SALUtils
 from lsst.sims.utils import m5_flat_sed
 
 __all__ = ["Simulator"]
+
+FilterSwap = collections.namedtuple('FilterSwap', 'need_swap filter_to_unmount filter_to_mount')
 
 class Simulator(object):
     """Main class for the survey simulation.
@@ -64,7 +68,7 @@ class Simulator(object):
         The instance of the field selector.
     """
 
-    def __init__(self, options, configuration, database):
+    def __init__(self, options, configuration, database, driver=None):
         """Initialize the class.
 
         Parameters
@@ -86,10 +90,18 @@ class Simulator(object):
             self.conf.survey.duration = self.opts.frac_duration
         self.time_handler = TimeHandler(self.conf.survey.start_date)
         self.log = logging.getLogger("kernel.Simulator")
-        self.sal = SalManager()
-        self.seq = Sequencer(self.conf.observing_site, self.conf.survey.idle_delay)
+        if driver is None:
+            self.sal = SalManager()
+            self.seq = Sequencer(self.conf.observing_site, self.conf.survey.idle_delay)
+            self.no_dds_comm = False
+        else:
+            self.driver =driver
+            self.no_dds_comm = True
+            self.sal = None
+            self.seq = Sequencer(self.conf.observing_site, self.conf.survey.idle_delay, no_dds=self.no_dds_comm)
+
         self.dh = DowntimeHandler()
-        self.conf_comm = ConfigurationCommunicator()
+        self.conf_comm = ConfigurationCommunicator(no_dds_comm=self.no_dds_comm)
         self.sun = Sun()
         self.cloud_interface = CloudInterface(self.time_handler)
         self.seeing_interface = SeeingInterface(self.time_handler)
@@ -121,7 +133,8 @@ class Simulator(object):
         This function handles finalization of the :class:`.SalManager` and :class:`.Sequencer` instances.
         """
         self.seq.finalize()
-        self.sal.finalize()
+        if not self.no_dds_comm:
+            self.sal.finalize()
         self.log.info("Ending simulation")
 
     def gather_proposal_history(self, phtype, topic):
@@ -163,15 +176,19 @@ class Simulator(object):
         This function provides the mechanism for getting the target from the
         Scheduler. Currently, a while loop is required to do this.
         """
-        lasttime = time.time()
-        while self.wait_for_scheduler:
-            rcode = self.sal.manager.getNextSample_target(self.target)
-            if rcode == 0 and self.target.num_exposures != 0:
-                break
-            else:
-                tf = time.time()
-                if (tf - lasttime) > self.socs_timeout:
-                    raise SchedulerTimeoutError("The Scheduler is not serving targets!")
+        if self.no_dds_comm:
+            target = self.driver.select_next_target().get_copy()
+            SALUtils.wtopic_target(self.target, target, self.driver.science_proposal_list[0].sky)
+        else:
+            lasttime = time.time()
+            while self.wait_for_scheduler:
+                rcode = self.sal.manager.getNextSample_target(self.target)
+                if rcode == 0 and self.target.num_exposures != 0:
+                    break
+                else:
+                    tf = time.time()
+                    if (tf - lasttime) > self.socs_timeout:
+                        raise SchedulerTimeoutError("The Scheduler is not serving targets!")
 
     def initialize(self):
         """Perform initialization steps.
@@ -181,19 +198,36 @@ class Simulator(object):
         """
         self.log.info("Initializing simulation")
         self.log.info("Simulation Session Id = {}".format(self.db.session_id))
-        self.sal.initialize()
+        if not self.no_dds_comm:
+            self.sal.initialize()
         self.seq.initialize(self.sal, self.conf.observatory)
         self.dh.initialize(self.conf.downtime)
         self.dh.write_downtime_to_db(self.db)
         self.cloud_interface.initialize(self.conf.environment.cloud_db)
         self.seeing_interface.initialize(self.conf.environment, self.conf.observatory.filters)
         self.conf_comm.initialize(self.sal, self.conf)
-        self.comm_time = self.sal.set_publish_topic("timeHandler")
-        self.target = self.sal.set_subscribe_topic("target")
-        self.cloud = self.sal.set_publish_topic("cloud")
-        self.seeing = self.sal.set_publish_topic("seeing")
-        self.filter_swap = self.sal.set_subscribe_topic("filterSwap")
-        self.interested_proposal = self.sal.set_subscribe_topic("interestedProposal")
+        if not self.no_dds_comm:
+            self.comm_time = self.sal.set_publish_topic("timeHandler")
+            self.target = self.sal.set_subscribe_topic("target")
+            self.cloud = self.sal.set_publish_topic("cloud")
+            self.seeing = self.sal.set_publish_topic("seeing")
+            self.filter_swap = self.sal.set_subscribe_topic("filterSwap")
+            self.interested_proposal = self.sal.set_subscribe_topic("interestedProposal")
+        else:
+            from SALPY_scheduler import scheduler_timeHandlerC
+            from SALPY_scheduler import scheduler_targetC
+            from SALPY_scheduler import scheduler_cloudC
+            from SALPY_scheduler import scheduler_seeingC
+            from SALPY_scheduler import scheduler_filterSwapC
+            from SALPY_scheduler import scheduler_interestedProposalC
+
+            self.comm_time = scheduler_timeHandlerC()
+            self.target = scheduler_targetC()
+            self.cloud = scheduler_cloudC()
+            self.seeing = scheduler_seeingC()
+            self.filter_swap = scheduler_filterSwapC()
+            self.interested_proposal = scheduler_interestedProposalC()
+
         self.log.info("Finishing simulation initialization")
 
     def run(self):
@@ -201,7 +235,11 @@ class Simulator(object):
         """
         self.log.info("Starting simulation")
 
-        self.conf_comm.run()
+        if self.no_dds_comm:
+            self.configure_driver()
+        else:
+            self.conf_comm.run()
+
         self.save_configuration()
         self.save_proposal_information()
         self.save_field_information()
@@ -209,24 +247,36 @@ class Simulator(object):
         self.log.debug("Duration = {}".format(self.duration))
         for night in range(1, int(self.duration) + 1):
             self.start_night(night)
+            if self.no_dds_comm:
+                self.driver.update_time(self.time_handler.current_timestamp, night)
+                self.driver.start_night(self.time_handler.current_timestamp, night)
 
             while self.time_handler.current_timestamp < self.end_of_night:
 
-                self.comm_time.timestamp = self.time_handler.current_timestamp
+                if not self.no_dds_comm:
+                    self.comm_time.timestamp = self.time_handler.current_timestamp
+                    self.sal.put(self.comm_time)
+
                 self.log.log(LoggingLevel.EXTENSIVE.value,
                              "Timestamp sent: {:.6f}".format(self.time_handler.current_timestamp))
-                self.sal.put(self.comm_time)
 
                 observatory_state = self.seq.get_observatory_state(self.time_handler.current_timestamp)
                 self.log.log(LoggingLevel.EXTENSIVE.value,
                              "Observatory State: {}".format(topic_strdict(observatory_state)))
-                self.sal.put(observatory_state)
+                if self.no_dds_comm:
+                    self.driver.update_time(self.time_handler.current_timestamp, night)
+                    self.driver.update_internal_conditions(observatory_state, night)
+                    self.cloud.cloud = self.cloud_interface.get_cloud(self.time_handler.time_since_start)
+                    self.seeing.seeing = self.seeing_interface.get_seeing(self.time_handler.time_since_start)
+                    self.driver.update_external_conditions(self.cloud.cloud, self.seeing.seeing)
+                else:
+                    self.sal.put(observatory_state)
 
-                self.cloud_interface.set_topic(self.time_handler, self.cloud)
-                self.sal.put(self.cloud)
+                    self.cloud_interface.set_topic(self.time_handler, self.cloud)
+                    self.sal.put(self.cloud)
 
-                self.seeing_interface.set_topic(self.time_handler, self.seeing)
-                self.sal.put(self.seeing)
+                    self.seeing_interface.set_topic(self.time_handler, self.seeing)
+                    self.sal.put(self.seeing)
 
                 self.get_target_from_scheduler()
 
@@ -252,21 +302,28 @@ class Simulator(object):
 
                 # Pass observation back to scheduler
                 self.log.log(LoggingLevel.EXTENSIVE.value, "tx: observation")
-                self.sal.put(observation)
+                if self.no_dds_comm:
+                    driver_observation = SALUtils.rtopic_observation(observation)
+                    target_list = self.driver.register_observation(driver_observation)
+                    SALUtils.wtopic_interestedProposal(self.interested_proposal,
+                                                       observation.targetId,
+                                                       target_list)
+                else:
+                    self.sal.put(observation)
 
-                # Wait for interested proposal information
-                lastconfigtime = time.time()
-                while self.wait_for_scheduler:
-                    rcode = self.sal.manager.getNextSample_interestedProposal(self.interested_proposal)
-                    if rcode == 0 and self.interested_proposal.num_proposals >= 0:
-                        self.log.log(LoggingLevel.EXTENSIVE.value, "Received interested proposal.")
-                        break
-                    else:
-                        tf = time.time()
-                        if (tf - lastconfigtime) > 5.0:
-                            self.log.log(LoggingLevel.EXTENSIVE.value,
-                                         "Failed to receive interested proposal due to timeout.")
+                    # Wait for interested proposal information
+                    lastconfigtime = time.time()
+                    while self.wait_for_scheduler:
+                        rcode = self.sal.manager.getNextSample_interestedProposal(self.interested_proposal)
+                        if rcode == 0 and self.interested_proposal.num_proposals >= 0:
+                            self.log.log(LoggingLevel.EXTENSIVE.value, "Received interested proposal.")
                             break
+                        else:
+                            tf = time.time()
+                            if (tf - lastconfigtime) > 5.0:
+                                self.log.log(LoggingLevel.EXTENSIVE.value,
+                                             "Failed to receive interested proposal due to timeout.")
+                                break
 
                 if self.wait_for_scheduler and observation.targetId != -1:
                     self.db.append_data("target_history", self.target)
@@ -296,7 +353,8 @@ class Simulator(object):
         """
         c = self.conf.config_list()
         c.extend(self.seq.sky_brightness_config())
-        c.append(("scheduler/version", self.opts.scheduler_version))
+        if not self.no_dds_comm:
+            c.append(("scheduler/version", self.opts.scheduler_version))
         c.append(("dateloc/version", dateloc_version.__version__))
         c.append(("astrosky_model/version", astrosky_version.__version__))
         c.append(("observatory_model/version", obs_mod_version.__version__))
@@ -342,23 +400,28 @@ class Simulator(object):
         * Checking if the Scheduler requests a filter swap
         * Peforming the filter swap if requested
         """
-        self.comm_time.timestamp = self.time_handler.current_timestamp
+        if not self.no_dds_comm:
+            self.comm_time.timestamp = self.time_handler.current_timestamp
+            self.sal.put(self.comm_time)
         self.log.debug("Start of day {} at {}".format(self.comm_time.night,
                                                       self.time_handler.current_timestring))
         self.log.log(LoggingLevel.EXTENSIVE.value,
                      "Daytime Timestamp sent: {:.6f}".format(self.time_handler.current_timestamp))
-        self.sal.put(self.comm_time)
 
-        self.filter_swap = self.sal.get_topic("filterSwap")
-        lastconfigtime = time.time()
-        while self.wait_for_scheduler:
-            rcode = self.sal.manager.getNextSample_filterSwap(self.filter_swap)
-            if rcode == 0 and self.filter_swap.filter_to_unmount != '':
-                break
-            else:
-                tf = time.time()
-                if (tf - lastconfigtime) > 5.0:
+        if self.no_dds_comm:
+            self.filter_swap = FilterSwap(*self.driver.get_need_filter_swap())
+            self.seq.start_day(self.filter_swap)
+        else:
+            self.filter_swap = self.sal.get_topic("filterSwap")
+            lastconfigtime = time.time()
+            while self.wait_for_scheduler:
+                rcode = self.sal.manager.getNextSample_filterSwap(self.filter_swap)
+                if rcode == 0 and self.filter_swap.filter_to_unmount != '':
                     break
+                else:
+                    tf = time.time()
+                    if (tf - lastconfigtime) > 5.0:
+                        break
 
         self.seq.start_day(self.filter_swap)
 
@@ -428,3 +491,72 @@ class Simulator(object):
                                                  self.db.session_id))
                 num_proposal_fields += 1
         self.db.write_table("proposal_field", data)
+
+    def configure_driver(self):
+        """When running with no DDS communication layer, this function can be used to configure the driver.
+
+        """
+        self.driver.configure_duration(self.conf.survey.full_duration)
+        self.log.info("run: rx scheduler config survey_duration=%.1f" % (self.conf.survey.full_duration))
+
+        config_dict = SALUtils.rtopic_driver_config(self.conf.sched_driver)
+        self.driver.configure(config_dict)
+        self.log.info("run: rx driver config=%s" % config_dict)
+
+        config_dict = SALUtils.rtopic_location_config(self.conf_comm.obs_site_conf)
+        self.driver.configure_location(config_dict)
+        self.log.info("run: rx site config=%s" % (config_dict))
+
+        config_dict = SALUtils.rtopic_telescope_config(self.conf_comm.tel_conf)
+        self.driver.configure_telescope(config_dict)
+        self.log.info("run: rx telescope config=%s" % (config_dict))
+
+        config_dict = SALUtils.rtopic_dome_config(self.conf_comm.dome_conf)
+        self.driver.configure_dome(config_dict)
+        self.log.info("run: rx dome config=%s" % (config_dict))
+
+        config_dict = SALUtils.rtopic_rotator_config(self.conf_comm.rot_conf)
+        self.driver.configure_rotator(config_dict)
+        self.log.info("run: rx rotator config=%s" % (config_dict))
+
+        config_dict = SALUtils.rtopic_camera_config(self.conf_comm.cam_conf)
+        self.driver.configure_camera(config_dict)
+        self.log.info("run: rx camera config=%s" % (config_dict))
+
+        config_dict = SALUtils.rtopic_slew_config(self.conf_comm.slew_conf)
+        self.driver.configure_slew(config_dict)
+        self.log.info("run: rx slew config=%s" % (config_dict))
+
+        config_dict = SALUtils.rtopic_optics_config(self.conf_comm.olc_conf)
+        self.driver.configure_optics(config_dict)
+        self.log.info("run: rx optics config=%s" % (config_dict))
+
+        config_dict = SALUtils.rtopic_park_config(self.conf_comm.park_conf)
+        self.driver.configure_park(config_dict)
+        self.log.info("run: rx park config=%s" % (config_dict))
+
+        # Configure general proposals
+        num_proposals = 1
+        from SALPY_scheduler import scheduler_generalPropConfigC
+        general_topic = scheduler_generalPropConfigC()
+        for prop_name in self.conf.science.general_props.keys():
+            self.conf.science.general_props[prop_name].set_topic(general_topic)
+            config_dict = SALUtils.rtopic_area_prop_config(general_topic)
+            self.log.info("run: rx area prop id=%i name=%s config=%s" % (num_proposals, prop_name,
+                                                                        config_dict))
+            self.driver.create_area_proposal(num_proposals,
+                                            prop_name,
+                                            config_dict)
+            num_proposals += 1
+
+        from SALPY_scheduler import scheduler_sequencePropConfigC
+        sequence_topic = scheduler_sequencePropConfigC()
+        for prop_name in self.conf.science.sequence_props.keys():
+            self.conf.science.sequence_props[prop_name].set_topic(sequence_topic)
+            config_dict = SALUtils.rtopic_seq_prop_config(sequence_topic)
+            self.log.info("run: rx seq prop id=%i name=%s config=%s" % (num_proposals, prop_name,
+                                                                        config_dict))
+            self.driver.create_sequence_proposal(num_proposals,
+                                                prop_name,
+                                                config_dict)
+            num_proposals += 1
