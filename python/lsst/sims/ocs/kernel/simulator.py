@@ -456,9 +456,10 @@ class Simulator(object):
         down_days = self.dh.get_downtime(night)
         if down_days:
             self.log.info("Observatory is down: {} days.".format(down_days))
-            self.comm_time.is_down = True
-            self.comm_time.down_duration = down_days
-            self.comm_time.timestamp = self.time_handler.current_timestamp
+            if not self.no_dds_comm:
+                self.comm_time.is_down = True
+                self.comm_time.down_duration = down_days
+                self.comm_time.timestamp = self.time_handler.current_timestamp
             self.log.log(LoggingLevel.EXTENSIVE.value,
                          "Downtime Start Night Timestamp sent: {:.6f}"
                          .format(self.time_handler.current_timestamp))
@@ -466,11 +467,12 @@ class Simulator(object):
             observatory_state = self.seq.get_observatory_state(self.time_handler.current_timestamp)
             self.log.log(LoggingLevel.EXTENSIVE.value,
                          "Downtime Observatory State: {}".format(topic_strdict(observatory_state)))
-            self.sal.put(observatory_state)
+            if not self.no_dds_comm:
+                self.sal.put(observatory_state)
 
             delta = math.fabs(self.time_handler.current_timestamp - self.end_of_night) + SECONDS_IN_MINUTE
             self.time_handler.update_time(delta, "seconds")
-        else:
+        elif not self.no_dds_comm:
             self.comm_time.is_down = False
             self.comm_time.down_duration = down_days
 
