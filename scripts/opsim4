@@ -111,9 +111,11 @@ def main(args):
             breadcrumb = ".scheduler_{}".format(log_port)
             driver = None
         else:
-            if args.scheduler_type is "feature":
+            if str(args.scheduler_type) == "feature":
+                logging.info('Loading %s driver' % args.scheduler_type)
                 from lsst.sims.featureScheduler.driver import FeatureSchedulerDriver as Driver
-            elif args.scheduler_type is "proposal":
+            elif str(args.scheduler_type) == "proposal":
+                logging.info('Loading %s driver' % args.scheduler_type)
                 from lsst.ts.scheduler import Driver
             driver = Driver()
 
