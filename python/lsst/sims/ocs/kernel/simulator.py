@@ -463,7 +463,8 @@ class Simulator(object):
             self.log.log(LoggingLevel.EXTENSIVE.value,
                          "Downtime Start Night Timestamp sent: {:.6f}"
                          .format(self.time_handler.current_timestamp))
-            self.sal.put(self.comm_time)
+            if not self.no_dds_comm:
+                self.sal.put(self.comm_time)
             observatory_state = self.seq.get_observatory_state(self.time_handler.current_timestamp)
             self.log.log(LoggingLevel.EXTENSIVE.value,
                          "Downtime Observatory State: {}".format(topic_strdict(observatory_state)))
