@@ -346,6 +346,8 @@ class Simulator(object):
                             self.db.append_data(exposure_type, exposure)
 
             self.end_night()
+            if self.no_dds_comm:
+                self.driver.end_night(self.time_handler.current_timestamp, night)
             self.start_day()
 
     def save_configuration(self):
