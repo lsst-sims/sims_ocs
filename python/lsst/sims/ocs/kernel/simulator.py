@@ -346,6 +346,8 @@ class Simulator(object):
                             self.db.append_data(exposure_type, exposure)
 
             self.end_night()
+            if self.no_dds_comm:
+                self.driver.end_night(self.time_handler.current_timestamp, night)
             self.start_day()
 
     def save_configuration(self):
@@ -410,7 +412,6 @@ class Simulator(object):
 
         if self.no_dds_comm:
             self.filter_swap = FilterSwap(*self.driver.get_need_filter_swap())
-            self.seq.start_day(self.filter_swap)
         else:
             self.filter_swap = self.sal.get_topic("filterSwap")
             lastconfigtime = time.time()
