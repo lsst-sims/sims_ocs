@@ -19,12 +19,13 @@ class ConfigurationCommunicator(object):
         The logging instance.
     """
 
-    def __init__(self):
+    def __init__(self, no_dds_comm=False):
         """Initialize the class.
         """
         self.sal = None
         self.config = None
         self.log = logging.getLogger("configuration.ConfigurationCommunicator")
+        self.no_dds_comm = no_dds_comm
 
     def initialize(self, sal, config):
         """Perform initialization steps.
@@ -44,13 +45,22 @@ class ConfigurationCommunicator(object):
     def _configure_scheduler(self):
         """Configure and send the Scheduler configuration topic.
         """
-        self.sched_conf = self.sal.set_publish_topic("schedulerConfig")
+        if self.no_dds_comm:
+            from SALPY_scheduler import scheduler_schedulerConfigC
+            self.sched_conf = scheduler_schedulerConfigC()
+        else:
+            self.sched_conf = self.sal.set_publish_topic("schedulerConfig")
         self.sched_conf.survey_duration = self.config.survey.full_duration
 
     def _configure_scheduler_driver(self):
         """Configure and the Scheduler Driver configuration topic.
         """
-        self.sched_driver_conf = self.sal.set_publish_topic("driverConfig")
+        if self.no_dds_comm:
+            from SALPY_scheduler import scheduler_driverConfigC
+            self.sched_driver_conf = scheduler_driverConfigC()
+        else:
+            self.sched_driver_conf = self.sal.set_publish_topic("driverConfig")
+
         self.sched_driver_conf.coadd_values = self.config.sched_driver.coadd_values
         self.sched_driver_conf.time_balancing = self.config.sched_driver.time_balancing
         self.sched_driver_conf.timecost_time_max = self.config.sched_driver.timecost_time_max
@@ -71,7 +81,11 @@ class ConfigurationCommunicator(object):
     def _configure_observing_site(self):
         """Configure and send the Observing Site configuration topic.
         """
-        self.obs_site_conf = self.sal.set_publish_topic("obsSiteConfig")
+        if self.no_dds_comm:
+            from SALPY_scheduler import scheduler_obsSiteConfigC
+            self.obs_site_conf = scheduler_obsSiteConfigC()
+        else:
+            self.obs_site_conf = self.sal.set_publish_topic("obsSiteConfig")
 
         self.obs_site_conf.name = self.config.observing_site.name
         self.obs_site_conf.latitude = self.config.observing_site.latitude
@@ -84,7 +98,11 @@ class ConfigurationCommunicator(object):
     def _configure_telescope(self):
         """Configure and send the Telescope configuration topic.
         """
-        self.tel_conf = self.sal.set_publish_topic("telescopeConfig")
+        if self.no_dds_comm:
+            from SALPY_scheduler import scheduler_telescopeConfigC
+            self.tel_conf = scheduler_telescopeConfigC()
+        else:
+            self.tel_conf = self.sal.set_publish_topic("telescopeConfig")
 
         self.tel_conf.altitude_minpos = self.config.observatory.telescope.altitude_minpos
         self.tel_conf.altitude_maxpos = self.config.observatory.telescope.altitude_maxpos
@@ -101,20 +119,30 @@ class ConfigurationCommunicator(object):
     def _configure_dome(self):
         """Configure and send the dome configuration topic.
         """
-        self.dome_conf = self.sal.set_publish_topic("domeConfig")
+        if self.no_dds_comm:
+            from SALPY_scheduler import scheduler_domeConfigC
+            self.dome_conf = scheduler_domeConfigC()
+        else:
+            self.dome_conf = self.sal.set_publish_topic("domeConfig")
 
         self.dome_conf.altitude_maxspeed = self.config.observatory.dome.altitude_maxspeed
         self.dome_conf.altitude_accel = self.config.observatory.dome.altitude_accel
         self.dome_conf.altitude_decel = self.config.observatory.dome.altitude_decel
+        self.dome_conf.altitude_freerange = self.config.observatory.dome.altitude_freerange
         self.dome_conf.azimuth_maxspeed = self.config.observatory.dome.azimuth_maxspeed
         self.dome_conf.azimuth_accel = self.config.observatory.dome.azimuth_accel
         self.dome_conf.azimuth_decel = self.config.observatory.dome.azimuth_decel
+        self.dome_conf.azimuth_freerange = self.config.observatory.dome.azimuth_freerange
         self.dome_conf.settle_time = self.config.observatory.dome.settle_time
 
     def _configure_rotator(self):
         """Configure and send the rotator configuration topic.
         """
-        self.rot_conf = self.sal.set_publish_topic("rotatorConfig")
+        if self.no_dds_comm:
+            from SALPY_scheduler import scheduler_rotatorConfigC
+            self.rot_conf = scheduler_rotatorConfigC()
+        else:
+            self.rot_conf = self.sal.set_publish_topic("rotatorConfig")
 
         self.rot_conf.minpos = self.config.observatory.rotator.minpos
         self.rot_conf.maxpos = self.config.observatory.rotator.maxpos
@@ -128,7 +156,11 @@ class ConfigurationCommunicator(object):
     def _configure_camera(self):
         """Configure and send the camera configuration topic.
         """
-        self.cam_conf = self.sal.set_publish_topic("cameraConfig")
+        if self.no_dds_comm:
+            from SALPY_scheduler import scheduler_cameraConfigC
+            self.cam_conf = scheduler_cameraConfigC()
+        else:
+            self.cam_conf = self.sal.set_publish_topic("cameraConfig")
 
         self.cam_conf.readout_time = self.config.observatory.camera.readout_time
         self.cam_conf.shutter_time = self.config.observatory.camera.shutter_time
@@ -148,7 +180,11 @@ class ConfigurationCommunicator(object):
     def _configure_slew(self):
         """Configure and send the slew configuration topic.
         """
-        self.slew_conf = self.sal.set_publish_topic("slewConfig")
+        if self.no_dds_comm:
+            from SALPY_scheduler import scheduler_slewConfigC
+            self.slew_conf = scheduler_slewConfigC()
+        else:
+            self.slew_conf = self.sal.set_publish_topic("slewConfig")
 
         self.slew_conf.prereq_domalt = self.config.observatory.slew.get_string_rep("prereq_domalt")
         self.slew_conf.prereq_domaz = self.config.observatory.slew.get_string_rep("prereq_domaz")
@@ -172,7 +208,11 @@ class ConfigurationCommunicator(object):
     def _configure_optics_loop_corr(self):
         """Configure and send the optics loop correction configuration topic.
         """
-        self.olc_conf = self.sal.set_publish_topic("opticsLoopCorrConfig")
+        if self.no_dds_comm:
+            from SALPY_scheduler import scheduler_opticsLoopCorrConfigC
+            self.olc_conf = scheduler_opticsLoopCorrConfigC()
+        else:
+            self.olc_conf = self.sal.set_publish_topic("opticsLoopCorrConfig")
 
         self.olc_conf.tel_optics_ol_slope = self.config.observatory.optics_loop_corr.tel_optics_ol_slope
         self.config.observatory.optics_loop_corr.set_array(self.olc_conf, "tel_optics_cl_alt_limit")
@@ -181,7 +221,11 @@ class ConfigurationCommunicator(object):
     def _configure_park(self):
         """Configure and send the park position configuration.
         """
-        self.park_conf = self.sal.set_publish_topic("parkConfig")
+        if self.no_dds_comm:
+            from SALPY_scheduler import scheduler_parkConfigC
+            self.park_conf = scheduler_parkConfigC()
+        else:
+            self.park_conf = self.sal.set_publish_topic("parkConfig")
 
         self.park_conf.telescope_altitude = self.config.observatory.park.telescope_altitude
         self.park_conf.telescope_azimuth = self.config.observatory.park.telescope_azimuth
@@ -193,8 +237,9 @@ class ConfigurationCommunicator(object):
     def _configure_proposals(self):
         """Publish the general and sequence proposals.
         """
-        self.sal.set_publish_topic("generalPropConfig")
-        self.sal.set_publish_topic("sequencePropConfig")
+        if not self.no_dds_comm:
+            self.sal.set_publish_topic("generalPropConfig")
+            self.sal.set_publish_topic("sequencePropConfig")
 
     def configure(self):
         """Configure all publish topics for the configuration communicator.

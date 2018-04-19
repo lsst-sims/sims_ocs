@@ -2,8 +2,8 @@ from builtins import object
 from builtins import range
 import logging
 
-from lsst.sims.ocs.downtime.scheduled_downtime import ScheduledDowntime
-from lsst.sims.ocs.downtime.unscheduled_downtime import UnscheduledDowntime
+from lsst.sims.ocs.downtime import ScheduledDowntimeInterface
+from lsst.sims.ocs.downtime import UnscheduledDowntimeInterface
 from lsst.sims.ocs.setup import LoggingLevel
 
 class DowntimeHandler(object):
@@ -31,8 +31,8 @@ class DowntimeHandler(object):
     def __init__(self):
         """Initialize the class.
         """
-        self.scheduled = ScheduledDowntime()
-        self.unscheduled = UnscheduledDowntime()
+        self.scheduled = ScheduledDowntimeInterface()
+        self.unscheduled = UnscheduledDowntimeInterface()
         self.current_scheduled = None
         self.current_unscheduled = None
         self.downtime_days = set()
@@ -66,7 +66,7 @@ class DowntimeHandler(object):
         """
         self.scheduled.initialize(config.scheduled_downtime_db)
         self.unscheduled.initialize(config.unscheduled_downtime_use_random_seed)
-        config.unscheduled_downtime_random_seed = self.unscheduled.seed
+        config.unscheduled_downtime_random_seed = self.unscheduled.get_seed()
 
     def get_downtime(self, night):
         """Determine if there is downtime for the given night.
@@ -159,9 +159,9 @@ class DowntimeHandler(object):
         db : :class:`.SocsDatabase`
             The instance of the survey database.
         """
-        for sched_down in self.scheduled.downtimes:
+        for sched_down in self.scheduled.get_downtimes():
             db.append_data("scheduled_downtime", sched_down)
-        for unsched_down in self.unscheduled.downtimes:
+        for unsched_down in self.unscheduled.get_downtimes():
             db.append_data("unscheduled_downtime", unsched_down)
         db.write()
         db.clear_data()

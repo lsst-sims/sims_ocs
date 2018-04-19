@@ -93,7 +93,7 @@ class Field(object):
         -------
         field.Field
         """
-        return cls(topic.ID, topic.fov, topic.ra, topic.dec, topic.gl, topic.gb, topic.el, topic.eb)
+        return cls(topic.ID, topic.fov, topic.ra, topic.decl, topic.gl, topic.gb, topic.el, topic.eb)
 
     @property
     def fov_rad(self):

@@ -36,7 +36,7 @@ class Sequencer(object):
         The logging instance.
     """
 
-    def __init__(self, obs_site_config, idle_delay):
+    def __init__(self, obs_site_config, idle_delay, no_dds=False):
         """Initialize the class.
 
         Parameters
@@ -57,6 +57,7 @@ class Sequencer(object):
         self.log = logging.getLogger("kernel.Sequencer")
         self.idle_delay = (idle_delay, "seconds")
         self.sky_model = AstronomicalSkyModel(self.observatory_location)
+        self.no_dds = no_dds
 
     @property
     def observations_made(self):
@@ -121,9 +122,16 @@ class Sequencer(object):
         obs_config : :class:`.Observatory`
             The instance of the observatory configuration.
         """
-        self.observation = sal.set_publish_topic("observation")
-        self.observatory_state = sal.set_publish_topic("observatoryState")
-        self.observatory_model.configure(obs_config)
+        if self.no_dds:
+            from SALPY_scheduler import scheduler_observationC
+            self.observation = scheduler_observationC()
+            self.observatory_model.configure(obs_config)
+            self.observatory_state = self.observatory_model.current_state
+        else:
+            self.observation = sal.set_publish_topic("observation")
+            self.observatory_state = sal.set_publish_topic("observatoryState")
+            self.observatory_model.configure(obs_config)
+
 
     def finalize(self):
         """Perform finalization steps.
@@ -173,13 +181,12 @@ class Sequencer(object):
             slew_info, exposure_info = self.observatory_model.observe(th, target, self.observation)
             self.sky_model.update(self.observation.observation_start_time)
 
-            nid = numpy.array([target.fieldId])
             nra = numpy.radians(numpy.array([self.observation.ra]))
-            ndec = numpy.radians(numpy.array([self.observation.dec]))
+            ndec = numpy.radians(numpy.array([self.observation.decl]))
 
-            sky_mags = self.sky_model.get_sky_brightness(nid, extrapolate=True,
+            sky_mags = self.sky_model.get_sky_brightness(nra, ndec, extrapolate=True,
                                                          override_exclude_planets=False)
-            attrs = self.sky_model.get_target_information(nid, nra, ndec)
+            attrs = self.sky_model.get_target_information(nra, ndec)
             msi = self.sky_model.get_moon_sun_info(nra, ndec)
 
             self.observation.sky_brightness = sky_mags[self.observation.filter][0]

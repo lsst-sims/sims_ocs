@@ -24,10 +24,15 @@ def create_parser():
                         "years.")
     parser.add_argument("--no-sched", dest="no_scheduler", action="store_true",
                         help="Flag to make program not wait for Scheduler.")
-    parser.add_argument("--scheduler-timeout", dest="scheduler_timeout",
+    parser.add_argument("--scheduler-timeout", dest="scheduler_timeout", type=int, default=60,
                         help="Override the 60 second DDS message timeouts in the Scheduler main loop.")
+    parser.add_argument("--dds-comm", dest="dds_comm", action="store_true", help="Run using DDS comm.")
     parser.add_argument("--profile", dest="profile", action="store_true", help="Run the profiler on SOCS and"
                         "Scheduler code.")
+    parser.add_argument("--scheduler", dest="scheduler_type",
+                        help="Select which driver to run (when using no DDS comm)",
+                        default="feature",
+                        choices=["feature", "proposal"])
 
     sqlite_group_descr = ["This group of arguments is for dealing with a SQLite database."]
     sqlite_group = parser.add_argument_group("sqlite", " ".join(sqlite_group_descr))
