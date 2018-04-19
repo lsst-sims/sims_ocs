@@ -410,7 +410,6 @@ class Simulator(object):
 
         if self.no_dds_comm:
             self.filter_swap = FilterSwap(*self.driver.get_need_filter_swap())
-            self.seq.start_day(self.filter_swap)
         else:
             self.filter_swap = self.sal.get_topic("filterSwap")
             lastconfigtime = time.time()
