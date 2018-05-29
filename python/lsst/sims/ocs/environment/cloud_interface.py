@@ -71,4 +71,4 @@ class CloudInterface(object):
             An instance of the cloudg topic.
         """
         topic.timestamp = th.current_timestamp
-        topic.cloud = self.get_cloud(th.time_since_start)
+        topic.bulk_cloud = self.get_cloud(th.time_since_start)

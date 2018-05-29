@@ -47,7 +47,7 @@ class MainObservatory(object):
         observatory_location = ObservatoryLocation()
         observatory_location.configure({"obs_site": obs_site_config.toDict()})
         self.config = None
-        self.model = ObservatoryModel(observatory_location, LoggingLevel.WORDY.value)
+        self.model = ObservatoryModel(observatory_location, logging.DEBUG)
         self.date_profile = DateProfile(0, observatory_location)
         self.param_dict = {}
         self.slew_count = 0
@@ -107,7 +107,7 @@ class MainObservatory(object):
             effective_exposure_time = target.exposure_times[i]
             self.target_exposure_list.append(TargetExposure(self.exposures_made, i + 1,
                                                             effective_exposure_time,
-                                                            target.targetId))
+                                                            target.target_id))
 
             exposure_start_time = th.future_timestamp(visit_time, "seconds")
             visit_time += (shutter_time + effective_exposure_time)
@@ -197,7 +197,7 @@ class MainObservatory(object):
 
         self.log.log(LoggingLevel.EXTENSIVE.value,
                      "Starting observation {} for target {}.".format(self.observations_made,
-                                                                     target.targetId))
+                                                                     target.target_id))
 
         slew_time = self.slew(target)
         time_handler.update_time(*slew_time)
@@ -207,23 +207,23 @@ class MainObservatory(object):
         start_mjd, start_lst = self.date_profile(observation.observation_start_time)
         observation.observation_start_mjd = start_mjd
         observation.observation_start_lst = math.degrees(start_lst)
-        observation.targetId = target.targetId
+        observation.targetId = target.target_id
         observation.num_proposals = target.num_proposals
         for i in range(observation.num_proposals):
-            observation.proposal_Ids[i] = target.proposal_Ids[i]
-        observation.fieldId = target.fieldId
-        observation.groupId = target.groupId
+            observation.proposal_Ids[i] = target.proposal_id[i]
+        # observation.fieldId = target.fieldId
+        # observation.groupId = target.groupId
         observation.filter = target.filter
         observation.ra = target.ra
         observation.decl = target.decl
-        observation.angle = target.angle
+        observation.angle = target.sky_angle
         observation.num_exposures = target.num_exposures
 
         self.log.log(LoggingLevel.EXTENSIVE.value,
-                     "Exposure Times for Target {}: {}".format(target.targetId, list(target.exposure_times)))
+                     "Exposure Times for Target {}: {}".format(target.target_id, list(target.exposure_times)))
         visit_time = self.calculate_visit_time(target, time_handler)
         self.log.log(LoggingLevel.EXTENSIVE.value,
-                     "Visit Time for Target {}: {}".format(target.targetId, visit_time[0]))
+                     "Visit Time for Target {}: {}".format(target.target_id, visit_time[0]))
 
         observation.visit_time = visit_time[0]
         for i, exposure in enumerate(self.observation_exposure_list):
