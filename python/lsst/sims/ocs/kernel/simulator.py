@@ -442,7 +442,7 @@ class Simulator(object):
         (set_timestamp,
          rise_timestamp) = self.seq.sky_model.get_night_boundaries(self.conf.sched_driver.night_boundary)
 
-        delta = math.fabs(self.time_handler.current_timestamp - set_timestamp)
+        delta = set_timestamp - self.time_handler.current_timestamp
         self.time_handler.update_time(delta, "seconds")
 
         self.log.debug("Start of night {} at {}".format(night, self.time_handler.current_timestring))
