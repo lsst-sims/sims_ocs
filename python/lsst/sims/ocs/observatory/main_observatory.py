@@ -218,6 +218,7 @@ class MainObservatory(object):
         observation.decl = target.decl
         observation.angle = target.angle
         observation.num_exposures = target.num_exposures
+        observation.slewTime = target.slew_time
 
         self.log.log(LoggingLevel.EXTENSIVE.value,
                      "Exposure Times for Target {}: {}".format(target.targetId, list(target.exposure_times)))
