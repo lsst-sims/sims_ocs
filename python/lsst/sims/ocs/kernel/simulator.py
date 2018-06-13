@@ -290,7 +290,7 @@ class Simulator(object):
 
         else:
             from SALPY_scheduler import scheduler_timeHandlerC
-            from SALPY_scheduler import scheduler_targetC
+            from SALPY_scheduler import scheduler_logevent_targetC
             from SALPY_scheduler import scheduler_bulkCloudC
             from SALPY_scheduler import scheduler_seeingC
             from SALPY_scheduler import scheduler_logevent_needFilterSwapC
