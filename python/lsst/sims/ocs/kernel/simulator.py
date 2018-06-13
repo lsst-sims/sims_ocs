@@ -87,6 +87,7 @@ class Simulator(object):
         self.log = logging.getLogger("kernel.Simulator")
         self.opts = options
         self.conf = SchedulerConfig()
+        self.config_path = None
         self.valid_settings = ''
 
         # Read defaults...
@@ -94,9 +95,11 @@ class Simulator(object):
             self.conf.load(None)
         elif options.config_path is not None:
             self.conf.load([options.config_path])
+            self.config_path = options.config_path
         else:
             self.log.debug('Using default configuration path: {}'.format(str(CONFIG_DIRECTORY)))
             self.conf.load([str(CONFIG_DIRECTORY)])
+            self.config_path = str(CONFIG_DIRECTORY)
         self.conf.load_proposals()
 
         self.db = database
@@ -647,7 +650,8 @@ class Simulator(object):
         self.log.debug('Configuring scheduler')
 
         SALUtils.wtopic_scheduler_topology_config(self.conf_comm.topology_conf, self.conf)
-        self.driver.configure_scheduler(self.conf)
+        self.driver.configure_scheduler(config=self.config,
+                                        config_path=self.config_path)
 
         self.conf_comm.num_proposals = self.conf_comm.topology_conf.num_general_props + \
                                        self.conf_comm.topology_conf.num_seq_props
