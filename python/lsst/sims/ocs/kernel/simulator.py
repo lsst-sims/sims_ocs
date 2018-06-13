@@ -124,6 +124,8 @@ class Simulator(object):
 
         if self.opts.frac_duration > 0:
             self.fractional_duration = self.opts.frac_duration
+        else:
+            self.fractional_duration = self.conf.survey.duration
 
         self.time_handler = None
         self.seq = None
