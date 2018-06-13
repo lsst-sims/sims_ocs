@@ -220,7 +220,7 @@ class Simulator(object):
         """
         if self.no_dds_comm:
             target = self.driver.select_next_target().get_copy()
-            SALUtils.wtopic_target(self.target, target, self.seq.sky_model.sky_brightness)
+            SALUtils.wtopic_target(self.target, target, self.seq.sky_model)
         else:
             lasttime = time.time()
             while self.wait_for_scheduler:
