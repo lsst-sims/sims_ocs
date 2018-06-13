@@ -297,7 +297,7 @@ class Simulator(object):
             from SALPY_scheduler import scheduler_interestedProposalC
 
             self.comm_time = scheduler_timeHandlerC()
-            self.target = scheduler_targetC()
+            self.target = scheduler_logevent_targetC()
             self.cloud = scheduler_bulkCloudC()
             self.seeing = scheduler_seeingC()
             self.filter_swap = scheduler_logevent_needFilterSwapC()
