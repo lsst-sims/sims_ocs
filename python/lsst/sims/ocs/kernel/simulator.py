@@ -371,7 +371,7 @@ class Simulator(object):
                 if self.no_dds_comm:
                     self.driver.update_time(self.time_handler.current_timestamp, night)
                     self.driver.update_internal_conditions(observatory_state, night)
-                    self.cloud.cloud = self.cloud_interface.get_cloud(self.time_handler.time_since_start)
+                    self.cloud.bulk_cloud = self.cloud_interface.get_cloud(self.time_handler.time_since_start)
                     self.seeing.seeing = self.seeing_interface.get_seeing(self.time_handler.time_since_start)
                     self.driver.update_external_conditions(self.cloud.cloud, self.seeing.seeing)
                 else:
