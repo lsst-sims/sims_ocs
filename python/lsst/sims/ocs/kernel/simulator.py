@@ -650,7 +650,7 @@ class Simulator(object):
         self.log.debug('Configuring scheduler')
 
         SALUtils.wtopic_scheduler_topology_config(self.conf_comm.topology_conf, self.conf)
-        self.driver.configure_scheduler(config=self.config,
+        self.driver.configure_scheduler(config=self.conf,
                                         config_path=self.config_path)
 
         self.conf_comm.num_proposals = self.conf_comm.topology_conf.num_general_props + \
