@@ -373,7 +373,7 @@ class Simulator(object):
                     self.driver.update_internal_conditions(observatory_state, night)
                     self.cloud.bulk_cloud = self.cloud_interface.get_cloud(self.time_handler.time_since_start)
                     self.seeing.seeing = self.seeing_interface.get_seeing(self.time_handler.time_since_start)
-                    self.driver.update_external_conditions(self.cloud.cloud, self.seeing.seeing)
+                    self.driver.update_external_conditions(self.cloud.bulk_cloud, self.seeing.seeing)
                 else:
                     self.sal.put(observatory_state)
 
