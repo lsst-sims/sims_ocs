@@ -149,7 +149,8 @@ def write_observation_history(data, sid):
         ('sunDec', data.sun_dec),
         ('sunAlt', data.sun_alt),
         ('sunAz', data.sun_az),
-        ('solarElong', data.solar_elong)
+        ('solarElong', data.solar_elong),
+        ('note', data.note)
     ])
     return values
 
