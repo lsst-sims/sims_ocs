@@ -651,15 +651,13 @@ class Simulator(object):
 
         self.log.debug('Configuring scheduler')
 
-        SALUtils.wtopic_scheduler_topology_config(self.conf_comm.topology_conf, self.conf)
-        self.driver.configure_scheduler(config=self.conf,
-                                        config_path=self.config_path)
+        survey_topology = self.driver.configure_scheduler(config=self.conf,
+                                                          config_path=self.config_path)
 
-        self.conf_comm.num_proposals = self.conf_comm.topology_conf.num_general_props + \
-                                       self.conf_comm.topology_conf.num_seq_props
+        self.conf_comm.num_proposals = survey_topology.num_props
 
-        self.conf_comm.survey_topology['general'] = self.conf_comm.topology_conf.general_propos.split(',')
-        self.conf_comm.survey_topology['sequence'] = self.conf_comm.topology_conf.sequence_propos.split(',')
+        self.conf_comm.survey_topology['general'] = survey_topology.general_propos
+        self.conf_comm.survey_topology['sequence'] = survey_topology.sequence_propos
 
     def send_scheduler_to(self, state):
         """
