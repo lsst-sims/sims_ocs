@@ -9,7 +9,6 @@ import socket
 import subprocess as sp
 import time
 
-from lsst.sims.ocs.configuration import SimulationConfig
 from lsst.sims.ocs.database import SocsDatabase
 from lsst.sims.ocs.kernel import Simulator
 from lsst.sims.ocs.setup import create_parser, configure_logging, generate_logfile_path
@@ -86,18 +85,18 @@ def main(args):
 
         start_time = datetime.now()
 
-        configuration = SimulationConfig()
-        configuration.load(args.config)
-        configuration.load_proposals()
-        logger.info("{} proposals active.".format(configuration.num_proposals))
-        configuration.validate()
-
         if args.dds_comm:
+            logging.info('Using %s driver' % args.scheduler_type)
+            if str(args.scheduler_type) == "feature":
+                from lsst.sims.featureScheduler.driver.constants import RUN_SCRIPT
+            elif str(args.scheduler_type) == "proposal":
+                from lsst.ts.scheduler.kernel.constants import RUN_SCRIPT
+
             # Get scheduler version number
-            output = sp.Popen(["scheduler.py", "--version"], stdout=sp.PIPE, stderr=sp.PIPE).communicate()
+            output = sp.Popen([RUN_SCRIPT, "--version"], stdout=sp.PIPE, stderr=sp.PIPE).communicate()
             args.scheduler_version = output[1].strip()
 
-            sch_cmd = ["scheduler.py", "-s", "--log-port={}".format(log_port),
+            sch_cmd = [RUN_SCRIPT, "-s", "--log-port={}".format(log_port),
                        "--console-format=Scheduler: %(message)s"]
             sch_cmd.extend(["-v" for i in range(args.verbose)])
             if args.scheduler_timeout is not None:
@@ -119,7 +118,7 @@ def main(args):
                 from lsst.ts.scheduler import Driver
             driver = Driver()
 
-        sim = Simulator(args, configuration, db, driver=driver)
+        sim = Simulator(args, db, driver=driver)
         sim.initialize()
         if args.dds_comm:
             wait_time = 0
@@ -138,14 +137,6 @@ def main(args):
             raise
 
         sim.finalize()
-
-        if args.save_config:
-            config_dir = "config_{}".format(session_id)
-            args.config_save_path = expand_path(os.path.join(args.config_save_path, config_dir))
-            if not os.path.exists(args.config_save_path):
-                os.makedirs(args.config_save_path)
-            configuration.save(args.config_save_path)
-            logger.info("Finished saving survey configuration")
 
         end_time = datetime.now()
         run_time = (end_time - start_time).total_seconds()

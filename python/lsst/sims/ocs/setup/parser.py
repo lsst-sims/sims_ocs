@@ -58,9 +58,11 @@ def create_parser():
 
     config_group_descr = ["This group of arguments controls the configuration of the simulated survey."]
     conf_grp = parser.add_argument_group("config", " ".join(config_group_descr))
-    conf_grp.add_argument("--config", dest="config", nargs='*', help="Provide a set of override files for "
-                          "the survey configuration. If a directory is provided, it is assumed all of the "
-                          "configuration files reside there.")
+    conf_grp.add_argument("--config-path", dest="config_path", default=None,
+                          help="Path to the repository where the scheduler configuration files are hosted."
+                               "If none, will use default set.")
+    conf_grp.add_argument("--config-version", dest="config_version", default='master',
+                          help="Name of the branch with configurations for the scheduler. (default=master)")
     conf_grp.add_argument("--save-config", dest="save_config", action="store_true",
                           help="If set, a config_<session Id> directory that will contain the "
                           "saved configuration will be created at the location of --save-config-dir.")

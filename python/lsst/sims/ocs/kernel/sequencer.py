@@ -171,8 +171,8 @@ class Sequencer(object):
         dict(list[:class:`.TargetExposure`], list[:class:`.ObsExposure`])
             A dictionary of all the exposure information from the visit.
         """
-        if target.targetId != -1:
-            self.log.log(LoggingLevel.EXTENSIVE.value, "Received target {}".format(target.targetId))
+        if target.target_id != -1:
+            self.log.log(LoggingLevel.EXTENSIVE.value, "Received target {}".format(target.target_id))
             self.targets_received += 1
 
             self.sky_model.update(target.request_time)
@@ -206,20 +206,20 @@ class Sequencer(object):
             self.observation.solar_elong = numpy.degrees(msi["solarElong"][0])
         else:
             self.log.log(LoggingLevel.EXTENSIVE.value, "No target received!")
-            self.observation.observationId = target.targetId
-            self.observation.targetId = target.targetId
+            self.observation.observationId = target.target_id
+            self.observation.targetId = target.target_id
             if target.filter == '':
                 self.observation.filter = 'z'
-            if target.seeing == 0.0:
-                self.observation.seeing_fwhm_eff = 0.1
+            # if target.seeing == 0.0:
+            self.observation.seeing_fwhm_eff = 0.1
             if sum(target.exposure_times) == 0.0:
                 for i in range(target.num_exposures):
                     self.observation.exposure_times[i] = 15
                 self.observation.num_exposures = 1
-            if target.airmass == 0.0:
-                self.observation.airmass = 1.0
-            if target.sky_brightness == 0.0:
-                self.observation.sky_brightness = 30.0
+            # if target.airmass == 0.0:
+            self.observation.airmass = 1.0
+            # if target.sky_brightness == 0.0:
+            self.observation.sky_brightness = 30.0
             slew_info = None
             exposure_info = None
             th.update_time(*self.idle_delay)
