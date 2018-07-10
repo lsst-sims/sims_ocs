@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.proposal import GeneralBandFilter
+from lsst.ts.schedulerConfig.proposal import GeneralBandFilter
 
 class GeneralBandFilterTest(unittest.TestCase):
 

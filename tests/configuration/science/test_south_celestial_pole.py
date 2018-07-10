@@ -2,7 +2,7 @@ import unittest
 
 from lsst.sims.survey.fields import FieldsDatabase, FieldSelection
 
-from lsst.sims.ocs.configuration.science import SouthCelestialPole
+from lsst.ts.schedulerConfig.science import SouthCelestialPole
 from SALPY_scheduler import scheduler_generalPropConfigC
 
 class SouthCelestialPoleTest(unittest.TestCase):

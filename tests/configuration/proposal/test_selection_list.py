@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.proposal import SelectionList
+from lsst.ts.schedulerConfig.proposal import SelectionList
 
 class SelectionListTest(unittest.TestCase):
 

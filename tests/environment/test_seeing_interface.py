@@ -10,8 +10,8 @@ import SALPY_scheduler
 
 import lsst.utils.tests
 from lsst.utils import getPackageDir
-from lsst.sims.ocs.configuration import Environment
-from lsst.sims.ocs.configuration.instrument import Filters
+from lsst.ts.schedulerConfig import Environment
+from lsst.ts.schedulerConfig.instrument import Filters
 from lsst.sims.ocs.environment import SeeingInterface
 from lsst.sims.utils import TimeHandler
 

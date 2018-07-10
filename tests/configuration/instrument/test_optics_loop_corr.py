@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.instrument import OpticsLoopCorr
+from lsst.ts.schedulerConfig.instrument import OpticsLoopCorr
 import SALPY_scheduler
 
 class OpticsLoopCorrTest(unittest.TestCase):

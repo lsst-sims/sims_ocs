@@ -5,7 +5,7 @@ import math
 import time
 import collections
 
-from opsim4_config.constants import CONFIG_DIRECTORY
+from scheduler_config.constants import CONFIG_DIRECTORY
 
 from lsst.ts.astrosky.model import Sun
 
@@ -15,8 +15,8 @@ from lsst.ts.observatory.model import version as obs_mod_version
 
 from lsst.sims.survey.fields import FieldsDatabase, FieldSelection
 
-from lsst.sims.ocs.configuration import SimulationConfig as SchedulerConfig
-from lsst.sims.ocs.configuration import ConfigurationCommunicator
+from lsst.ts.schedulerConfig import SimulationConfig as SchedulerConfig
+from lsst.ts.schedulerConfig import ConfigurationCommunicator
 from lsst.sims.ocs.database.tables import write_config, write_field
 from lsst.sims.ocs.database.tables import write_proposal, write_proposal_field
 from lsst.sims.ocs.environment import CloudInterface, SeeingInterface

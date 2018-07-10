@@ -1,7 +1,7 @@
 import math
 import unittest
 
-from lsst.sims.ocs.configuration.proposal import Selection
+from lsst.ts.schedulerConfig.proposal import Selection
 
 class SelectionTest(unittest.TestCase):
 

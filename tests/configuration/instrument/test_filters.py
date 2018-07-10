@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.instrument import Filters
+from lsst.ts.schedulerConfig.instrument import Filters
 
 class FiltersTest(unittest.TestCase):
 

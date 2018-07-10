@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.proposal import SkyConstraints
+from lsst.ts.schedulerConfig.proposal import SkyConstraints
 
 class SkyConstraintsTest(unittest.TestCase):
 

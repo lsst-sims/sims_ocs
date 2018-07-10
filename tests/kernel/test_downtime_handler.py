@@ -6,7 +6,7 @@ except ImportError:
     import mock
 import unittest
 
-from lsst.sims.ocs.configuration import Downtime
+from lsst.ts.schedulerConfig import Downtime
 from lsst.sims.ocs.kernel import DowntimeHandler
 
 class DowntimeHandlerTest(unittest.TestCase):

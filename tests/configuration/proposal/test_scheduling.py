@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.proposal import Scheduling
+from lsst.ts.schedulerConfig.proposal import Scheduling
 
 class SchedulingTest(unittest.TestCase):
 

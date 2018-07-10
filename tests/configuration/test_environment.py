@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.environment import Environment
+from lsst.ts.schedulerConfig.environment import Environment
 
 class EnvironmentTest(unittest.TestCase):
 

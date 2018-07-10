@@ -2,7 +2,7 @@ import unittest
 
 from lsst.sims.survey.fields import FieldsDatabase, FieldSelection
 
-from lsst.sims.ocs.configuration.science import NorthEclipticSpur
+from lsst.ts.schedulerConfig.science import NorthEclipticSpur
 from SALPY_scheduler import scheduler_generalPropConfigC
 
 class NorthEclipticSpurTest(unittest.TestCase):

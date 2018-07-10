@@ -8,7 +8,7 @@ try:
 except ImportError:
     import mock
 
-from lsst.sims.ocs.configuration.sim_config import SimulationConfig
+from lsst.ts.schedulerConfig.sim_config import SimulationConfig
 from lsst.sims.ocs.kernel.simulator import Simulator
 import SALPY_scheduler
 

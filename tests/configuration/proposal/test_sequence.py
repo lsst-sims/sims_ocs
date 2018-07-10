@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.proposal import Sequence
+from lsst.ts.schedulerConfig.proposal import Sequence
 from SALPY_scheduler import scheduler_sequencePropConfigC
 
 from tests.configuration.proposal.basic_proposal5 import BasicProposal5

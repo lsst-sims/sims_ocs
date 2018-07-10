@@ -1,7 +1,7 @@
 from __future__ import division
 import unittest
 
-from lsst.sims.ocs.configuration import Observatory
+from lsst.ts.schedulerConfig import Observatory
 from lsst.sims.ocs.observatory import VariationalModel
 
 class VariationalModelTest(unittest.TestCase):

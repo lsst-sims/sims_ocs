@@ -7,7 +7,7 @@ try:
 except ImportError:
     import mock
 
-from lsst.sims.ocs.configuration import SimulationConfig
+from lsst.ts.schedulerConfig import SimulationConfig
 from lsst.sims.ocs.utilities.socs_exceptions import NoProposalsConfiguredError
 from tests.helpers import CONFIG_COMM_PUT_CALLS, NUM_GEN_PROPS, NUM_SEQ_PROPS
 
@@ -42,11 +42,11 @@ class SimulationConfigTest(unittest.TestCase):
         cls.config_dir = "config_temp"
         os.mkdir(cls.config_dir)
         cls.file4 = create_file(4, cls.config_dir)
-        cls.file5 = create_file(5, message=create_content("lsst.sims.ocs.configuration.survey",
+        cls.file5 = create_file(5, message=create_content("lsst.ts.schedulerConfig.survey",
                                                           "Survey", ["config.duration=10.0"]))
         cls.file6 = create_file(6,
                                 message=create_content(
-                                    "lsst.sims.ocs.configuration.instrument.optics_loop_corr",
+                                    "lsst.ts.schedulerConfig.instrument.optics_loop_corr",
                                     "OpticsLoopCorr", ["config.tel_optics_cl_delay=[0.0, 18.0]"]))
 
         cls.config_save_dir = "config_save"

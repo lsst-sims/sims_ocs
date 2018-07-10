@@ -2,7 +2,7 @@ import unittest
 
 from lsst.sims.survey.fields import FieldsDatabase, FieldSelection
 
-from lsst.sims.ocs.configuration.science import WideFastDeep
+from lsst.ts.schedulerConfig.science import WideFastDeep
 from SALPY_scheduler import scheduler_generalPropConfigC
 
 class WideFastDeepTest(unittest.TestCase):

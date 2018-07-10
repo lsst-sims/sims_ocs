@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.instrument import Dome
+from lsst.ts.schedulerConfig.instrument import Dome
 
 class DomeTest(unittest.TestCase):
 
