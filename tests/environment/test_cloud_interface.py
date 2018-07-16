@@ -49,12 +49,12 @@ class TestCloudInterface(unittest.TestCase):
         tstamp = timeHandler.current_timestamp
         cloud = CloudInterface(timeHandler)
         cloud.initialize(self.test_db)
-        cloud_topic = SALPY_scheduler.scheduler_cloudC()
+        cloud_topic = SALPY_scheduler.scheduler_bulkCloudC()
         timeHandler.update_time(6, "hours")
         cloud.set_topic(timeHandler, cloud_topic)
         tstamp = tstamp + 6 * 60.0 * 60.0
         self.assertEqual(cloud_topic.timestamp, tstamp)
-        self.assertEqual(cloud_topic.cloud, 0.0)
+        self.assertEqual(cloud_topic.bulk_cloud, 0.0)
 
 """
 class TestCloudModel(unittest.TestCase):

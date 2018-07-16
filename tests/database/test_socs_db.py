@@ -51,7 +51,7 @@ class SocsDatabaseSqliteTest(unittest.TestCase):
         row = result.fetchone()
         self.assertEqual(len(row), len(th.c))
         target = topic_helpers.target
-        self.assertEqual(row['Field_fieldId'], target.fieldId)
+        self.assertEqual(row['targetId'], target.target_id)
 
     def test_basic_information_after_creation(self):
         self.assertEqual(self.db.db_dialect, "sqlite")
@@ -193,7 +193,7 @@ class SocsDatabaseSqliteWithDifferentSavePathsTest(unittest.TestCase):
         row = result.fetchone()
         self.assertEqual(len(row), len(th.c))
         target = topic_helpers.target
-        self.assertEqual(row['Field_fieldId'], target.fieldId)
+        self.assertEqual(row['targetId'], target.target_id)
 
     def test_basic_information_after_creation(self):
         self.assertIsNotNone(self.db.sqlite_save_path)

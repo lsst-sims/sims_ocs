@@ -13,7 +13,7 @@ from tests.database import topic_helpers
 class MainObservatoryTest(unittest.TestCase):
 
     def setUp(self):
-        self.truth_slew_time = 56.45919674628731
+        self.truth_slew_time = 66.79253
         logging.getLogger().setLevel(logging.WARN)
         self.observatory = MainObservatory(ObservingSite())
 
@@ -53,7 +53,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.assertEqual(len(self.observatory.param_dict), 9)
         self.assertEqual(self.observatory.model.params.telaz_maxspeed_rad, math.radians(7.0))
         self.assertEqual(self.observatory.model.park_state.alt_rad, math.radians(86.5))
-        self.assertFalse(self.observatory.model.params.rotator_followsky)
+        self.assertTrue(self.observatory.model.params.rotator_followsky)
         self.assertEqual(len(self.observatory.model.params.prerequisites["telsettle"]), 2)
         self.assertIsNotNone(self.observatory.variational_model)
 
@@ -62,7 +62,7 @@ class MainObservatoryTest(unittest.TestCase):
         target = topic_helpers.target
         self.assertEqual(self.observatory.slew_count, 0)
         slew_time = self.observatory.slew(target)
-        self.assertEqual(slew_time[0], self.truth_slew_time)
+        self.assertAlmostEqual(slew_time[0], self.truth_slew_time, delta=1e-4)
         self.assertEqual(self.observatory.slew_count, 1)
         self.assertEqual(self.observatory.slew_history.slewCount, 1)
         self.assertEqual(self.observatory.slew_history.ObsHistory_observationId, 0)
@@ -129,7 +129,7 @@ class MainObservatoryTest(unittest.TestCase):
         self.observatory_variational_model_configure()
         target = topic_helpers.target
         slew_time = self.observatory.slew(target)
-        self.assertAlmostEqual(slew_time[0], 89.91106077358576, delta=1.0e-3)
+        self.assertAlmostEqual(slew_time[0], 97.57831185109325, delta=1.0e-3)
 
     def test_swap_filter(self):
         self.observatory_configure()

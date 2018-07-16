@@ -27,7 +27,7 @@ class SouthCelestialPoleTest(unittest.TestCase):
         self.assertEqual(self.prop.filters['i'].bright_limit, 19.5)
         self.assertFalse(self.prop.scheduling.accept_serendipity)
         self.assertFalse(self.prop.scheduling.accept_consecutive_visits)
-        self.assertEqual(self.prop.scheduling.airmass_bonus, 0.5)
+        self.assertEqual(self.prop.scheduling.airmass_bonus, 0.)
 
     def test_set_topic(self):
         in_topic = scheduler_generalPropConfigC()
@@ -41,7 +41,7 @@ class SouthCelestialPoleTest(unittest.TestCase):
         self.assertEqual(out_topic.num_filter_exposures[5], 2)
         self.assertEqual(out_topic.exposures[11], 15.0)
         self.assertEqual(out_topic.max_cloud, 0.7)
-        self.assertEqual(out_topic.airmass_bonus, 0.5)
+        self.assertEqual(out_topic.airmass_bonus, 0.)
 
     def test_proposal_fields(self):
         fd = FieldsDatabase()

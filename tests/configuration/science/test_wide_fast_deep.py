@@ -50,7 +50,7 @@ class WideFastDeepTest(unittest.TestCase):
         self.assertEqual(out_topic.num_grouped_visits[1], 2)
         self.assertEqual(out_topic.exposures[3], 15.0)
         self.assertEqual(out_topic.max_cloud, 0.7)
-        self.assertEqual(out_topic.airmass_bonus, 0.5)
+        self.assertEqual(out_topic.airmass_bonus, 0.)
         self.assertTrue(out_topic.restrict_grouped_visits)
         self.assertEqual(out_topic.time_interval, self.time_interval)
         self.assertEqual(out_topic.time_window_end, 2.0)

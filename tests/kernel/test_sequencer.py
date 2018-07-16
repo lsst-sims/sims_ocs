@@ -9,7 +9,7 @@ from lsst.sims.ocs.configuration import Observatory, ObservingSite, Survey
 from lsst.sims.ocs.kernel.sequencer import Sequencer
 from lsst.sims.ocs.kernel.time_handler import TimeHandler
 from lsst.sims.ocs.sal.sal_manager import SalManager
-from SALPY_scheduler import scheduler_filterSwapC
+from SALPY_scheduler import scheduler_logevent_needFilterSwapC
 
 from tests.helpers import MOON_SUN_INFO, SKY_BRIGHTNESS, TARGET_INFO
 
@@ -28,10 +28,10 @@ class SequencerTest(unittest.TestCase):
         self.seq.initialize(self.sal, Observatory())
 
     def create_objects(self):
-        target = self.sal.set_subscribe_topic("target")
+        target = self.sal.set_subscribe_logevent("target")
         # Set some meaningful information
-        target.targetId = 10
-        target.fieldId = 300
+        target.target_id = 10
+        # target.fieldId = 300
         target.filter = "i"
         target.ra = 0.4244
         target.decl = -0.5314
@@ -85,8 +85,8 @@ class SequencerTest(unittest.TestCase):
 
         observation, slew, exposures = self.seq.observe_target(target, time_handler)
 
-        self.assertEqual(observation.observation_start_time, time_handler.initial_timestamp + 140.0)
-        self.assertEqual(observation.targetId, target.targetId)
+        self.assertEqual(observation.observation_start_time, time_handler.initial_timestamp + 156.0)
+        self.assertEqual(observation.targetId, target.target_id)
         self.assertEqual(observation.sky_brightness, 19.0)
         self.assertEqual(observation.moon_phase, 0.3)
         self.assertEqual(self.seq.targets_received, 1)
@@ -157,14 +157,14 @@ class SequencerTest(unittest.TestCase):
     def test_observe_with_no_target(self, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
         self.initialize_sequencer()
         target, time_handler = self.create_objects()
-        target.targetId = -1
+        target.target_id = -1
         target.filter = ''
         target.num_exposures = 1
 
         observation, slew, exposures = self.seq.observe_target(target, time_handler)
 
         self.assertEqual(time_handler.current_timestamp, 60.0)
-        self.assertEqual(observation.targetId, target.targetId)
+        self.assertEqual(observation.targetId, target.target_id)
         self.assertEqual(observation.filter, 'z')
         self.assertListEqual(list(observation.exposure_times), [15, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         self.assertEqual(observation.num_exposures, 1)
@@ -183,7 +183,7 @@ class SequencerTest(unittest.TestCase):
     @mock.patch("lsst.sims.ocs.observatory.main_observatory.MainObservatory.swap_filter")
     def test_start_day(self, mock_obs_sf, mock_sal_telemetry_pub, mock_sal_telemetry_sub, mock_logger_log):
         self.initialize_sequencer()
-        fs = scheduler_filterSwapC()
+        fs = scheduler_logevent_needFilterSwapC()
         fs.need_swap = True
         fs.filter_to_unmount = 'u'
         self.seq.start_day(fs)

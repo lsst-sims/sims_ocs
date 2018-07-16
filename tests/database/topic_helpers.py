@@ -4,14 +4,14 @@ import SALPY_scheduler
 import lsst.sims.ocs.kernel
 import lsst.sims.ocs.observatory
 
-target = SALPY_scheduler.scheduler_targetC()
-target.targetId = 10
-target.fieldId = 300
-target.groupId = 2
+target = SALPY_scheduler.scheduler_logevent_targetC()
+target.target_id = 10
+# target.fieldId = 300
+# target.groupId = 2
 target.filter = "z"
 target.ra = 1.000
 target.decl = -3.00
-target.angle = 0.5
+target.sky_angle = 0.5
 target.num_exposures = 2
 target.exposure_times[0] = 15
 target.exposure_times[1] = 15
@@ -22,9 +22,9 @@ target.sky_brightness = 20.4
 target.cloud = 0.0
 target.seeing = 0.5
 target.slew_time = 4.75
-target.cost = 0.1
-target.rank = 0.013
-target.prop_boost = 0.005
+# target.cost = 0.1
+# target.rank = 0.013
+# target.prop_boost = 0.005
 target.num_proposals = 2
 target.moon_ra = 65.0
 target.moon_dec = -10.0
@@ -33,17 +33,17 @@ target.moon_az = 250.0
 target.moon_phase = 0.5
 target.moon_distance = 60.0
 
-field_topic = SALPY_scheduler.scheduler_fieldC()
-field_topic.ID = 1
-field_topic.fov = 0.5
-field_topic.ra = 30.0
-field_topic.decl = -30.0
-field_topic.gl = -45.0
-field_topic.gb = 45.0
-field_topic.el = 60.0
-field_topic.eb = -60.0
+# field_topic = SALPY_scheduler.scheduler_fieldC()
+# field_topic.ID = 1
+# field_topic.fov = 0.5
+# field_topic.ra = 30.0
+# field_topic.decl = -30.0
+# field_topic.gl = -45.0
+# field_topic.gb = 45.0
+# field_topic.el = 60.0
+# field_topic.eb = -60.0
 
-field_tuple = (1, 0.5, 30.0, -30.0, -45.0, 45.0, 60.0, -60.0)
+# field_tuple = (1, 0.5, 30.0, -30.0, -45.0, 45.0, 60.0, -60.0)
 
 observation_topic = SALPY_scheduler.scheduler_observationC()
 observation_topic.observationId = 5
