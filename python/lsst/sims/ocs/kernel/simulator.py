@@ -263,16 +263,16 @@ class Simulator(object):
                 self.scheduler_state = self.state_transition[i]
                 self.log.debug('Listening for scheduler state...')
                 self.listen_scheduler_state()
-                self.log.debug('Received state %s ' % self.scheduler_summary_state.SummaryStateValue)
+                self.log.debug('Received state %s ' % self.scheduler_summary_state.summaryState)
 
-                if self.scheduler_summary_state.SummaryStateValue == self.summary_state_enum["STANDBY"]:
+                if self.scheduler_summary_state.summaryState == self.summary_state_enum["STANDBY"]:
                     self.log.debug('Listening to valid settings...')
                     self.listen_scheduler_settings()
                     self.valid_settings = self.scheduler_valid_settings.package_versions.split(',')
                     for setting in self.valid_settings:
                         self.log.debug('{}'.format(setting))
 
-                if self.scheduler_summary_state.SummaryStateValue == self.scheduler_state:
+                if self.scheduler_summary_state.summaryState == self.scheduler_state:
                     self.log.debug('Scheduler.state: %s -> %s' % (self.state_names[i],
                                                                   self.state_names[i + 1]))
 
@@ -284,8 +284,8 @@ class Simulator(object):
 
             self.log.debug('Listening for scheduler state...')
             self.listen_scheduler_state()
-            self.log.debug('Received state %s ' % self.scheduler_summary_state.SummaryStateValue)
-            self.scheduler_state = self.scheduler_summary_state.SummaryStateValue
+            self.log.debug('Received state %s ' % self.scheduler_summary_state.summaryState)
+            self.scheduler_state = self.scheduler_summary_state.summaryState
             if self.scheduler_state == self.summary_state_enum['DISABLE']:
                 # Scheduler is disable! Now is time to initialize the configuration!
                 self.log.debug('Scheduler DISABLE, get configuration...')
@@ -350,8 +350,8 @@ class Simulator(object):
                 self.log.info('Enabling scheduler...')
                 self.send_scheduler_to(1)  # enable the scheduler
                 self.listen_scheduler_state()
-                self.log.debug('Received state %s ' % self.scheduler_summary_state.SummaryStateValue)
-                self.scheduler_state = self.scheduler_summary_state.SummaryStateValue
+                self.log.debug('Received state %s ' % self.scheduler_summary_state.summaryState)
+                self.scheduler_state = self.scheduler_summary_state.summaryState
                 if self.scheduler_state != self.summary_state_enum['ENABLE']:
                     # Scheduler not enable! Issue exception
                     raise Exception("Scheduler %s, expected ENABLE." % self.scheduler_state)
@@ -675,7 +675,7 @@ class Simulator(object):
         elif state == 0:
             if self.opts.config_version not in set(self.valid_settings):
                 raise Exception("Selected settings \"{}\" not valid.".format(self.opts.config_version))
-            self.sal.send_command("start", configuration=self.opts.config_version)
+            self.sal.send_command("start", settingsToApply=self.opts.config_version)
             retval = self.sal.waitForCompletion(self.sal.cmdId, int(self.socs_timeout))
             accepted = 1
             # accepted = self.sal.manager.acceptCommand_enterControl
