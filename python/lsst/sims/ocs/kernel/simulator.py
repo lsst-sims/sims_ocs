@@ -654,10 +654,11 @@ class Simulator(object):
         survey_topology = self.driver.configure_scheduler(config=self.conf,
                                                           config_path=self.config_path)
 
-        self.conf_comm.num_proposals = survey_topology.num_props
+        if survey_topology is not None:
+            self.conf_comm.num_proposals = survey_topology.num_props
 
-        self.conf_comm.survey_topology['general'] = survey_topology.general_propos
-        self.conf_comm.survey_topology['sequence'] = survey_topology.sequence_propos
+            self.conf_comm.survey_topology['general'] = survey_topology.general_propos
+            self.conf_comm.survey_topology['sequence'] = survey_topology.sequence_propos
 
     def send_scheduler_to(self, state):
         """
