@@ -2,7 +2,7 @@ from builtins import str
 import math
 import unittest
 
-from lsst.sims.ocs.configuration.field import Field
+from lsst.ts.schedulerConfig.field import Field
 
 from tests.database.topic_helpers import field_topic
 

@@ -1,7 +1,7 @@
 import unittest
 
-from lsst.sims.ocs.configuration.proposal import Selection
-from lsst.sims.ocs.configuration.proposal import SkyExclusion
+from lsst.ts.schedulerConfig.proposal import Selection
+from lsst.ts.schedulerConfig.proposal import SkyExclusion
 
 class SkyExclusionTest(unittest.TestCase):
 

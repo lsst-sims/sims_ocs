@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.instrument import Rotator
+from lsst.ts.schedulerConfig.instrument import Rotator
 
 class RotatorTest(unittest.TestCase):
 

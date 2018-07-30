@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.observatory import Observatory
+from lsst.ts.schedulerConfig.observatory import Observatory
 
 class ObservatoryTest(unittest.TestCase):
 

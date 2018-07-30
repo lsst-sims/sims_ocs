@@ -3,7 +3,7 @@ import unittest
 
 from lsst.sims.survey.fields import FieldsDatabase, FieldSelection
 
-from lsst.sims.ocs.configuration.proposal import General
+from lsst.ts.schedulerConfig.proposal import General
 from SALPY_scheduler import scheduler_generalPropConfigC
 
 from tests.configuration.proposal.basic_proposal1 import BasicProposal1

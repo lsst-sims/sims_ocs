@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.obs_site import ObservingSite
+from lsst.ts.schedulerConfig.obs_site import ObservingSite
 
 class ObservingSiteTest(unittest.TestCase):
 

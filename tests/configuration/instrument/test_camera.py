@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.instrument import Camera
+from lsst.ts.schedulerConfig.instrument import Camera
 
 class CameraTest(unittest.TestCase):
 

@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.proposal import TimeRange
+from lsst.ts.schedulerConfig.proposal import TimeRange
 
 class TimeRangeTest(unittest.TestCase):
 

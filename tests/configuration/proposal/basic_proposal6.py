@@ -1,4 +1,4 @@
-from lsst.sims.ocs.configuration.proposal import BandFilter, MasterSubSequence, SubSequence, Sequence
+from lsst.ts.schedulerConfig.proposal import BandFilter, MasterSubSequence, SubSequence, Sequence
 
 class BasicProposal6(Sequence):
     """This class sets the parameters for specifying a test proposal.

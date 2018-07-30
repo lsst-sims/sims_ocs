@@ -1,6 +1,6 @@
-from lsst.sims.ocs.configuration.proposal import General, GeneralBandFilter, Selection
-from lsst.sims.ocs.configuration.proposal import SelectionList, TimeRange
-from lsst.sims.ocs.configuration.proposal import SELECTION_LIMIT_TYPES
+from lsst.ts.schedulerConfig.proposal import General, GeneralBandFilter, Selection
+from lsst.ts.schedulerConfig.proposal import SelectionList, TimeRange
+from lsst.ts.schedulerConfig.proposal import SELECTION_LIMIT_TYPES
 
 class BasicProposal4(General):
     """This class sets the parameters for specifying a test proposal.

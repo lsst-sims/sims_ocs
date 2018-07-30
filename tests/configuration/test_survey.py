@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.survey import Survey
+from lsst.ts.schedulerConfig.survey import Survey
 
 from tests.helpers import GEN_PROPS, SEQ_PROPS
 

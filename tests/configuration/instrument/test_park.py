@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.instrument import Park
+from lsst.ts.schedulerConfig.instrument import Park
 
 class ParkTest(unittest.TestCase):
 

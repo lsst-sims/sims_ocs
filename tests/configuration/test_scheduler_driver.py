@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration import SchedulerDriver
+from lsst.ts.schedulerConfig import SchedulerDriver
 
 class SchedulerDriverTest(unittest.TestCase):
 

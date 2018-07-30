@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.downtime import Downtime
+from lsst.ts.schedulerConfig.downtime import Downtime
 
 class DowntimeTest(unittest.TestCase):
 

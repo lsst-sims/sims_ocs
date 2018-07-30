@@ -5,7 +5,7 @@ try:
 except ImportError:
     import mock
 
-from lsst.sims.ocs.configuration import Observatory, ObservingSite, Survey
+from lsst.ts.schedulerConfig import Observatory, ObservingSite, Survey
 from lsst.sims.ocs.kernel.sequencer import Sequencer
 from lsst.sims.ocs.kernel.time_handler import TimeHandler
 from lsst.sims.ocs.sal.sal_manager import SalManager

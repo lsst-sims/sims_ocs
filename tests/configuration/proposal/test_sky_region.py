@@ -1,7 +1,7 @@
 import unittest
 
-from lsst.sims.ocs.configuration.proposal import Selection, SelectionList, TimeRange
-from lsst.sims.ocs.configuration.proposal import SkyRegion
+from lsst.ts.schedulerConfig.proposal import Selection, SelectionList, TimeRange
+from lsst.ts.schedulerConfig.proposal import SkyRegion
 
 class SkyRegionTest(unittest.TestCase):
 

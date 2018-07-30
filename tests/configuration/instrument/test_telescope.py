@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.instrument import Telescope
+from lsst.ts.schedulerConfig.instrument import Telescope
 
 class TelescopeTest(unittest.TestCase):
 

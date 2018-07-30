@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.proposal import SkyNightlyBounds
+from lsst.ts.schedulerConfig.proposal import SkyNightlyBounds
 
 class SkyNightlyBoundsTest(unittest.TestCase):
 

@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.science import DeepDrillingCosmology1
+from lsst.ts.schedulerConfig.science import DeepDrillingCosmology1
 from SALPY_scheduler import scheduler_sequencePropConfigC
 
 class DeepDrillingCosmology1Test(unittest.TestCase):

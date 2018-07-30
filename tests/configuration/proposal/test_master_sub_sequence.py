@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration.proposal import MasterSubSequence
+from lsst.ts.schedulerConfig.proposal import MasterSubSequence
 
 class MasterSubSequenceTest(unittest.TestCase):
 

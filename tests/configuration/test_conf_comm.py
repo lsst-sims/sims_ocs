@@ -5,8 +5,8 @@ try:
 except ImportError:
     import mock
 
-from lsst.sims.ocs.configuration.conf_comm import ConfigurationCommunicator
-from lsst.sims.ocs.configuration.sim_config import SimulationConfig
+from lsst.ts.schedulerConfig.conf_comm import ConfigurationCommunicator
+from lsst.ts.schedulerConfig.sim_config import SimulationConfig
 from lsst.sims.ocs.sal.sal_manager import SalManager
 
 from tests.helpers import CONFIG_COMM_PUB_CALLS, CONFIG_COMM_PUT_CALLS

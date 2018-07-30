@@ -1,6 +1,6 @@
 import unittest
 
-from lsst.sims.ocs.configuration import ScienceProposals
+from lsst.ts.schedulerConfig import ScienceProposals
 from tests.helpers import GEN_PROPS, NUM_GEN_PROPS, NUM_SEQ_PROPS, SEQ_PROPS
 
 class ScienceProposalsTest(unittest.TestCase):
