@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+set -e
+
+# Set a unique DDS domain name via hostname
+if [ -n "${OPSIM_HOSTNAME}" ] ; then
+	name=${OPSIM_HOSTNAME%%.*}
+else
+	name=${HOSTNAME%%.*}
+fi
+
+export LSST_DDS_DOMAIN=OPSIM_$(echo ${name} | tr [a-z] [A-Z])
+
+function usage() {
+  cat << EOD
+
+  Usage: $(basename "$0") [options] <command>
+
+  This command wraps the environment for running OpSim4.
+
+  Available options:
+    -h          this message
+    -o          Pass in the OSPL_URI instead of creating it.
+
+EOD
+}
+
+function create_ospl_file()
+{
+	local __resultvar=$1
+	for i in `seq 0 99`;
+	do
+		local ospl_file=${PWD}/.ospl${i}.xml
+		if [ -e ${ospl_file} ] ; then
+			continue
+		else
+			domain_id=${i}
+			break
+		fi
+	done
+	eval $__resultvar="${ospl_file},${i}"
+}
+
+while getopts ho: c; do
+    case $c in
+    		h) usage ; exit 0 ;;
+            o) ospl_file="$OPTARG" ;;
+            \?) usage ; exit 1 ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+if [ -z $ospl_file ] ; then
+	need_creation=1
+else
+	need_creation=0
+fi
+
+
+if [ $need_creation -eq 1 ] ; then
+	ospl_template=${OSPL_HOME}/etc/config/ospl_multijob_tmpl.xml
+	create_ospl_file info
+	ospl_file=${info%,*}
+	domain_id=${info#*,}
+	cp ${ospl_template} ${ospl_file}
+	sed -i -e 's/DOMAINID/'${domain_id}'/g' ${ospl_file}
+fi
+export OSPL_URI=file://${ospl_file}
+
+$@
+
+if [ $need_creation -eq 1 ] ; then
+	rm ${ospl_file}
+fi
