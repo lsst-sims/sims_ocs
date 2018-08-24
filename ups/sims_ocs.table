@@ -2,14 +2,28 @@ setupRequired(python)
 setupRequired(python_future)
 setupRequired(pex_config)
 setupRequired(sconsUtils)
+
+setupRequired(ts_sal)
+
+# Define survey fields / sky tessellation
 setupRequired(sims_survey_fields)
+
+# Models for seeing/cloud/downtime/observatory/sky
+# (sims_skybrightness_pre comes in through ts_astrosky)
 setupRequired(sims_seeingModel)
 setupRequired(sims_cloudModel)
 setupRequired(sims_downtimeModel)
-setupRequired(scheduler_config)
-setupRequired(ts_schedulerConfig)
 setupRequired(ts_astrosky_model)
 setupRequired(ts_observatory_model)
+
+# Scheduler(s) itself.
+setupRequired(ts_scheduler)
+setupRequired(sims_featureScheduler)
+
+# Configuration directories for scheduler and models
+# (once configs for models go into their own repos, re-evaluate)
+setupRequired(scheduler_config)
+setupRequired(ts_schedulerConfig)
 
 envPrepend(PYTHONPATH, ${PRODUCT_DIR}/python)
 envPrepend(PATH, ${PRODUCT_DIR}/scripts)
