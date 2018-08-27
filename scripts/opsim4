@@ -90,7 +90,7 @@ def main(args):
             if str(args.scheduler_type) == "feature":
                 from lsst.sims.featureScheduler.driver.constants import RUN_SCRIPT
             elif str(args.scheduler_type) == "proposal":
-                from lsst.ts.scheduler.kernel.constants import RUN_SCRIPT
+                from lsst.ts.proposalScheduler.constants import RUN_SCRIPT
 
             # Get scheduler version number
             output = sp.Popen([RUN_SCRIPT, "--version"], stdout=sp.PIPE, stderr=sp.PIPE).communicate()
@@ -115,7 +115,7 @@ def main(args):
                 from lsst.sims.featureScheduler.driver import FeatureSchedulerDriver as Driver
             elif str(args.scheduler_type) == "proposal":
                 logging.info('Loading %s driver' % args.scheduler_type)
-                from lsst.ts.scheduler import Driver
+                from lsst.ts.proposalScheduler import ProposalDriver as Driver
             driver = Driver()
 
         sim = Simulator(args, db, driver=driver)

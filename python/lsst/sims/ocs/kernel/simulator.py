@@ -481,7 +481,6 @@ class Simulator(object):
         """
         proposals = []
         prop_count = 0
-
         for i, general in enumerate(self.conf_comm.survey_topology['general']):
             proposals.append(write_proposal(ProposalInfo(i+1, general, "General"),
                                             self.db.session_id))
@@ -653,6 +652,8 @@ class Simulator(object):
 
         survey_topology = self.driver.configure_scheduler(config=self.conf,
                                                           config_path=self.config_path)
+
+        self.log.debug('%s', survey_topology)
 
         if survey_topology is not None:
             self.conf_comm.num_proposals = survey_topology.num_props
