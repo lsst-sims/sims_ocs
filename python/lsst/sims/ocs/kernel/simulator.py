@@ -190,26 +190,26 @@ class Simulator(object):
             The topic instance to gather the observation proposal information from.
         """
         if phtype == "observation":
-            for i in range(topic.num_proposals):
+            for i in range(topic.numProposals):
                 self.db.append_data("observation_proposal_history",
                                     ObsProposalHistory(self.observation_proposals_counted,
-                                                       int(topic.proposal_Ids[i]),
-                                                       topic.proposal_values[i],
-                                                       topic.proposal_needs[i],
-                                                       topic.proposal_bonuses[i],
-                                                       topic.proposal_boosts[i],
+                                                       int(topic.proposalIds[i]),
+                                                       topic.proposalValues[i],
+                                                       topic.proposalNeeds[i],
+                                                       topic.proposalBonuses[i],
+                                                       topic.proposalBoosts[i],
                                                        topic.observationId))
                 self.observation_proposals_counted += 1
         if phtype == "target":
-            for i in range(topic.num_proposals):
+            for i in range(topic.numProposals):
                 self.db.append_data("target_proposal_history",
                                     TargetProposalHistory(self.target_proposals_counted,
-                                                          int(topic.proposal_id[i]),
+                                                          int(topic.proposalId[i]),
                                                           -1,
                                                           -1,
                                                           -1,
                                                           -1,
-                                                          topic.target_id))
+                                                          topic.targetId))
                 self.target_proposals_counted += 1
 
     def get_target_from_scheduler(self):
@@ -225,7 +225,7 @@ class Simulator(object):
             lasttime = time.time()
             while self.wait_for_scheduler:
                 rcode = self.sal.manager.getEvent_target(self.target)
-                if rcode == 0 and self.target.num_exposures != 0:
+                if rcode == 0 and self.target.numExposures != 0:
                     break
                 else:
                     tf = time.time()
@@ -243,7 +243,7 @@ class Simulator(object):
         if not self.no_dds_comm:
             self.sal.initialize()
 
-            self.scheduler_summary_state = self.sal.set_subscribe_logevent("SummaryState")
+            self.scheduler_summary_state = self.sal.set_subscribe_logevent("summaryState")
             self.scheduler_valid_settings = self.sal.set_subscribe_logevent("validSettings")
 
             self.target = self.sal.set_subscribe_logevent("target")
@@ -268,7 +268,7 @@ class Simulator(object):
                 if self.scheduler_summary_state.summaryState == self.summary_state_enum["STANDBY"]:
                     self.log.debug('Listening to valid settings...')
                     self.listen_scheduler_settings()
-                    self.valid_settings = self.scheduler_valid_settings.package_versions.split(',')
+                    self.valid_settings = self.scheduler_valid_settings.packageVersions.split(',')
                     for setting in self.valid_settings:
                         self.log.debug('{}'.format(setting))
 
@@ -390,10 +390,11 @@ class Simulator(object):
                              "Observatory State: {}".format(topic_strdict(observatory_state)))
                 if self.no_dds_comm:
                     self.driver.update_time(self.time_handler.current_timestamp, night)
-                    self.driver.update_internal_conditions(observatory_state, night)
-                    self.cloud.bulk_cloud = self.cloud_interface.get_cloud(self.time_handler.time_since_start)
+                    driver_observatory_state = SALUtils.rtopic_observatory_state(observatory_state)
+                    self.driver.update_internal_conditions(driver_observatory_state, night)
+                    self.cloud.bulkCloud = self.cloud_interface.get_cloud(self.time_handler.time_since_start)
                     self.seeing.seeing = self.seeing_interface.get_seeing(self.time_handler.time_since_start)
-                    self.driver.update_external_conditions(self.cloud.bulk_cloud, self.seeing.seeing)
+                    self.driver.update_external_conditions(self.cloud.bulkCloud, self.seeing.seeing)
                 else:
                     self.sal.put(observatory_state)
 
@@ -409,30 +410,30 @@ class Simulator(object):
                                                                                 self.time_handler)
                 # Add a few more things to the observation
                 observation.night = night
-                elapsed_time = self.time_handler.time_since_given(observation.observation_start_time)
+                elapsed_time = self.time_handler.time_since_given(observation.observationStartTime)
                 observation.cloud = self.cloud_interface.get_cloud(elapsed_time)
                 seeing_values = self.seeing_interface.calculate_seeing(elapsed_time, observation.filter,
                                                                    observation.airmass)
-                observation.seeing_fwhm_500 = seeing_values[0]
-                observation.seeing_fwhm_geom = seeing_values[1]
-                observation.seeing_fwhm_eff = seeing_values[2]
+                observation.seeingFwhm500 = seeing_values[0]
+                observation.seeingFwhmGeom = seeing_values[1]
+                observation.seeingFwhmEff = seeing_values[2]
 
-                visit_exposure_time = sum([observation.exposure_times[i]
-                                           for i in range(observation.num_exposures)])
-                observation.five_sigma_depth = m5_flat_sed(observation.filter,
-                                                           observation.sky_brightness,
-                                                           observation.seeing_fwhm_eff,
+                visit_exposure_time = sum([observation.exposureTimes[i]
+                                           for i in range(observation.numExposures)])
+                observation.fiveSigmaDepth = m5_flat_sed(observation.filter,
+                                                           observation.skyBrightness,
+                                                           observation.seeingFwhmEff,
                                                            visit_exposure_time,
                                                            observation.airmass)
 
                 observation.note = self.target.note
-                observation.num_proposals = self.target.num_proposals
-                for i in range(self.target.num_proposals):
-                    observation.proposal_Ids[i] = self.target.proposal_id[i]
+                observation.numProposals = self.target.numProposals
+                for i in range(self.target.numProposals):
+                    observation.proposalIds[i] = self.target.proposalId[i]
                 self.log.log(LoggingLevel.EXTENSIVE.value, "tx: observation")
                 if self.no_dds_comm:
                     driver_observation = SALUtils.rtopic_observation(observation)
-                    self.log.debug('%i: %s', observation.num_proposals, observation.proposal_Ids)
+                    self.log.debug('%i: %s', observation.numProposals, observation.proposalIds)
                     self.log.debug('%i: %s', driver_observation.num_props,
                                    driver_observation.propid_list)
                     target_list = self.driver.register_observation(driver_observation)
@@ -446,7 +447,7 @@ class Simulator(object):
                     lastconfigtime = time.time()
                     while self.wait_for_scheduler:
                         rcode = self.sal.manager.getNextSample_interestedProposal(self.interested_proposal)
-                        if rcode == 0 and self.interested_proposal.num_proposals >= 0:
+                        if rcode == 0 and self.interested_proposal.numProposals >= 0:
                             self.log.log(LoggingLevel.EXTENSIVE.value, "Received interested proposal.")
                             break
                         else:
@@ -537,13 +538,15 @@ class Simulator(object):
                      "Daytime Timestamp sent: {:.6f}".format(self.time_handler.current_timestamp))
 
         if self.no_dds_comm:
-            self.filter_swap = FilterSwap(*self.driver.get_need_filter_swap())
+            filter_swap = self.driver.get_need_filter_swap()
+            self.filter_swap.needSwap = filter_swap[0]
+            self.filter_swap.filterToUnmount = filter_swap[1]
         else:
             self.filter_swap = self.sal.set_subscribe_logevent("needFilterSwap")
             lastconfigtime = time.time()
             while self.wait_for_scheduler:
                 rcode = self.sal.manager.getEvent_needFilterSwap(self.filter_swap)
-                if rcode == 0 and self.filter_swap.filter_to_unmount != '':
+                if rcode == 0 and self.filter_swap.filterToUnmount != '':
                     break
                 else:
                     tf = time.time()
@@ -607,8 +610,8 @@ class Simulator(object):
             delta = math.fabs(self.time_handler.current_timestamp - self.end_of_night) + SECONDS_IN_MINUTE
             self.time_handler.update_time(delta, "seconds")
         elif not self.no_dds_comm:
-            self.comm_time.is_down = False
-            self.comm_time.down_duration = down_days
+            self.comm_time.isDown = False
+            self.comm_time.downDuration = down_days
 
     def write_proposal_fields(self, prop_fields):
         """Transform the proposal field information and write to the survey database.
@@ -726,7 +729,7 @@ class Simulator(object):
 
         lasttime = time.time()
         while self.wait_for_scheduler:
-            rcode = self.sal.manager.getEvent_SummaryState(self.scheduler_summary_state)
+            rcode = self.sal.manager.getEvent_summaryState(self.scheduler_summary_state)
             if rcode == 0:
                 break
             else:
