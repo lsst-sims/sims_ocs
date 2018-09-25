@@ -4,7 +4,7 @@ setupRequired(pex_config)
 setupRequired(sconsUtils)
 
 setupRequired(ts_sal)
-setupRequired(salpytools)
+setupRequired(ts_salpytools)
 setupRequired(ts_statemachine)
 
 # Define survey fields / sky tessellation
