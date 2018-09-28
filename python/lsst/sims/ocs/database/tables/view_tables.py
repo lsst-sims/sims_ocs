@@ -65,7 +65,8 @@ def create_summary_all_props(metadata, oh, sh, sfs, p, ph, f):
                                 oh.c.moonPhase.label('moonPhase'),
                                 oh.c.sunAlt.label('sunAlt'),
                                 oh.c.sunAz.label('sunAz'),
-                                oh.c.solarElong.label('solarElong')
+                                oh.c.solarElong.label('solarElong'),
+                                oh.c.note.label('note')
                                 ]).
                         where(oh.c.observationId == sh.c.ObsHistory_observationId).
                         where(sh.c.slewCount == sfs.c.SlewHistory_slewCount).
