@@ -20,6 +20,7 @@ setupRequired(ts_observatory_model)
 
 # Scheduler(s) itself.
 setupRequired(ts_scheduler)
+setupRequired(ts_proposalScheduler)
 setupRequired(sims_featureScheduler)
 
 # Configuration directories for scheduler and models
